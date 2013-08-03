@@ -11,6 +11,7 @@ class Winner extends Public_Controller
     {
         parent::__construct();
         $this->load->model('winner_m');
+        $this->load->model('hotel_m');
         $this->lang->load('winner');
     }
 
@@ -19,6 +20,8 @@ class Winner extends Public_Controller
      */
     public function index($offset = 0)
     {
+        $hotels = $this->hotel_m->get_all();
+        /*print_r("<pre>");var_dump($hotels);die;*/
         /*$data = array(
             'name' => 'Dat Nguyen',
             'phone' => '123456789',
@@ -27,11 +30,13 @@ class Winner extends Public_Controller
         $this->winner_m->create($data);*/
         $this->template
             ->title('Register Form')
+            ->set('hotels', $hotels)
             ->build('form/register');
 
     }
     public function form()
     {
-        die('form action');
+        $params = $this->input->post();
+        print_r("<pre>");var_dump($params);die;
     }
 }
