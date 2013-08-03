@@ -5,30 +5,37 @@
  */
 ?>
 <header>
-    <h2>Register Information</h2>
+    <h2><?php echo lang('winner:form_title'); ?></h2>
 </header>
-<form action="#">
+<form action="<?php echo base_url('winner/form');?>" enctype="multipart/form-data" accept-charset="utf-8" method="post">
 
-    <div><label class="desc" for="Field1" id="title1">Full Name</label>
+    <div><label class="desc" for="Field1" id="title1"><?php echo lang('winner:name'); ?></label>
 
-        <div><input class="field text fn" id="Field1" name="Field1" size="8" tabindex="1" type="text" value="" /></div>
+        <div><input class="field text fn" id="Field1" name="full_name" size="8" tabindex="1" type="text" value="" /></div>
     </div>
 
     <div>
-        <label class="desc" for="Field3" id="title3">Email </label>
-        <div><input id="Field3" maxlength="255" name="Field3" spellcheck="false" tabindex="3" type="email" value="" /></div>
+        <label class="desc" for="Field3" id="title3"><?php echo lang('winner:email'); ?> </label>
+        <div><input id="Field3" maxlength="255" name="email" spellcheck="false" tabindex="3" type="email" value="" /></div>
     </div>
     <div>
-        <label class="desc" for="Field9" id="title9">Phone </label>
-        <div><input id="Field9" maxlength="255" name="Field3" spellcheck="false" tabindex="3" type="email" value="" /></div>
+        <label class="desc" for="Field9" id="title9"><?php echo lang('winner:phone'); ?> </label>
+        <div><input id="Field9" maxlength="255" name="phone" spellcheck="false" tabindex="3" type="text" value="" /></div>
     </div>
     <div>
-        <label class="desc" for="Field106" id="title106">Choose the hotel you're staying at</label>
+        <label class="desc" for="Field106" id="title106"><?php echo lang('winner:choose_hotel'); ?></label>
 
-        <div><select class="field select medium" id="Field106" name="Field106" tabindex="11"><option value="First Choice">First Choice</option><option value="Second Choice">Second Choice</option><option value="Third Choice">Third Choice</option> </select></div>
+        <div><select class="field select medium" id="Field106" name="hotel" tabindex="11">
+                <option value="0"><?php echo lang('winner:choose_hotel'); ?></option>
+                <?php if(!empty($hotels)):?>
+                <?php foreach($hotels as $hotel):?>
+                <option value="<?php echo $hotel->id;?>"><?php echo $hotel->name;?></option>
+                <?php endforeach;?>
+                <?php endif;?>
+            </select></div>
     </div>
 
     <div>
-        <div><input id="saveForm" name="saveForm" type="submit" value="Submit" /></div>
+        <div><input id="saveForm" name="saveForm" type="submit" value="<?php echo lang('winner:submit_label'); ?>" /></div>
     </div>
 </form>

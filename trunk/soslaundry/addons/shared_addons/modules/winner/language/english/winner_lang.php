@@ -22,3 +22,8 @@ $lang['winner:delete']			=	'Delete';
 
 //buttons
 $lang['winner:register']			=	'Register';
+
+// form
+$lang['winner:form_title'] = 'Register Information';
+$lang['winner:choose_hotel'] = 'Choose the hotel you\'re staying at';
+$lang['winner:submit_label'] = 'Submit';
