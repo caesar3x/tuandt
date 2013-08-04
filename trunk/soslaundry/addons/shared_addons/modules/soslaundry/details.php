@@ -5,7 +5,7 @@
  */
 ?>
 <?php defined('BASEPATH') or exit('No direct script access allowed');
-class Module_Winner extends Module {
+class Module_Soslaundry extends Module {
 
     public $version = '1.0.1';
 
@@ -13,22 +13,22 @@ class Module_Winner extends Module {
     {
         return array(
             'name' => array(
-                'en' => 'Winner'
+                'en' => 'Soslaundry'
             ),
             'description' => array(
-                'en' => 'Winner module.'
+                'en' => 'Soslaundry module.'
             ),
             'frontend' => TRUE,
             'backend' => TRUE,
             'menu' => 'content',
             'sections' => array(
                 'items' => array(
-                    'name' 	=> 'winner:item_list',
-                    'uri' 	=> 'admin/winner',
+                    'name' 	=> 'soslaundry:item_list',
+                    'uri' 	=> 'admin/soslaundry',
                     'shortcuts' => array(
                         'create' => array(
-                            'name' 	=> 'winner:create',
-                            'uri' 	=> 'admin/winner/create',
+                            'name' 	=> 'soslaundry:create',
+                            'uri' 	=> 'admin/soslaundry/create',
                             'class' => 'add'
                         )
                     )
@@ -40,7 +40,7 @@ class Module_Winner extends Module {
     public function install()
     {
         $this->dbforge->drop_table('winner');
-        $this->db->delete('settings', array('module' => 'winner'));
+        $this->db->delete('settings', array('module' => 'soslaundry'));
 
         $winner = array(
             'id' => array(
@@ -75,8 +75,8 @@ class Module_Winner extends Module {
         );
 
         $winner_setting = array(
-            'slug' => 'winner_setting',
-            'title' => 'Winner Setting',
+            'slug' => 'soslaundry_setting',
+            'title' => 'Soslaundry Setting',
             'description' => 'Number of winner',
             '`default`' => '1',
             '`value`' => '1',
@@ -84,7 +84,7 @@ class Module_Winner extends Module {
             '`options`' => '',
             'is_required' => 1,
             'is_gui' => 1,
-            'module' => 'winner'
+            'module' => 'soslaundry'
         );
 
         $this->dbforge->add_field($winner);
@@ -92,7 +92,7 @@ class Module_Winner extends Module {
 
         if($this->dbforge->create_table('winner') AND
             $this->db->insert('settings', $winner_setting) AND
-            is_dir($this->upload_path.'winner') OR @mkdir($this->upload_path.'winner',0777,TRUE))
+            is_dir($this->upload_path.'winner') OR @mkdir($this->upload_path.'soslaundry',0777,TRUE))
         {
             return TRUE;
         }
@@ -101,7 +101,7 @@ class Module_Winner extends Module {
     public function uninstall()
     {
         $this->dbforge->drop_table('winner');
-        $this->db->delete('settings', array('module' => 'winner'));
+        $this->db->delete('settings', array('module' => 'soslaundry'));
         {
             return TRUE;
         }

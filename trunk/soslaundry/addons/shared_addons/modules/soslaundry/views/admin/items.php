@@ -5,7 +5,7 @@
  */
 ?>
 <section class="title">
-    <h4><?php echo lang('winner:item_list'); ?></h4>
+    <h4><?php echo lang('soslaundry:item_list'); ?></h4>
 </section>
 
 <section class="item">
@@ -14,9 +14,9 @@
             <thead>
             <tr>
                 <th><?php echo form_checkbox(array('name' => 'action_to_all', 'class' => 'check-all'));?></th>
-                <th><?php echo lang('winner:name'); ?></th>
-                <th><?php echo lang('winner:phone'); ?></th>
-                <th><?php echo lang('winner:email'); ?></th>
+                <th><?php echo lang('soslaundry:name'); ?></th>
+                <th><?php echo lang('soslaundry:phone'); ?></th>
+                <th><?php echo lang('soslaundry:email'); ?></th>
                 <th></th>
             </tr>
             </thead>
@@ -36,9 +36,9 @@
                     <td><?php echo $item->email; ?></td>
                     <td class="actions">
                         <?php echo
-                            anchor('winner', lang('winner:view'), 'class="button" target="_blank"').' '.
-                            anchor('admin/winner/edit/'.$item->id, lang('winner:edit'), 'class="button"').' '.
-                            anchor('admin/winner/delete/'.$item->id, 	lang('winner:delete'), array('class'=>'button')); ?>
+                            anchor('winner', lang('soslaundry:view'), 'class="button" target="_blank"').' '.
+                            anchor('admin/winner/edit/'.$item->id, lang('soslaundry:edit'), 'class="button"').' '.
+                            anchor('admin/winner/delete/'.$item->id, 	lang('soslaundry:delete'), array('class'=>'button')); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -50,7 +50,7 @@
         </div>
 
     <?php else: ?>
-        <div class="no_data"><?php echo lang('winner:no_items'); ?></div>
+        <div class="no_data"><?php echo lang('soslaundry:no_items'); ?></div>
     <?php endif;?>
 
     <?php echo form_close(); ?>

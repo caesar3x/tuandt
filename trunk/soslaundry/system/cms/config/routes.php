@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller']                = 'winner';
+$route['default_controller']                = 'pages';
 $route['404_override']                      = 'pages';
 
 $route['admin/help/([a-zA-Z0-9_-]+)']       = 'admin/help/$1';

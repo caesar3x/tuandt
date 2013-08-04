@@ -5,7 +5,7 @@
  */
 ?>
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Winner extends Public_Controller
+class Soslaundry extends Public_Controller
 {
     public function __construct()
     {
