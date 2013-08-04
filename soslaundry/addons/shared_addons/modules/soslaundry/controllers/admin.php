@@ -42,6 +42,6 @@ class Admin extends Admin_Controller
             // they just clicked the link so we'll delete that one
             $this->sample_m->delete($id);
         }
-        redirect('admin/sample');
+        redirect('admin/soslaundry');
     }
 }
