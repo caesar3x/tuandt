@@ -31,7 +31,9 @@
     <div>
         <label class="desc" for="txtPhone" id="title_txtPhone"><?php echo lang('soslaundry:phone'); ?> </label>
         <div>
-            <input id="txtPhone" maxlength="255" name="phone" spellcheck="false" tabindex="3" type="text" value="" />
+            <input id="txtPhone1" style="width: 30px;" maxlength="3" name="phone[]" spellcheck="false" tabindex="3" type="text" value="" />
+            <?php echo ' - ';?><input id="txtPhone2" style="width: 30px;" maxlength="3" name="phone[]" spellcheck="false" tabindex="3" type="text" value="" />
+            <?php echo ' - ';?><input id="txtPhone3" style="width: 40px;" maxlength="4" name="phone[]" spellcheck="false" tabindex="3" type="text" value="" />
         </div>
     </div>
     <div>
@@ -54,61 +56,100 @@
 </form>
 <script type="text/javascript">
     $(function(){
-        $('#txtPhone').blur(function(e) {
+        $('#txtPhone1,#txtPhone2,#txtPhone3').blur(function(e) {
             e.stopPropagation();
-            if (validatePhone('txtPhone')) {
-                $('#txtPhone').css('border', '1px solid green');
+            if (validatePhone('txtPhone1')) {
+                $('#txtPhone1').css('border', '1px solid green');
             }
             else {
-                $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_regex'); ?>');
-                $('#txtPhone').css('border', '1px solid red');
+                $('#txtPhone1').css('border', '1px solid red');
+            }
+            if (validatePhone('txtPhone2')) {
+                $('#txtPhone2').css('border', '1px solid green');
+            }
+            else {
+                $('#txtPhone2').css('border', '1px solid red');
+            }
+            if (validatePhone('txtPhone3')) {
+                $('#txtPhone3').css('border', '1px solid green');
+            }
+            else {
+                $('#txtPhone3').css('border', '1px solid red');
             }
         });
         $('#register-form').submit(function() {
             var submitform = true;
             if (validateEmpty('txtFirstName')) {
                 $('#txtFirstName').css('border', '1px solid green');
-                submitform = true;
+                submitform = submitform && true;
             }
             else {
                 $('#txtFirstName').attr('placeholder','<?php echo lang('soslaundry:firstname_empty'); ?>');
                 $('#txtFirstName').css('border', '1px solid red');
-                submitform = false;
+                submitform = submitform && false;
             }
             if (validateEmpty('txtLastName')) {
                 $('#txtLastName').css('border', '1px solid green');
-                submitform = true;
+                submitform = submitform && true;
             }
             else {
                 $('#txtLastName').attr('placeholder','<?php echo lang('soslaundry:lastname_empty'); ?>');
                 $('#txtLastName').css('border', '1px solid red');
-                submitform = false;
+                submitform = submitform && false;
             }
             if (validateEmpty('txtEmail')) {
                 $('#txtEmail').css('border', '1px solid green');
-                submitform = true;
+                submitform = submitform && true;
             }
             else {
                 $('#txtEmail').attr('placeholder','<?php echo lang('soslaundry:email_empty'); ?>');
                 $('#txtEmail').css('border', '1px solid red');
-                submitform = false;
+                submitform = submitform && false;
             }
-            if (validateEmpty('txtPhone')) {
-                $('#txtPhone').css('border', '1px solid green');
-                if (validatePhone('txtPhone')) {
-                    $('#txtPhone').css('border', '1px solid green');
-                    submitform = true;
+            if (validateEmpty('txtPhone1')) {
+                $('#txtPhone1').css('border', '1px solid green');
+                if (validatePhone('txtPhone1')) {
+                    $('#txtPhone1').css('border', '1px solid green');
+                    submitform = submitform && true;
                 }
                 else {
-                    $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_regex'); ?>');
-                    $('#txtPhone').css('border', '1px solid red');
-                    submitform = false;
+                    $('#txtPhone1').css('border', '1px solid red');
+                    submitform = submitform && false;
                 }
             }
             else {
-                $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_empty'); ?>');
-                $('#txtPhone').css('border', '1px solid red');
-                submitform = false;
+                $('#txtPhone1').css('border', '1px solid red');
+                submitform = submitform && false;
+            }
+            if (validateEmpty('txtPhone2')) {
+                $('#txtPhone2').css('border', '1px solid green');
+                if (validatePhone('txtPhone1')) {
+                    $('#txtPhone2').css('border', '1px solid green');
+                    submitform = submitform && true;
+                }
+                else {
+                    $('#txtPhone2').css('border', '1px solid red');
+                    submitform = submitform && false;
+                }
+            }
+            else {
+                $('#txtPhone2').css('border', '1px solid red');
+                submitform = submitform && false;
+            }
+            if (validateEmpty('txtPhone3')) {
+                $('#txtPhone3').css('border', '1px solid green');
+                if (validatePhone('txtPhone1')) {
+                    $('#txtPhone3').css('border', '1px solid green');
+                    submitform = submitform && true;
+                }
+                else {
+                    $('#txtPhone3').css('border', '1px solid red');
+                    submitform = submitform && false;
+                }
+            }
+            else {
+                $('#txtPhone3').css('border', '1px solid red');
+                submitform = submitform && false;
             }
             return submitform;
         });
