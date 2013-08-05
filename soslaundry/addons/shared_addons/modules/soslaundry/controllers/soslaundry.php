@@ -39,4 +39,19 @@ class Soslaundry extends Public_Controller
         $params = $this->input->post();
         print_r("<pre>");var_dump($params);die;
     }
+    public function test()
+    {
+        $data = array();
+        $data['sender_agent'] = $this->agent->browser() . ' ' . $this->agent->version();
+        $data['sender_ip']    = $this->input->ip_address();
+        $data['sender_os']    = $this->agent->platform();
+        $data['to']      = 'kiemsilangthang.dat@gmail.com';
+        $data['from']    = 'testemail@gmail.com';
+        $data['slug']    = 'contact';
+        $data['name']    = 'Dat Nguyen';
+        $data['subject'] = 'PyroCms test mail';
+        $data['attach']['1.jpg'] = UPLOAD_PATH.'1.jpg';
+        Events::trigger('email', $data, 'array');
+        die('---------test action----------------');
+    }
 }
