@@ -29,3 +29,10 @@ $lang['soslaundry:register']			=	'Register';
 $lang['soslaundry:form_title'] = 'Register Information';
 $lang['soslaundry:choose_hotel'] = 'Choose the hotel you\'re staying at';
 $lang['soslaundry:submit_label'] = 'Submit';
+/// form validate
+$lang['soslaundry:firstname_empty'] = 'Please input your first name';
+$lang['soslaundry:lastname_empty'] = 'Please input your last name';
+$lang['soslaundry:phone_empty'] = 'Please input your phone';
+$lang['soslaundry:email_empty'] = 'Please input your email';
+
+$lang['soslaundry:input_valid'] = 'Valid';
