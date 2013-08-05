@@ -13,6 +13,7 @@
         <label class="desc" for="txtFirstName" id="title_txtFirstName"><?php echo lang('soslaundry:first_name'); ?></label>
         <div>
             <input class="field text fn" id="txtFirstName" name="first_name" size="8" tabindex="1" type="text" value="" />
+            <span class="status" id="firstNameStatus"></span>
         </div>
 
     </div>
@@ -20,18 +21,21 @@
         <label class="desc" for="txtLastName" id="title_txtLastName"><?php echo lang('soslaundry:last_name'); ?></label>
         <div>
             <input class="field text fn" id="txtLastName" name="last_name" size="8" tabindex="1" type="text" value="" />
+            <span class="status" id="lastNameStatus"></span>
         </div>
     </div>
     <div>
         <label class="desc" for="txtEmail" id="title_txtEmail"><?php echo lang('soslaundry:email'); ?> </label>
         <div>
             <input id="txtEmail" maxlength="255" name="email" spellcheck="false" tabindex="3" type="email" value="" />
+            <span class="status" id="emailStatus"></span>
         </div>
     </div>
     <div>
         <label class="desc" for="txtPhone" id="title_txtPhone"><?php echo lang('soslaundry:phone'); ?> </label>
         <div>
             <input id="txtPhone" maxlength="255" name="phone" spellcheck="false" tabindex="3" type="text" value="" />
+            <span class="status" id="phoneStatus"></span>
         </div>
     </div>
     <div>
@@ -45,6 +49,7 @@
                 <?php endforeach;?>
                 <?php endif;?>
             </select>
+            <span class="status" id="hotelStatus"></span>
         </div>
     </div>
 
@@ -57,57 +62,63 @@
         $('#txtPhone').blur(function(e) {
             e.stopPropagation();
             if (validatePhone('txtPhone')) {
-                $('#txtPhone').css('border', '1px solid green');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#phoneStatus').css('color', 'green');
             }
             else {
-                $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_regex'); ?>');
-                $('#txtPhone').css('border', '1px solid red');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_regex'); ?>');
+                $('#phoneStatus').css('color', 'red');
             }
         });
         $('#register-form').submit(function() {
             var submitform = true;
             if (validateEmpty('txtFirstName')) {
-                $('#txtFirstName').css('border', '1px solid green');
+                $('#firstNameStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#firstNameStatus').css('color', 'green');
                 submitform = true;
             }
             else {
-                $('#txtFirstName').attr('placeholder','<?php echo lang('soslaundry:firstname_empty'); ?>');
-                $('#txtFirstName').css('border', '1px solid red');
+                $('#firstNameStatus').html('<?php echo lang('soslaundry:firstname_empty'); ?>');
+                $('#firstNameStatus').css('color', 'red');
                 submitform = false;
             }
             if (validateEmpty('txtLastName')) {
-                $('#txtLastName').css('border', '1px solid green');
+                $('#lastNameStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#lastNameStatus').css('color', 'green');
                 submitform = true;
             }
             else {
-                $('#txtLastName').attr('placeholder','<?php echo lang('soslaundry:lastname_empty'); ?>');
-                $('#txtLastName').css('border', '1px solid red');
+                $('#lastNameStatus').html('<?php echo lang('soslaundry:lastname_empty'); ?>');
+                $('#lastNameStatus').css('color', 'red');
                 submitform = false;
             }
             if (validateEmpty('txtEmail')) {
-                $('#txtEmail').css('border', '1px solid green');
+                $('#emailStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#emailStatus').css('color', 'green');
                 submitform = true;
             }
             else {
-                $('#txtEmail').attr('placeholder','<?php echo lang('soslaundry:email_empty'); ?>');
-                $('#txtEmail').css('border', '1px solid red');
+                $('#emailStatus').html('<?php echo lang('soslaundry:email_empty'); ?>');
+                $('#emailStatus').css('color', 'red');
                 submitform = false;
             }
             if (validateEmpty('txtPhone')) {
-                $('#txtPhone').css('border', '1px solid green');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#phoneStatus').css('color', 'green');
                 if (validatePhone('txtPhone')) {
-                    $('#txtPhone').css('border', '1px solid green');
+                    $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                    $('#phoneStatus').css('color', 'green');
                     submitform = true;
                 }
                 else {
-                    $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_regex'); ?>');
-                    $('#txtPhone').css('border', '1px solid red');
+                    $('#phoneStatus').html('<?php echo lang('soslaundry:phone_regex'); ?>');
+                    $('#phoneStatus').css('color', 'red');
                     submitform = false;
                 }
             }
             else {
-                $('#txtPhone').attr('placeholder','<?php echo lang('soslaundry:phone_empty'); ?>');
-                $('#txtPhone').css('border', '1px solid red');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_empty'); ?>');
+                $('#phoneStatus').css('color', 'red');
                 submitform = false;
             }
             return submitform;
