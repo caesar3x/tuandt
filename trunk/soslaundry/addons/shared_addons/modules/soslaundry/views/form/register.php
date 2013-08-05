@@ -82,7 +82,7 @@
                 $('#firstNameStatus').css('color', 'red');
                 submitform = false;
             }
-            if (validateEmpty('title_txtLastName')) {
+            if (validateEmpty('txtLastName')) {
                 $('#lastNameStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
                 $('#lastNameStatus').css('color', 'green');
                 submitform = true;
@@ -90,6 +90,16 @@
             else {
                 $('#lastNameStatus').html('<?php echo lang('soslaundry:lastname_empty'); ?>');
                 $('#lastNameStatus').css('color', 'red');
+                submitform = false;
+            }
+            if (validateEmpty('txtEmail')) {
+                $('#emailStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#emailStatus').css('color', 'green');
+                submitform = true;
+            }
+            else {
+                $('#emailStatus').html('<?php echo lang('soslaundry:email_empty'); ?>');
+                $('#emailStatus').css('color', 'red');
                 submitform = false;
             }
             if (validateEmpty('txtPhone')) {
