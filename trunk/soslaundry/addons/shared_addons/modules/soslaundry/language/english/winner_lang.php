@@ -12,6 +12,8 @@ $lang['soslaundry:register_title']			=	'Register Information';
 
 //labels
 $lang['soslaundry:name']			=	'Name';
+$lang['soslaundry:first_name']			=	'First Name';
+$lang['soslaundry:last_name']			=	'Last Name';
 $lang['soslaundry:phone']			=	'Phone';
 $lang['soslaundry:email']			=	'Email';
 $lang['soslaundry:manage']			=	'Manage';
