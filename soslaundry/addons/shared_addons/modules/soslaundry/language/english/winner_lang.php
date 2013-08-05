@@ -33,6 +33,7 @@ $lang['soslaundry:submit_label'] = 'Submit';
 $lang['soslaundry:firstname_empty'] = 'Please input your first name';
 $lang['soslaundry:lastname_empty'] = 'Please input your last name';
 $lang['soslaundry:phone_empty'] = 'Please input your phone';
+$lang['soslaundry:phone_regex'] = 'Phone number invalid';
 $lang['soslaundry:email_empty'] = 'Please input your email';
 
 $lang['soslaundry:input_valid'] = 'Valid';

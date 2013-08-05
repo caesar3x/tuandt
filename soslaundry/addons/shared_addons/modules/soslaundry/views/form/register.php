@@ -66,7 +66,7 @@
                 $('#phoneStatus').css('color', 'green');
             }
             else {
-                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_empty'); ?>');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_regex'); ?>');
                 $('#phoneStatus').css('color', 'red');
             }
         });
@@ -92,10 +92,19 @@
                 $('#lastNameStatus').css('color', 'red');
                 submitform = false;
             }
-            if (validatePhone('txtPhone')) {
+            if (validateEmpty('txtPhone')) {
                 $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
                 $('#phoneStatus').css('color', 'green');
-                submitform = true;
+                if (validatePhone('txtPhone')) {
+                    $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                    $('#phoneStatus').css('color', 'green');
+                    submitform = true;
+                }
+                else {
+                    $('#phoneStatus').html('<?php echo lang('soslaundry:phone_regex'); ?>');
+                    $('#phoneStatus').css('color', 'red');
+                    submitform = false;
+                }
             }
             else {
                 $('#phoneStatus').html('<?php echo lang('soslaundry:phone_empty'); ?>');
