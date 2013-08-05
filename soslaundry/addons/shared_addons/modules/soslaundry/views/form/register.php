@@ -59,36 +59,50 @@
 </form>
 <script type="text/javascript">
     $(function(){
-        var submitform = false;
         $('#txtPhone').blur(function(e) {
             e.stopPropagation();
             if (validatePhone('txtPhone')) {
-                $('#phoneStatus').html('Valid');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
                 $('#phoneStatus').css('color', 'green');
             }
             else {
-                $('#phoneStatus').html('Invalid');
-                $('#phoneStatus').css('color', 'red');
-            }
-        });
-        $("#txtFirstName").blur(function(e){
-            e.stopPropagation();
-            if (validateEmpty('txtFirstName')) {
-                $('#phoneStatus').html('Valid');
-                $('#phoneStatus').css('color', 'green');
-            }
-            else {
-                $('#phoneStatus').html('Invalid');
+                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_empty'); ?>');
                 $('#phoneStatus').css('color', 'red');
             }
         });
         $('#register-form').submit(function() {
-            if (validatePhone('txtPhone')) {
-                alert("Phone number valid");
-            }else{
-                return false;
+            var submitform = true;
+            if (validateEmpty('txtFirstName')) {
+                $('#firstNameStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#firstNameStatus').css('color', 'green');
+                submitform = true;
             }
-            return false;
+            else {
+                $('#firstNameStatus').html('<?php echo lang('soslaundry:firstname_empty'); ?>');
+                $('#firstNameStatus').css('color', 'red');
+                submitform = false;
+            }
+            if (validateEmpty('title_txtLastName')) {
+                $('#lastNameStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#lastNameStatus').css('color', 'green');
+                submitform = true;
+            }
+            else {
+                $('#lastNameStatus').html('<?php echo lang('soslaundry:lastname_empty'); ?>');
+                $('#lastNameStatus').css('color', 'red');
+                submitform = false;
+            }
+            if (validatePhone('txtPhone')) {
+                $('#phoneStatus').html('<?php echo lang('soslaundry:input_valid'); ?>');
+                $('#phoneStatus').css('color', 'green');
+                submitform = true;
+            }
+            else {
+                $('#phoneStatus').html('<?php echo lang('soslaundry:phone_empty'); ?>');
+                $('#phoneStatus').css('color', 'red');
+                submitform = false;
+            }
+            return submitform;
         });
     });
     function validatePhone(txtPhone) {
