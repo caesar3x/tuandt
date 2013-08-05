@@ -7,22 +7,26 @@
 <header>
     <h2><?php echo lang('soslaundry:form_title'); ?></h2>
 </header>
-<form id="register-form" action="<?php echo base_url('winner/form');?>" enctype="multipart/form-data" accept-charset="utf-8" method="post">
+<form id="register-form" action="<?php echo base_url('soslaundry/form');?>" enctype="multipart/form-data" accept-charset="utf-8" method="post">
 
     <div>
         <label class="desc" for="txtFirstName" id="title_txtFirstName"><?php echo lang('soslaundry:first_name'); ?></label>
         <div>
-            <input class="field text fn" id="txtFirstName" name="first_name" size="8" tabindex="1" type="text" value="" />
-            <span class="status" id="firstNameStatus"></span>
+            <div style="width: 49%;float: left;">
+                <input class="field text fn" id="txtFirstName" name="first_name" size="8" tabindex="1" type="text" value="" />
+                <span class="status" id="firstNameStatus"></span>
+            </div>
+           <div style="width: 50%;float: left;">
+               <div>
+                   <label style="float: left;text-align: right;width: 30%;padding-right: 10px;" class="desc" for="txtLastName" id="title_txtLastName"><?php echo lang('soslaundry:last_name'); ?></label>
+                   <div style="float: left;width: 70%;">
+                       <input class="field text fn" id="txtLastName" name="last_name" size="8" tabindex="1" type="text" value="" />
+                       <span class="status" id="lastNameStatus"></span>
+                   </div>
+               </div>
+           </div>
         </div>
 
-    </div>
-    <div>
-        <label class="desc" for="txtLastName" id="title_txtLastName"><?php echo lang('soslaundry:last_name'); ?></label>
-        <div>
-            <input class="field text fn" id="txtLastName" name="last_name" size="8" tabindex="1" type="text" value="" />
-            <span class="status" id="lastNameStatus"></span>
-        </div>
     </div>
     <div>
         <label class="desc" for="txtEmail" id="title_txtEmail"><?php echo lang('soslaundry:email'); ?> </label>
