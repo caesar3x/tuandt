@@ -18,6 +18,10 @@
                 <th><?php echo lang('soslaundry:last_name'); ?></th>
                 <th><?php echo lang('soslaundry:phone'); ?></th>
                 <th><?php echo lang('soslaundry:email'); ?></th>
+                <th><?php echo lang('soslaundry:register_on'); ?></th>
+                <th><?php echo lang('soslaundry:is_winner'); ?></th>
+                <th><?php echo lang('soslaundry:winner_on'); ?></th>
+                <th><?php echo lang('soslaundry:hotel_chosen'); ?></th>
             </tr>
             </thead>
             <tfoot>
@@ -35,6 +39,10 @@
                     <td><?php echo $item->last_name; ?></td>
                     <td><?php echo $item->phone; ?></td>
                     <td><?php echo $item->email; ?></td>
+                    <td><?php echo date('Y-m-d H:i:s',$item->register_on); ?></td>
+                    <td><?php echo ((int)$item->is_winner == 1) ? 'Yes' : 'No'; ?></td>
+                    <td><?php echo ($item->winner_on != null && $item->winner_on != '') ? date('Y-m-d H:i:s',$item->winner_on) : ''; ?></td>
+                    <td><?php echo (getHotelName($item->hotel) != null) ? getHotelName($item->hotel)->name : '-'; ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
