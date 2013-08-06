@@ -14,6 +14,7 @@ class Soslaundry extends Public_Controller
         $this->load->model('hotel_m');
         $this->load->model('settings_m');
         $this->lang->load('winner');
+        $this->load->helper('vd_debug');
     }
 
     /**
@@ -49,7 +50,7 @@ class Soslaundry extends Public_Controller
             $data['from']    = $server_email;
             $data['slug']    = 'user-registration-complete';
             $data['first_name']    = $params['first_name'];
-            $data['subject'] = 'User Registration Complete';
+            $data['subject'] = lang('soslaundry:registration_complete');
 
             Events::trigger('email', $data, 'array');
             redirect('?message=1');
@@ -60,6 +61,7 @@ class Soslaundry extends Public_Controller
     public function create()
     {
         $this->load->library('exportdataexcel');
+        $this->load->helper('vd_sos');
         $email = $this->settings_m->get("admin_email");
         $server_email = ($email->value != null && $email->value != '') ? $email->value : $email->default;
         $number_setting = $this->settings_m->get("number_winner");
@@ -73,9 +75,54 @@ class Soslaundry extends Public_Controller
                 $data['from']    = $server_email;
                 $data['slug']    = 'user-is-winner';
                 $data['first_name']    = $w['first_name'];
-                $data['subject'] = 'You are winner!';
+                $data['subject'] = lang('soslaundry:winner_win_subject');
                 Events::trigger('email', $data, 'array');
             }
+        }
+        /**
+         * send excel file to admin email
+         */
+        $winners_today = $this->winner_m->get_winner_today_data();
+        if(!empty($winners_today)){
+            $excel = new ExportDataExcel('file');
+            $filename = "winners_".date('Ymd',time()).".xls";
+            $excel->filename = "export/".$filename;
+            $excel->initialize();
+            $header = array('','First name','Last Name','Phone','Email','Created At','Hotel');
+            $excel->addRow($header);
+            foreach($winners_today as $i=>$win){
+                $row = array($i+1, $win->first_name, $win->last_name, $win->phone, $win->email, date('Y-m-d H:i:s',$win->register_on),(getHotelName($win->hotel) != null) ? getHotelName($win->hotel)->name : '-');
+                $excel->addRow($row);
+            }
+            $excel->finalize();
+            /**
+             * send email
+             */
+            $email_data = array();
+            $email_data['to']      = $server_email;
+            $email_data['from']    = $server_email;
+            $email_data['slug']    = 'report-winners';
+            $email_data['subject'] = lang('soslaundry:winner_report_subject');
+            $email_data['attach'][$filename] = "export/".$filename;
+            Events::trigger('email', $email_data, 'array');
+        }
+        /**
+         * Send email to winners yesterday
+         */
+        $winners_yesterday = $this->winner_m->get_winner_yesterday_data();
+        if(!empty($winners_yesterday)){
+            /**
+             * send email
+             */
+            foreach($winners_yesterday as $w_y){
+                $email_data = array();
+                $email_data['to']      = $w_y->email;
+                $email_data['from']    = $server_email;
+                $email_data['slug']    = 'last-winners';
+                $email_data['subject'] = lang('soslaundry:winner_yesterday_subject');
+                Events::trigger('email', $email_data, 'array');
+            }
+
         }
         exit();
     }
@@ -84,7 +131,7 @@ class Soslaundry extends Public_Controller
         /**
          * test update
          */
-        $this->winner_m->update(array(''));
+        debug($this->winner_m->get_winner_today_data());die('========');
         /**
          * test big file excel
          */

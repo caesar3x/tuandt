@@ -47,3 +47,9 @@ $lang['soslaundry:register_error'] = 'Registration Error.';
 $lang['soslaundry:register_email_exist_error'] = 'Email already exists.';
 $lang['soslaundry:register_email_format_error'] = 'Email invalid.';
 $lang['soslaundry:register_phone_error'] = 'Phone number does not valid.';
+
+// Mail content
+$lang['soslaundry:winner_yesterday_subject'] = 'Winners Yesterday';
+$lang['soslaundry:winner_report_subject'] = 'Winners Data';
+$lang['soslaundry:winner_win_subject'] = 'You are winner!';
+$lang['soslaundry:registration_complete'] = 'User Registration Complete';

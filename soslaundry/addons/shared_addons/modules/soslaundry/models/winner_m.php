@@ -44,6 +44,12 @@ class Winner_m extends MY_Model {
         }
         return $emails;
     }
+
+    /**
+     * Get random winner with limit
+     * @param $limit
+     * @return mixed
+     */
     public function get_random_winner($limit)
     {
         $this->db->order_by('id', 'RANDOM');
@@ -51,5 +57,31 @@ class Winner_m extends MY_Model {
         $query = $this->db->get('winner');
         return $query->result_array();
 
+    }
+    public function get_winner_today_data()
+    {
+        $data = $this->get_all();
+        $winner = array();
+        if(!empty($data)){
+            foreach($data as $item){
+                if((int)$item->is_winner == 1 && date('Ymd',time()) == date('Ymd',(int)$item->winner_on)){
+                    $winner[] = $item;
+                }
+            }
+        }
+        return $winner;
+    }
+    public function get_winner_yesterday_data()
+    {
+        $data = $this->get_all();
+        $winner = array();
+        if(!empty($data)){
+            foreach($data as $item){
+                if((int)$item->is_winner == 1 && date('Ymd',strtotime("-1 day")) == date('Ymd',(int)$item->winner_on)){
+                    $winner[] = $item;
+                }
+            }
+        }
+        return $winner;
     }
 }

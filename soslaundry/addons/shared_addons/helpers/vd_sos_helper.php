@@ -24,6 +24,7 @@ if (!function_exists('getHotelName'))
         return $row;
     }
 }
+
 if (!function_exists('test'))
 {
     function test() {
