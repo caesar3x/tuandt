@@ -21,6 +21,10 @@ $lang['soslaundry:item_list']		=	'List person registered';
 $lang['soslaundry:view']			=	'View';
 $lang['soslaundry:edit']			=	'Edit';
 $lang['soslaundry:delete']			=	'Delete';
+$lang['soslaundry:is_winner']			=	'Is winner';
+$lang['soslaundry:winner_on']			=	'Winner On';
+$lang['soslaundry:hotel_chosen']			=	'Hotel';
+$lang['soslaundry:register_on']			=	'Created At';
 
 //buttons
 $lang['soslaundry:register']			=	'Register';

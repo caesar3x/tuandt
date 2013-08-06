@@ -16,6 +16,8 @@ class Admin extends Admin_Controller
         // Load all the required classes
         $this->load->model('winner_m');
         $this->lang->load('winner');
+        $this->load->helper('vd_sos');
+        $this->load->helper('vd_debug');
     }
 
     /**

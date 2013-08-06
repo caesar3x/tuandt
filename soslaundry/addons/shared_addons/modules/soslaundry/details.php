@@ -48,9 +48,13 @@ class Module_Soslaundry extends Module {
                 'constraint' => '11',
                 'auto_increment' => TRUE
             ),
-            'name' => array(
+            'first_name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '100'
+                'constraint' => '255'
+            ),
+            'last_name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '255'
             ),
             'phone' => array(
                 'type' => 'VARCHAR',
@@ -62,13 +66,18 @@ class Module_Soslaundry extends Module {
             ),
             'is_winner' => array(
                 'type' => 'INT',
-                'constraint' => '11'
+                'constraint' => '11',
+                'default' => 0
             ),
             'register_on' => array(
                 'type' => 'INT',
                 'constraint' => '11'
             ),
             'winner_on' => array(
+                'type' => 'INT',
+                'constraint' => '11'
+            ),
+            'hotel' => array(
                 'type' => 'INT',
                 'constraint' => '11'
             )
