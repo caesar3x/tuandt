@@ -37,3 +37,9 @@ $lang['soslaundry:phone_regex'] = 'Phone number invalid';
 $lang['soslaundry:email_empty'] = 'Please input your email';
 
 $lang['soslaundry:input_valid'] = 'Valid';
+// Messages
+$lang['soslaundry:register_success'] = 'Registration Success.';
+$lang['soslaundry:register_error'] = 'Registration Error.';
+$lang['soslaundry:register_email_exist_error'] = 'Email already exists.';
+$lang['soslaundry:register_email_format_error'] = 'Email invalid.';
+$lang['soslaundry:register_phone_error'] = 'Phone number does not valid.';
