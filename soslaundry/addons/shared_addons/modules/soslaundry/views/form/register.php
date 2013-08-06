@@ -49,7 +49,9 @@
             </select>
         </div>
     </div>
-
+    <div>
+        <div><input type="checkbox" name="rule" id="txtRule"><label for="txtRule">Agree to the rules. </label></div>
+    </div>
     <div>
         <div><input id="saveForm" name="saveForm" type="submit" value="<?php echo lang('soslaundry:submit_label'); ?>" /></div>
     </div>
@@ -151,6 +153,13 @@
                 $('#txtPhone3').css('border', '1px solid red');
                 submitform = submitform && false;
             }
+            if(validRule()){
+                $('#txtRule').css('border', '1px solid green');
+                submitform = submitform && true;
+            }else{
+                $('#txtRule').css('border', '1px solid red');
+                submitform = submitform && false;
+            }
             return submitform;
         });
     });
@@ -172,5 +181,8 @@
         else {
             return true;
         }
+    }
+    function validRule(){
+        return document.getElementById("txtRule").checked;
     }
 </script>

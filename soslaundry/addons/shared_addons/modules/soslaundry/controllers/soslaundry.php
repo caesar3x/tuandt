@@ -21,13 +21,6 @@ class Soslaundry extends Public_Controller
     public function index($offset = 0)
     {
         $hotels = $this->hotel_m->get_all();
-        /*print_r("<pre>");var_dump($hotels);die;*/
-        /*$data = array(
-            'name' => 'Dat Nguyen',
-            'phone' => '123456789',
-            'email' => 'datnguyen.cntt@gmail.com'
-        );
-        $this->winner_m->create($data);*/
         $this->template
             ->title('Register Form')
             ->set('hotels', $hotels)
@@ -37,7 +30,34 @@ class Soslaundry extends Public_Controller
     public function form()
     {
         $params = $this->input->post();
-        print_r("<pre>");var_dump($params);die;
+        $phone = '';
+        if(isset($params['phone'])){
+            $phone = implode('-',$params['phone']);
+        }
+        $params['phone'] = $phone;
+        if($this->winner_m->create($params)){
+            redirect('soslaundry/success');
+        }else{
+            redirect('soslaundry/fail');
+        }
+    }
+    public function success()
+    {
+        $this->template
+            ->title('Register Success')
+            ->build('form/success');
+    }
+    public function fail()
+    {
+        $this->template
+            ->title('Register Fail')
+            ->build('form/fail');
+    }
+    public function model()
+    {
+        $row = $this->hotel_m->get(7);
+        echo $row->name;
+        print_r("<pre>");var_dump($row);die;
     }
     public function test()
     {
