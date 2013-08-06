@@ -17,15 +17,15 @@ class Winner_m extends MY_Model {
     public function create($input)
     {
         $to_insert = array(
-            'name' => $input['name'],
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
             'phone' => $input['phone'],
             'email' => $input['email'],
+            'hotel' => $input['hotel'],
             'register_on' => time(),
             'is_winner' => 0,
-            'winner_on' => 0,
-            'slug' => ''
+            'winner_on' => 0
         );
-
         return $this->db->insert('winner', $to_insert);
     }
 }
