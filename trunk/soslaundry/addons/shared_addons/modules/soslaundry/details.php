@@ -7,7 +7,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 class Module_Soslaundry extends Module {
 
-    public $version = '1.0.1';
+    public $version = '1.0.4';
 
     public function info()
     {
@@ -74,9 +74,9 @@ class Module_Soslaundry extends Module {
             )
         );
 
-        $winner_setting = array(
-            'slug' => 'soslaundry_setting',
-            'title' => 'Soslaundry Setting',
+        $winner_setting1 = array(
+            'slug' => 'number_winner',
+            'title' => 'Number of winner',
             'description' => 'Number of winner',
             '`default`' => '1',
             '`value`' => '1',
@@ -86,13 +86,25 @@ class Module_Soslaundry extends Module {
             'is_gui' => 1,
             'module' => 'soslaundry'
         );
-
+        $winner_setting2 = array(
+            'slug' => 'admin_email',
+            'title' => 'Administrator Email',
+            'description' => 'Administrator Email',
+            '`default`' => 'datnguyen.cntt@gmail.com',
+            '`value`' => 'datnguyen.cntt@gmail.com',
+            'type' => 'text',
+            '`options`' => '',
+            'is_required' => 1,
+            'is_gui' => 1,
+            'module' => 'soslaundry'
+        );
         $this->dbforge->add_field($winner);
         $this->dbforge->add_key('id', TRUE);
 
         if($this->dbforge->create_table('winner') AND
-            $this->db->insert('settings', $winner_setting) AND
-            is_dir($this->upload_path.'winner') OR @mkdir($this->upload_path.'soslaundry',0777,TRUE))
+            $this->db->insert('settings', $winner_setting1) AND
+            $this->db->insert('settings', $winner_setting2) AND
+            is_dir($this->upload_path.'soslaundry') OR @mkdir($this->upload_path.'soslaundry',0777,TRUE))
         {
             return TRUE;
         }
