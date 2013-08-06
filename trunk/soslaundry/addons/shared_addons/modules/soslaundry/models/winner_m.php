@@ -28,4 +28,20 @@ class Winner_m extends MY_Model {
         );
         return $this->db->insert('winner', $to_insert);
     }
+
+    /**
+     * Get All Email from Database
+     * @return array
+     */
+    public function getAllEmail()
+    {
+        $emails = array();
+        $data = $this->get_all();
+        if(!empty($data)){
+            foreach($data as $item){
+                $emails[] = $item->email;
+            }
+        }
+        return $emails;
+    }
 }

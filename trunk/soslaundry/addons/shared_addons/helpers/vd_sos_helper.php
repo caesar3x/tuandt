@@ -4,9 +4,9 @@
  * Date: 8/6/13
  */
 defined('BASEPATH') OR exit('No direct script access allowed.');
-if (!function_exists('to_excel_test'))
+if (!function_exists('get_server_email'))
 {
-    function to_excel_test(){
+    function get_server_email(){
         die('=====to_excel_test========');
     }
 }
