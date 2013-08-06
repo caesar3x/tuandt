@@ -41,7 +41,7 @@ class Soslaundry extends Public_Controller
         }
         $params['phone'] = $phone;
         if($this->winner_m->create($params)){
-            $email = $this->settings_m->get("server_email");
+            $email = $this->settings_m->get("admin_email");
             $server_email = ($email->value != null && $email->value != '') ? $email->value : $email->default;
             /**Event send email**/
             $data = array();
@@ -57,8 +57,51 @@ class Soslaundry extends Public_Controller
             redirect('?message=2');
         }
     }
+    public function create()
+    {
+        $this->load->library('exportdataexcel');
+        $email = $this->settings_m->get("admin_email");
+        $server_email = ($email->value != null && $email->value != '') ? $email->value : $email->default;
+        $number_setting = $this->settings_m->get("number_winner");
+        $number = ($number_setting->value != null && $number_setting->value != '') ? $number_setting->value : $number_setting->default;
+        $winners = $this->winner_m->get_random_winner((int)$number);
+        if(!empty($winners)){
+            foreach($winners as $w){
+                $this->winner_m->update($w['id'],array('winner_on' => time(),'is_winner' => 1));
+                $data = array();
+                $data['to']      = $w['email'];
+                $data['from']    = $server_email;
+                $data['slug']    = 'user-is-winner';
+                $data['first_name']    = $w['first_name'];
+                $data['subject'] = 'You are winner!';
+                Events::trigger('email', $data, 'array');
+            }
+        }
+        exit();
+    }
     public function model()
     {
+        /**
+         * test update
+         */
+        $this->winner_m->update(array(''));
+        /**
+         * test big file excel
+         */
+        $this->load->library('exportdataexcel');
+        $this->load->helper('vd_sos');
+        $excel = new ExportDataExcel('file');
+        $excel->filename = "export/test_big_excel.xls";
+
+        $excel->initialize();
+        for($i = 1; $i<1000; $i++) {
+            $row = array($i, genRandomString(), genRandomString(), genRandomString(), genRandomString(), genRandomString());
+            $excel->addRow($row);
+        }
+        $excel->finalize();
+
+
+        print "memory used: " . number_format(memory_get_peak_usage());
         /**
          * test get all email
          */

@@ -44,4 +44,12 @@ class Winner_m extends MY_Model {
         }
         return $emails;
     }
+    public function get_random_winner($limit)
+    {
+        $this->db->order_by('id', 'RANDOM');
+        $this->db->limit($limit);
+        $query = $this->db->get('winner');
+        return $query->result_array();
+
+    }
 }
