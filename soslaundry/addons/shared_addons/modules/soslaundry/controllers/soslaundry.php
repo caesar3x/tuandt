@@ -58,7 +58,7 @@ class Soslaundry extends Public_Controller
             redirect('?message=2');
         }
     }
-    public function create()
+    public function select_random_winners()
     {
         $this->load->library('exportdataexcel');
         $this->load->helper('vd_sos');
@@ -79,6 +79,7 @@ class Soslaundry extends Public_Controller
                 Events::trigger('email', $data, 'array');
             }
         }
+
         /**
          * send excel file to admin email
          */
@@ -106,6 +107,12 @@ class Soslaundry extends Public_Controller
             $email_data['attach'][$filename] = "export/".$filename;
             Events::trigger('email', $email_data, 'array');
         }
+        exit();
+    }
+    public function send_email_to_yesterday_winner()
+    {
+        $email = $this->settings_m->get("admin_email");
+        $server_email = ($email->value != null && $email->value != '') ? $email->value : $email->default;
         /**
          * Send email to winners yesterday
          */
@@ -115,12 +122,12 @@ class Soslaundry extends Public_Controller
              * send email
              */
             foreach($winners_yesterday as $w_y){
-                $email_data = array();
-                $email_data['to']      = $w_y->email;
-                $email_data['from']    = $server_email;
-                $email_data['slug']    = 'last-winners';
-                $email_data['subject'] = lang('soslaundry:winner_yesterday_subject');
-                Events::trigger('email', $email_data, 'array');
+                $yesterday_email_data = array();
+                $yesterday_email_data['to']      = $w_y->email;
+                $yesterday_email_data['from']    = $server_email;
+                $yesterday_email_data['slug']    = 'last-winners';
+                $yesterday_email_data['subject'] = lang('soslaundry:winner_yesterday_subject');
+                Events::trigger('email', $yesterday_email_data, 'array');
             }
 
         }
