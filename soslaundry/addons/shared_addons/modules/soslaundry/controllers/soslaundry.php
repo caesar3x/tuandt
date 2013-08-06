@@ -55,6 +55,19 @@ class Soslaundry extends Public_Controller
     }
     public function model()
     {
+        ///$this->load->helper('vd_excel');
+        $this->load->library('exportdataexcel');
+        $exporter = new ExportDataExcel('browser', 'test.xls');
+
+        $exporter->initialize();
+        $exporter->addRow(array("This", "is", "a", "test"));
+        $exporter->addRow(array(1, 2, 3, "123-456-7890"));
+        $exporter->addRow(array("foo"));
+
+        $exporter->finalize();
+
+        exit();
+        die('====================');
         $row = $this->hotel_m->get(7);
         echo $row->name;
         print_r("<pre>");var_dump($row);die;
