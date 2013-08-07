@@ -61,9 +61,9 @@
         </div>
     </div>
     <div>
-        <label class="desc" for="textHotel" id="title_textHotel"><?php echo lang('soslaundry:choose_hotel'); ?></label>
+        <label class="desc" for="txtHotel" id="title_txtHotel"><?php echo lang('soslaundry:choose_hotel'); ?></label>
         <div>
-            <select class="field select medium" id="textHotel" name="hotel" tabindex="11">
+            <select class="field select medium" id="txtHotel" name="hotel" tabindex="11">
                 <option value="0"><?php echo lang('soslaundry:choose_hotel'); ?></option>
                 <?php if(!empty($hotels)):?>
                 <?php foreach($hotels as $hotel):?>
@@ -82,33 +82,58 @@
 </form>
 <script type="text/javascript">
     $(function(){
-        $('#txtPhone1,#txtPhone2,#txtPhone3').blur(function(e) {
+        $('#txtPhone1').blur(function(e) {
             e.stopPropagation();
             if (validatePhone('txtPhone1')) {
                 $('#txtPhone1').css('border', '1px solid green');
+                var phone1 = $("#txtPhone1").val();
+                if(phone1.length < 3){
+                    $('#txtPhone1').css('border', '1px solid red');
+                    $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone1_length'); ?></span>');
+                }else{
+                    $("#messages").html("<span></span>");
+                }
             }
             else {
                 $('#txtPhone1').css('border', '1px solid red');
                 $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone_regex'); ?></span>');
-                return false;
             }
+        });
+        $('#txtPhone2').blur(function(e) {
+            e.stopPropagation();
             if (validatePhone('txtPhone2')) {
                 $('#txtPhone2').css('border', '1px solid green');
+                var phone2 = $("#txtPhone2").val();
+                if(phone2.length < 3){
+                    $('#txtPhone2').css('border', '1px solid red');
+                    $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone2_length'); ?></span>');
+                }else{
+                    $("#messages").html("<span></span>");
+                }
             }
             else {
                 $('#txtPhone2').css('border', '1px solid red');
                 $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone_regex'); ?></span>');
-                return false;
             }
+        });
+        $('#txtPhone3').blur(function(e) {
+            e.stopPropagation();
             if (validatePhone('txtPhone3')) {
                 $('#txtPhone3').css('border', '1px solid green');
+                var phone3 = $("#txtPhone3").val();
+                if(phone3.length < 4){
+                    $('#txtPhone3').css('border', '1px solid red');
+                    $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone3_length'); ?></span>');
+                }else{
+                    $("#messages").html("<span></span>");
+                }
             }
             else {
                 $('#txtPhone3').css('border', '1px solid red');
                 $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone_regex'); ?></span>');
-                return false;
             }
         });
+
         $('#register-form').submit(function() {
             var submitform = true;
             if (validateEmpty('txtFirstName')) {
@@ -142,7 +167,14 @@
                 $('#txtPhone1').css('border', '1px solid green');
                 if (validatePhone('txtPhone1')) {
                     $('#txtPhone1').css('border', '1px solid green');
-                    submitform = submitform && true;
+                    var phone1 = $("#txtPhone1").val();
+                    if(phone1.length < 3){
+                        $('#txtPhone1').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone1_length'); ?></span>');
+                        return false;
+                    }else{
+                        $("#messages").html("<span></span>");
+                    }
                 }
                 else {
                     $('#txtPhone1').css('border', '1px solid red');
@@ -157,9 +189,16 @@
             }
             if (validateEmpty('txtPhone2')) {
                 $('#txtPhone2').css('border', '1px solid green');
-                if (validatePhone('txtPhone1')) {
+                if (validatePhone('txtPhone2')) {
                     $('#txtPhone2').css('border', '1px solid green');
-                    submitform = submitform && true;
+                    var phone2 = $("#txtPhone2").val();
+                    if(phone2.length < 3){
+                        $('#txtPhone2').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone2_length'); ?></span>');
+                        return false;
+                    }else{
+                        $("#messages").html("<span></span>");
+                    }
                 }
                 else {
                     $('#txtPhone2').css('border', '1px solid red');
@@ -174,9 +213,16 @@
             }
             if (validateEmpty('txtPhone3')) {
                 $('#txtPhone3').css('border', '1px solid green');
-                if (validatePhone('txtPhone1')) {
+                if (validatePhone('txtPhone3')) {
                     $('#txtPhone3').css('border', '1px solid green');
-                    submitform = submitform && true;
+                    var phone3 = $("#txtPhone3").val();
+                    if(phone3.length < 4){
+                        $('#txtPhone3').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone3_length'); ?></span>');
+                        return false;
+                    }else{
+                        $("#messages").html("<span></span>");
+                    }
                 }
                 else {
                     $('#txtPhone3').css('border', '1px solid red');
@@ -187,6 +233,10 @@
             else {
                 $('#txtPhone3').css('border', '1px solid red');
                 $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:phone_empty'); ?></span>');
+                return false;
+            }
+            if(validHotel() == false){
+                $("#messages").html('<span style="font-size: 16px;color: red;"><?php echo lang('soslaundry:hotel_valid'); ?></span>');
                 return false;
             }
             if(validRule()){
@@ -221,5 +271,13 @@
     }
     function validRule(){
         return document.getElementById("txtRule").checked;
+    }
+    function validHotel(){
+        var e  = document.getElementById("txtHotel");
+        var hotel = e.options[e.selectedIndex].value;
+        if(hotel != null && hotel != '' && hotel != '0' && hotel != 0){
+            return true;
+        }
+        return false;
     }
 </script>

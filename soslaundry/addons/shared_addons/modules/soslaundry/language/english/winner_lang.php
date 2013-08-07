@@ -40,6 +40,10 @@ $lang['soslaundry:phone_empty'] = 'Please input your phone';
 $lang['soslaundry:phone_regex'] = 'Phone number invalid';
 $lang['soslaundry:email_empty'] = 'Please input your email';
 $lang['soslaundry:rule_accept'] = 'You do not accept rule';
+$lang['soslaundry:phone1_length'] = 'Please enter a name 3 characters or more.';
+$lang['soslaundry:phone2_length'] = 'Please enter a name 3 characters or more.';
+$lang['soslaundry:phone3_length'] = 'Please enter a name 4 characters or more.';
+$lang['soslaundry:hotel_valid'] = 'Please choose the hotel.';
 
 $lang['soslaundry:input_valid'] = 'Valid';
 // Messages
