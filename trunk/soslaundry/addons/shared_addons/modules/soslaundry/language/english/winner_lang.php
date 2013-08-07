@@ -39,6 +39,7 @@ $lang['soslaundry:lastname_empty'] = 'Please input your last name';
 $lang['soslaundry:phone_empty'] = 'Please input your phone';
 $lang['soslaundry:phone_regex'] = 'Phone number invalid';
 $lang['soslaundry:email_empty'] = 'Please input your email';
+$lang['soslaundry:rule_accept'] = 'You do not accept rule';
 
 $lang['soslaundry:input_valid'] = 'Valid';
 // Messages
