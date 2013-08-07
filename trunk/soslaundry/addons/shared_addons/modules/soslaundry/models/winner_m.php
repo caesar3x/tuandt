@@ -52,6 +52,7 @@ class Winner_m extends MY_Model {
      */
     public function get_random_winner($limit)
     {
+        $this->db->where('is_winner','0');
         $this->db->order_by('id', 'RANDOM');
         $this->db->limit($limit);
         $query = $this->db->get('winner');
