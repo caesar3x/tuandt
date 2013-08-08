@@ -62,7 +62,7 @@ class Soslaundry extends Public_Controller
     {
 
         $winners_today = $this->winner_m->get_winner_today_data();
-        if(empty($winners_today)){
+        //if(empty($winners_today)){
             $this->load->library('exportdataexcel');
             $this->load->helper('vd_sos');
             $email = $this->settings_m->get("server_email");
@@ -102,7 +102,7 @@ class Soslaundry extends Public_Controller
                 $email_data['attach'][$filename] = "export/".$filename;
                 Events::trigger('email', $email_data, 'array');
             }
-        }
+        //}
         exit();
     }
     public function send_email_to_yesterday_winner()
