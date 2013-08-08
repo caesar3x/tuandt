@@ -8,7 +8,7 @@
 	
 	.fieldset > div{width:100%}
 	.fieldset{padding-left:20px}
-	button.submit{margin:0px}
+	button.submit{margin:0px;padding-top: 0px;}
 	.fieldset .select_hotel { margin: 0;}
 }
 
@@ -26,7 +26,7 @@
 	
 	.fieldset > div{width:100%}
 	.fieldset{padding-left:20px}
-	button.submit{margin:10px 0 0}
+	button.submit{margin:10px 0 0;padding-top: 0px;}
 	.fieldset .select_hotel { margin:0; float:right}
 
 }
@@ -47,7 +47,7 @@
 	.fieldset .mobile input{width:63px}
 	.fieldset .select_hotel{width:290px}
 	select.hotel{padding-left:5px}
-	button.submit{margin:10px 0 0}
+	button.submit{margin:10px 0 0;padding-top: 0px;}
 	.fieldset .select_hotel { margin:0; float:right}
 }
 @media only screen and (max-width: 319px) {
@@ -66,6 +66,6 @@
 	.fieldset .mobile input{width:63px}
 	.fieldset .select_hotel{width:290px}
 	select.hotel{padding-left:5px}
-	button.submit{margin:10px 0 0}
+	button.submit{margin:10px 0 0;padding-top: 0px;}
 	.fieldset .select_hotel { margin:0; float:right}
 }
