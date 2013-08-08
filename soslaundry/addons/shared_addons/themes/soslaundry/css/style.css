@@ -64,7 +64,7 @@ form{}
 .fieldset label {font-size:15px;text-shadow:0 0 18px #fff; text-align:center;font-size:bold}
 .fieldset label.note {font-size:13px;}
 .fieldset input[type=text],.fieldset input[type=email]{text-shadow:0 0 8px #fff;height:40px; line-height:40px;padding:0px 10px; width:280px; border:1px solid #ddd; background:#fff}
-
+.fieldset input[type=submit]{cursor: pointer;}
 .fieldset .mobile label.note {float:left; line-height:40px; padding:0px 5px}
 .fieldset .mobile input{width:72px;float:left}
 
