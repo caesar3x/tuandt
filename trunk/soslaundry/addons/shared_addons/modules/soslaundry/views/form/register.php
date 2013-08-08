@@ -43,8 +43,11 @@
     </div>
 </div>
 <div class="fieldset">
-    <div class="choose_hotel">
-        <select id="txtHotel" name="hotel" class="select_hotel">
+    <p class="agree"><input type="checkbox"  name="agree" id="txtRule"/><a target="_blank" href="<?php echo base_url('agree-to-the-rules');?>"><?php echo lang('soslaundry:agree_text'); ?></a></p>
+
+
+    <div class="select_hotel">
+        <select name="hotel" class="hotel" id="txtHotel">
             <option value="0"><?php echo lang('soslaundry:choose_hotel'); ?></option>
             <?php if(!empty($hotels)):?>
                 <?php foreach($hotels as $hotel):?>
@@ -53,12 +56,9 @@
             <?php endif;?>
         </select>
     </div>
-    <div class="agree">
-        <input type="checkbox" name="rule" id="txtRule"><span><a target="_blank" href="<?php echo base_url('agree-to-the-rules');?>"><?php echo lang('soslaundry:agree_text'); ?></a></span>
-        <br/>
-        <input id="saveForm" name="saveForm" type="submit" value="<?php echo lang('soslaundry:submit_label'); ?>" />
-    </div>
+    <button class="right submit" title="Submit" type="submit">Submit</button>
 </div>
+
 </form>
 <div class="clear">&nbsp;</div>
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
