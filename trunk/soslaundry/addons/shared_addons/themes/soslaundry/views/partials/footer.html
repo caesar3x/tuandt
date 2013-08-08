@@ -8,5 +8,207 @@
         </div>
     </footer>
     </section>
+        {{ theme:js file="libs/jquery.js" }}
+        <script type="text/javascript">
+            $(function(){
+                $('#txtPhone1').blur(function(e) {
+                    e.stopPropagation();
+                    if (validatePhone('txtPhone1')) {
+                        $('#txtPhone1').css('border', '1px solid green');
+                        var phone1 = $("#txtPhone1").val();
+                        if(phone1.length < 3){
+                            $('#txtPhone1').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;"> {{ theme:lang lang="winner" line="soslaundry:phone1_length" default="PyroCMS" }}</span>');
+                        }else{
+                            $("#messages").html("<span></span>");
+                        }
+                    }
+                    else {
+                        $('#txtPhone1').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                    }
+                });
+                $('#txtPhone2').blur(function(e) {
+                    e.stopPropagation();
+                    if (validatePhone('txtPhone2')) {
+                        $('#txtPhone2').css('border', '1px solid green');
+                        var phone2 = $("#txtPhone2").val();
+                        if(phone2.length < 3){
+                            $('#txtPhone2').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone2_length" default="PyroCMS" }}</span>');
+                        }else{
+                            $("#messages").html("<span></span>");
+                        }
+                    }
+                    else {
+                        $('#txtPhone2').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                    }
+                });
+                $('#txtPhone3').blur(function(e) {
+                    e.stopPropagation();
+                    if (validatePhone('txtPhone3')) {
+                        $('#txtPhone3').css('border', '1px solid green');
+                        var phone3 = $("#txtPhone3").val();
+                        if(phone3.length < 4){
+                            $('#txtPhone3').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone3_length" default="PyroCMS" }}</span>');
+                        }else{
+                            $("#messages").html("<span></span>");
+                        }
+                    }
+                    else {
+                        $('#txtPhone3').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                    }
+                });
+
+                $('#register-form').submit(function() {
+                    var submitform = true;
+                    if (validateEmpty('txtFirstName')) {
+                        $('#txtFirstName').css('border', '1px solid green');
+                        submitform = submitform && true;
+                    }
+                    else {
+                        $('#txtFirstName').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:firstname_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if (validateEmpty('txtLastName')) {
+                        $('#txtLastName').css('border', '1px solid green');
+                        submitform = submitform && true;
+                    }
+                    else {
+                        $('#txtLastName').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:lastname_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if (validateEmpty('txtEmail')) {
+                        $('#txtEmail').css('border', '1px solid green');
+                        submitform = submitform && true;
+                    }
+                    else {
+                        $('#txtEmail').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:email_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if (validateEmpty('txtPhone1')) {
+                        $('#txtPhone1').css('border', '1px solid green');
+                        if (validatePhone('txtPhone1')) {
+                            $('#txtPhone1').css('border', '1px solid green');
+                            var phone1 = $("#txtPhone1").val();
+                            if(phone1.length < 3){
+                                $('#txtPhone1').css('border', '1px solid red');
+                                $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone1_length" default="PyroCMS" }}</span>');
+                                return false;
+                            }else{
+                                $("#messages").html("<span></span>");
+                            }
+                        }
+                        else {
+                            $('#txtPhone1').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                            return false;
+                        }
+                    }
+                    else {
+                        $('#txtPhone1').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if (validateEmpty('txtPhone2')) {
+                        $('#txtPhone2').css('border', '1px solid green');
+                        if (validatePhone('txtPhone2')) {
+                            $('#txtPhone2').css('border', '1px solid green');
+                            var phone2 = $("#txtPhone2").val();
+                            if(phone2.length < 3){
+                                $('#txtPhone2').css('border', '1px solid red');
+                                $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone2_length" default="PyroCMS" }}</span>');
+                                return false;
+                            }else{
+                                $("#messages").html("<span></span>");
+                            }
+                        }
+                        else {
+                            $('#txtPhone2').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                            return false;
+                        }
+                    }
+                    else {
+                        $('#txtPhone2').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if (validateEmpty('txtPhone3')) {
+                        $('#txtPhone3').css('border', '1px solid green');
+                        if (validatePhone('txtPhone3')) {
+                            $('#txtPhone3').css('border', '1px solid green');
+                            var phone3 = $("#txtPhone3").val();
+                            if(phone3.length < 4){
+                                $('#txtPhone3').css('border', '1px solid red');
+                                $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone3_length" default="PyroCMS" }}</span>');
+                                return false;
+                            }else{
+                                $("#messages").html("<span></span>");
+                            }
+                        }
+                        else {
+                            $('#txtPhone3').css('border', '1px solid red');
+                            $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
+                            return false;
+                        }
+                    }
+                    else {
+                        $('#txtPhone3').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_empty" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if(validHotel() == false){
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:hotel_valid" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    if(validRule()){
+                        $('#txtRule').css('border', '1px solid green');
+                        submitform = submitform && true;
+                    }else{
+                        $('#txtRule').css('border', '1px solid red');
+                        $("#messages").html('<span style="font-size: 16px;color: red;">{{ theme:lang lang="winner" line="soslaundry:rule_accept" default="PyroCMS" }}</span>');
+                        return false;
+                    }
+                    return submitform;
+                });
+            });
+            function validatePhone(txtPhone) {
+                var a = document.getElementById(txtPhone).value;
+                var filter = /^[0-9-+]+$/;
+                if (filter.test(a)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            function validateEmpty(txtField) {
+                var a = document.getElementById(txtField).value;
+                if (a == null || a == "") {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            function validRule(){
+                return document.getElementById("txtRule").checked;
+            }
+            function validHotel(){
+                var e  = document.getElementById("txtHotel");
+                var hotel = e.options[e.selectedIndex].value;
+                if(hotel != null && hotel != '' && hotel != '0' && hotel != 0){
+                    return true;
+                }
+                return false;
+            }
+        </script>
 </body>
 </html>
