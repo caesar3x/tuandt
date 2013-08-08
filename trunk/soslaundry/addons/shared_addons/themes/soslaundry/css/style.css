@@ -63,7 +63,7 @@ form{}
 .fieldset > div {width:50%; float:left}
 .fieldset label {font-size:15px;text-shadow:0 0 18px #fff; text-align:center;font-size:bold}
 .fieldset label.note {font-size:13px;}
-.fieldset input{text-shadow:0 0 8px #fff;height:40px; line-height:40px;padding:0px 10px; width:280px; border:none; background:#fff}
+.fieldset input[type=text],.fieldset input[type=email]{text-shadow:0 0 8px #fff;height:40px; line-height:40px;padding:0px 10px; width:280px; border:1px solid #ddd; background:#fff}
 
 .fieldset .mobile label.note {float:left; line-height:40px; padding:0px 5px}
 .fieldset .mobile input{width:72px;float:left}
@@ -89,6 +89,5 @@ footer {position:relative}
     line-height: 0;
     overflow: hidden;
 }
-
-
-
+#txtRule{outline-color:#014289;}
+#messages{height: 25px;}
