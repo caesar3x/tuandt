@@ -1,42 +1,64 @@
 <div class="god">
     <p>
-        Enter for a chance to have your clothes washed, drie,</br>
-        and folded by the<strong>'Strike Out Stains' Laundry Exprts</strong></br>
-        using<strong> all*</strong> and<strong> Snuggle*</strong> fabric softener,the official laundry</br>
-        products of little League Baseball*!
+        <?php echo lang('soslaundry:register_form_title');?>
     </p>
     <p>
-        Complete the from for you chance to be one of 50 daily winners!
+        <?php echo lang('soslaundry:register_form_text');?>
     </p>
     <h1 class="luck">
-        GOOD LUCK!
+        <?php echo lang('soslaundry:register_form_good_luck');?>
     </h1>
 </div>
-<form action="#" method="post" id="#resign">
+<form action="<?php echo base_url('soslaundry/form');?>" method="post" id="#resign" enctype="multipart/form-data" accept-charset="utf-8">
+    <div class="message" id="messages">
+        <?php
+        if(isset($_GET['message'])){
+            $code = (int) $_GET['message'];
+            if($code == 1){
+                $msg = lang('soslaundry:register_success');
+            }elseif($code == 2){
+                $msg = lang('soslaundry:register_error');
+            }elseif($code == 3){
+                $msg = lang('soslaundry:register_email_exist_error');
+            }elseif($code == 4){
+                $msg = lang('soslaundry:register_email_format_error');
+            }elseif($code == 5){
+                $msg = lang('soslaundry:register_phone_error');
+            }else{
+                $msg = '';
+            }
+            ?>
+            <?php if($code == 1){?>
+                <span style="font-size: 16px;color: green;"><?php echo $msg;?></span>
+            <?php }else{?>
+                <span style="font-size: 16px;color: red;"><?php echo $msg;?></span>
+            <?php }?>
+        <?php }?>
+    </div>
     <div class="fieldset name">
         <div class="first_name">
-            <label>Name</label><br />
-            <input type="text" name="first_name"/><br />
-            <label class="note">First</label>
+            <label><?php echo lang('soslaundry:name'); ?></label><br />
+            <input id="txtFirstName" type="text" name="first_name"/><br />
+            <label class="note"><?php echo lang('soslaundry:first_name'); ?></label>
         </div>
         <div class="last_name">
             <label>&nbsp;</label><br />
-            <input type="text" name="last_name"/><br />
-            <label class="note">Last</label>
+            <input id="txtLastName" type="text" name="last_name"/><br />
+            <label class="note"><?php echo lang('soslaundry:last_name'); ?></label>
         </div>
     </div>
     <div class="fieldset">
         <div class="email">
-            <label>Email</label><br />
-            <input type="text" name="email"/>
+            <label><?php echo lang('soslaundry:email'); ?></label><br />
+            <input id="txtEmail" type="text" name="email"/>
         </div>
         <div class="mobile">
-            <label>Mobile Phone Number</label><br />
-            <input type="text" name="mobile1"/>
+            <label><?php echo lang('soslaundry:phone'); ?></label><br />
+            <input id="txtPhone1" type="text" name="phone[]"/>
             <label class="note">-</label>
-            <input type="text" name="mobile2"/>
+            <input id="txtPhone2" type="text" name="phone[]"/>
             <label class="note">-</label>
-            <input type="text" name="mobile3"/>
+            <input id="txtPhone3" type="text" name="phone[]"/>
         </div>
     </div>
 </form>

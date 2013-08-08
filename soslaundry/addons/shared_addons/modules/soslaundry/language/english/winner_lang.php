@@ -12,9 +12,9 @@ $lang['soslaundry:register_title']			=	'Register Information';
 
 //labels
 $lang['soslaundry:name']			=	'Name';
-$lang['soslaundry:first_name']			=	'First Name';
-$lang['soslaundry:last_name']			=	'Last Name';
-$lang['soslaundry:phone']			=	'Phone';
+$lang['soslaundry:first_name']			=	'First';
+$lang['soslaundry:last_name']			=	'Last';
+$lang['soslaundry:phone']			=	'Mobile Phone Number';
 $lang['soslaundry:email']			=	'Email';
 $lang['soslaundry:manage']			=	'Manage';
 $lang['soslaundry:item_list']		=	'List person registered';
@@ -61,3 +61,10 @@ $lang['soslaundry:registration_complete'] = 'User Registration Complete';
 
 // Footer
 $lang['soslaundry:footer_text'] = 'NO PURCHASE NECESSARY. Sweepstakes starts 12:00 p.m. ET 8/16/13 and ends 5:30 p.m. ET 8/22/13. Open to legal residents of the 50 United States/DC, who are 18 years of age or older at date of entry. Go to www.soslaundry.us or the all® Laundry Detergent Booth for Official Rules. Sponsor: Sun Products Corporation, Wilton CT. Void Where prohibited.';
+// Register page
+$lang['soslaundry:register_form_title'] = 'Enter for a chance to have your clothes washed, drie,</br>
+        and folded by the<strong>\'Strike Out Stains\' Laundry Exprts</strong></br>
+        using<strong> all*</strong> and<strong> Snuggle*</strong> fabric softener,the official laundry</br>
+        products of little League Baseball*!';
+$lang['soslaundry:register_form_text'] = 'Complete the from for you chance to be one of 50 daily winners!';
+$lang['soslaundry:register_form_good_luck'] = 'GOOD LUCK!';
