@@ -25,7 +25,11 @@ class Soslaundry extends Public_Controller
     public function index()
     {
         $this->form_validation->set_rules('first_name', 'First name', 'required');
-        $this->form_validation->set_rules('last_name', 'Last nmae', 'required');
+        $this->form_validation->set_rules('last_name', 'Last name', 'required');
+        $this->form_validation->set_rules('phone1', 'Phone 1', 'required');
+        $this->form_validation->set_rules('phone2', 'Phone 2', 'required');
+        $this->form_validation->set_rules('phone3', 'Phone 3', 'required');
+        $this->form_validation->set_rules('hotel', 'Hotel', 'required');
         $this->form_validation->set_rules('email', 'Email', 'callback_check_email');
         $msg = '';
         if ($this->form_validation->run() == FALSE)

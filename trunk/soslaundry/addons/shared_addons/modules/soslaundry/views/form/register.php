@@ -36,11 +36,11 @@
         </div>
         <div class="mobile">
             <label><?php echo lang('soslaundry:phone'); ?></label><br />
-            <input id="txtPhone1" type="text" maxlength="3" name="phone[]"/>
+            <input id="txtPhone1" type="text" maxlength="3" value="<?php echo set_value('phone1'); ?>" name="phone1"/>
             <label class="note">-</label>
-            <input id="txtPhone2" type="text" maxlength="3" name="phone[]"/>
+            <input id="txtPhone2" type="text" maxlength="3" value="<?php echo set_value('phone2'); ?>" name="phone2"/>
             <label class="note">-</label>
-            <input id="txtPhone3" type="text" maxlength="4" name="phone[]"/>
+            <input id="txtPhone3" type="text" maxlength="4" value="<?php echo set_value('phone3'); ?>" name="phone3"/>
         </div>
     </div>
     <div class="fieldset">
@@ -50,7 +50,7 @@
                 <option value="0"><?php echo lang('soslaundry:choose_hotel'); ?></option>
                 <?php if(!empty($hotels)):?>
                     <?php foreach($hotels as $hotel):?>
-                        <option value="<?php echo $hotel->id;?>"><?php echo $hotel->name;?></option>
+                        <option <?php if($hotel->id == set_value('hotel')){?>selected="selected" <?php }?> value="<?php echo $hotel->id;?>"><?php echo $hotel->name;?></option>
                     <?php endforeach;?>
                 <?php endif;?>
             </select>
