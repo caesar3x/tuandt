@@ -11,28 +11,10 @@
 </div>
 <form action="<?php echo base_url('soslaundry/form');?>" method="post" id="register-form" enctype="multipart/form-data" accept-charset="utf-8">
     <div class="message" id="messages">
-        <?php
-        if(isset($_GET['message'])){
-            $code = (int) $_GET['message'];
-            if($code == 1){
-                $msg = lang('soslaundry:register_success');
-            }elseif($code == 2){
-                $msg = lang('soslaundry:register_error');
-            }elseif($code == 3){
-                $msg = lang('soslaundry:register_email_exist_error');
-            }elseif($code == 4){
-                $msg = lang('soslaundry:register_email_format_error');
-            }elseif($code == 5){
-                $msg = lang('soslaundry:register_phone_error');
-            }else{
-                $msg = '';
-            }
-            ?>
-            <?php if($code == 1){?>
-                <span style="font-size: 16px;color: green;"><?php echo $msg;?></span>
-            <?php }else{?>
-                <span style="font-size: 16px;color: red;"><?php echo $msg;?></span>
-            <?php }?>
+        <?php if(isset($msg['success'])){?>
+            <span style="font-size: 16px;color: green;"><?php echo $msg['success'];?></span>
+        <?php }elseif(isset($msg['error'])){?>
+            <span style="font-size: 16px;color: red;"><?php echo $msg['error'];?></span>
         <?php }?>
     </div>
     <div class="fieldset name">

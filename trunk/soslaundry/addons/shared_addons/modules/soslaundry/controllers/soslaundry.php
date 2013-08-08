@@ -22,10 +22,27 @@ class Soslaundry extends Public_Controller
      */
     public function index()
     {
+        $params = $this->input->get();
+        $msg = array();
+        if(isset($params['message'])){
+            $code = (int) $params['message'];
+            if($code == 1){
+                $msg['success'] = lang('soslaundry:register_success');
+            }elseif($code == 2){
+                $msg['error'] = lang('soslaundry:register_error');
+            }elseif($code == 3){
+                $msg['error'] = lang('soslaundry:register_email_exist_error');
+            }elseif($code == 4){
+                $msg['error'] = lang('soslaundry:register_email_format_error');
+            }elseif($code == 5){
+                $msg['error'] = lang('soslaundry:register_phone_error');
+            }
+        }
         $hotels = $this->hotel_m->get_all();
         $this->template
             ->title('Register Form')
             ->set('hotels', $hotels)
+            ->set('msg', $msg)
             ->build('form/register');
 
     }
