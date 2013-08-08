@@ -48,7 +48,7 @@ $lang['soslaundry:hotel_valid'] = 'Please choose the hotel.';
 
 $lang['soslaundry:input_valid'] = 'Valid';
 // Messages
-$lang['soslaundry:register_success'] = 'Registration Success.';
+$lang['soslaundry:register_success'] = 'Your entry has been received.  We will contact you if you have won one of the daily prizes.  Good luck!';
 $lang['soslaundry:register_error'] = 'Registration Error.';
 $lang['soslaundry:register_email_exist_error'] = 'Email address you entered already existed';
 $lang['soslaundry:register_email_format_error'] = 'Please enter valid email address';
@@ -67,5 +67,5 @@ $lang['soslaundry:register_form_title'] = 'Enter for a chance to have your cloth
         and folded by the <strong>\'Strike Out Stains\' Laundry Exprts</strong></br>
         using<strong> all&reg;</strong> and<strong> Snuggle&reg;</strong> fabric softener,the official laundry</br>
         products of Little League Baseball&reg;!';
-$lang['soslaundry:register_form_text'] = 'Complete the form for you chance to be one of 50 daily winners!';
+$lang['soslaundry:register_form_text'] = 'Complete the form for your chance to be one of 50 daily winners!';
 $lang['soslaundry:register_form_good_luck'] = 'GOOD LUCK!';

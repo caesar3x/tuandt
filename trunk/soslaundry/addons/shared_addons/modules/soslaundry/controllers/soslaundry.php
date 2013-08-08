@@ -15,6 +15,8 @@ class Soslaundry extends Public_Controller
         $this->load->model('settings_m');
         $this->lang->load('winner');
         $this->load->helper('vd_debug');
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
     }
 
     /**
@@ -22,7 +24,20 @@ class Soslaundry extends Public_Controller
      */
     public function index()
     {
-        $params = $this->input->get();
+        $this->form_validation->set_rules('first_name', 'First name', 'required');
+        $this->form_validation->set_rules('last_name', 'Last nmae', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'callback_check_email');
+        $msg = '';
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('form/register');
+        }
+        else
+        {
+            $msg = lang('soslaundry:register_success');
+            $this->load->view('form/register');
+        }
+        /*$params = $this->input->get();
         $msg = array();
         if(isset($params['message'])){
             $code = (int) $params['message'];
@@ -37,7 +52,7 @@ class Soslaundry extends Public_Controller
             }elseif($code == 5){
                 $msg['error'] = lang('soslaundry:register_phone_error');
             }
-        }
+        }*/
         $hotels = $this->hotel_m->get_all();
         $this->template
             ->title('Register Form')
@@ -45,6 +60,16 @@ class Soslaundry extends Public_Controller
             ->set('msg', $msg)
             ->build('form/register');
 
+    }
+    public function check_email($email)
+    {
+
+        $emails_saved = $this->winner_m->getAllEmail();
+        if(in_array($email,$emails_saved)){
+            $this->form_validation->set_message('check_email', 'Email address you entered already existed');
+            return false;
+        }
+        return true;
     }
     public function form()
     {
