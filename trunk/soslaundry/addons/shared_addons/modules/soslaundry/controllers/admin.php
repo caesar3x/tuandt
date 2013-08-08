@@ -25,10 +25,21 @@ class Admin extends Admin_Controller
      */
     public function index()
     {
-        $items = $this->winner_m->get_all();
+        //$items = $this->winner_m->get_all();
+        $base_where = array('1' => '1');
+        $total_rows = $this->winner_m->count_by($base_where);
+        $pagination = create_pagination('admin/soslaundry/index', $total_rows);
+
+        // Using this data, get the relevant results
+        $items = $this->winner_m
+            ->limit($pagination['limit'], $pagination['offset'])
+            ->getAll();
+
+
         $this->template
             ->title($this->module_details['name'])
             ->set('items', $items)
+            ->set('pagination', $pagination)
             ->build('admin/items');
     }
     public function delete($id = 0)
