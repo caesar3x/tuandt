@@ -26,10 +26,6 @@
   	{{ theme:css file="style.css" }}
   	<!-- End CSS-->
 
-	<!-- Googlelicious -->
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold" type="text/css" />
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Serif:regular,bold" type="text/css" />
-
 	<!-- Load up some favicons -->
   	{{ theme:favicon }}
 
@@ -44,18 +40,13 @@
 </head>
 
 <body class="{{ url:segments segment="1" default="home" }}">
-	
-	<!-- container -->
-	<div class="container">	
+<section id="wrapper">
+    <header>
+        <a href="{{ url:base }}" title="{{ settings:site_name }}">
+            {{ theme:image file="header.png" }}
+        </a>
+        {{ theme:image file="logo1.png" class="logo1"}}
+        {{ theme:image file="logo2.png" class="logo2"}}
+    </header>
 
-		<header>
-			<div id="logo">
-				<a href="{{ url:base }}">
-					<h1>{{ settings:site_name }}</h1>
-				</a>
-		
-				<span class="slogan">
-					{{ settings:site_slogan }}
-				</span>
-			</div>
-		</header>
+
