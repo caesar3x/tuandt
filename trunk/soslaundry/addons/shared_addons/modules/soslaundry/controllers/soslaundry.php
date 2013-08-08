@@ -34,11 +34,21 @@ class Soslaundry extends Public_Controller
         $msg = '';
         if ($this->form_validation->run() == FALSE)
         {
+	        $entryData = new stdClass;
+			foreach ($this->item_validation_rules as $rule)
+			{
+				$entryData->{$rule['field']} = $this->input->post($rule['field']);
+			}
             $this->load->view('form/register');
         }
         else
         {
             $msg = lang('soslaundry:register_success');
+        	$entryData = new stdClass;
+			foreach ($this->item_validation_rules as $rule)
+			{
+				$entryData->{$rule['field']} = '';
+			}
             $this->load->view('form/register');
         }
         /*$params = $this->input->get();
@@ -62,6 +72,7 @@ class Soslaundry extends Public_Controller
             ->title('Register Form')
             ->set('hotels', $hotels)
             ->set('msg', $msg)
+            ->set('$entryData', $entryData)
             ->build('form/register');
 
     }
