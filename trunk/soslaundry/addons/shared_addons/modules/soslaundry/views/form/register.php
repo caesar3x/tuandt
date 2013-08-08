@@ -46,7 +46,6 @@
     <div class="choose_hotel">
         <select id="txtHotel" name="hotel" class="select_hotel">
             <option value="0"><?php echo lang('soslaundry:choose_hotel'); ?></option>
-            <option value="0"><?php echo lang('soslaundry:choose_hotel'); ?></option>
             <?php if(!empty($hotels)):?>
                 <?php foreach($hotels as $hotel):?>
                     <option <?php if($hotel->id == set_value('hotel')){?>selected="selected" <?php }?> value="<?php echo $hotel->id;?>"><?php echo $hotel->name;?></option>
