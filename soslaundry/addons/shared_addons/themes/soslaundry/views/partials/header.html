@@ -23,7 +23,8 @@
 	<!-- End base -->
 
   	<!-- CSS. No need to specify the media attribute unless specifically targeting a media type, leaving blank implies media=all -->
-  	{{ theme:css file="style.css" }}
+    <link rel="stylesheet" type="text/css" href="http://css.soslaundry.us/style.css">
+    <link rel="stylesheet" type="text/css" href="http://css.soslaundry.us/responsive.css">
   	<!-- End CSS-->
 
 	<!-- Load up some favicons -->
@@ -43,10 +44,10 @@
 <section id="wrapper">
     <header>
         <a href="{{ url:base }}" title="{{ settings:site_name }}">
-            {{ theme:image file="header.png" }}
+            <img src="http://images.soslaundry.us/header.png" alt="{{ settings:site_name }}">
         </a>
-        {{ theme:image file="logo1.png" class="logo1"}}
-        {{ theme:image file="logo2.png" class="logo2"}}
+        <img src="http://images.soslaundry.us/logo1.png" alt="{{ settings:site_name }}" class="logo1">
+        <img src="http://images.soslaundry.us/logo2.png" alt="{{ settings:site_name }}" class="logo2">
     </header>
 
 
