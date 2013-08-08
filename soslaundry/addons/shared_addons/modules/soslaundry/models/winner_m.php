@@ -11,7 +11,6 @@ class Winner_m extends MY_Model {
     {
         parent::__construct();
         $this->_table = 'winner';
-        $this->db->order_by("id", "desc");
     }
     public function getAll()
     {

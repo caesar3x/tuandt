@@ -90,4 +90,6 @@ footer {position:relative}
     overflow: hidden;
 }
 #txtRule{outline-color:#014289;}
-#messages{height: 25px;}
+#messages{height: 25px;color: #f00;margin-bottom: 20px;}
+#messages .msg_success{color: green;}
+#messages .msg_error{color: red;}
