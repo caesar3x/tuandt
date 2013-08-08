@@ -99,5 +99,5 @@ footer {position:relative}
     overflow: hidden;
 }
 #messages{height: 25px;color: #f00;margin-bottom: 20px;}
-#messages .msg_success{color: green;}
+#messages .msg_success{color: green;font-size: 24px;}
 #messages .msg_error{color: red;}

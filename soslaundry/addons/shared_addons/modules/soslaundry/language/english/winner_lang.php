@@ -63,9 +63,6 @@ $lang['soslaundry:registration_complete'] = 'User Registration Complete';
 // Footer
 $lang['soslaundry:footer_text'] = 'NO PURCHASE NECESSARY. Sweepstakes starts 12:00 p.m. ET 8/16/13 and ends 5:30 p.m. ET 8/22/13. Open to legal residents of the 50 United States/DC, who are 18 years of age or older at date of entry. Go to www.soslaundry.us or the all® Laundry Detergent Booth for Official Rules. Sponsor: Sun Products Corporation, Wilton CT. Void Where prohibited.';
 // Register page
-$lang['soslaundry:register_form_title'] = 'Enter for a chance to have your clothes washed, dried,</br>
-        and folded by the <strong>\'Strike Out Stains\' Laundry Exprts</strong></br>
-        using<strong> all&reg;</strong> and<strong> Snuggle&reg;</strong> fabric softener,the official laundry</br>
-        products of Little League Baseball&reg;!';
+$lang['soslaundry:register_form_title'] = 'Welcome to the <strong>“Strike Out Stains” #SOSLaundry Service! all® & Snuggle®</strong> the Official Laundry Products of Little League®  want to make your stay at the World Series a little more comfortable! That’s why each day, we’re randomly selecting 50 lucky winners to receive a complementary Laundry Service – including hotel pick-up, wash, dry, fold, and hotel drop-off – all handled with care by our <strong>all® & Snuggle® SOS Laundry Experts.</strong></br>';
 $lang['soslaundry:register_form_text'] = 'Complete the form for your chance to be one of 50 daily winners!';
 $lang['soslaundry:register_form_good_luck'] = 'GOOD LUCK!';
