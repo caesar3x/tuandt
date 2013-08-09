@@ -11,6 +11,15 @@
         <script type="text/javascript" src="http://js.soslaundry.us/jquery.js"></script>
         <script type="text/javascript">
             $(function(){
+                $(".checkbox").click(function(){
+                    if($(".checkbox").hasClass("checked")){
+                        $(".checkbox").removeClass("checked");
+                        $('.checkbox input').removeAttr('checked');
+                    }else{
+                        $(".checkbox").addClass("checked");
+                        $('.checkbox input').attr('checked','checked');
+                    }
+                });
                 $('#txtPhone1').blur(function(e) {
                     e.stopPropagation();
                     if (validatePhone('txtPhone1')) {

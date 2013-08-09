@@ -43,7 +43,7 @@
     </div>
 </div>
 <div class="fieldset">
-    <p class="agree"><input type="checkbox"  name="agree" id="txtRule"/><a target="_blank" href="<?php echo base_url('agree-to-the-rules');?>"><?php echo lang('soslaundry:agree_text'); ?></a></p>
+    <p class="agree"><a target="_blank" href="<?php echo base_url('agree-to-the-rules');?>"><?php echo lang('soslaundry:agree_text'); ?></a><span class="checkbox"><input type="checkbox"  name="agree" id="txtRule"/></span></p>
 
 
     <div class="select_hotel">
