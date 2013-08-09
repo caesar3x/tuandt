@@ -175,4 +175,24 @@ class Soslaundry extends Public_Controller
         }
         exit();
     }
+    public function test_mail_registed()
+    {
+        $data = array();
+        $data['to']      = 'kiemsilangthang.dat@gmail.com';
+        $data['from']    = 'datnguyen.cntt@gmail.com';
+        $data['slug']    = 'user-registration-complete';
+        $data['first_name']    = 'Danjan';
+        Events::trigger('email', $data, 'array');
+        die('---------Done-----------');
+    }
+    public function test_mail_winner()
+    {
+        $data = array();
+        $data['to']      = 'kiemsilangthang.dat@gmail.com';
+        $data['from']    = 'datnguyen.cntt@gmail.com';
+        $data['slug']    = 'user-is-winner';
+        $data['first_name']    = 'Danjan';
+        Events::trigger('email', $data, 'array');
+        die('---------Done-----------');
+    }
 }
