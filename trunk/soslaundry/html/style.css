@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	font-size:20px;
+	line-height:30px;
+	color:#014289;
+	font-family:Myriad Pro, arial;
+	margin:0px;
+	padding:0px;
+	min-width:768px;
+}
+
+@font-face {
+    font-family: 'helveticaneue';
+    src: url('./fonts/helveticaneue.eot');
+    src: url('./fonts/helveticaneue.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/helveticaneue.woff') format('woff'),
+         url('./fonts/helveticaneue.ttf') format('truetype'),
+         url('./fonts/helveticaneue.svg#helveticaneue') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+* {margin:0px; padding:0px}
+ul,li {list-style:none}
+a:focus{outline:0}
+a{text-decoration:none}
+a:hover{}
+
+/*Headings*/
+h1, h2, h3,
+h4, h5, h6{line-height:1.5em; margin:0px; font-weight:bold; margin-bottom:20px}
+h1{font-size:42px; text-shadow:0 0 18px #fff;font-family:Poplar Std}
+h2{font-size:32px}
+h3{font-size:24px}
+h4 {font-size:20px}
+h5 {font-size:16px}
+textarea,
+input{border-radius:2px; border:none;color:#999999;}
+
+strong{font-weight:bold}
+img{max-width:100%}
+p{margin-bottom:30px}
+.container {margin:0 auto; width:768px}
+
+body {background:#ddd;}
+#wrapper {background:url(./images/bg_wrap.png) center bottom no-repeat #fff; margin:0 auto; width:768px}
+header{position:relative}
+.logo1 {width:114px; height:94px; position:absolute; top:45px; left:70px; display:none}
+.logo2 {width:209px; height:170px; position:absolute; top:0px; right:0px;display:none}
+
+#content {min-height:542px; padding:16px 40px 10px; text-align:center}
+p.note {font-size:18px; font-style:italic;line-height:24px}
+
+.god{font-size:25px; line-height:38px}
+.god p{margin-bottom:10px}
+.luck{font-size:54px;margin-bottom:0px}
+
+form{}
+.fieldset {text-align:left; margin-bottom:12px; padding-left:28px; overflow:hidden}
+.fieldset > div {width:50%; float:left}
+.fieldset label {font-size:15px;text-shadow:0 0 18px #fff; text-align:center;font-size:bold}
+.fieldset label.note {font-size:13px;}
+.fieldset input{font-size:15px; color:#014289;box-shadow:0 0 2px #fff;height:38px; line-height:40px;padding:0px 10px; width:272px; border:1px solid #dfebf1; background:#fff}
+form  input:focus{border:1px solid #014289;}
+.fieldset .mobile label.note {float:left; line-height:40px; padding:0px 5px}
+.fieldset .mobile input{width:66px;float:left}
+form .agree {font-size:15px; text-align:right; padding-right:48px; margin:0;overflow: hidden;}
+form .agree input{width:auto; height:auto; margin-right:10px;}
+form .agree a{text-decoration:underline;color:#014289;text-shadow:0 0 18px #fff;float:right; line-height:38px}
+
+button.submit {width:179px; height:48px; line-height:48px; font-size:35px;font-family:Poplar Std; text-transform:uppercase;
+background:url(./images/button.png) center center no-repeat; border:none; color:#014289;cursor: pointer;margin-right:32px}
+
+.fieldset  .select_hotel{width:316px; height:41px; padding:3px 0px; background:url(./images/select.png) right center no-repeat; overflow:hidden;float:left; margin-left:108px}
+select.hotel{height:41px; background:#fff; line-height:21px; border:none; background:none; font-size:15px; color:#014289;
+padding:10px 0px 10px 20px;width:333px}
+
+footer {position:relative}
+.baseball {width:130px; position:absolute;top:-75px; left:30px}
+.footer{padding:9px 5px 5px 16px}
+.footer-bottom{background:url(./images/footer-bottom.png) center top no-repeat; font-size:10px; line-height:12px; padding:10px 20px 5px; color:#fff;text-align: justify;font-family:helveticaneue}
+
+.checkbox input{display:none}
+.checkbox{height:30px; width:30px; background:url(images/check.png)center center no-repeat; display:block; float:right}
+.checkbox.checked{background:url(images/checked.png)center center no-repeat;}
+
+/****/
+
+
+.right {float:right}
+.left {float:left}
+.clear:after{
+	clear: both;
+    content: ".";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+
+
