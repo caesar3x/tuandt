@@ -11,7 +11,8 @@
     .fieldset input {width:210px}
     .fieldset .mobile input {width:56px; padding:0px 5px}
     button.submit{margin:0px}
-    .fieldset .select_hotel { margin: 0;}
+    .fieldset .select_hotel { margin: 40px 0px 0px;}
+    form .agree{padding-right: 0px;}
 }
 
 @media only screen and (min-width: 480px)  and  (max-width: 599px) {
@@ -31,8 +32,8 @@
     .fieldset input {width:360px}
     .fieldset .mobile input {width:96px}
     button.submit{margin:10px 38px 0 0}
-    .fieldset .select_hotel { margin:0 38px 0 0; float:right}
-
+    .fieldset .select_hotel { margin:40px 38px 0 0; float:right}
+    form .agree{padding-right: 0px;}
 }
 
 @media only screen and (min-width: 320px)  and (max-width: 479px) {
@@ -52,7 +53,7 @@
     .fieldset .select_hotel{width:290px}
     select.hotel{padding-left:5px}
     button.submit{margin:10px 0 0}
-    .fieldset .select_hotel { margin:0; float:right}
+    .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
 }
 @media only screen and (max-width: 319px) {
     body{min-width:320px; font-size:16px; line-height:22px}
@@ -71,5 +72,5 @@
     .fieldset .select_hotel{width:290px}
     select.hotel{padding-left:5px}
     button.submit{margin:10px 0 0}
-    .fieldset .select_hotel { margin:0; float:right}
+    .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
 }
