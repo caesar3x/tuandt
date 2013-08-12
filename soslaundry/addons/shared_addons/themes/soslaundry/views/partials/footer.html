@@ -23,7 +23,7 @@
                         $('.checkbox input').attr('checked','checked');
                     }
                 });
-                $('#txtPhone1').blur(function(e) {
+                $('#txtPhone1').keyup(function(e) {
                     e.stopPropagation();
                     if (validatePhone('txtPhone1')) {
                         $('#txtPhone1').css('border', '1px solid green');
@@ -32,6 +32,7 @@
                             $('#txtPhone1').css('border', '1px solid red');
                             $("#messages").html('<span style="font-size: 24px;color: red;"> {{ theme:lang lang="winner" line="soslaundry:phone1_length" default="PyroCMS" }}</span>');
                         }else{
+                            $("#txtPhone2").focus();
                             $("#messages").html("<span></span>");
                         }
                     }
@@ -40,7 +41,7 @@
                         $("#messages").html('<span style="font-size: 24px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
                     }
                 });
-                $('#txtPhone2').blur(function(e) {
+                $('#txtPhone2').keyup(function(e) {
                     e.stopPropagation();
                     if (validatePhone('txtPhone2')) {
                         $('#txtPhone2').css('border', '1px solid green');
@@ -49,6 +50,7 @@
                             $('#txtPhone2').css('border', '1px solid red');
                             $("#messages").html('<span style="font-size: 24px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone2_length" default="PyroCMS" }}</span>');
                         }else{
+                            $("#txtPhone3").focus();
                             $("#messages").html("<span></span>");
                         }
                     }
@@ -57,7 +59,7 @@
                         $("#messages").html('<span style="font-size: 24px;color: red;">{{ theme:lang lang="winner" line="soslaundry:phone_regex" default="PyroCMS" }}</span>');
                     }
                 });
-                $('#txtPhone3').blur(function(e) {
+                $('#txtPhone3').keyup(function(e) {
                     e.stopPropagation();
                     if (validatePhone('txtPhone3')) {
                         $('#txtPhone3').css('border', '1px solid green');

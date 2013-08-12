@@ -24,11 +24,15 @@ class Soslaundry extends Public_Controller
      */
     public function index()
     {
+        $params = $this->input->post();
+        /*print_r("<pre>");var_dump($params);die('==');*/
+
         $this->form_validation->set_rules('first_name', 'First name', 'required');
         $this->form_validation->set_rules('last_name', 'Last name', 'required');
         $this->form_validation->set_rules('phone1', 'Phone 1', 'required');
         $this->form_validation->set_rules('phone2', 'Phone 2', 'required');
-        $this->form_validation->set_rules('phone3', 'Phone 3', 'required');
+        $phone = $params['phone1'].'-'.$params['phone2'].'-'.$params['phone3'];
+        $this->form_validation->set_rules('phone3', 'Phone 3', 'callback_check_phone['.$phone.']');
         $this->form_validation->set_rules('hotel', 'Hotel', 'required');
         $this->form_validation->set_rules('email', 'Email', 'callback_check_email');
         $msg = '';
@@ -38,9 +42,7 @@ class Soslaundry extends Public_Controller
         }
         else
         {
-            $params = $this->input->post();
-            /*print_r("<pre>");var_dump($params);die('==');*/
-            $phone = $params['phone1'].'-'.$params['phone1'].'-'.$params['phone3'];
+
             $params['phone'] = $phone;
             if($this->winner_m->create($params)){
                 $email = $this->settings_m->get("server_email");
@@ -67,10 +69,18 @@ class Soslaundry extends Public_Controller
     }
     public function check_email($email)
     {
-
         $emails_saved = $this->winner_m->getAllEmail();
         if(in_array($email,$emails_saved)){
             $this->form_validation->set_message('check_email', 'Email address you entered already existed');
+            return false;
+        }
+        return true;
+    }
+    public function check_phone($phone3,$phone)
+    {
+        $phone_saved = $this->winner_m->getAllPhone();
+        if(in_array($phone,$phone_saved)){
+            $this->form_validation->set_message('check_phone', 'Phone number you entered already existed');
             return false;
         }
         return true;
