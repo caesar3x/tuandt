@@ -63,9 +63,8 @@
     </div>
 
 </div>
-<div class="fieldset">
-	<p class="laundry-note">Not responsible for any damage caused to laundry or for any lost laundry.</p>
-</div>
+
+	<p class="laundry-note" >Not responsible for any damage caused to laundry or for any lost laundry.</p>
 </form>
-<div class="clear">&nbsp;</div>
+<!--div class="clear">&nbsp;</div-->
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->

@@ -154,4 +154,6 @@ td, th {
 .faq_page > ul > li > ul > li > ul{margin-left: 20px;}
 .faq_page > ul > li > ul > li > ul > li{margin-left: 20px;}
 
-.agree-to-the-rules .footer-bottom{display: none;}
+.footer-bottom p{margin-bottom: 0px;}
+.agree-to-the-rules .footer-bottom{min-height: 30px;}
+.agree-to-the-rules .footer-bottom p{display: none;}
