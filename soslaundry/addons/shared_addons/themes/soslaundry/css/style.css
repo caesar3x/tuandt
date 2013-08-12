@@ -63,7 +63,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0ffffff', e
 }
 p.note {font-size:18px; font-style:italic;line-height:24px}
 
-.god{font-size:25px; line-height:38px}
+.god{font-size:20px; line-height:25px}
 .god p{margin-bottom:10px}
 .god p.complete{font-size: 24px;}
 .luck{font-size:54px;margin-bottom:0px}
@@ -81,11 +81,11 @@ form .agree,form .faq {float:right;font-size:15px; text-align:right; padding-rig
 form .agree input{width:auto; height:auto; margin-right:10px;}
 form .agree a,form .faq a,form .agree span{font-size:20px;text-decoration:underline;color:#014289;text-shadow:0 0 18px #fff;float:right; line-height:38px}
 form .agree span{text-decoration: none;}
-form .faq{padding-right: 160px;}
+form .faq{padding-right: 33px;}
 button.submit {padding-top: 4px;width:179px; height:48px; line-height:48px; font-size:35px;font-family:Poplar Std; text-transform:uppercase;
     background:url(./images/button.png) center center no-repeat; border:none; color:#014289;cursor: pointer;margin-right:32px}
 
-.fieldset  .select_hotel{margin-top: 76px;width:316px; height:41px; padding:3px 0px; background:url(./images/select.png) right center no-repeat; overflow:hidden;float:left; margin-left:98px}
+.fieldset  .select_hotel{margin-top: 39px;width:316px; height:41px; padding:3px 0px; background:url(./images/select.png) right center no-repeat; overflow:hidden;float:left; margin-left:98px}
 select.hotel{height:41px; background:#fff; line-height:21px; border:none; background:none; font-size:15px; color:#014289;
     padding:10px 0px 10px 20px;width:333px}
 
@@ -97,6 +97,9 @@ footer {position:relative}
 .checkbox input{display:none}
 .checkbox{height:30px; width:30px; background:url(images/check.png)center center no-repeat; display:block; float:right}
 .checkbox.checked{background:url(images/checked.png)center center no-repeat;}
+
+.laundry-note {text-align:center; margin:0px; font-size:12px }
+
 /****/
 
 
@@ -150,3 +153,5 @@ td, th {
 .faq_page > ul > li > ul > li{margin-left: 20px;}
 .faq_page > ul > li > ul > li > ul{margin-left: 20px;}
 .faq_page > ul > li > ul > li > ul > li{margin-left: 20px;}
+
+.agree-to-the-rules .footer-bottom{display: none;}

@@ -17,7 +17,7 @@
     .god p{font-size: 16px;line-height: 25px;}
     .god p.complete{font-size: 20px;}
     .luck{font-size: 32px;}
-    form .faq{width: 100%;padding-right: 118px;}
+    form .faq{width: 100%;padding-right: 0px;}
 }
 
 @media only screen and (min-width: 480px)  and  (max-width: 599px) {
@@ -44,7 +44,7 @@
     .god p{font-size: 16px;line-height: 25px;}
     .god p.complete{font-size: 20px;}
     .luck{font-size: 32px;}
-    form .faq{width: 100%;padding-right: 160px;}
+    form .faq{width: 100%;padding-right: 33px;}
 }
 
 @media only screen and (min-width: 320px)  and (max-width: 479px) {
@@ -68,7 +68,7 @@
     button.submit{margin:10px 0 0;font-weight:bold;padding-right: 0px;}
     .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
     .baseball {width:80px; position:absolute;top:-60px; left:15px}
-    form .faq{width: 100%;padding-right: 118px;}
+    form .faq{width: 100%;padding-right: 0px;}
 }
 @media only screen and (max-width: 319px) {
     body{min-width:320px; font-size:16px; line-height:22px}
@@ -91,5 +91,5 @@
     button.submit{margin:10px 0 0;font-weight:bold;padding-right: 0px;}
     .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
     .baseball {width:130px; position:absolute;top:-75px; left:30px}
-    form .faq{width: 100%;padding-right: 118px;}
+    form .faq{width: 100%;padding-right: 0px;}
 }

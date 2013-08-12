@@ -58,13 +58,13 @@
         <p class="agree">
             <a target="_blank" href="<?php echo base_url('agree-to-the-rules');?>"><?php echo '&nbsp'.lang('soslaundry:rules_text'); ?></a><span><?php echo lang('soslaundry:agree_text');?></span><span class="checkbox"><input type="checkbox"  name="agree" id="txtRule"/></span>
         </p>
-        <div class="faq"><a target="_blank" href="<?php echo base_url('faqs');?>"><?php echo lang('soslaundry:faq'); ?></a></div>
         <button class="right submit" title="Submit" type="submit">Submit</button>
+        <div class="faq"><a target="_blank" href="<?php echo base_url('faqs');?>"><?php echo lang('soslaundry:faq'); ?></a></div>
     </div>
 
 </div>
 <div class="fieldset">
-	<p class="laundry-note" style="font-size: 12px; text-align: right;">Not responsible for any damage caused to laundry or for any lost laundry.</p>
+	<p class="laundry-note">Not responsible for any damage caused to laundry or for any lost laundry.</p>
 </div>
 </form>
 <div class="clear">&nbsp;</div>

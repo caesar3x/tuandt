@@ -34,7 +34,7 @@ $lang['soslaundry:form_title'] = 'Register Information';
 $lang['soslaundry:choose_hotel'] = 'Choose the hotel you\'re staying at';
 $lang['soslaundry:submit_label'] = 'Submit';
 $lang['soslaundry:agree_text'] = 'Agree to the';
-$lang['soslaundry:rules_text'] = 'rules';
+$lang['soslaundry:rules_text'] = 'Rules';
 /// form validate
 $lang['soslaundry:firstname_empty'] = 'Please enter your first name';
 $lang['soslaundry:lastname_empty'] = 'Please enter your last name';
