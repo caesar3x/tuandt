@@ -43,19 +43,29 @@ input{border-radius:2px; border:none;color:#999999;}
 strong{font-weight:bold}
 img{max-width:100%}
 p{margin-bottom:30px}
-.container {margin:0 auto; width:768px}
+.container {}
 
-body {background:#ddd;}
-#wrapper {background:url(./images/bg_wrap.png) center bottom no-repeat #fff; margin:0 auto; width:768px}
+#wrapper  {background:url(./images/bg_wrap_2.png) center bottom no-repeat #3389c9; margin:0 auto; width:768px;}
+.container{ background:url(./images/bubbles.png) center top no-repeat}
 header{position:relative}
+header a{display:block;margin-bottom:-43px}
 .logo1 {width:114px; height:94px; position:absolute; top:45px; left:70px; display:none}
 .logo2 {width:209px; height:170px; position:absolute; top:0px; right:0px;display:none}
 
-#content {min-height:542px; padding:16px 40px 10px; text-align:center}
+#content {min-height:542px; padding:56px 40px 10px; text-align:center;
+background: -moz-linear-gradient(top,  rgba(255,255,255,0.88) 64%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(64%,rgba(255,255,255,0.88)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,0.88) 64%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,0.88) 64%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,0.88) 64%,rgba(255,255,255,0) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,0.88) 64%,rgba(255,255,255,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+}
 p.note {font-size:18px; font-style:italic;line-height:24px}
 
 .god{font-size:25px; line-height:38px}
 .god p{margin-bottom:10px}
+.god p.complete{font-size: 24px;}
 .luck{font-size:54px;margin-bottom:0px}
 
 form{}
@@ -67,21 +77,22 @@ form{}
 form  input:focus{border:1px solid #014289;}
 .fieldset .mobile label.note {float:left; line-height:40px; padding:0px 5px}
 .fieldset .mobile input{width:66px;float:left}
-form .agree {float:right;font-size:15px; text-align:right; padding-right:48px; margin:0;overflow: hidden;}
+form .agree,form .faq {float:right;font-size:15px; text-align:right; padding-right:36px; margin:0;overflow: hidden;}
 form .agree input{width:auto; height:auto; margin-right:10px;}
-form .agree a{font-size:20px;text-decoration:underline;color:#014289;text-shadow:0 0 18px #fff;float:right; line-height:38px}
-
+form .agree a,form .faq a,form .agree span{font-size:20px;text-decoration:underline;color:#014289;text-shadow:0 0 18px #fff;float:right; line-height:38px}
+form .agree span{text-decoration: none;}
+form .faq{padding-right: 160px;}
 button.submit {padding-top: 4px;width:179px; height:48px; line-height:48px; font-size:35px;font-family:Poplar Std; text-transform:uppercase;
     background:url(./images/button.png) center center no-repeat; border:none; color:#014289;cursor: pointer;margin-right:32px}
 
-.fieldset  .select_hotel{margin-top: 40px;width:316px; height:41px; padding:3px 0px; background:url(./images/select.png) right center no-repeat; overflow:hidden;float:left; margin-left:108px}
+.fieldset  .select_hotel{margin-top: 76px;width:316px; height:41px; padding:3px 0px; background:url(./images/select.png) right center no-repeat; overflow:hidden;float:left; margin-left:98px}
 select.hotel{height:41px; background:#fff; line-height:21px; border:none; background:none; font-size:15px; color:#014289;
     padding:10px 0px 10px 20px;width:333px}
 
 footer {position:relative}
 .baseball {width:130px; position:absolute;top:-75px; left:30px}
 .footer{padding:9px 5px 5px 16px}
-.footer-bottom{background:url(./images/footer-bottom.png) center top no-repeat; font-size:10px; line-height:12px; padding:10px 20px 5px; color:#fff;text-align: justify;font-family:helveticaneue}
+.footer-bottom{background:#014289; font-size:10px; line-height:12px; padding:10px 20px 5px; color:#fff;text-align: justify;font-family:helveticaneue}
 
 .checkbox input{display:none}
 .checkbox{height:30px; width:30px; background:url(images/check.png)center center no-repeat; display:block; float:right}
@@ -113,6 +124,9 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
+table p{
+    margin-bottom: 0px;
+}
 /* Zebra striping */
 tr:nth-of-type(odd) {
     background: #eee;
@@ -127,3 +141,12 @@ td, th {
     border: 1px solid #ccc;
     text-align: left;
 }
+.fieldset > div.submit_group{float: right !important;width: 240px;}
+.faq_page{text-align: justify;font-size: 14px;}
+.faq_page p{margin-bottom: 0px;}
+.faq_page > ul{margin-left: 20px;}
+.faq_page > ul > li{margin-left: 20px;}
+.faq_page > ul > li > ul{margin-left: 20px;}
+.faq_page > ul > li > ul > li{margin-left: 20px;}
+.faq_page > ul > li > ul > li > ul{margin-left: 20px;}
+.faq_page > ul > li > ul > li > ul > li{margin-left: 20px;}

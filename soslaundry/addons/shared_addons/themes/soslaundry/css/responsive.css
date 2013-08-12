@@ -1,5 +1,5 @@
 @charset "utf-8";
-/* CSS Document */
+/* CSS Document */.agree-to-the-rules    #content{padding:16px 30px 50px}
 @media only screen and (min-width: 600px) and (max-width: 767px) {
     body{min-width:600px}
     #wrapper{width:600px}
@@ -10,9 +10,14 @@
     .fieldset{padding-left:20px}
     .fieldset input {width:210px}
     .fieldset .mobile input {width:56px; padding:0px 5px}
-    button.submit{margin:0px;font-weight:bold;}
-    .fieldset .select_hotel { margin: 40px 0px 0px;}
+    button.submit{margin:0px;font-weight:bold;padding-right: 0px;}
+    .fieldset .select_hotel { margin: 0px 0px 0px; float:right}
     form .agree{padding-right: 0px;}
+    .baseball {width:100px; position:absolute;top:-55px; left:30px}
+    .god p{font-size: 16px;line-height: 25px;}
+    .god p.complete{font-size: 20px;}
+    .luck{font-size: 32px;}
+    form .faq{width: 100%;padding-right: 118px;}
 }
 
 @media only screen and (min-width: 480px)  and  (max-width: 599px) {
@@ -28,12 +33,18 @@
     p.note{font-size:15px}
 
     .fieldset > div{width:100%}
+    .fieldset > div.submit_group{width:100%}
     .fieldset{padding-left:20px}
     .fieldset input {width:360px}
     .fieldset .mobile input {width:96px}
-    button.submit{margin:10px 38px 0 0;font-weight:bold;}
-    .fieldset .select_hotel { margin:40px 38px 0 0; float:right}
-    form .agree{padding-right: 0px;}
+    button.submit{margin:10px 38px 0 0;font-weight:bold;padding-right: 0px;}
+    .fieldset .select_hotel { margin:0px 38px 0 0; float:right}
+    form .agree{padding-right: 37px;}
+    .baseball {width:98px; position:absolute;top:-55px; left:30px}
+    .god p{font-size: 16px;line-height: 25px;}
+    .god p.complete{font-size: 20px;}
+    .luck{font-size: 32px;}
+    form .faq{width: 100%;padding-right: 160px;}
 }
 
 @media only screen and (min-width: 320px)  and (max-width: 479px) {
@@ -47,13 +58,17 @@
     .luck{font-size:46px}
     p.note{font-size:13px}
     .fieldset > div{width:100%}
+    .fieldset > div.submit_group{width:100%}
+    form .agree{padding-right: 0px;}
     .fieldset{padding:0}
     .fieldset input{width:260px}
     .fieldset .mobile input{width:63px}
     .fieldset .select_hotel{width:290px}
     select.hotel{padding-left:5px}
-    button.submit{margin:10px 0 0;font-weight:bold;}
+    button.submit{margin:10px 0 0;font-weight:bold;padding-right: 0px;}
     .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
+    .baseball {width:80px; position:absolute;top:-60px; left:15px}
+    form .faq{width: 100%;padding-right: 118px;}
 }
 @media only screen and (max-width: 319px) {
     body{min-width:320px; font-size:16px; line-height:22px}
@@ -66,11 +81,15 @@
     .luck{font-size:46px}
     p.note{font-size:13px}
     .fieldset > div{width:100%}
+    .fieldset > div.submit_group{width:100%}
+    form .agree{padding-right: 0px;}
     .fieldset{padding:0}
     .fieldset input{width:260px}
     .fieldset .mobile input{width:63px}
     .fieldset .select_hotel{width:290px}
     select.hotel{padding-left:5px}
-    button.submit{margin:10px 0 0;font-weight:bold;}
+    button.submit{margin:10px 0 0;font-weight:bold;padding-right: 0px;}
     .fieldset .select_hotel { margin: 40px 0px 0px; float:right}
+    .baseball {width:130px; position:absolute;top:-75px; left:30px}
+    form .faq{width: 100%;padding-right: 118px;}
 }
