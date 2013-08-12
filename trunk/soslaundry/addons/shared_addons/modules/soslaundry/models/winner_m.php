@@ -48,7 +48,17 @@ class Winner_m extends MY_Model {
         }
         return $emails;
     }
-
+    public function getAllPhone()
+    {
+        $numbers = array();
+        $data = $this->get_all();
+        if(!empty($data)){
+            foreach($data as $item){
+                $numbers[] = $item->phone;
+            }
+        }
+        return $numbers;
+    }
     /**
      * Get random winner with limit
      * @param $limit
