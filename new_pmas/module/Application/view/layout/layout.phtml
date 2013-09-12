@@ -13,8 +13,7 @@
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/jquery-ui-1.8.4.custom.css')
-                        ->prependStylesheet($this->basePath() . '/css/demo_table_jui.css')
+                        ->prependStylesheet($this->basePath() . '/css/demo_table.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
 
@@ -31,7 +30,12 @@
     </head>
     <body>
     <?php echo $this->partial('partial/menu.phtml')?>
-    <?php echo $this->partial('partial/breadcrumbs.phtml')?>
+    <?php
+    echo $this->navigation('navigation') // <-- Update this!!
+        ->breadcrumbs()
+        ->setMinDepth(0)
+        ->setPartial('admin/breadcrumbs');
+    ?>
         <div class="container">
             <?php echo $this->content; ?>
             <hr>

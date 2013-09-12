@@ -8,6 +8,7 @@ return array(
         'application\index\index',
         'application\index\test',
         'application\admin\index',
+        'application\admin\users',
     ),
     'editor'=> array(
         'application\login\index',

@@ -26,10 +26,10 @@ return array(
                 'action' => 'index',
             ),
             array(
-                'label' => 'Quản trị',
+                'label' => 'Manage Users',
                 'route' => 'admin',
                 'controller' => 'admin',
-                'action' => 'index',
+                'action' => 'users',
                 'pages' => array(
                     array(
                         'label' => 'Thêm quản trị',
