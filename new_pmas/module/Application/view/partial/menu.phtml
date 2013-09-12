@@ -1,0 +1,75 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/12/13
+ */
+?>
+<nav class="navbar navbar-inner navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="<?php echo $this->url('admin') ?>">&nbsp;<?php echo $this->translate('PMAS') ?></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active dropdown">
+                    <a href="<?php echo $this->url('admin') ?>" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->translate('System') ?> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header"><strong><?php echo $this->translate('PERMISSION');?></strong></li>
+                        <li><a href="#"><?php echo $this->translate('Manage Users')?></a></li>
+                        <li><a href="#"><?php echo $this->translate('Users Roles')?></a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><?php echo $this->translate('Manage Resouces')?></a></li>
+                        <li><a href="#"><?php echo $this->translate('Manage History')?></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo $this->translate('Manage System') ?> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+
+                        <li class="dropdown-header"><?php echo $this->translate('Facilities') ?></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/schools"><?php echo $this->translate('Manage School/Branch') ?></a></li>
+                        <li></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/rooms"><?php echo $this->translate('Manage Rooms') ?></a></li>
+                        <li></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/rooms/timetable"><?php echo $this->translate('Manage Timetables') ?></a>
+                        </li>
+                        <li></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header"><?php echo $this->translate('Courses &amp; Lessons') ?></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/courses"><?php echo $this->translate('Manage Courses') ?></a></li>
+                        <li></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/lessons"><?php echo $this->translate('Manage Lessons') ?></a></li>
+                        <li></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/attendance"><?php echo $this->translate('Manage Attendance') ?></a></li>
+                        <li></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header"><?php echo $this->translate('Students') ?></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/students"><?php echo $this->translate('Manage Students') ?></a></li>
+                        <li></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/invoices"><?php echo $this->translate('Manage Invoices') ?></a></li>
+                        <li></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header"><?php echo $this->translate('Teachers') ?></li>
+                        <li><a href="/outwork/schoolmgtsys/public/admin/teachers"><?php echo $this->translate('Manage Teachers') ?></a></li>
+                        <li>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="pull-right">
+                <div class="btn-group pull-right">
+                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
+                        <i class="glyphicon glyphicon-user"></i>
+                        admin@mail.com
+                        <i class="caret"></i>
+                    </a>
+                </div>
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>

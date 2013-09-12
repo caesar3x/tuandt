@@ -62,42 +62,6 @@ class Module
                     $authService->setStorage($storage);
                     return $authService;
                 },
-                'AdminUserTable' =>  function($sm) {
-                    $tableGateway = $sm->get('AdminUserTableGateway');
-                    $table = new AdminUserTable($tableGateway);
-                    $table->setServiceLocator($sm);
-                    return $table;
-                },
-                'AdminUserTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new AdminUser());
-                    return new TableGateway('admin_user', $dbAdapter, null, $resultSetPrototype);
-                },
-                'TermsTable' => function($sm) {
-                    $tableGateway = $sm->get('TermsTableGateway');
-                    $table = new TermsTable($tableGateway);
-                    $table->setServiceLocator($sm);
-                    return $table;
-                },
-                'TermsTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Terms());
-                    return new TableGateway('terms', $dbAdapter, null, $resultSetPrototype);
-                },
-                'TermTaxonomyTable' => function($sm) {
-                    $tableGateway = $sm->get('TermTaxonomyTableGateway');
-                    $table = new TermTaxonomyTable($tableGateway);
-                    $table->setServiceLocator($sm);
-                    return $table;
-                },
-                'TermTaxonomyTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new TermTaxonomy());
-                    return new TableGateway('term_taxonomy', $dbAdapter, null, $resultSetPrototype);
-                },
             ),
         );
     }
