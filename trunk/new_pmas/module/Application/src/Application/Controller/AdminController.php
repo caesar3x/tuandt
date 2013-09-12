@@ -23,4 +23,12 @@ class AdminController extends AbstractActionController
         $view = new ViewModel();
         return $view;
     }
+    public function usersAction()
+    {
+        $view = new ViewModel();
+        $pluginManager = $this->getServiceLocator()->get('viewHelperManager');
+        $helper        = $pluginManager->get('HeadTitle');
+        $helper->append('Manage Users');
+        return $view;
+    }
 }

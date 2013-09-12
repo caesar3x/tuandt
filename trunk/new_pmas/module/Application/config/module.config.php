@@ -60,6 +60,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'admin/breadcrumbs'           => __DIR__ . '/../view/partial/breadcrumbs.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'application/admin/index' => __DIR__ . '/../view/application/admin/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
