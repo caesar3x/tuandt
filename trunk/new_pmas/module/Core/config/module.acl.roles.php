@@ -6,23 +6,19 @@
 return array(
     'guest' => array(
         'application\index\index',
+        'application\index\test',
+        'application\admin\index',
     ),
     'editor'=> array(
-        'backend\login\index',
-        'backend\login\auth',
-        'backend\index\index',
-        'backend\logout\index',
+        'application\login\index',
+        'application\login\auth',
+        'application\index\index',
+        'application\logout\index',
+        'application\admin\index',
+        'application\admin\add',
+        'application\admin\edit',
     ),
     'admin'=> array(
-        'backend\admin\index',
-        'backend\admin\add',
-        'backend\admin\edit',
-        'backend\admin\delete',
-        'backend\term\index',
-        'backend\term\add-category',
-        'backend\term\edit-category',
-        'backend\term\delete',
-        'backend\term\category',
-        'backend\term\tag',
+        'application\admin\delete'
     ),
 );

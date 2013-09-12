@@ -20,7 +20,7 @@ return array(
     'navigation' => array(
         'default' => array(
             array(
-                'label' => 'Thông tin',
+                'label' => 'Dashboard',
                 'route' => 'admin',
                 'controller' => 'index',
                 'action' => 'index',
