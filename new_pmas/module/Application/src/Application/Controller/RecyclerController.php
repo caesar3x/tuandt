@@ -15,4 +15,14 @@ class RecyclerController extends AbstractActionController
         $view = new ViewModel();
         return $view;
     }
+    public function addAction()
+    {
+        $view = new ViewModel();
+        return $view;
+    }
+    public function detailAction()
+    {
+        $view = new ViewModel();
+        return $view;
+    }
 }

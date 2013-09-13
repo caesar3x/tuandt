@@ -10,6 +10,8 @@ return array(
         'application\admin\index',
         'application\admin\users',
         'application\recycler\index',
+        'application\recycler\add',
+        'application\recycler\detail',
     ),
     'editor'=> array(
         'application\login\index',
