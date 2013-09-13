@@ -14,7 +14,8 @@ return array(
         ),
         'factories' => array(
             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
-            'secondary_navigation' => 'Core\Navigation\Service\SecondaryNavigationFactory'
+            'secondary_navigation' => 'Core\Navigation\Service\SecondaryNavigationFactory',
+            'top_menu_navigation' => 'Core\Navigation\Service\TopMenuNavigationFactory'
         ),
     ),
     'navigation' => array(
@@ -80,66 +81,70 @@ return array(
                 ),
             ),
         ),
-        'secondary_navigation' => array(
+        'top_menu_navigation' => array(
             array(
-                'label' => 'Thông tin Secondary',
+                'label' => 'Dashboard',
                 'route' => 'admin',
                 'controller' => 'index',
                 'action' => 'index',
             ),
             array(
-                'label' => 'Quản trị Secondary',
+                'label' => 'Recycler',
                 'route' => 'admin',
-                'controller' => 'admin',
+                'controller' => 'recycler',
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Thêm quản trị Secondary',
+                        'label' => 'Manage Recycler',
                         'route' => 'admin',
-                        'controller' => 'admin',
-                        'action' => 'add',
+                        'controller' => 'recycler',
+                        'action' => 'index',
                     ),
                     array(
-                        'label' => 'Sửa quản trị Secondary',
+                        'label' => 'Add Recycler',
                         'route' => 'admin',
-                        'controller' => 'admin',
-                        'action' => 'edit',
+                        'controller' => 'recycler',
+                        'action' => 'addd',
                     ),
                 ),
             ),
             array(
-                'label' => 'Nội dung Secondary',
+                'label' => 'TDM Model',
                 'route' => 'admin',
-                'controller' => 'term',
+                'controller' => 'model',
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Danh mục Secondary',
+                        'label' => 'Manage Model',
                         'route' => 'admin',
-                        'controller' => 'term',
-                        'action' => 'category',
-                        'pages' => array(
-                            array(
-                                'label' => 'Thêm danh mục Secondary',
-                                'route' => 'admin',
-                                'controller' => 'term',
-                                'action' => 'add',
-                            ),
-                            array(
-                                'label' => 'Sửa danh mục Secondary',
-                                'route' => 'admin',
-                                'controller' => 'term',
-                                'action' => 'edit',
-                            ),
-                        ),
+                        'controller' => 'model',
+                        'action' => 'index',
                     ),
                     array(
-                        'label' => 'Tags',
+                        'label' => 'Add Model',
                         'route' => 'admin',
-                        'controller' => 'term',
-                        'action' => 'tag',
+                        'controller' => 'model',
+                        'action' => 'add',
                     ),
                 ),
+            ),
+            array(
+                'label' => 'Exchange Rate',
+                'route' => 'admin',
+                'controller' => 'model',
+                'action' => 'index',
+            ),
+            array(
+                'label' => 'System',
+                'route' => 'admin',
+                'controller' => 'model',
+                'action' => 'index',
+            ),
+            array(
+                'label' => 'Help',
+                'route' => 'admin',
+                'controller' => 'model',
+                'action' => 'index',
             ),
         ),
     ),
