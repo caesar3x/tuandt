@@ -1,0 +1,142 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/14/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h3>Exchange Rate</h3>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <span>Set time:</span>
+                <div class="clearfix">&nbsp;</div>
+                <div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Start time</span>
+                        <input class="form-control datepicker" name="start-time" id="start-time">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">End time</span>
+                        <input class="form-control datepicker" name="end-time" id="end-time">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <span>Select currency:</span>
+                <div class="clearfix">&nbsp;</div>
+                <div>
+                    <select class="form-control" style="width: 90px;">
+                        <option>USD</option>
+                        <option>HKD</option>
+                    </select>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <br/>
+                <br/>
+                <div>
+                    <ul class="nav-tabs nav-pills" data-tabs="tabs" id="model-view-tabs">
+                        <li>
+                            <a class="btn btn-sm" data-toggle="tab" href="#chart-view">
+                                <i class="glyphicon glyphicon-stats"></i>
+                                Chart
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="btn btn-sm" data-toggle="tab" href="#table-view">
+                                <i class="glyphicon glyphicon-th"></i>
+                                Table
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="table-view">
+                        <div class="pull-right">
+                            <a class="btn">
+                                Export to
+                            </a>
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Data format <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a>CSV</a></li>
+                                    <li><a>Excel</a></li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-warning btn-sm">
+                                <i class="glyphicon glyphicon-export"></i>
+                                Export
+                            </a>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                                <th><?php echo $this->translate('Date')?></th>
+                                <th><?php echo $this->translate('Price')?></th>
+                                <th><?php echo $this->translate('Price in HKD')?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="chart-view">
+                        Chart view
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
