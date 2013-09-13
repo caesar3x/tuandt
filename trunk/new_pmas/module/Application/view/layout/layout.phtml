@@ -4,19 +4,16 @@
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle()->setSeparator(' :: ')->setAutoEscape(false)->prepend($this->translate('PMAS')) ?>
-
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
-
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath() . '/css/style.css')
                         ->prependStylesheet($this->basePath() . '/css/demo_table.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
-
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->prependFile($this->basePath() . '/js/pmas.js')
@@ -26,17 +23,45 @@
             ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
         ; ?>
-
     </head>
     <body>
-    <?php echo $this->partial('partial/menu.phtml')?>
+
     <?php
-    echo $this->navigation('navigation') // <-- Update this!!
+    /*echo $this->navigation('navigation')
         ->breadcrumbs()
         ->setMinDepth(0)
-        ->setPartial('admin/breadcrumbs');
+        ->setPartial('admin/breadcrumbs');*/
     ?>
+    <header>
         <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h1><?php echo $this->translate('Device model Admin');?></h1>
+                </div>
+                <div class="col-md-9">
+                    <div class="col-md-5">
+                        <img src="<?php echo $this->basePath('images/banner468x60.jpg')?>">
+                    </div>
+                    <div class="col-md-7">
+                        <ul class="pull-right header-items">
+                            <li>Logged in as <a class="btn-link">Admin</a> |</li>
+                            <li><?php echo date('l, F j, Y',time())?> |</li>
+                            <li><a class="btn-link"><?php echo $this->translate('Logout');?></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <?php
+    echo $this->navigation('top_menu_navigation')
+        ->menu()
+        ->setMinDepth(0)
+        ->setPartial('admin/topmenu');
+    ?>
+
+    <div class="container">
             <?php echo $this->content; ?>
             <hr>
             <footer>
