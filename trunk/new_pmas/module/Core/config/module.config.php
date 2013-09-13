@@ -19,68 +19,6 @@ return array(
         ),
     ),
     'navigation' => array(
-        'default' => array(
-            array(
-                'label' => 'Dashboard',
-                'route' => 'admin',
-                'controller' => 'index',
-                'action' => 'index',
-            ),
-            array(
-                'label' => 'Manage Users',
-                'route' => 'admin',
-                'controller' => 'admin',
-                'action' => 'users',
-                'pages' => array(
-                    array(
-                        'label' => 'Thêm quản trị',
-                        'route' => 'admin',
-                        'controller' => 'admin',
-                        'action' => 'add',
-                    ),
-                    array(
-                        'label' => 'Sửa quản trị',
-                        'route' => 'admin',
-                        'controller' => 'admin',
-                        'action' => 'edit',
-                    ),
-                ),
-            ),
-            array(
-                'label' => 'Nội dung',
-                'route' => 'admin',
-                'controller' => 'term',
-                'action' => 'index',
-                'pages' => array(
-                    array(
-                        'label' => 'Danh mục',
-                        'route' => 'admin',
-                        'controller' => 'term',
-                        'action' => 'category',
-                        'pages' => array(
-                            array(
-                                'label' => 'Thêm danh mục',
-                                'route' => 'admin',
-                                'controller' => 'term',
-                                'action' => 'add',
-                            ),
-                            array(
-                                'label' => 'Sửa danh mục',
-                                'route' => 'admin',
-                                'controller' => 'term',
-                                'action' => 'edit',
-                            ),
-                        ),
-                    ),
-                    array(
-                        'label' => 'Tags',
-                        'route' => 'admin',
-                        'controller' => 'term',
-                        'action' => 'tag',
-                    ),
-                ),
-            ),
-        ),
         'top_menu_navigation' => array(
             array(
                 'label' => 'Dashboard',
@@ -104,7 +42,7 @@ return array(
                         'label' => 'Add Recycler',
                         'route' => 'admin',
                         'controller' => 'recycler',
-                        'action' => 'addd',
+                        'action' => 'add',
                     ),
                 ),
             ),
@@ -131,8 +69,22 @@ return array(
             array(
                 'label' => 'Exchange Rate',
                 'route' => 'admin',
-                'controller' => 'model',
+                'controller' => 'exchange',
                 'action' => 'index',
+                'pages' => array(
+                    array(
+                        'label' => 'Historical Date',
+                        'route' => 'admin',
+                        'controller' => 'exchange',
+                        'action' => 'index',
+                    ),
+                    array(
+                        'label' => 'Update Exchange Rate',
+                        'route' => 'admin',
+                        'controller' => 'exchange',
+                        'action' => 'update',
+                    ),
+                )
             ),
             array(
                 'label' => 'System',

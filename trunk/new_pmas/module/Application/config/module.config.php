@@ -52,6 +52,7 @@ return array(
             'Application\Controller\Admin' => 'Application\Controller\AdminController',
             'Application\Controller\Recycler' => 'Application\Controller\RecyclerController',
             'Application\Controller\Model' => 'Application\Controller\ModelController',
+            'Application\Controller\Exchange' => 'Application\Controller\ExchangeController',
         ),
     ),
     'view_manager' => array(

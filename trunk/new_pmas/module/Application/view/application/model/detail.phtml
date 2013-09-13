@@ -215,7 +215,150 @@
             <div class="tab-pane" id="historical-prices">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row form-row">
+                                    <div class="col-md-2">
+                                        <a class="btn btn-outline">Set time :</a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="pull-left">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-addon">Start time</span>
+                                                    <input class="form-control datepicker" name="start-time" id="start-time">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="pull-left">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-addon">End time</span>
+                                                    <input class="form-control datepicker" name="end-time" id="end-time">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="pull-left margin20">
+                                                <input type="radio" name="every">
+                                                <span>Every hour</span>
+                                                <input type="radio" name="every">
+                                                <span>Every day</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-row">
+                                    <div class="col-md-2">
+                                        <a class="btn btn-outline">Search by :</a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <input type="radio" name="search">
+                                            <span>Recycler</span>
+                                            <select>
+                                                <option>Recycler Name</option>
+                                                <option></option>
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div class="row form-row">
+                                            <input type="radio" name="search">
+                                            <span>Highest price</span>
+                                        </div>
 
+                                    </div>
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
+                                <div class="pull-right">
+                                    <ul class="nav-tabs nav-pills" data-tabs="tabs" id="model-view-tabs">
+                                        <li>
+                                            <a class="btn btn-sm" data-toggle="tab" href="#chart-view">
+                                                <i class="glyphicon glyphicon-stats"></i>
+                                                Chart
+                                            </a>
+                                        </li>
+                                        <li class="active">
+                                            <a class="btn btn-sm" data-toggle="tab" href="#table-view">
+                                                <i class="glyphicon glyphicon-th"></i>
+                                                Table
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn">
+                                Export to
+                            </a>
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Data format <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a>CSV</a></li>
+                                    <li><a>Excel</a></li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-warning btn-sm">
+                                <i class="glyphicon glyphicon-export"></i>
+                                Export
+                            </a>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="table-view">
+                                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                                                <th><?php echo $this->translate('Date')?></th>
+                                                <th><?php echo $this->translate('Price')?></th>
+                                                <th><?php echo $this->translate('Price in HKD')?></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="chart-view">
+                                        Chart view
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

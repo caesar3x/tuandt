@@ -52,7 +52,7 @@
                             </a>
                             <div class="btn-group">
                                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Small button <span class="caret"></span>
+                                    Data format <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a>CSV</a></li>
@@ -77,7 +77,7 @@
                                 <th><?php echo $this->translate('Device Model')?></th>
                                 <th><?php echo $this->translate('Base Price')?></th>
                                 <th><?php echo $this->translate('Exchange Price')?></th>
-                                <th><?php echo $this->translate('Data')?></th>
+                                <th><?php echo $this->translate('Date')?></th>
                                 <th><?php echo $this->translate('TMD Model')?></th>
                                 <th><?php echo $this->translate('TMD Price')?></th>
                             </tr>
@@ -85,10 +85,10 @@
                             <tbody>
                             <tr>
                                 <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>2</td>
-                                <td>Admin</td>
-                                <td>Vietnam</td>
-                                <td>admin2@mail.com</td>
+                                <td>1</td>
+                                <td>Device 1</td>
+                                <td>100</td>
+                                <td>200</td>
                                 <td>09-13-2014</td>
                                 <td></td>
                                 <td></td>
@@ -96,30 +96,30 @@
                             <tr>
                                 <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
                                 <td>2</td>
-                                <td>Admin</td>
-                                <td>Vietnam</td>
-                                <td>admin2@mail.com</td>
-                                <td>09-12-2013</td>
+                                <td>Device 2</td>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>09-13-2014</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>2</td>
-                                <td>Admin</td>
-                                <td>Vietnam</td>
-                                <td>admin2@mail.com</td>
-                                <td>09-13-2013</td>
+                                <td>3</td>
+                                <td>Device 3</td>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>09-13-2014</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>2</td>
-                                <td>Admin</td>
-                                <td>Vietnam</td>
-                                <td>admin2@mail.com</td>
-                                <td>09-13-2013</td>
+                                <td>4</td>
+                                <td>Device 4</td>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>09-13-2014</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -129,36 +129,36 @@
                                 <th><input type="hidden"></th>
                                 <th>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" name="search_id" placeholder="<?php echo $this->translate('Search id')?>" class="form-control search_init" />
+                                        <input type="text" class="form-control search_init" />
                                     </div>
                                 </th>
                                 <th>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" name="search_device" placeholder="<?php echo $this->translate('Search device')?>" class="form-control search_init" />
+                                        <input type="text" class="form-control search_init" />
                                     </div>
                                 </th>
                                 <th>
-                                    <div class="input-group input-group-sm"><input type="text" name="search_price" placeholder="<?php echo $this->translate('Search price')?>" class="form-control search_init" /></div>
+                                    <div class="input-group input-group-sm"><input type="text" class="form-control search_init" /></div>
                                 </th>
                                 <th>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" name="search_ex_price" placeholder="<?php echo $this->translate('Search exchange price')?>" class="form-control search_init" />
+                                        <input type="text" class="form-control search_init" />
                                     </div>
                                 </th>
                                 <th>
                                     <div class="input-group input-group-sm" style="margin-top: 6px;">
-                                        <input type="text" class="form-control search_init datepicker" name="search_data" placeholder="<?php echo $this->translate('Search data')?>">
+                                        <input type="text" class="form-control search_init datepicker">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                     </div>
                                 </th>
                                 <th>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" name="search_tmd_model" placeholder="<?php echo $this->translate('Search model')?>" class="form-control search_init" />
+                                        <input type="text" class="form-control search_init" />
                                     </div>
                                 </th>
                                 <th>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" name="search_tmd_price" placeholder="<?php echo $this->translate('Search price')?>" class="form-control search_init" />
+                                        <input type="text" class="form-control search_init" />
                                     </div>
                                 </th>
                             </tr>

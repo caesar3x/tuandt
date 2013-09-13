@@ -2,7 +2,7 @@ body {
     padding-top: 10px;
     padding-bottom: 40px;
 }
-img{width: 100%;}
+/*img{width: 100%;}*/
 .zf-green {
     color: #68b604;
 }
@@ -48,3 +48,6 @@ div.container a.brand {
 .search-date{min-width: 100px !important;}
 .form-row{margin-top: 10px;}
 .col-save{width: 50px !important;text-align: center;}
+.margin20{margin-left: 20px;}
+#model-view-tabs{border-bottom: none;}
+#model-view-tabs li{list-style: none;}
