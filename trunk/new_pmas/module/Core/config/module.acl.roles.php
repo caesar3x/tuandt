@@ -12,6 +12,9 @@ return array(
         'application\recycler\index',
         'application\recycler\add',
         'application\recycler\detail',
+        'application\model\index',
+        'application\model\add',
+        'application\model\detail',
     ),
     'editor'=> array(
         'application\login\index',
