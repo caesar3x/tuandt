@@ -40,4 +40,11 @@ $(function() {
             this.value = asInitVals[$("tfoot input").index(this)];
         }
     } );
+    /**
+     * check all item
+     */
+    $(".check-all").on("click", function () {
+        var checked = $(this).is(":checked");
+        $(".check-item").prop('checked',checked);
+    });
 } );

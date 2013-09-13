@@ -9,6 +9,7 @@ return array(
         'application\index\test',
         'application\admin\index',
         'application\admin\users',
+        'application\recycler\index',
     ),
     'editor'=> array(
         'application\login\index',

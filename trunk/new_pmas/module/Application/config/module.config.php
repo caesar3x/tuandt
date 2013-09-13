@@ -49,7 +49,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Admin' => 'Application\Controller\AdminController'
+            'Application\Controller\Admin' => 'Application\Controller\AdminController',
+            'Application\Controller\Recycler' => 'Application\Controller\RecyclerController',
         ),
     ),
     'view_manager' => array(
