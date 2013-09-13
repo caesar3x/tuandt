@@ -1,0 +1,119 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/13/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2>Recycler</h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-success btn-sm pull-right add-item">
+            <i class="glyphicon glyphicon-plus"></i>
+            Add new recycler
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="pull-right">
+        <a class="btn btn-default">
+            <i class="glyphicon glyphicon-refresh"></i>
+            Reset filter
+        </a>
+    </div>
+    <table class="display table table-striped table-condensed" id="example" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+            <th><?php echo $this->translate('ID')?></th>
+            <th><?php echo $this->translate('Name')?></th>
+            <th><?php echo $this->translate('Country')?></th>
+            <th><?php echo $this->translate('Email')?></th>
+            <th><?php echo $this->translate('Action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+            <td>1</td>
+            <td>Admin</td>
+            <td>Vietnam</td>
+            <td>admin@mail.com</td>
+            <td>
+                <a class="btn btn-xs btn-primary btn-edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <?php echo $this->translate('Edit')?>
+                </a>
+                <a class="btn btn-xs btn-danger btn-delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete')?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+            <td>2</td>
+            <td>Admin</td>
+            <td>Vietnam</td>
+            <td>admin2@mail.com</td>
+            <td>
+                <a class="btn btn-xs btn-primary btn-edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <?php echo $this->translate('Edit')?>
+                </a>
+                <a class="btn btn-xs btn-danger btn-delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete')?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+            <td>3</td>
+            <td>Admin</td>
+            <td>Vietnam</td>
+            <td>admin3@mail.com</td>
+            <td>
+                <a class="btn btn-xs btn-primary btn-edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <?php echo $this->translate('Edit')?>
+                </a>
+                <a class="btn btn-xs btn-danger btn-delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete')?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+            <td>4</td>
+            <td>Admin</td>
+            <td>Vietnam</td>
+            <td>admin4@mail.com</td>
+            <td>
+                <a class="btn btn-xs btn-primary btn-edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <?php echo $this->translate('Edit')?>
+                </a>
+                <a class="btn btn-xs btn-danger btn-delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete')?>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th><input type="text" name="search_engine" value="<?php echo $this->translate('Search ')?>#" class="search_init" /></th>
+            <th><input type="text" name="search_browser" value="<?php echo $this->translate('Search users id')?>" class="search_init" /></th>
+            <th><input type="text" name="search_platform" value="<?php echo $this->translate('Search first name')?>" class="search_init" /></th>
+            <th><input type="text" name="search_version" value="<?php echo $this->translate('Search last name')?>" class="search_init" /></th>
+            <th><input type="text" name="search_grade" value="<?php echo $this->translate('Search email')?>" class="search_init" /></th>
+            <th></th>
+        </tr>
+        </tfoot>
+    </table>
+</div>

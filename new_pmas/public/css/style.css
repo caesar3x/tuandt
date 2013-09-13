@@ -41,3 +41,5 @@ div.container a.brand {
 .header-items{line-height: 60px;}
 .header-items li{float: left;list-style: none;margin-left: 10px;}
 .nav-top > li{min-width: 150px;}
+.add-item{margin-top: 20px;}
+.col-checkbox{background: none !important;width: 50px !important;text-align: center;}
