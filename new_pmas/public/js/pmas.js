@@ -26,9 +26,9 @@ $(function() {
     } );
 
     $("tfoot input").focus( function () {
-        if ( this.className == "search_init" )
+        if ( $(this).hasClass("search_init"))
         {
-            this.className = "";
+            $(this).removeClass("search_init");
             this.value = "";
         }
     } );
@@ -36,7 +36,7 @@ $(function() {
     $("tfoot input").blur( function (i) {
         if ( this.value == "" )
         {
-            this.className = "search_init";
+            $(this).addClass("search_init");
             this.value = asInitVals[$("tfoot input").index(this)];
         }
     } );
@@ -47,4 +47,14 @@ $(function() {
         var checked = $(this).is(":checked");
         $(".check-item").prop('checked',checked);
     });
+    /**
+     * Datepicker
+     */
+    $('.datepicker').datepicker({
+        format: 'mm-dd-yyyy'
+    });
 } );
+function goToModelDetail()
+{
+    window.location.assign("/model/detail?id=1");
+}

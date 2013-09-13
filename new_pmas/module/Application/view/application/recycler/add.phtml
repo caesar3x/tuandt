@@ -3,3 +3,246 @@
  * Created by Nguyen Tien Dat.
  * Date: 9/13/13
  */
+?>
+<div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-md-10">
+        <div class="page-header">
+            <div class="pull-left">
+                <h3>New Recycler</h3>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-default btn-sm back-top" href="/recycler">
+                    <i class="glyphicon glyphicon-backward"></i>
+                    Back
+                </a>
+                <a class="btn btn-default btn-sm back-top">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                    Reset
+                </a>
+                <a class="btn btn-default btn-sm back-top">
+                    <i class="glyphicon glyphicon-saved"></i>
+                    Save record
+                </a>
+                <a class="btn btn-default btn-sm back-top">
+                    <i class="glyphicon glyphicon-save"></i>
+                    Save record and Edit
+                </a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
+            <li class="active"><a data-toggle="tab" href="#recycler-info">Recycler Information</a></li>
+            <li><a data-toggle="tab" href="#device-model">Device Models</a></li>
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <div class="tab-content">
+            <div class="tab-pane active" id="recycler-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span>Individual Information</span>
+                    </div>
+                    <div class="panel-body">
+                        <form id="">
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Recycler Name* : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="text" style="width: 50%;">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Country* : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control" style="width: 50%;">
+                                        <option></option>
+                                        <option>Vietnam</option>
+                                        <option>China</option>
+                                        <option>United State</option>
+                                        <option>United Kingdom</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Currency : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control" style="width: 50%;">
+                                        <option>USD</option>
+                                        <option>SGB</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Email : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="text" style="width: 50%;">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Telephone : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="text" style="width: 50%;">
+                                </div>
+                            </div>
+                            <div class="row form-row">
+                                <div class="col-md-4">
+                                    <span class="pull-right">Address : </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" style="width: 70%;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="device-model">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span>Device Model List</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="pull-right">
+                            <a class="btn">
+                                Import from
+                            </a>
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Data Format <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a>CSV</a></li>
+                                    <li><a>Excel</a></li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-success btn-sm">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                Upload
+                            </a>
+                        </div>
+                        <div class="row clearfix">&nbsp;</div>
+                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th><?php echo $this->translate('ID')?></th>
+                                <th><?php echo $this->translate('Device Model')?></th>
+                                <th><?php echo $this->translate('Base Price')?></th>
+                                <th><?php echo $this->translate('Exchange Price')?></th>
+                                <th><?php echo $this->translate('TMD Model')?></th>
+                                <th><?php echo $this->translate('TMD Price')?></th>
+                                <th class="col-save">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>Admin</td>
+                                <td>Vietnam</td>
+                                <td>admin2@mail.com</td>
+                                <td></td>
+                                <td></td>
+                                <td class="col-save">
+                                    <a class="btn btn-sm btn-default">
+                                        <i class="glyphicon glyphicon-save"></i>
+                                        Save
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Admin</td>
+                                <td>Vietnam</td>
+                                <td>admin2@mail.com</td>
+                                <td></td>
+                                <td></td>
+                                <td class="col-save">
+                                    <a class="btn btn-sm btn-default">
+                                        <i class="glyphicon glyphicon-save"></i>
+                                        Save
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Admin</td>
+                                <td>Vietnam</td>
+                                <td>admin2@mail.com</td>
+                                <td></td>
+                                <td></td>
+                                <td class="col-save">
+                                    <a class="btn btn-sm btn-default">
+                                        <i class="glyphicon glyphicon-save"></i>
+                                        Save
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Admin</td>
+                                <td>Vietnam</td>
+                                <td>admin2@mail.com</td>
+                                <td></td>
+                                <td></td>
+                                <td class="col-save">
+                                    <a class="btn btn-sm btn-default">
+                                        <i class="glyphicon glyphicon-save"></i>
+                                        Save
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="search_id" placeholder="<?php echo $this->translate('Search id')?>" class="form-control search_init" />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="search_device" placeholder="<?php echo $this->translate('Search device')?>" class="form-control search_init" />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group input-group-sm"><input type="text" name="search_price" placeholder="<?php echo $this->translate('Search price')?>" class="form-control search_init" /></div>
+                                </th>
+                                <th>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="search_ex_price" placeholder="<?php echo $this->translate('Search exchange price')?>" class="form-control search_init" />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="search_tmd_model" placeholder="<?php echo $this->translate('Search model')?>" class="form-control search_init" />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="search_tmd_price" placeholder="<?php echo $this->translate('Search price')?>" class="form-control search_init" />
+                                    </div>
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -51,6 +51,7 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Admin' => 'Application\Controller\AdminController',
             'Application\Controller\Recycler' => 'Application\Controller\RecyclerController',
+            'Application\Controller\Model' => 'Application\Controller\ModelController',
         ),
     ),
     'view_manager' => array(

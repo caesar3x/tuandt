@@ -1,0 +1,224 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/13/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h3>TDM Model name XXX</h3>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-default btn-sm back-top">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+            Back
+        </a>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
+            <li class="active"><a data-toggle="tab" href="#price-comparision">Price Comparison</a></li>
+            <li><a data-toggle="tab" href="#historical-prices">Historical Prices</a></li>
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <div class="tab-content">
+            <div class="tab-pane active" id="price-comparision">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div>
+                            <div class="pull-left">
+                                <a class="btn btn-outline">Notice</a>
+                                <div class="btn btn-default">
+                                    Price higher than 50%(xx)
+                                </div>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn btn-outline">
+                                    Export to
+                                </a>
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Data format <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a>CSV</a></li>
+                                        <li><a>Excel</a></li>
+                                    </ul>
+                                </div>
+                                <a class="btn btn-warning btn-sm">
+                                    <i class="glyphicon glyphicon-export"></i>
+                                    Export
+                                </a>
+                                <a class="btn btn-success btn-sm">
+                                    <i class="glyphicon glyphicon-refresh"></i>
+                                    Reset
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row clearfix">&nbsp;</div>
+                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                            <th><?php echo $this->translate('Recycler Id')?></th>
+                            <th><?php echo $this->translate('Recycler Name')?></th>
+                            <th><?php echo $this->translate('Country')?></th>
+                            <th><?php echo $this->translate('Device Name')?></th>
+                            <th><?php echo $this->translate('Price')?></th>
+                            <th><?php echo $this->translate('Exchange Price')?></th>
+                            <th><?php echo $this->translate('%')?></th>
+                            <th><?php echo $this->translate('Exchange')?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>1</td>
+                            <td>Recycler 1</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>2</td>
+                            <td>Recycler 2</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>3</td>
+                            <td>Recycler 3</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>4</td>
+                            <td>Recycler 4</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>5</td>
+                            <td>Recycler 5</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>6</td>
+                            <td>Recycler 6</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>7</td>
+                            <td>Recycler 7</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                            <td>8</td>
+                            <td>Recycler 8</td>
+                            <td>Vietnam</td>
+                            <td>Device</td>
+                            <td>09-13-2014</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th><input type="hidden"></th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control search_init" />
+                                </div>
+                            </th>
+                        </tr>
+                        </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="historical-prices">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
