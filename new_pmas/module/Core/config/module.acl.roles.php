@@ -17,6 +17,8 @@ return array(
         'application\model\detail',
         'application\exchange\index',
         'application\exchange\update',
+        'application\system\index',
+        'application\help\index',
     ),
     'editor'=> array(
         'application\login\index',
