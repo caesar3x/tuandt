@@ -89,13 +89,13 @@ return array(
             array(
                 'label' => 'System',
                 'route' => 'admin',
-                'controller' => 'model',
+                'controller' => 'system',
                 'action' => 'index',
             ),
             array(
                 'label' => 'Help',
                 'route' => 'admin',
-                'controller' => 'model',
+                'controller' => 'help',
                 'action' => 'index',
             ),
         ),
