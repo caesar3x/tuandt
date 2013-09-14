@@ -60,17 +60,17 @@ $(function() {
                 type: 'spline'
             },
             title: {
-                text: 'Wind speed during two days'
+                text: 'DEMO CHART'
             },
             subtitle: {
-                text: 'October 6th and 7th 2009 at two locations in Vik i Sogn, Norway'
+                text: 'This is demo chart.'
             },
             xAxis: {
                 type: 'datetime'
             },
             yAxis: {
                 title: {
-                    text: 'Wind speed (m/s)'
+                    text: 'DEMO CHART'
                 },
                 min: 0,
                 minorGridLineWidth: 0,
@@ -81,7 +81,7 @@ $(function() {
                     to: 1.5,
                     color: 'rgba(68, 170, 213, 0.1)',
                     label: {
-                        text: 'Light air',
+                        text: 'Level 0',
                         style: {
                             color: '#606060'
                         }
@@ -91,7 +91,7 @@ $(function() {
                     to: 3.3,
                     color: 'rgba(0, 0, 0, 0)',
                     label: {
-                        text: 'Light breeze',
+                        text: 'Level 1',
                         style: {
                             color: '#606060'
                         }
@@ -101,7 +101,7 @@ $(function() {
                     to: 5.5,
                     color: 'rgba(68, 170, 213, 0.1)',
                     label: {
-                        text: 'Gentle breeze',
+                        text: 'Level 2',
                         style: {
                             color: '#606060'
                         }
@@ -111,7 +111,7 @@ $(function() {
                     to: 8,
                     color: 'rgba(0, 0, 0, 0)',
                     label: {
-                        text: 'Moderate breeze',
+                        text: 'Level 3',
                         style: {
                             color: '#606060'
                         }
@@ -121,7 +121,7 @@ $(function() {
                     to: 11,
                     color: 'rgba(68, 170, 213, 0.1)',
                     label: {
-                        text: 'Fresh breeze',
+                        text: 'Level 4',
                         style: {
                             color: '#606060'
                         }
@@ -131,7 +131,7 @@ $(function() {
                     to: 14,
                     color: 'rgba(0, 0, 0, 0)',
                     label: {
-                        text: 'Strong breeze',
+                        text: 'Level 5',
                         style: {
                             color: '#606060'
                         }
@@ -141,7 +141,7 @@ $(function() {
                     to: 15,
                     color: 'rgba(68, 170, 213, 0.1)',
                     label: {
-                        text: 'High wind',
+                        text: 'Level 6',
                         style: {
                             color: '#606060'
                         }
@@ -167,7 +167,7 @@ $(function() {
                 }
             },
             series: [{
-                name: 'Hestavollane',
+                name: 'DEMO',
                 data: [4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
                     7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
                     8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
@@ -175,7 +175,7 @@ $(function() {
                     3.0, 3.0]
 
             }, {
-                name: 'Voll',
+                name: 'CHART',
                 data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.3, 0.0,
                     0.0, 0.4, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                     0.0, 0.6, 1.2, 1.7, 0.7, 2.9, 4.1, 2.6, 3.7, 3.9, 1.7, 2.3,
