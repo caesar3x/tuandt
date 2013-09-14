@@ -50,9 +50,7 @@ $(function() {
     /**
      * Datepicker
      */
-    $('.datepicker').datepicker({
-        format: 'mm-dd-yyyy'
-    });
+    $('.datepicker').datepicker();
     /**
      * highcharts
      */
