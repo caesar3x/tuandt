@@ -60,13 +60,19 @@
 
     </header>
     <?php
-    echo $this->navigation('top_menu_navigation')
+    $role = $this->role();
+    $navigation = 'top_menu_navigation';
+    if($role == 'super_admin'){
+        $navigation = 'super_admin_navigation';
+    }
+    echo $this->navigation($navigation)
         ->menu()
         ->setMinDepth(0)
         ->setPartial('admin/topmenu');
     ?>
 
     <div class="container">
+        <?php echo $this->partial('partial/messages.phtml')?>
             <?php echo $this->content; ?>
             <hr>
             <footer>

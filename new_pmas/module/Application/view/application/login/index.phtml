@@ -12,16 +12,7 @@ $form->prepare();
 <div class="container">
     <div class="login-form">
         <h2><?php echo $this->translate('Login')?></h2>
-        <?php
-        $msg = $this->msg;
-        if (count($msg) > 0) {
-            foreach($msg as $m){
-                ?>
-                <div class="alert alert-danger"><?php echo $this->translate($m);?></div>
-            <?php
-            }
-        }
-        ?>
+        <?php echo $this->partial('partial/messages.phtml')?>
         <?php echo $this->form()->openTag($form);?>
             <div class="input-group">
                   <span class="input-group-btn">

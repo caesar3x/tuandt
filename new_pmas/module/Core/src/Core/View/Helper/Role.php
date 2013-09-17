@@ -16,12 +16,20 @@ class Role extends AbstractHelper
     {
         $this->serviceLocator = $serviceLocator;
     }
-    public function __invoke()
+    public function __invoke($id = null)
     {
-        $authService = $this->serviceLocator->get('auth_service');
-        if ($authService->hasIdentity()) {
-            $user = $authService->getIdentity();
-            return $user->role;
+        $rolesTable = $this->serviceLocator->get('RolesTable');
+        if($id == null){
+            $authService = $this->serviceLocator->get('auth_service');
+            if ($authService->hasIdentity()) {
+                $user = $authService->getIdentity();
+                $roleId = $user->role;
+                $role = $rolesTable->getRoleNameById($roleId);
+                return $role;
+            }
+        }else{
+            $role = $rolesTable->getRoleNameById($id);
+            return $role;
         }
         return ;
     }
