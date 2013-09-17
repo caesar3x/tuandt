@@ -57,4 +57,12 @@ class RolesTable extends AbstractModel
         }
         return;
     }
+    public function getAvaiableRoles()
+    {
+        $rowset = $this->tableGateway->select(array('hidden' => 0,'deleted' => 0));
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
 }

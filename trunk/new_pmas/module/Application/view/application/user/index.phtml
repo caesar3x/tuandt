@@ -28,21 +28,34 @@
             <th><?php echo $this->translate('Email')?></th>
             <th><?php echo $this->translate('Created at')?></th>
             <th><?php echo $this->translate('Status')?></th>
-            <th><?php echo $this->translate('Action')?></th>
+            <th class="action"><?php echo $this->translate('Action')?></th>
         </tr>
         </thead>
         <tbody>
+        <?php if(!empty($this->users)):?>
+        <?php foreach($this->users as $row):?>
         <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>1</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $row->id?>"></td>
+            <td><?php echo $row->id?></td>
+            <td><?php echo $row->first_name?></td>
+            <td><?php echo $row->last_name?></td>
+            <td><?php echo $row->username?></td>
+            <td><?php echo $row->email?></td>
+            <td><?php echo date('Y-m-d H:i:s',$row->created_at)?></td>
+            <td><?php echo ((int)$row->status == 1) ? 'Activated' : 'Disabled';?></td>
+            <td class="action">
+                <a class="btn btn-xs btn-primary btn-edit" href="/user/edit/id/<?php echo $row->id?>">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <?php echo $this->translate('Edit') ?>
+                </a>
+                <a class="btn btn-xs btn-danger btn-delete" href="/user/delete/id/<?php echo $row->id?>">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete') ?>
+                </a>
+            </td>
         </tr>
+        <?php endforeach;?>
+        <?php endif;?>
         </tbody>
     </table>
 </div>

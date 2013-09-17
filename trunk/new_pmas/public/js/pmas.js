@@ -211,3 +211,20 @@ function goToModelDetail()
 {
     window.location.assign("/model/detail?id=1");
 }
+function formSaveAndContinue(id)
+{
+    var form = $("#"+id);
+    var continueElement = $("#continue");
+    continueElement.val("yes");
+    form.submit();
+    return;
+}
+function formReset(id)
+{
+    return;
+}
+function formSave(id)
+{
+    $("#"+id).submit();
+    return;
+}

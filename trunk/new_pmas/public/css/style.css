@@ -51,3 +51,5 @@ div.container a.brand {
 .margin20{margin-left: 20px;}
 #model-view-tabs{border-bottom: none;}
 #model-view-tabs li{list-style: none;}
+table th.action,table td.action{width: 120px !important;}
+.alert ul li{list-style: none;}
