@@ -16,4 +16,8 @@ return array(
     'EMAIL_EXIST'                   => 'Email existed',
     'PASSWORD_NOT_EMPTY'            => 'Password does not empty',
     'RECYCLER_NAME_NOT_EMPTY'       => 'Recycler name does not empty',
+    'DEVICE_NAME_NOT_EMPTY'         => 'Recycler name does not empty',
+    'DEVICE_BRAND_NOT_EMPTY'        => 'Recycler brand does not empty',
+    'DEVICE_MODEL_NOT_EMPTY'        => 'Recycler model does not empty',
+    'DEVICE_PRICE_NOT_EMPTY'        => 'Recycler price does not empty',
 );

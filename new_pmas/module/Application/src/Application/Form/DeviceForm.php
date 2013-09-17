@@ -5,6 +5,7 @@
  */
 namespace Application\Form;
 
+use Zend\Form\Element\Csrf;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
@@ -29,6 +30,11 @@ class DeviceForm extends Form
         $continue = new Hidden('continue');
         $continue->setValue('no');
         $continue->setAttribute('id','continue');
+        $name = new Text('name');
+        $name->setAttributes(array(
+            'id' => 'name',
+            'class' => 'form-control'
+        ));
         $model = new Text('model');
         $model->setAttributes(array(
             'id' => 'model',
@@ -45,12 +51,48 @@ class DeviceForm extends Form
             'class' => 'form-control'
         ));
         $type_id->setValueOptions($this->getTypes());
+        $tmd_condition_id = new Select('tmd_condition_id');
+        $tmd_condition_id->setAttributes(array(
+            'id' => 'tmd_condition_id',
+            'class' => 'form-control'
+        ));
+        $tmd_condition_id->setValueOptions($this->getRecyclerConditions());
+        $recycler_condition_id = new Select('condition_id');
+        $recycler_condition_id->setAttributes(array(
+            'id' => 'condition_id',
+            'class' => 'form-control'
+        ));
+        $recycler_condition_id->setValueOptions($this->getRecyclerConditions('recycler'));
+        $price = new Text('price');
+        $price->setAttributes(array(
+            'id' => 'price',
+            'class' => 'form-control'
+        ));
+        $csrf = new Csrf('csrf');
+        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
         $this->add($id)
             ->add($continue)
+            ->add($name)
             ->add($model)
             ->add($brand)
             ->add($type_id)
+            ->add($tmd_condition_id)
+            ->add($recycler_condition_id)
+            ->add($price)
+            ->add($csrf)
             ;
+    }
+    public function getRecyclerConditions($recycler = 'tdm')
+    {
+        $conditionTypeTable = $this->serviceLocator->get('DeviceConditionTable');
+        $availableConditions = $conditionTypeTable->getRecyclerConditions($recycler);
+        $data = array(0 => 'Select Condition');
+        if(!empty($availableConditions)){
+            foreach($availableConditions as $row){
+                $data[$row->condition_id] = $row->name;
+            }
+        }
+        return $data;
     }
     public function getTypes()
     {
