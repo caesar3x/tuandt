@@ -49,9 +49,9 @@
                     </div>
                     <div class="col-md-7">
                         <ul class="pull-right header-items">
-                            <li>Logged in as <a class="btn-link">Admin</a> |</li>
+                            <li><?php echo $this->translate('Logged in as')?> <a class="btn-link"><?php echo $this->username()?></a> |</li>
                             <li><?php echo date('l, F j, Y',time())?> |</li>
-                            <li><a class="btn-link"><?php echo $this->translate('Logout');?></a></li>
+                            <li><a href="/logout" class="btn-link"><?php echo $this->translate('Logout');?></a></li>
                         </ul>
                     </div>
                 </div>

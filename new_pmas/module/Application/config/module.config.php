@@ -72,6 +72,7 @@ return array(
             'Application\Controller\System' => 'Application\Controller\SystemController',
             'Application\Controller\Help' => 'Application\Controller\HelpController',
             'Application\Controller\Login' => 'Application\Controller\LoginController',
+            'Application\Controller\Logout' => 'Application\Controller\LogoutController',
         ),
     ),
     'view_manager' => array(
