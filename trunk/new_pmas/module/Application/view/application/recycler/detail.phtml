@@ -4,6 +4,9 @@
  * Date: 9/13/13
  */
 ?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
 <div class="row">
     <div class="col-md-2">
 
@@ -11,23 +14,27 @@
     <div class="col-md-10">
         <div class="page-header">
             <div class="pull-left">
-                <h3>Recycler name XXX</h3>
+                <h3><?php echo $this->recycler?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-default btn-sm back-top" href="/recycler">
-                    <i class="glyphicon glyphicon-arrow-left"></i>
-                    Back
-                </a>
+                <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
             </div>
             <div class="clearfix"></div>
         </div>
+        <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
     </div>
 </div>
+<?php echo $this->form()->openTag($form);?>
+<?php echo $this->formRow($form->get('recycler_id'));?>
+<?php echo $this->formRow($form->get('csrf'));?>
+<?php echo $this->formRow($form->get('continue'));?>
 <div class="row">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#recycler-view">Recycler View</a></li>
-            <li><a data-toggle="tab" href="#device-model">Device Models</a></li>
+            <li class="active"><a data-toggle="tab" href="#recycler-view"><?php echo $this->translate('Recycler View')?></a></li>
+            <li><a data-toggle="tab" href="#device-model"><?php echo $this->translate('Device Models')?></a></li>
         </ul>
 
     </div>
@@ -36,40 +43,86 @@
             <div class="tab-pane active" id="recycler-view">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span>Individual Information</span>
+                        <span><?php echo $this->translate('Individual Information')?></span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Recycler Name')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('name'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Country')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('country_id'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Email')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('email'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Telephone')?> : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('telephone'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Website')?> : </span>
+                            </div>
+                            <div class="col-md-6">
+                                <?php echo $this->formRow($form->get('website'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->translate('Address')?> : </span>
+                            </div>
+                            <div class="col-md-6">
+                                <?php echo $this->formRow($form->get('address'));?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="tab-pane" id="device-model">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span>Device Model List</span>
+                        <span><?php echo $this->translate('Device Model List')?></span>
                     </div>
                     <div class="panel-body">
                         <div class="pull-right">
                             <a class="btn">
-                                Export to
+                                <?php echo $this->translate('Export to')?>
                             </a>
                             <div class="btn-group">
                                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Data format <span class="caret"></span>
+                                    <?php echo $this->translate('Data Format')?> <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a>CSV</a></li>
-                                    <li><a>Excel</a></li>
+                                    <li><a><?php echo $this->translate('CSV')?></a></li>
+                                    <li><a><?php echo $this->translate('Excel')?></a></li>
                                 </ul>
                             </div>
                             <a class="btn btn-warning btn-sm">
                                 <i class="glyphicon glyphicon-export"></i>
-                                Export
-                            </a>
-                            <a class="btn btn-default btn-sm">
-                                <i class="glyphicon glyphicon-refresh"></i>
-                                Reset filter
+                                <?php echo $this->translate('Export')?>
                             </a>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
-                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                        <table class="display table table-striped table-condensed table-bordered example" id="example2" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
@@ -124,44 +177,6 @@
                                 <td></td>
                             </tr>
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th><input type="hidden"></th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm"><input type="text" class="form-control search_init" /></div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init datepicker">
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -169,3 +184,4 @@
         </div>
     </div>
 </div>
+<?php echo $this->form()->closeTag();?>

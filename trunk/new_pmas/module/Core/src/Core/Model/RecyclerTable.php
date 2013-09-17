@@ -22,8 +22,7 @@ class RecyclerTable extends AbstractModel
     public function save(Recycler $entry)
     {
         $data = (array) $entry;
-        Debug::dump($data);die('--');
-        $id = (int)$entry->resource_id;
+        $id = (int)$entry->recycler_id;
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {

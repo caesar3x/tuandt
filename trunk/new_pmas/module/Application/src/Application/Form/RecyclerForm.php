@@ -29,7 +29,7 @@ class RecyclerForm extends Form
         parent::__construct($n);
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
-        $id = new Hidden('id');
+        $id = new Hidden('recycler_id');
         $continue = new Hidden('continue');
         $continue->setValue('no');
         $continue->setAttribute('id','continue');
