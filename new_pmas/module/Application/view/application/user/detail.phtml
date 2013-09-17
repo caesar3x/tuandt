@@ -60,6 +60,22 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
+                    <div class="control-label">&nbsp;</div>
+                </div>
+                <div class="col-md-4">
+                    <a onclick="$('#password-row').toggle();" class="btn btn-sm btn-warning"><?php echo $this->translate('Change password')?></a>
+                </div>
+            </div>
+            <div class="row form-row" style="display: none" id="password-row">
+                <div class="col-md-4">
+                    <div class="control-label"><?php echo $this->translate('Password')?> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('password'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-4">
                     <div class="control-label"><?php echo $this->translate('Status')?> </div>
                 </div>
                 <div class="col-md-4">

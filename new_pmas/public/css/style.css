@@ -53,4 +53,5 @@ div.container a.brand {
 #model-view-tabs li{list-style: none;}
 table th.action,table td.action{width: 120px !important;}
 .alert{padding: 5px 15px;}
+form .alert{width: 600px;margin: 0 auto;}
 .alert ul li{list-style: none;}

@@ -14,4 +14,5 @@ return array(
     'DELETE_FAIL'                   => 'Delete fail',
     'ACCOUNT_EXIST'                 => 'User account existed',
     'EMAIL_EXIST'                   => 'Email existed',
+    'PASSWORD_NOT_EMPTY'            => 'Password does not empty'
 );

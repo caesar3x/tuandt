@@ -7,9 +7,11 @@ namespace Application\Controller;
 
 use Application\Form\UserForm;
 use Core\Model\AdminUser;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
+use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
@@ -46,9 +48,64 @@ class UserController extends AbstractActionController
     {
         $this->auth();
         $view = new ViewModel();
+        $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $sm = $this->getServiceLocator();
+        $form = new UserForm('user',$sm);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['password'])){
+                $view->setVariable('msg',array('danger' => $messages['PASSWORD_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            /**
+             * check category name exist
+             */
+            $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+            $email_valid = new NoRecordExists(array('table' => 'admin_user','field' => 'email','adapter' => $dbAdapter));
+            if(!$email_valid->isValid($post['email'])){
+                $view->setVariable('msg',array('danger' => $messages['EMAIL_EXIST']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()) {
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/user');
+                }
+                if($this->save($data)){
+                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    if($continue == 'yes'){
+                        $lastInsertId = $this->adminTable->getLastInsertValue();
+                        if($lastInsertId){
+                            return $this->redirect()->toUrl('/user/detail/id/'.$lastInsertId);
+                        }
+                    }
+                    return $this->redirect()->toUrl('/user');
+                }else{
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        return $this->redirect()->toUrl('/user');
+                    }
+                }
+            }
+        }
+        $view->setVariable('form',$form);
         return $view;
     }
-    public function editAction()
+    public function detailAction()
     {
         $this->auth();
         $messages = $this->getMessages();
@@ -127,12 +184,22 @@ class UserController extends AbstractActionController
             $this->adminTable = $sm->get('AdminUserTable');
         }
         $success = true;
+        if(isset($data['password']) && $data['password'] != ''){
+            $bcrypt = new Bcrypt();
+            $bcrypt->setSalt(md5('vdragons'));
+            $bcrypt->setCost(13);
+            $data['password'] = $bcrypt->create($data['password']);
+        }
         $dataFinal = $data;
         $adminUser = new AdminUser();
         $adminUser->exchangeArray($dataFinal);
         $id = $adminUser->id;
         if($id != 0){
             $entry = $this->adminTable->getEntry($id);
+            if($data['password'] == ''){
+                $data['password'] = $entry->password;
+            }
+            $adminUser->exchangeArray($data);
             if(array_diff((array)$adminUser,(array)$entry) != null){
                 $success = $success && $this->adminTable->save($adminUser);
             }
