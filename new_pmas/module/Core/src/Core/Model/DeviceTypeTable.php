@@ -35,4 +35,12 @@ class DeviceTypeTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('type_id' => $id));
     }
+    public function getTypeNameById($id)
+    {
+        $entry = $this->getEntry($id);
+        if(!empty($entry)){
+            return $entry->name;
+        }
+        return;
+    }
 }

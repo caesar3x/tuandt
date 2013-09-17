@@ -6,43 +6,39 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h3>TDM Model</h3>
+        <h3><?php echo $this->translate('Models')?></h3>
     </div>
     <div class="pull-right">
         <a class="btn btn-success btn-sm add-item" href="/model/add">
             <i class="glyphicon glyphicon-plus"></i>
-            Add new model
+            <?php echo $this->translate('Add new model')?>
         </a>
     </div>
     <div class="clearfix"></div>
 </div>
 <div class="row">
     <div class="pull-left">
-        <a class="btn btn-outline">Notice</a>
+        <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
         <div class="btn btn-default">
-            Price higher than 50%(xx)
+            <?php echo $this->translate('Price higher than 50%(xx)')?>
         </div>
     </div>
     <div class="pull-right">
         <a class="btn">
-            Export to
+            <?php echo $this->translate('Export to')?>
         </a>
         <div class="btn-group">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                Data format <span class="caret"></span>
+                <?php echo $this->translate('Data format')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a>CSV</a></li>
-                <li><a>Excel</a></li>
+                <li><a><?php echo $this->translate('CSV')?></a></li>
+                <li><a><?php echo $this->translate('Excel')?></a></li>
             </ul>
         </div>
         <a class="btn btn-warning btn-sm">
             <i class="glyphicon glyphicon-export"></i>
-            Export
-        </a>
-        <a class="btn btn-default btn-sm">
-            <i class="glyphicon glyphicon-refresh"></i>
-            Reset filter
+            <?php echo $this->translate('Export')?>
         </a>
     </div>
     <div class="row clearfix">&nbsp;</div>
@@ -60,220 +56,41 @@
             <th><?php echo $this->translate('Recycler 2')?></th>
             <th><?php echo $this->translate('Price 2')?></th>
             <th><?php echo $this->translate('Percentage 2')?></th>
-            <th><?php echo $this->translate('Recycler 3')?></th>
-            <th><?php echo $this->translate('Price 3')?></th>
-            <th><?php echo $this->translate('Percentage 3')?></th>
+            <th class="action3"><?php echo $this->translate('Action')?></th>
         </tr>
         </thead>
         <tbody>
-        <tr onclick="goToModelDetail();">
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>1</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr onclick="goToModelDetail();">
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>2</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr onclick="goToModelDetail();">
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>3</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr onclick="goToModelDetail();">
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>4</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>5</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>6</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>7</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>8</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>9</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>10</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>11</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>12</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>13</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>09-13-2014</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        <?php if(!empty($this->rowset)):?>
+            <?php foreach($this->rowset as $row):?>
+                <tr>
+                    <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $row->device_id?>"></td>
+                    <td><?php echo $row->device_id?></td>
+                    <td><?php echo $row->name?></td>
+                    <td><?php echo $this->modelType($row->type_id)?></td>
+                    <td><?php echo $row->brand?></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="action3">
+                        <a class="btn btn-xs btn-primary btn-edit" href="/model/detail/id/<?php echo $row->device_id?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->translate('Detail')?>
+                        </a>
+                        <a class="btn btn-xs btn-warning btn-edit" href="/model/edit-tdm/id/<?php echo $row->device_id?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->translate('Edit')?>
+                        </a>
+                        <a class="btn btn-xs btn-danger btn-delete" href="/model/delete/id/<?php echo $row->device_id?>">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <?php echo $this->translate('Delete')?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        <?php endif;?>
         </tbody>
     </table>
 </div>

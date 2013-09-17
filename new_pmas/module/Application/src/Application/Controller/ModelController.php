@@ -123,7 +123,7 @@ class ModelController extends AbstractActionController
         $view->setVariable('form',$form);
         return $view;
     }
-    public function detailTdmAction()
+    public function editTdmAction()
     {
         $this->auth();
         $messages = $this->getMessages();
@@ -131,6 +131,76 @@ class ModelController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $form = new DeviceForm($sm);
         $view = new ViewModel();
+        $id = (int) $this->params('id',0);
+        if(!$id || $id == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        if(!$this->deviceTable){
+            $this->deviceTable = $sm->get('DeviceTable');
+        }
+        $entry = $this->deviceTable->getEntry($id);
+        if(empty($entry)){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $view->setVariable('model',$entry->name);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['brand'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_BRAND_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['model'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_MODEL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/model');
+                }
+                if($this->save($data)){
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/model');
+                    }
+                }else{
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                        return $this->redirect()->toUrl('/model');
+                    }
+                }
+            }
+        }else{
+            $entryArray = (array) $entry;
+            $form->setData($entryArray);
+        }
         $view->setVariable('form',$form);
         return $view;
     }

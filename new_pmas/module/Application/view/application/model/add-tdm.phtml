@@ -74,11 +74,8 @@
             </div>
             <div class="col-md-6">
                 <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Currency*</span></div>
-                <div class="col-md-9">
-                    <select class="form-control" style="width: 90px">
-                        <option>USD</option>
-                        <option>HKD</option>
-                    </select>
+                <div class="col-md-3">
+                    <?php echo $this->formRow($form->get('currency'));?>
                 </div>
             </div>
         </div>
