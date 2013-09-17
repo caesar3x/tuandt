@@ -98,6 +98,11 @@ class RecyclerController extends AbstractActionController
                         return $this->redirect()->toUrl('/recycler');
                     }
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                }
+                return $this->redirect()->toUrl('/recycler');
             }
         }
         $view->setVariable('form',$form);
@@ -106,8 +111,6 @@ class RecyclerController extends AbstractActionController
     public function detailAction()
     {
         $this->auth();
-        $messages = $this->getMessages();
-        $view = new ViewModel();
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();

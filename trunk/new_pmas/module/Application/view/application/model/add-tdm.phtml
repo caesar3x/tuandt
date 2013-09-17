@@ -26,47 +26,51 @@
 <div class="panel">
     <div class="panel-body">
         <div class="row form-row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+            </div>
+        </div>
+        <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Device Name')?>*</span></div>
-            <div class="col-md-9">
-                <?php echo $this->formRow($form->get('model'));?>
+            <div class="col-md-6">
+                <?php echo $this->formRow($form->get('name'));?>
             </div>
         </div>
         <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Brand')?>*</span></div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <?php echo $this->formRow($form->get('brand'));?>
             </div>
         </div>
         <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Model')?>*</span></div>
-            <div class="col-md-9">
-                <?php echo $this->formRow($form->get('website'));?>
+            <div class="col-md-6">
+                <?php echo $this->formRow($form->get('model'));?>
             </div>
         </div>
         <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Type')?>*</span></div>
-            <div class="col-md-9">
-                <select class="form-control" style="width: 40%;">
-                    <option>Use mobile</option>
-                    <option>Use mobile</option>
-                    <option>Use mobile</option>
-                </select>
+            <div class="col-md-3">
+                <?php echo $this->formRow($form->get('type_id'));?>
             </div>
         </div>
         <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Condition')?>*</span></div>
-            <div class="col-md-9">
-                <select class="form-control" style="width: 40%;">
-                    <option>SSA</option>
-                    <option>SSA</option>
-                    <option>SSA</option>
-                </select>
+            <div class="col-md-3">
+                <?php echo $this->formRow($form->get('tmd_condition_id'));?>
+            </div>
+        </div>
+        <div class="row form-row" style="display: none;">
+            <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Condition')?>*</span></div>
+            <div class="col-md-3">
+                <?php echo $this->formRow($form->get('condition_id'));?>
             </div>
         </div>
         <div class="row form-row">
             <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Price*</span></div>
             <div class="col-md-3">
-                <input type="text" class="form-control" style="width: 100%;">
+                <?php echo $this->formRow($form->get('price'));?>
             </div>
             <div class="col-md-6">
                 <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Currency*</span></div>
