@@ -1,0 +1,25 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/17/13
+ */
+if($this->msg){
+    if(is_array($this->msg)):
+        foreach($this->msg as $key=>$value):
+            ?>
+            <div class="alert alert-<?php echo $key?>">
+                <ul>
+                    <li><?php echo $value;?></li>
+                </ul>
+            </div>
+        <?php endforeach;?>
+    <?php else:?>
+        <div class="alert alert-info">
+            <ul>
+                <li><?php echo $this->msg;?></li>
+            </ul>
+        </div>
+    <?php endif;?>
+<?php
+}
+?>
