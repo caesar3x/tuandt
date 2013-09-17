@@ -7,6 +7,10 @@ namespace Core;
 
 use Core\Model\AdminUser;
 use Core\Model\AdminUserTable;
+use Core\Model\Country;
+use Core\Model\CountryTable;
+use Core\Model\Recycler;
+use Core\Model\RecyclerTable;
 use Core\Model\Resources;
 use Core\Model\ResourcesTable;
 use Core\Model\Roles;
@@ -96,6 +100,30 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Resources());
                     return new TableGateway('resources', $dbAdapter, null, $resultSetPrototype);
+                },
+                'CountryTable' => function($sm) {
+                    $tableGateway = $sm->get('CountryTableGateway');
+                    $table = new CountryTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'CountryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Country());
+                    return new TableGateway('country', $dbAdapter, null, $resultSetPrototype);
+                },
+                'RecyclerTable' => function($sm) {
+                    $tableGateway = $sm->get('RecyclerTableGateway');
+                    $table = new RecyclerTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'RecyclerTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Recycler());
+                    return new TableGateway('recycler', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );
