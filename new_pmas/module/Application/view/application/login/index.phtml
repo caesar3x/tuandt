@@ -14,24 +14,22 @@ $form->prepare();
         <h2><?php echo $this->translate('Login')?></h2>
         <?php echo $this->partial('partial/messages.phtml')?>
         <?php echo $this->form()->openTag($form);?>
-            <div class="input-group">
-                  <span class="input-group-btn">
-                    <span class="btn btn-default" type="button"><?php echo $this->translate('Email')?> </span>
-                  </span>
+        <div class="container">
+            <div class="row row-form">
+                <span class="control-label"><?php echo $this->translate('Email')?></span>
                 <?php echo $this->formRow($form->get('email'));?>
             </div>
-            <div class="input-group">
-                  <span class="input-group-btn">
-                    <span class="btn btn-default" type="button"><?php echo $this->translate('Password')?> </span>
-                  </span>
+            <div class="row row-form">
+                <span class="control-label"><?php echo $this->translate('Password')?></span>
                 <?php echo $this->formRow($form->get('password'));?>
                 <?php echo $this->formRow($form->get('csrf'));?>
             </div>
-            <div class="input-group-action">
+            <div class="row row-last">
                 <button type="submit" class="btn btn-primary btn-lg">
                     <span><?php echo $this->translate('Submit')?></span>
                 </button>
             </div>
+        </div>
         <?php echo $this->form()->closeTag();?>
     </div>
 </div>

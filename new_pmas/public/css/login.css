@@ -1,6 +1,14 @@
-body{background: #F5F5F5;}
-.login-form{width: 400px;text-align: center;margin: 200px auto 0px;min-height: 260px;padding: 10px;border: 1px solid #ccc;background: #fff;border-radius: 5px;}
-.login-form h2{font-weight: bold;text-transform: uppercase;}
+body{
+    background-color: #F5F5F5;
+    padding-bottom: 40px;
+    padding-top: 40px;
+}
+.login-form{max-width: 300px;text-align: left;margin: 0 auto;min-height: 260px;padding: 10px 30px;border: 1px solid #ccc;background: #fff;border-radius: 5px;}
+.login-form h2{font-weight: bold;}
 .login-form .input-group{margin-bottom: 20px;}
 .login-form .btn-default{width: 100px;}
+.login-form .row-form{margin-bottom: 20px;}
+.login-form .row-last{margin-bottom: 30px;}
 #login-form{}
+.alert{padding: 5px 15px;}
+.alert ul li{list-style: none;}
