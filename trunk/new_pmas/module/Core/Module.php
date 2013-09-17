@@ -9,6 +9,10 @@ use Core\Model\AdminUser;
 use Core\Model\AdminUserTable;
 use Core\Model\Country;
 use Core\Model\CountryTable;
+use Core\Model\DeviceCondition;
+use Core\Model\DeviceConditionTable;
+use Core\Model\DeviceType;
+use Core\Model\DeviceTypeTable;
 use Core\Model\Recycler;
 use Core\Model\RecyclerTable;
 use Core\Model\Resources;
@@ -124,6 +128,30 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Recycler());
                     return new TableGateway('recycler', $dbAdapter, null, $resultSetPrototype);
+                },
+                'DeviceTypeTable' => function($sm) {
+                    $tableGateway = $sm->get('DeviceTypeTableGateway');
+                    $table = new DeviceTypeTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'DeviceTypeTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new DeviceType());
+                    return new TableGateway('device_type', $dbAdapter, null, $resultSetPrototype);
+                },
+                'DeviceConditionTable' => function($sm) {
+                    $tableGateway = $sm->get('DeviceConditionTableGateway');
+                    $table = new DeviceConditionTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'DeviceConditionTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new DeviceCondition());
+                    return new TableGateway('device_condition', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );
