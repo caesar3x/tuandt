@@ -67,7 +67,7 @@ class Module
         return array(
             'factories' => array(
                 'messages' => function ($sm) {
-                    return $this->getConfigMessage();
+                    return include __DIR__ . '/config/module.message.php';
                 },
                 'auth_service' => function ($sm) {
                     $authService = new AuthenticationService();
@@ -250,6 +250,12 @@ class Module
                 'country' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\Country();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'modelType' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\ModelType();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },

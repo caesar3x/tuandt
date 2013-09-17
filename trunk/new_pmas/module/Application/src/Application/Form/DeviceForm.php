@@ -68,6 +68,15 @@ class DeviceForm extends Form
             'id' => 'price',
             'class' => 'form-control'
         ));
+        $currency = new Select('currency');
+        $currency->setAttributes(array(
+            'id' => 'currency',
+            'class' => 'form-control'
+        ));
+        $currency->setValueOptions(array(
+            'HKD' => 'HKD',
+            'USD' => 'USD'
+        ));
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
         $this->add($id)
@@ -79,6 +88,7 @@ class DeviceForm extends Form
             ->add($tmd_condition_id)
             ->add($recycler_condition_id)
             ->add($price)
+            ->add($currency)
             ->add($csrf)
             ;
     }
