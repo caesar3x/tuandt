@@ -4,6 +4,9 @@
  * Date: 9/13/13
  */
 ?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
 <div class="row">
     <div class="col-lg-2">
 
@@ -11,35 +14,28 @@
     <div class="col-md-10">
         <div class="page-header">
             <div class="pull-left">
-                <h3>New Recycler</h3>
+                <h3><?php echo $this->translate('New Recycler')?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-default btn-sm back-top" href="/recycler">
-                    <i class="glyphicon glyphicon-arrow-left"></i>
-                    Back
-                </a>
-                <a class="btn btn-default btn-sm back-top">
-                    <i class="glyphicon glyphicon-refresh"></i>
-                    Reset
-                </a>
-                <a class="btn btn-default btn-sm back-top">
-                    <i class="glyphicon glyphicon-saved"></i>
-                    Save record
-                </a>
-                <a class="btn btn-default btn-sm back-top">
-                    <i class="glyphicon glyphicon-save"></i>
-                    Save record and Edit
-                </a>
+                <a class="btn btn-sm btn-default add-item" href="/user"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
             </div>
             <div class="clearfix"></div>
         </div>
+        <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
     </div>
 </div>
+<?php echo $this->form()->openTag($form);?>
+<?php echo $this->formRow($form->get('id'));?>
+<?php echo $this->formRow($form->get('csrf'));?>
+<?php echo $this->formRow($form->get('continue'));?>
 <div class="row">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#recycler-info">Recycler Information</a></li>
-            <li><a data-toggle="tab" href="#device-model">Device Models</a></li>
+            <li class="active"><a data-toggle="tab" href="#recycler-info"><?php echo $this->translate('Recycler Information')?></a></li>
+            <li><a data-toggle="tab" href="#device-model"><?php echo $this->translate('Device Models')?></a></li>
         </ul>
     </div>
     <div class="col-md-10">
@@ -47,93 +43,82 @@
             <div class="tab-pane active" id="recycler-info">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span>Individual Information</span>
+                        <span><?php echo $this->translate('Individual Information')?></span>
                     </div>
                     <div class="panel-body">
-                        <form id="">
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Recycler Name* : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Recycler Name')?>* : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <input class="form-control" type="text" style="width: 50%;">
+                                <div class="col-md-4">
+                                    <?php echo $this->formRow($form->get('name'));?>
                                 </div>
                             </div>
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Country* : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Country')?>* : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <select class="form-control" style="width: 50%;">
-                                        <option></option>
-                                        <option>Vietnam</option>
-                                        <option>China</option>
-                                        <option>United State</option>
-                                        <option>United Kingdom</option>
-                                    </select>
+                                <div class="col-md-4">
+                                    <?php echo $this->formRow($form->get('country_id'));?>
                                 </div>
                             </div>
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Currency : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Email')?>* : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <select class="form-control" style="width: 50%;">
-                                        <option>USD</option>
-                                        <option>SGB</option>
-                                    </select>
+                                <div class="col-md-4">
+                                    <?php echo $this->formRow($form->get('email'));?>
                                 </div>
                             </div>
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Email : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Telephone')?> : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <input class="form-control" type="text" style="width: 50%;">
+                                <div class="col-md-4">
+                                    <?php echo $this->formRow($form->get('telephone'));?>
                                 </div>
                             </div>
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Telephone : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Website')?> : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <input class="form-control" type="text" style="width: 50%;">
+                                <div class="col-md-6">
+                                    <?php echo $this->formRow($form->get('website'));?>
                                 </div>
                             </div>
                             <div class="row form-row">
                                 <div class="col-md-4">
-                                    <span class="pull-right">Address : </span>
+                                    <span class="pull-right"><?php echo $this->translate('Address')?> : </span>
                                 </div>
-                                <div class="col-md-8">
-                                    <textarea class="form-control" style="width: 70%;"></textarea>
+                                <div class="col-md-6">
+                                    <?php echo $this->formRow($form->get('address'));?>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
             <div class="tab-pane" id="device-model">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span>Device Model List</span>
+                        <span><?php echo $this->translate('Device Model List')?></span>
                     </div>
                     <div class="panel-body">
                         <div class="pull-right">
                             <a class="btn">
-                                Import from
+                                <?php echo $this->translate('Import from')?>
                             </a>
                             <div class="btn-group">
                                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Data Format <span class="caret"></span>
+                                    <?php echo $this->translate('Data Format')?> <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a>CSV</a></li>
-                                    <li><a>Excel</a></li>
+                                    <li><a><?php echo $this->translate('CSV')?></a></li>
+                                    <li><a><?php echo $this->translate('Excel')?></a></li>
                                 </ul>
                             </div>
                             <a class="btn btn-success btn-sm">
                                 <i class="glyphicon glyphicon-upload"></i>
-                                Upload
+                                <?php echo $this->translate('Upload')?>
                             </a>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
@@ -146,7 +131,7 @@
                                 <th><?php echo $this->translate('Exchange Price')?></th>
                                 <th><?php echo $this->translate('TMD Model')?></th>
                                 <th><?php echo $this->translate('TMD Price')?></th>
-                                <th class="col-save">Action</th>
+                                <th class="col-save"><?php echo $this->translate('Action')?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -246,3 +231,4 @@
         </div>
     </div>
 </div>
+<?php echo $this->form()->closeTag();?>
