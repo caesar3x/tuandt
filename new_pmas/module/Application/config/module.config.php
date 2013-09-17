@@ -25,6 +25,22 @@ return array(
                     ),
                 ),
             ),
+            'params' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/[:controller[/:action]][/:params][/]',
+                    'constraints' => array(
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'params'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -55,6 +71,7 @@ return array(
             'Application\Controller\Exchange' => 'Application\Controller\ExchangeController',
             'Application\Controller\System' => 'Application\Controller\SystemController',
             'Application\Controller\Help' => 'Application\Controller\HelpController',
+            'Application\Controller\Login' => 'Application\Controller\LoginController',
         ),
     ),
     'view_manager' => array(
@@ -65,7 +82,8 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'admin/breadcrumbs'           => __DIR__ . '/../view/partial/breadcrumbs.phtml',
+            'layout/login'            => __DIR__ . '/../view/layout/login.phtml',
+            'admin/breadcrumbs'       => __DIR__ . '/../view/partial/breadcrumbs.phtml',
             'admin/topmenu'           => __DIR__ . '/../view/partial/menu.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'application/admin/index' => __DIR__ . '/../view/application/admin/index.phtml',

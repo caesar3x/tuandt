@@ -9,9 +9,20 @@ use Core\Model\AbstractModel;
 
 class TermTaxonomyTable extends AbstractModel
 {
+    public function getEntry($id)
+    {
+        $id  = (int) $id;
+        $rowset = $this->tableGateway->select(array('term_taxonomy_id' => $id));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row;
+    }
+
     /**
-     * Get object by term_id
-     * @param $id
+     * Get entry by term_id
+     * @param $term_id
      * @return array|\ArrayObject|null
      */
     public function getByTermId($term_id)
@@ -47,6 +58,7 @@ class TermTaxonomyTable extends AbstractModel
         );
 
         $id = (int)$entry->term_taxonomy_id;
+
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {
@@ -59,6 +71,6 @@ class TermTaxonomyTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        $this->tableGateway->delete(array('id' => $id));
+        $this->tableGateway->delete(array('term_taxonomy_id' => $id));
     }
 }
