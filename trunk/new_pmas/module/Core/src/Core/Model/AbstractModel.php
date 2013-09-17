@@ -48,4 +48,13 @@ class AbstractModel
     {
         return $this->tableGateway->getLastInsertValue();
     }
+
+    public function getAvaiableRows()
+    {
+        $rowset = $this->tableGateway->select(array('deleted' => 0));
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
 }
