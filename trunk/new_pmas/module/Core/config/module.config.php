@@ -47,16 +47,22 @@ return array(
                 ),
             ),
             array(
-                'label' => 'TDM Model',
+                'label' => 'Models',
                 'route' => 'admin',
                 'controller' => 'model',
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Manage Model',
+                        'label' => 'TDM Model',
                         'route' => 'admin',
                         'controller' => 'model',
-                        'action' => 'index',
+                        'action' => 'tdm',
+                    ),
+                    array(
+                        'label' => 'Recycler Model',
+                        'route' => 'admin',
+                        'controller' => 'model',
+                        'action' => 'recycler',
                     ),
                     array(
                         'label' => 'Add Model',
@@ -147,16 +153,22 @@ return array(
                 ),
             ),
             array(
-                'label' => 'TDM Model',
+                'label' => 'Models',
                 'route' => 'admin',
                 'controller' => 'model',
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Manage Model',
+                        'label' => 'TDM Model',
                         'route' => 'admin',
                         'controller' => 'model',
-                        'action' => 'index',
+                        'action' => 'tdm',
+                    ),
+                    array(
+                        'label' => 'Recycler Model',
+                        'route' => 'admin',
+                        'controller' => 'model',
+                        'action' => 'recycler',
                     ),
                     array(
                         'label' => 'Add Model',
