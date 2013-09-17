@@ -17,7 +17,7 @@
                 <h3><?php echo $this->translate('New Recycler')?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default add-item" href="/user"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
                 <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
                 <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
                 <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
@@ -28,7 +28,7 @@
     </div>
 </div>
 <?php echo $this->form()->openTag($form);?>
-<?php echo $this->formRow($form->get('id'));?>
+<?php echo $this->formRow($form->get('recycler_id'));?>
 <?php echo $this->formRow($form->get('csrf'));?>
 <?php echo $this->formRow($form->get('continue'));?>
 <div class="row">
@@ -122,7 +122,7 @@
                             </a>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
-                        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+                        <table class="display table table-striped table-condensed table-bordered example" id="example2" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
                                 <th><?php echo $this->translate('ID')?></th>
@@ -192,38 +192,6 @@
                                 </td>
                             </tr>
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm"><input type="text" class="form-control search_init" /></div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control search_init" />
-                                    </div>
-                                </th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

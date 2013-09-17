@@ -6,12 +6,16 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h2>Recycler</h2>
+        <h2><?php echo $this->translate('Recycler')?></h2>
     </div>
     <div class="pull-right">
-        <a class="btn btn-success btn-sm pull-right add-item" href="/recycler/add">
+        <a onclick="formConfirm('user');" class="btn btn-danger btn-sm add-item">
+            <i class="glyphicon glyphicon-trash"></i>
+            <?php echo $this->translate('Delete selected') ?>
+        </a>
+        <a class="btn btn-success btn-sm add-item" href="/recycler/add">
             <i class="glyphicon glyphicon-plus"></i>
-            Add new recycler
+            <?php echo $this->translate('Add new recycler');?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -20,28 +24,28 @@
 <div class="row">
     <div class="pull-right">
         <a class="btn">
-            Export to
+            <?php echo $this->translate('Export to')?>
         </a>
         <div class="btn-group">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                Data format <span class="caret"></span>
+                <?php echo $this->translate('Data format')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a>CSV</a></li>
-                <li><a>Excel</a></li>
+                <li><a><?php echo $this->translate('CSV')?></a></li>
+                <li><a><?php echo $this->translate('Excel')?></a></li>
             </ul>
         </div>
         <a class="btn btn-warning btn-sm">
             <i class="glyphicon glyphicon-export"></i>
-            Export
+            <?php echo $this->translate('Export')?>
         </a>
         <a class="btn btn-default btn-sm">
             <i class="glyphicon glyphicon-refresh"></i>
-            Reset filter
+            <?php echo $this->translate('Reset filter')?>
         </a>
     </div>
     <div class="row clearfix">&nbsp;</div>
-    <table class="display table table-striped table-condensed" id="example" cellpadding="0" cellspacing="0" border="0">
+    <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0" border="0">
         <thead>
         <tr>
             <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
@@ -49,78 +53,37 @@
             <th><?php echo $this->translate('Name')?></th>
             <th><?php echo $this->translate('Country')?></th>
             <th><?php echo $this->translate('Email')?></th>
+            <th><?php echo $this->translate('Website')?></th>
+            <th><?php echo $this->translate('Telephone')?></th>
+            <th><?php echo $this->translate('Address')?></th>
             <th><?php echo $this->translate('Action')?></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>1</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin@mail.com</td>
-            <td>
-                <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/?id=1">
-                    <i class="glyphicon glyphicon-edit"></i>
-                    <?php echo $this->translate('Edit')?>
-                </a>
-                <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/?id=1">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete')?>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>2</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin2@mail.com</td>
-            <td>
-                <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/?id=1">
-                    <i class="glyphicon glyphicon-edit"></i>
-                    <?php echo $this->translate('Edit')?>
-                </a>
-                <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/?id=1">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete')?>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>3</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin3@mail.com</td>
-            <td>
-                <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/?id=1">
-                    <i class="glyphicon glyphicon-edit"></i>
-                    <?php echo $this->translate('Edit')?>
-                </a>
-                <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/?id=1">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete')?>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-            <td>4</td>
-            <td>Admin</td>
-            <td>Vietnam</td>
-            <td>admin4@mail.com</td>
-            <td>
-                <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/?id=1">
-                    <i class="glyphicon glyphicon-edit"></i>
-                    <?php echo $this->translate('Edit')?>
-                </a>
-                <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/?id=1">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete')?>
-                </a>
-            </td>
-        </tr>
+        <?php if(!empty($this->rowset)):?>
+        <?php foreach($this->rowset as $row):?>
+                <tr>
+                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->recycler_id?>"></td>
+                    <td><?php echo $row->recycler_id?></td>
+                    <td><?php echo $row->name?></td>
+                    <td><?php echo $this->country($row->country_id)?></td>
+                    <td><?php echo $row->email?></td>
+                    <td><?php echo $row->website?></td>
+                    <td><?php echo $row->telephone?></td>
+                    <td><?php echo $row->address?></td>
+                    <td class="action">
+                        <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/id/<?php echo $row->recycler_id?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->translate('Edit')?>
+                        </a>
+                        <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/id/<?php echo $row->recycler_id?>">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <?php echo $this->translate('Delete')?>
+                        </a>
+                    </td>
+                </tr>
+        <?php endforeach;?>
+        <?php endif;?>
         </tbody>
     </table>
 </div>

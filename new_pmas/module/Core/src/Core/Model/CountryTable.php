@@ -36,4 +36,18 @@ class CountryTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('country_id' => $id));
     }
+
+    /**
+     * Get country name by country id
+     * @param $id
+     * @return mixed
+     */
+    public function getCountryNameById($id)
+    {
+        $entry = $this->getEntry($id);
+        if(!empty($entry) && $entry != null){
+            return $entry->name;
+        }
+        return ;
+    }
 }

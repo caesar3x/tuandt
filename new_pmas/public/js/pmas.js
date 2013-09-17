@@ -4,8 +4,8 @@
  */
 var asInitVals = new Array();
 $(function() {
-    var trLeng = $("#example thead").find("tr:first th").length;
-    var oTable = $('#example').dataTable( {
+    var trLeng = $(".example thead").find("tr:first th").length;
+    var oTable = $('.example').dataTable( {
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] }
         ],
@@ -26,7 +26,7 @@ $(function() {
                 '</th>';
         }
         htmlAppend = htmlAppend + '</tr>';
-        $('#example thead').append(htmlAppend);
+        $('.example thead').append(htmlAppend);
     }
 
     $(".tr-search input").keyup( function () {
