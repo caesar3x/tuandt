@@ -225,6 +225,8 @@ function formReset(id)
 }
 function formSave(id)
 {
+    var continueElement = $("#continue");
+    continueElement.val("no");
     $("#"+id).submit();
     return;
 }
