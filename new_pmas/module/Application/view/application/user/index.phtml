@@ -3,3 +3,46 @@
  * Created by Nguyen Tien Dat.
  * Date: 9/17/13
  */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2>Manage Users</h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-success btn-sm pull-right add-item" href="/user/add">
+            <i class="glyphicon glyphicon-plus"></i>
+            Add new user
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="row">
+    <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+            <th><?php echo $this->translate('ID')?></th>
+            <th><?php echo $this->translate('First name')?></th>
+            <th><?php echo $this->translate('Last name')?></th>
+            <th><?php echo $this->translate('Username')?></th>
+            <th><?php echo $this->translate('Email')?></th>
+            <th><?php echo $this->translate('Created at')?></th>
+            <th><?php echo $this->translate('Status')?></th>
+            <th><?php echo $this->translate('Action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+            <td>1</td>
+            <td>Admin</td>
+            <td>Vietnam</td>
+            <td>admin2@mail.com</td>
+            <td>09-13-2014</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

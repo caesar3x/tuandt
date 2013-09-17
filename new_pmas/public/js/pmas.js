@@ -3,29 +3,46 @@
  * Date: 9/11/13
  */
 var asInitVals = new Array();
-
 $(function() {
+    var trLeng = $("#example thead").find("tr:first th").length;
     var oTable = $('#example').dataTable( {
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ 0 ] }
+        ],
+        "aaSorting": [[1, 'asc']],
         "oLanguage": {
             "sSearch": "Search all columns:"
         },
         "sPaginationType": "full_numbers"
     } );
+    if(trLeng > 0){
+        var htmlAppend = '<tr class="tr-search">' +
+            '<th><input type="hidden"></th>';
+        for (var i = 1; i < trLeng; i++) {
+            htmlAppend = htmlAppend + '<th>' +
+                ' <div class="input-group-sm">' +
+                '<input type="text" class="form-control search_init" />' +
+                '</div>' +
+                '</th>';
+        }
+        htmlAppend = htmlAppend + '</tr>';
+        $('#example thead').append(htmlAppend);
+    }
 
-    $("tfoot input").keyup( function () {
+    $(".tr-search input").keyup( function () {
         /* Filter on the column (the index) of this element */
-        oTable.fnFilter( this.value, $("tfoot input").index(this) );
+        oTable.fnFilter( this.value, $(".tr-search input").index(this) );
     } );
 
     /*
      * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
      * the footer
      */
-    $("tfoot input").each( function (i) {
+    $(".tr-search input").each( function (i) {
         asInitVals[i] = this.value;
     } );
 
-    $("tfoot input").focus( function () {
+    $(".tr-search input").focus( function () {
         if ( $(this).hasClass("search_init"))
         {
             $(this).removeClass("search_init");
@@ -33,11 +50,11 @@ $(function() {
         }
     } );
 
-    $("tfoot input").blur( function (i) {
+    $(".tr-search input").blur( function (i) {
         if ( this.value == "" )
         {
             $(this).addClass("search_init");
-            this.value = asInitVals[$("tfoot input").index(this)];
+            this.value = asInitVals[$(".tr-search input").index(this)];
         }
     } );
     /**
