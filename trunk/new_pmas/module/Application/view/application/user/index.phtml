@@ -44,7 +44,7 @@
             <td><?php echo date('Y-m-d H:i:s',$row->created_at)?></td>
             <td><?php echo ((int)$row->status == 1) ? 'Activated' : 'Disabled';?></td>
             <td class="action">
-                <a class="btn btn-xs btn-primary btn-edit" href="/user/edit/id/<?php echo $row->id?>">
+                <a class="btn btn-xs btn-primary btn-edit" href="/user/detail/id/<?php echo $row->id?>">
                     <i class="glyphicon glyphicon-edit"></i>
                     <?php echo $this->translate('Edit') ?>
                 </a>

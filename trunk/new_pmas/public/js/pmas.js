@@ -217,16 +217,17 @@ function formSaveAndContinue(id)
     var continueElement = $("#continue");
     continueElement.val("yes");
     form.submit();
-    return;
+    return true;
 }
 function formReset(id)
 {
-    return;
+    $('#'+id)[0].reset();
+    return true;
 }
 function formSave(id)
 {
     var continueElement = $("#continue");
     continueElement.val("no");
     $("#"+id).submit();
-    return;
+    return true;
 }
