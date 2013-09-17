@@ -44,9 +44,24 @@ class DeviceForm extends Form
             'id' => 'type_id',
             'class' => 'form-control'
         ));
+        $type_id->setValueOptions($this->getTypes());
+        $this->add($id)
+            ->add($continue)
+            ->add($model)
+            ->add($brand)
+            ->add($type_id)
+            ;
     }
     public function getTypes()
     {
-
+        $deviceTypeTable = $this->serviceLocator->get('DeviceTypeTable');
+        $availableTypes = $deviceTypeTable->getAvaiableRows();
+        $data = array(0 => 'Select Type');
+        if(!empty($availableTypes)){
+            foreach($availableTypes as $row){
+                $data[$row->type_id] = $row->name;
+            }
+        }
+        return $data;
     }
 }
