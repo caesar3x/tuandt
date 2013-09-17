@@ -231,3 +231,12 @@ function formSave(id)
     $("#"+id).submit();
     return true;
 }
+function formConfirm(id)
+{
+    bootbox.confirm("Are you sure?", function(result) {
+        if(result == true){
+            $("#"+id).submit();
+        }
+        return true;
+    });
+}

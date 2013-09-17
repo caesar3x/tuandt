@@ -39,7 +39,7 @@ class UserController extends AbstractActionController
         if (!$this->adminTable) {
             $sm = $this->getServiceLocator();
             $this->adminTable = $sm->get('AdminUserTable');
-            $admins = $this->adminTable->fetchAll();
+            $admins = $this->adminTable->getAvaiableUsers();
             $view->setVariable('users',$admins);
         }
         return $view;
@@ -211,5 +211,34 @@ class UserController extends AbstractActionController
             }
         }
         return $success;
+    }
+    public function deleteAction()
+    {
+        $this->auth();
+        $id = $this->params('id',0);
+        $request = $this->getRequest();
+        $ids = $request->getPost('id');
+        if(!$this->adminTable){
+            $this->adminTable = $this->serviceLocator->get('AdminUserTable');
+        }
+        if($id != 0){
+            $this->delete($id,$this->adminTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->delete($id,$this->adminTable);
+            }
+        }
+        return $this->redirect()->toUrl('/user');
+    }
+    protected function delete($id,$table)
+    {
+        $messages = $this->getMessages();
+        if($table->deleteEntry($id)){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return $this->redirect()->toUrl('/user');
     }
 }
