@@ -12,31 +12,25 @@ class Username extends AbstractHelper
 {
     protected $serviceLocator;
 
-    public function __invoke($local = 'frontend',$id = null)
+    public function __invoke($id = null)
     {
-        if($local == 'backend'){
-            if($id == null){
-                $authService = $this->serviceLocator->get('auth_service');
-                if ($authService->hasIdentity()) {
-                    $identity = $authService->getIdentity();
-                    $id = $identity->id;
-                }
+        if($id == null){
+            $authService = $this->serviceLocator->get('auth_service');
+            if ($authService->hasIdentity()) {
+                $identity = $authService->getIdentity();
+                $id = $identity->id;
             }
-            $adminTable = $this->serviceLocator->get('AdminUserTable');
-            $admins = $adminTable->getEntry($id);
-            if($admins != null){
-               return $admins->username;
-            }
-            return null;
-        }else{
-            return;
         }
+        $adminTable = $this->serviceLocator->get('AdminUserTable');
+        $admins = $adminTable->getEntry($id);
+        $fullName = '';
+        if($admins != null){
+            $fullName = $admins->first_name.'&nbsp;'.$admins->last_name;
+        }
+        return $fullName;
     }
     public function setServiceLocator(ServiceManager $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-    }
-    public function test(){
-        die('====dasdasdas');
     }
 }

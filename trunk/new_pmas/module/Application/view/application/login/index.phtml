@@ -11,13 +11,13 @@ $form->prepare();
 ?>
 <div class="container">
     <div class="login-form">
-        <h2>Login</h2>
+        <h2><?php echo $this->translate('Login')?></h2>
         <?php
         $msg = $this->msg;
         if (count($msg) > 0) {
             foreach($msg as $m){
                 ?>
-                <div class="alert alert-danger"><?php echo $m;?></div>
+                <div class="alert alert-danger"><?php echo $this->translate($m);?></div>
             <?php
             }
         }
@@ -25,20 +25,20 @@ $form->prepare();
         <?php echo $this->form()->openTag($form);?>
             <div class="input-group">
                   <span class="input-group-btn">
-                    <span class="btn btn-default" type="button">Email </span>
+                    <span class="btn btn-default" type="button"><?php echo $this->translate('Email')?> </span>
                   </span>
                 <?php echo $this->formRow($form->get('email'));?>
             </div>
             <div class="input-group">
                   <span class="input-group-btn">
-                    <span class="btn btn-default" type="button">Password </span>
+                    <span class="btn btn-default" type="button"><?php echo $this->translate('Password')?> </span>
                   </span>
                 <?php echo $this->formRow($form->get('password'));?>
                 <?php echo $this->formRow($form->get('csrf'));?>
             </div>
             <div class="input-group-action">
                 <button type="submit" class="btn btn-primary btn-lg">
-                    <span>Submit</span>
+                    <span><?php echo $this->translate('Submit')?></span>
                 </button>
             </div>
         <?php echo $this->form()->closeTag();?>
