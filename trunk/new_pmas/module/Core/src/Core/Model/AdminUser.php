@@ -9,6 +9,8 @@ class AdminUser
 {
     public $id;
     public $username;
+    public $first_name;
+    public $last_name;
     public $password;
     public $email;
     public $status;
@@ -17,11 +19,15 @@ class AdminUser
     public $created_at;
     public $updated_at;
     public $note;
+    public $hidden;
+    public $deleted;
 
     public function exchangeArray($data)
     {
         $this->id     = (isset($data['id'])) ? $data['id'] : null;
         $this->username = (isset($data['username'])) ? $data['username'] : null;
+        $this->first_name = (isset($data['first_name'])) ? $data['first_name'] : null;
+        $this->last_name = (isset($data['last_name'])) ? $data['last_name'] : null;
         $this->password  = (isset($data['password'])) ? $data['password'] : null;
         $this->email  = (isset($data['email'])) ? $data['email'] : null;
         $this->status  = (isset($data['status'])) ? $data['status'] : '0';
@@ -30,5 +36,7 @@ class AdminUser
         $this->created_at  = (isset($data['created_at'])) ? $data['created_at'] : time();
         $this->updated_at  = (isset($data['updated_at'])) ? $data['updated_at'] : time();
         $this->note  = (isset($data['note'])) ? $data['note'] : null;
+        $this->hidden  = (isset($data['hidden'])) ? $data['hidden'] : 0;
+        $this->deleted  = (isset($data['deleted'])) ? $data['deleted'] : 0;
     }
 }

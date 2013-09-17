@@ -14,6 +14,8 @@ class AdminUserTable extends AbstractModel
     {
         $data = array(
             'username' => $entry->username,
+            'first_name' => $entry->first_name,
+            'last_name' => $entry->last_name,
             'password'  => $entry->password,
             'created_at'  => $entry->created_at,
             'updated_at'  => $entry->updated_at,
@@ -21,7 +23,9 @@ class AdminUserTable extends AbstractModel
             'note'  => $entry->note,
             'role'  => $entry->role,
             'status'  => $entry->status,
-            'email'  => $entry->email
+            'email'  => $entry->email,
+            'hidden'  => $entry->hidden,
+            'deleted'  => $entry->deleted,
         );
 
         $id = (int)$entry->id;
@@ -31,7 +35,7 @@ class AdminUserTable extends AbstractModel
             if ($this->getEntry($id)) {
                 return $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('Dữ liệu không tồn tại.');
+                throw new \Exception('Data does not exist.');
             }
         }
     }

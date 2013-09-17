@@ -14,8 +14,26 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    public function auth()
+    {
+        $sm = $this->getServiceLocator();
+        $authService = $sm->get('auth_service');
+        if (! $authService->hasIdentity()) {
+            return $this->redirect()->toUrl('login');
+        }
+    }
+    public function getMessages()
+    {
+        $sm = $this->getServiceLocator();
+        return $sm->get('messages');
+    }
+    public function __construct()
+    {
+
+    }
     public function indexAction()
     {
+        $this->auth();
         return new ViewModel();
     }
     public function testAction()

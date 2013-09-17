@@ -7,14 +7,15 @@ namespace Core;
 
 use Core\Model\AdminUser;
 use Core\Model\AdminUserTable;
-use Core\Model\Terms;
-use Core\Model\TermsTable;
-use Core\Model\TermTaxonomy;
-use Core\Model\TermTaxonomyTable;
+use Core\Model\Resources;
+use Core\Model\ResourcesTable;
+use Core\Model\Roles;
+use Core\Model\RolesTable;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Debug\Debug;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\GenericResource;
 use Zend\Permissions\Acl\Role\GenericRole;
@@ -28,7 +29,6 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
         /**
          * Start Acl
          */
@@ -62,6 +62,42 @@ class Module
                     $authService->setStorage($storage);
                     return $authService;
                 },
+                'AdminUserTable' =>  function($sm) {
+                    $tableGateway = $sm->get('AdminUserTableGateway');
+                    $table = new AdminUserTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'AdminUserTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new AdminUser());
+                    return new TableGateway('admin_user', $dbAdapter, null, $resultSetPrototype);
+                },
+                'RolesTable' => function($sm) {
+                    $tableGateway = $sm->get('RolesTableGateway');
+                    $table = new RolesTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'RolesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Roles());
+                    return new TableGateway('roles', $dbAdapter, null, $resultSetPrototype);
+                },
+                'ResourcesTable' => function($sm) {
+                    $tableGateway = $sm->get('ResourcesTableGateway');
+                    $table = new ResourcesTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'ResourcesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Resources());
+                    return new TableGateway('resources', $dbAdapter, null, $resultSetPrototype);
+                },
             ),
         );
     }
@@ -84,6 +120,12 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'role' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\Role();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
                 'pageHeader' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\PageHeader();
@@ -102,14 +144,37 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'currentUrl' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\CurrentUrl($serviceLocator->get('Request'));
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
             ),
         );
     }
     public function initAcl(MvcEvent $e) {
 
         $acl = new Acl();
-        $roles = include __DIR__ . '/config/module.acl.roles.php';
+        /*$roles = include __DIR__ . '/config/module.acl.roles.php';*/
         $allResources = array();
+        $rolesTable = $e->getApplication()->getServiceManager()->get('RolesTable');
+        $resourcesTable = $e->getApplication()->getServiceManager()->get('ResourcesTable');
+        $avaiableResources = $resourcesTable->getAvaiableResources();
+        $resourcesData = array();
+        foreach($avaiableResources as $r){
+            $resourcesData[$r->resource_id] = $r->path;
+        }
+        $results = $rolesTable->fetchAll();
+        $roles = array();
+        foreach($results as $row){
+            $resource_ids = unserialize($row->resource_ids);
+            if(!empty($resource_ids)){
+                foreach($resource_ids as $resource_id){
+                    $roles[$row->role][] = $resourcesData[$resource_id];
+                }
+            }
+        }
         foreach ($roles as $role => $resources) {
 
             $role = new GenericRole($role);
@@ -127,17 +192,29 @@ class Module
                 $acl->allow($role, $resource);
             }
         }
-        /*Debug::dump($acl->isAllowed('editor','admin'));
-        Debug::dump($allResources);
-        Debug::dump($acl->isAllowed('admin','home'));die;*/
-
         /*setting to view*/
         $e->getViewModel()->acl = $acl;
 
     }
 
     public function checkAcl(MvcEvent $e) {
+        $rolesTable = $e->getApplication()->getServiceManager()->get('RolesTable');
         $routeMatch = $e->getRouteMatch();
+        /**
+         * set params
+         */
+        $param = $routeMatch->getParam('params', null);
+        if (!is_null($param)) {
+            $params = explode('/', $param);
+            if (count ($params)) {
+                while($paramKey = current($params)) {
+                    $paramValue = next($params);
+                    if ($paramValue) {
+                        $routeMatch->setParam($paramKey, $paramValue);
+                    }
+                }
+            }
+        }
         $moduleNamespaceExp = explode('\\',$routeMatch->getParam('controller','backend'));
         $moduleNamespace = strtolower($moduleNamespaceExp[0]);
         $controllerName = strtolower($moduleNamespaceExp[2]);
@@ -146,7 +223,10 @@ class Module
         $authService = $e->getApplication()->getServiceManager()->get('auth_service');
         $userRole = 'guest';
         if($authService->hasIdentity()){
-            $userRole = $authService->getIdentity()->role;
+            $userRoleId = (int) $authService->getIdentity()->role;
+            if($rolesTable->getRoleNameById($userRoleId)){
+                $userRole = $rolesTable->getRoleNameById($userRoleId);
+            }
         }
         if (!$e->getViewModel()->acl->isAllowed($userRole, $resource)) {
             /*$vm = $e->getViewModel();
@@ -155,6 +235,17 @@ class Module
             /*$response -> getHeaders() -> addHeaderLine('Location', $e -> getRequest() -> getBaseUrl() . '/404');*/
             $response -> setStatusCode(404);
         }
+    }
+    public function getDbRoles(MvcEvent $e){
+        // I take it that your adapter is already configured
+        $rolesTable = $e->getApplication()->getServiceManager()->get('RolesTable');
+        $results = $rolesTable->fetchAll();
+        // making the roles array
+        $roles = array();
+        foreach($results as $result){
+            $roles[$result['user_role']][] = $result['resource'];
+        }
+        return $roles;
     }
     public function getConfigMessage()
     {

@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/17/13
+ */
+?>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('admin',array('controller'=>'login','action' => 'auth')));
+$form->prepare();
+?>
+<div class="container">
+    <div class="login-form">
+        <h2>Login</h2>
+        <?php
+        $msg = $this->msg;
+        if (count($msg) > 0) {
+            foreach($msg as $m){
+                ?>
+                <div class="alert alert-danger"><?php echo $m;?></div>
+            <?php
+            }
+        }
+        ?>
+        <?php echo $this->form()->openTag($form);?>
+            <div class="input-group">
+                  <span class="input-group-btn">
+                    <span class="btn btn-default" type="button">Email </span>
+                  </span>
+                <?php echo $this->formRow($form->get('email'));?>
+            </div>
+            <div class="input-group">
+                  <span class="input-group-btn">
+                    <span class="btn btn-default" type="button">Password </span>
+                  </span>
+                <?php echo $this->formRow($form->get('password'));?>
+                <?php echo $this->formRow($form->get('csrf'));?>
+            </div>
+            <div class="input-group-action">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <span>Submit</span>
+                </button>
+            </div>
+        <?php echo $this->form()->closeTag();?>
+    </div>
+</div>

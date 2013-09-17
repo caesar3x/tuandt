@@ -1,0 +1,6 @@
+body{background: #F5F5F5;}
+.login-form{width: 400px;text-align: center;margin: 200px auto 0px;min-height: 260px;padding: 10px;border: 1px solid #ccc;background: #fff;border-radius: 5px;}
+.login-form h2{font-weight: bold;text-transform: uppercase;}
+.login-form .input-group{margin-bottom: 20px;}
+.login-form .btn-default{width: 100px;}
+#login-form{}

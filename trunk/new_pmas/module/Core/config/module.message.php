@@ -4,12 +4,14 @@
  * Date: 9/10/13
  */
 return array(
-    'NO_DATA'                       => 'Không có dữ liệu',
-    'ADMIN_USER_INSERT_FAIL'        => 'Thêm quản trị lỗi',
-    'INSERT_SUCCESS'                => 'Thêm thành công',
-    'UPDATE_SUCCESS'                => 'Cập nhật thành công',
-    'DELETE_SUCCESS'                => 'Xóa thành công',
-    'INSERT_FAIL'                   => 'Lỗi Sql',
-    'UPDATE_FAIL'                   => 'Lỗi Sql',
-    'DELETE_FAIL'                   => 'Lỗi Sql'
+    'NO_DATA'                       => 'No data existed',
+    'USER_INSERT_FAIL'              => 'Adding user fail',
+    'INSERT_SUCCESS'                => 'Insert success',
+    'UPDATE_SUCCESS'                => 'Update success',
+    'DELETE_SUCCESS'                => 'Delete success',
+    'INSERT_FAIL'                   => 'Insert fail',
+    'UPDATE_FAIL'                   => 'Update fail',
+    'DELETE_FAIL'                   => 'Delete fail',
+    'ACCOUNT_EXIST'                 => 'User account existed',
+    'EMAIL_EXIST'                   => 'Email existed',
 );
