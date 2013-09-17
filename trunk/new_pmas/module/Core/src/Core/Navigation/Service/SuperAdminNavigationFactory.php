@@ -7,10 +7,10 @@ namespace Core\Navigation\Service;
 
 use Zend\Navigation\Service\DefaultNavigationFactory;
 
-class AdminNavigationFactory extends DefaultNavigationFactory
+class SuperAdminNavigationFactory extends DefaultNavigationFactory
 {
     protected function getName()
     {
-        return 'admin_navigation';
+        return 'super_admin_navigation';
     }
 }

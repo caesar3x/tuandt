@@ -68,10 +68,10 @@ class LoginController extends AbstractActionController
                 null,
                 'password'
             ));
-            $this->flashMessenger()->addMessage('Login success.');
+            $this->flashMessenger()->setNamespace('success')->addMessage('Login success.');
             return $this->redirect()->toUrl('/index');
         }else{
-            $this->flashMessenger()->addMessage('Login fail');
+            $this->flashMessenger()->setNamespace('error')->addMessage('Login fail');
             return $this->redirect()->toUrl('/login');
         }
     }

@@ -1,0 +1,17 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/17/13
+ */
+?>
+<?php
+$flashMessenger = $this->flashMessenger();
+$flashMessenger
+    ->setMessageOpenFormat('<div%s>')
+    ->setMessageSeparatorString('</div><div%s>')
+    ->setMessageCloseString('</div>');
+echo $flashMessenger->render('success', array('alert', 'alert-success'));
+echo $flashMessenger->render('error', array('alert', 'alert-danger'));
+echo $flashMessenger->render('default', array('alert', 'alert-info'));
+echo $flashMessenger->render('info', array('alert', 'alert-info'));
+?>

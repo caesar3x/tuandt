@@ -32,7 +32,6 @@ class Module
         /**
          * Start Acl
          */
-        $this -> initAcl($e);
         $eventManager->attach('route', array($this, 'checkAcl'));
     }
     public function getConfig()
@@ -153,9 +152,10 @@ class Module
             ),
         );
     }
-    public function initAcl(MvcEvent $e) {
+    public function initAcl(MvcEvent $e,$re) {
 
         $acl = new Acl();
+        $acl->addResource(new GenericResource($re));
         /*$roles = include __DIR__ . '/config/module.acl.roles.php';*/
         $allResources = array();
         $rolesTable = $e->getApplication()->getServiceManager()->get('RolesTable');
@@ -180,18 +180,22 @@ class Module
             $role = new GenericRole($role);
             $acl->addRole($role);
 
-            $allResources = array_merge($resources, $allResources);
+            /*$allResources = array_merge($resources, $allResources);*/
 
             /*adding resources*/
             foreach ($resources as $resource) {
-                if(!$acl->hasResource($resource))
+                if(!$acl->hasResource($resource)){
                     $acl->addResource(new GenericResource($resource));
+                }
+                $acl->allow($role, $resource);
             }
             /*adding restrictions*/
-            foreach ($allResources as $resource) {
+            foreach ($resources as $resource) {
                 $acl->allow($role, $resource);
             }
         }
+        $acl->addRole('super_admin');
+        $acl->allow('super_admin');
         /*setting to view*/
         $e->getViewModel()->acl = $acl;
 
@@ -220,6 +224,7 @@ class Module
         $controllerName = strtolower($moduleNamespaceExp[2]);
         $actionName = strtolower($routeMatch->getParam('action', 'not-found'));
         $resource = $moduleNamespace.'\\'.$controllerName.'\\'.$actionName;
+        $this -> initAcl($e,$resource);
         $authService = $e->getApplication()->getServiceManager()->get('auth_service');
         $userRole = 'guest';
         if($authService->hasIdentity()){
