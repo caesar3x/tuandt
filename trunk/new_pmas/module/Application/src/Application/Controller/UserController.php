@@ -6,6 +6,7 @@
 namespace Application\Controller;
 
 use Application\Form\UserForm;
+use Core\Model\AdminUser;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
@@ -54,7 +55,7 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
         $view = new ViewModel();
-        $id = $this->params('id',0);
+        $id = (int) $this->params('id',0);
         if(!$id || $id == 0){
             $this->getResponse()->setStatusCode(404);
         }
@@ -69,6 +70,7 @@ class UserController extends AbstractActionController
         }
         if($request->isPost()){
             $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
             $form->setData($post);
             /**
              * check category name exist
@@ -86,10 +88,25 @@ class UserController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/user');
                 }
-                $id = (int) $data['id'];
-                $entryTerm = $this->adminTable->getEntry($id);
-                Debug::dump($data);
-                die('valid');
+                if($this->save($data)){
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/user');
+                    }
+                }else{
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                        return $this->redirect()->toUrl('/user');
+                    }
+                }
             }else{
                 foreach($form->getMessages() as $msg){
                     $this->flashMessenger()->setNamespace('error')->addMessage($msg);
@@ -105,70 +122,25 @@ class UserController extends AbstractActionController
     }
     public function save($data)
     {
-        $messages = $this->getMessages();
         $sm = $this->getServiceLocator();
-        $viewhelpermanager = $sm->get('viewhelpermanager');
         if(!$this->adminTable){
             $this->adminTable = $sm->get('AdminUserTable');
         }
         $success = true;
         $dataFinal = $data;
-        if($data['name'] && $data['slug'] == ''){
-            $nameSlug = $viewhelpermanager->get('slugify')->implement($data['name']);
-            $dataFinal['slug'] = $nameSlug;
-        }
-        $dataFinal['taxonomy'] = 'category';
-        $term = new Terms();
-        $term->exchangeArray($dataFinal);
-        $term_id = $term->term_id;
-        $lastestInsertId = $term_id;
-        if($term_id != null){
-            $entry = $this->termsTable->getEntry($term_id);
-            if(array_diff((array)$term,(array)$entry) != null){
-                $success = $success && $this->termsTable->save($term);
+        $adminUser = new AdminUser();
+        $adminUser->exchangeArray($dataFinal);
+        $id = $adminUser->id;
+        if($id != 0){
+            $entry = $this->adminTable->getEntry($id);
+            if(array_diff((array)$adminUser,(array)$entry) != null){
+                $success = $success && $this->adminTable->save($adminUser);
             }
         }else{
-            if($this->termsTable->save($term)){
+            if($this->adminTable->save($adminUser)){
                 $success = $success && true;
-                $lastestInsertId = $this->termsTable->getLastInsertValue();
             }else{
                 $success = $success && false;
-            }
-        }
-        if(isset($lastestInsertId)){
-            $dataFinal['term_id'] = $lastestInsertId;
-            $termTaxonomyEntry = $this->termTaxonomyTable->getByTermId($lastestInsertId);
-            if($termTaxonomyEntry != null){
-                $dataFinal['term_taxonomy_id'] = $termTaxonomyEntry->term_taxonomy_id;
-            }
-            if($data['thumbnail']['name'] && trim($data['thumbnail']['name']) != ''){
-                if (!file_exists($path .DIRECTORY_SEPARATOR . $data['thumbnail']['name'])) {
-                    move_uploaded_file($data['thumbnail']['tmp_name'], $path .DIRECTORY_SEPARATOR .$data['thumbnail']['name'] );
-                    $dataFinal['thumbnail'] = '/upload/catalog/category/' .$data['thumbnail']['name'];
-                }else{
-                    $thumbInfo = pathinfo($data['thumbnail']['name']);
-                    move_uploaded_file($data['thumbnail']['tmp_name'], $path .DIRECTORY_SEPARATOR .$thumbInfo['filename'].'_'.$lastestInsertId.'.'.$thumbInfo['extension'] );
-                    $dataFinal['thumbnail'] = '/upload/catalog/category/' .$thumbInfo['filename'].'_'.$lastestInsertId.'.'.$thumbInfo['extension'];
-                }
-            }else{
-                $dataFinal['thumbnail'] = $data['thumbnail_mask'];
-            }
-            if($data['image']['name'] && trim($data['image']['name']) != ''){
-                if (!file_exists($path .DIRECTORY_SEPARATOR . $data['image']['name'])) {
-                    move_uploaded_file($data['image']['tmp_name'], $path .DIRECTORY_SEPARATOR .$data['image']['name'] );
-                    $dataFinal['image'] = '/upload/catalog/category/' .$data['image']['name'];
-                }else{
-                    $imageInfo = pathinfo($data['image']['name']);
-                    move_uploaded_file($data['image']['tmp_name'], $path .DIRECTORY_SEPARATOR .$imageInfo['filename'].'_'.$lastestInsertId.'.'.$imageInfo['extension'] );
-                    $dataFinal['image'] = '/upload/catalog/category/' .$imageInfo['filename'].'_'.$lastestInsertId.'.'.$imageInfo['extension'] ;
-                }
-            }else{
-                $dataFinal['image'] = $data['image_mask'];
-            }
-            $termTaxonomy = new TermTaxonomy();
-            $termTaxonomy->exchangeArray($dataFinal);
-            if(array_diff((array)$termTaxonomy,(array)$termTaxonomyEntry) != null){
-                $success = $success && $this->termTaxonomyTable->save($termTaxonomy);
             }
         }
         return $success;

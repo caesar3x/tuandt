@@ -24,7 +24,7 @@ class AdminUser
 
     public function exchangeArray($data)
     {
-        $this->id     = (isset($data['id'])) ? $data['id'] : null;
+        $this->id     = (isset($data['id'])) ? $data['id'] : 0;
         $this->username = (isset($data['username'])) ? $data['username'] : null;
         $this->first_name = (isset($data['first_name'])) ? $data['first_name'] : null;
         $this->last_name = (isset($data['last_name'])) ? $data['last_name'] : null;
@@ -32,7 +32,7 @@ class AdminUser
         $this->email  = (isset($data['email'])) ? $data['email'] : null;
         $this->status  = (isset($data['status'])) ? $data['status'] : '0';
         $this->role  = (isset($data['role'])) ? $data['role'] : 'editor';
-        $this->token  = (isset($data['token'])) ? $data['token'] : md5($data['username']);
+        $this->token  = (isset($data['token'])) ? $data['token'] : md5($data['first_name'].$data['last_name']);
         $this->created_at  = (isset($data['created_at'])) ? $data['created_at'] : time();
         $this->updated_at  = (isset($data['updated_at'])) ? $data['updated_at'] : time();
         $this->note  = (isset($data['note'])) ? $data['note'] : null;

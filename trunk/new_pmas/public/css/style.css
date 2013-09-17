@@ -52,4 +52,5 @@ div.container a.brand {
 #model-view-tabs{border-bottom: none;}
 #model-view-tabs li{list-style: none;}
 table th.action,table td.action{width: 120px !important;}
+.alert{padding: 5px 15px;}
 .alert ul li{list-style: none;}
