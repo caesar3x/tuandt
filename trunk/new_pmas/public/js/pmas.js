@@ -240,3 +240,12 @@ function formConfirm(id)
         return true;
     });
 }
+function confirmDelete(url)
+{
+    bootbox.confirm("Are you sure?", function(result) {
+        if(result == true){
+            window.location.assign(url);
+        }
+        return true;
+    });
+}

@@ -56,14 +56,14 @@ return array(
                         'label' => 'TDM Model',
                         'route' => 'admin',
                         'controller' => 'model',
-                        'action' => 'tdm',
+                        'action' => 'index',
                     ),
-                    array(
+                    /*array(
                         'label' => 'Recycler Model',
                         'route' => 'admin',
                         'controller' => 'model',
                         'action' => 'recycler',
-                    ),
+                    ),*/
                     array(
                         'label' => 'Add Model',
                         'route' => 'admin',
@@ -164,12 +164,12 @@ return array(
                         'controller' => 'model',
                         'action' => 'tdm',
                     ),
-                    array(
+                    /*array(
                         'label' => 'Recycler Model',
                         'route' => 'admin',
                         'controller' => 'model',
                         'action' => 'recycler',
-                    ),
+                    ),*/
                     array(
                         'label' => 'Add Model',
                         'route' => 'admin',

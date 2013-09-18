@@ -214,4 +214,33 @@ class RecyclerController extends AbstractActionController
         }
         return $success;
     }
+    public function deleteAction()
+    {
+        $this->auth();
+        $id = $this->params('id',0);
+        $request = $this->getRequest();
+        $ids = $request->getPost('id');
+        if(!$this->recyclerTable){
+            $this->recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        }
+        if($id != 0){
+            $this->delete($id,$this->recyclerTable);
+        }else{
+            if(!empty($ids) && is_array($ids)){
+                foreach($ids as $id){
+                    $this->delete($id,$this->recyclerTable);
+                }
+            }
+        }
+    }
+    protected function delete($id,$table)
+    {
+        $messages = $this->getMessages();
+        if($table->deleteEntry($id)){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return $this->redirect()->toUrl('/recycler');
+    }
 }

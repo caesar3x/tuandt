@@ -72,7 +72,7 @@
                             <i class="glyphicon glyphicon-edit"></i>
                             <?php echo $this->translate('Edit')?>
                         </a>
-                        <a class="btn btn-xs btn-danger btn-delete" href="/recycler/delete/id/<?php echo $row->recycler_id?>">
+                        <a onclick="confirmDelete('/recycler/delete/id/<?php echo $row->recycler_id?>')" class="btn btn-xs btn-danger btn-delete" >
                             <i class="glyphicon glyphicon-trash"></i>
                             <?php echo $this->translate('Delete')?>
                         </a>
