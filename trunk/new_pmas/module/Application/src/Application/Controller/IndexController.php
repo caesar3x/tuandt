@@ -9,8 +9,12 @@
 
 namespace Application\Controller;
 
+use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Router\Console\Simple;
 use Zend\View\Model\ViewModel;
+use SimpleExcel\SimpleExcel;
+
 
 class IndexController extends AbstractActionController
 {
@@ -38,6 +42,10 @@ class IndexController extends AbstractActionController
     }
     public function testAction()
     {
-
+        $excel = new SimpleExcel('CSV');
+        $excel->parser->loadFile('translate.csv');
+        Debug::dump($excel->parser->getRow(1)) ;
+        echo '<br/>';
+        die('test action');
     }
 }
