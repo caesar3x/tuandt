@@ -83,7 +83,7 @@
                             <i class="glyphicon glyphicon-edit"></i>
                             <?php echo $this->translate('Edit')?>
                         </a>
-                        <a class="btn btn-xs btn-danger btn-delete" href="/model/delete/id/<?php echo $row->device_id?>">
+                        <a onclick="confirmDelete('/model/delete/id/<?php echo $row->device_id?>')" class="btn btn-xs btn-danger btn-delete">
                             <i class="glyphicon glyphicon-trash"></i>
                             <?php echo $this->translate('Delete')?>
                         </a>
