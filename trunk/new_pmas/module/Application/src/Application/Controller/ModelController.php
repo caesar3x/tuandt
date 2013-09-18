@@ -248,7 +248,7 @@ class ModelController extends AbstractActionController
         $this->auth();
         $id = $this->params('id',0);
         $request = $this->getRequest();
-        $ids = $request->getPost('id');
+        $ids = $request->getPost('ids');
         if(!$this->deviceTable){
             $this->deviceTable = $this->serviceLocator->get('DeviceTable');
         }
@@ -260,6 +260,7 @@ class ModelController extends AbstractActionController
                 $this->delete($id,$this->deviceTable);
             }
         }
+        return $this->redirect()->toUrl('/model');
     }
     protected function delete($id,$table)
     {
@@ -269,6 +270,6 @@ class ModelController extends AbstractActionController
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return $this->redirect()->toUrl('/model');
+        return ;
     }
 }

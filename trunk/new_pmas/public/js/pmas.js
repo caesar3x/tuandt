@@ -233,6 +233,11 @@ function formSave(id)
 }
 function formConfirm(id)
 {
+    var itemsChecked = $('input[name="ids[]"]:checked');
+    if(itemsChecked.length == 0){
+        bootbox.alert("You must select items");
+        return true;
+    }
     bootbox.confirm("Are you sure?", function(result) {
         if(result == true){
             $("#"+id).submit();

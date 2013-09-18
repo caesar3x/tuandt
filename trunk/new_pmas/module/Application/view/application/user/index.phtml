@@ -40,7 +40,7 @@
             <?php if(!empty($this->users)):?>
                 <?php foreach($this->users as $row):?>
                     <tr>
-                        <td class="col-checkbox"><input name="id[]" type="checkbox" class="check-item" value="<?php echo $row->id?>"></td>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->id?>"></td>
                         <td><?php echo $row->id?></td>
                         <td><?php echo $row->first_name?></td>
                         <td><?php echo $row->last_name?></td>

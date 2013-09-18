@@ -217,7 +217,7 @@ class UserController extends AbstractActionController
         $this->auth();
         $id = $this->params('id',0);
         $request = $this->getRequest();
-        $ids = $request->getPost('id');
+        $ids = $request->getPost('ids');
         if(!$this->adminTable){
             $this->adminTable = $this->serviceLocator->get('AdminUserTable');
         }
@@ -239,6 +239,6 @@ class UserController extends AbstractActionController
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return $this->redirect()->toUrl('/user');
+        /*return $this->redirect()->toUrl('/user');*/
     }
 }

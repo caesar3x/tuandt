@@ -219,7 +219,7 @@ class RecyclerController extends AbstractActionController
         $this->auth();
         $id = $this->params('id',0);
         $request = $this->getRequest();
-        $ids = $request->getPost('id');
+        $ids = $request->getPost('ids');
         if(!$this->recyclerTable){
             $this->recyclerTable = $this->serviceLocator->get('RecyclerTable');
         }
@@ -242,5 +242,9 @@ class RecyclerController extends AbstractActionController
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return $this->redirect()->toUrl('/recycler');
+    }
+    public function exportAction()
+    {
+
     }
 }
