@@ -9,12 +9,13 @@
 
 namespace Application\Controller;
 
+use BasicExcel\Writer\Xlsx;
+use Core\Model\SimpleXLSX;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Router\Console\Simple;
 use Zend\View\Model\ViewModel;
 use SimpleExcel\SimpleExcel;
-
 
 class IndexController extends AbstractActionController
 {
@@ -42,6 +43,33 @@ class IndexController extends AbstractActionController
     }
     public function testAction()
     {
+        $data = array(
+            'Names' => array(
+                array('Nr.', 'Name', 'E-Mail'),
+                array(1, 'Jane Smith', 'jane.smith@fakemail.com'),
+                array(2, 'John Smith', 'john.smith@fakemail.com')
+            ),
+            'Ages' => array(
+                array('Nr.', 'Age'),
+                array(1, 103),
+                array(2, 21)
+            ),
+            'Genders' => array(
+                array('Nr.', 'Gender'),
+                array(1, 'Male'),
+                array(2, 'Female')
+            )
+        );
+
+        $csvwriter = new Xlsx();
+        $csvwriter->fromArray($data);
+        //$csvwriter->writeFile('myfilename.csv');
+        //OR
+        $csvwriter->download('myfilename.xlsx');
+        die;
+        $xlsx = new SimpleXLSX('dat.xlsx');
+        Debug::dump($xlsx->rows());
+        die('--');
         $data = array('id' => '1','name' => 'Recycler Name','brand' => 'Brand','model' => 'Model');
         $excel = new SimpleExcel('CSV');
         $excel->writer->addRow($data);
