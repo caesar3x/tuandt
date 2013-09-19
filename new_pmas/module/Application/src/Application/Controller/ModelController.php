@@ -272,4 +272,12 @@ class ModelController extends AbstractActionController
         }
         return ;
     }
+    public function conditionAction()
+    {
+
+    }
+    public function addConditionAction()
+    {
+
+    }
 }

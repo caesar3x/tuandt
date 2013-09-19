@@ -1,11 +1,10 @@
 <?php
 /**
  * Created by Nguyen Tien Dat.
- * Date: 9/18/13
+ * Date: 9/20/13
  */
 namespace Core\Model;
-
-class DeviceConditionTable extends AbstractModel
+class RecyclerDeviceConditionTable extends AbstractModel
 {
     public function getEntry($id)
     {
@@ -17,7 +16,7 @@ class DeviceConditionTable extends AbstractModel
         }
         return $row;
     }
-    public function save(DeviceCondition $entry)
+    public function save(RecyclerDeviceCondition $entry)
     {
         $data = (array) $entry;
         $id = (int)$entry->condition_id;
