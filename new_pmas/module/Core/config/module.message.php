@@ -12,6 +12,8 @@ return array(
     'INSERT_FAIL'                   => 'Insert fail',
     'UPDATE_FAIL'                   => 'Update fail',
     'DELETE_FAIL'                   => 'Delete fail',
+    'EXPORT_SUCCESS'                => 'Export success',
+    'EXPORT_FAIL'                   => 'Export fail',
     'ACCOUNT_EXIST'                 => 'User account existed',
     'EMAIL_EXIST'                   => 'Email existed',
     'PASSWORD_NOT_EMPTY'            => 'Password does not empty',

@@ -7,6 +7,8 @@ namespace Application\Controller;
 
 use Application\Form\RecyclerForm;
 use Core\Model\Recycler;
+use SimpleExcel\SimpleExcel;
+use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
@@ -232,6 +234,7 @@ class RecyclerController extends AbstractActionController
                 }
             }
         }
+        return $this->redirect()->toUrl('/recycler');
     }
     protected function delete($id,$table)
     {
@@ -241,10 +244,46 @@ class RecyclerController extends AbstractActionController
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return $this->redirect()->toUrl('/recycler');
+        return true;
     }
     public function exportAction()
     {
-
+        $this->auth();
+        $messages = $this->getMessages();
+        $format = $this->params('format');
+        $row = $this->params('row');
+        if(!isset($format) || !isset($row)){
+            $this->getResponse()->setStatusCode(404);
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            return $this->redirect()->toUrl('/recycler');
+        }
+        if(!$this->recyclerTable){
+            $this->recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        }
+        $rowset = $this->recyclerTable->getAvaiableRows();
+        $header = array('recycler_id','name','country','email','website','telephone','address');
+        $data[] = $header;
+        $excel = new SimpleExcel(strtoupper($format));
+        if(!empty($rowset)){
+            foreach($rowset as $row){
+                $data[] = array(
+                    'recycler_id' => $row->recycler_id,
+                    'name' => $row->name,
+                    'country' => $row->country_id,
+                    'email' => $row->email,
+                    'website' => $row->website,
+                    'telephone' => $row->email,
+                    'address' => $row->address,
+                );
+            }
+            foreach($data as $r){
+                $excel->writer->addRow($r);
+            }
+            $path = 'export';
+            $excel->writer->saveFile('export/example');
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_SUCCESS']);
+            return $this->redirect()->toUrl('/recycler');
+        }
+        die;
     }
 }

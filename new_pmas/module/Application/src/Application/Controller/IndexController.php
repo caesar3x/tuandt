@@ -42,6 +42,11 @@ class IndexController extends AbstractActionController
     }
     public function testAction()
     {
+        $data = array('id' => '1','name' => 'Recycler Name','brand' => 'Brand','model' => 'Model');
+        $excel = new SimpleExcel('CSV');
+        $excel->writer->addRow($data);
+        $excel->writer->saveFile('example');
+        die('export sample');
         $excel = new SimpleExcel('CSV');
         $excel->parser->loadFile('translate.csv');
         Debug::dump($excel->parser->getRow(1)) ;
