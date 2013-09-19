@@ -12,6 +12,7 @@
         "zendframework/zendframework": "2.2.*"
     },
     "autoload": {
-        "psr-0": {"SimpleExcel\\": "vendor/simpleexcel/library"}
+        "psr-0": {"SimpleExcel\\": "vendor/simpleexcel/library"},
+        "psr-1": {"BasicExcel\\": "vendor/phpexcel/library"}
     }
 }
