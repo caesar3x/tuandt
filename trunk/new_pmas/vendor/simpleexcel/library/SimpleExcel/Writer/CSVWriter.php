@@ -17,7 +17,13 @@ class CSVWriter extends BaseWriter implements IWriter
      * @var     string
      */
     protected $content_type = 'text/csv';
-
+    /**
+     * Defines enclosure char
+     *
+     * @var string
+     * @var     string
+     */
+    protected $enclosure = '"';
     /**
      * Defines delimiter char
      * 
@@ -42,7 +48,7 @@ class CSVWriter extends BaseWriter implements IWriter
     public function saveString(){
         $fp = fopen('php://temp', 'r+');
         foreach ($this->tabl_data as $row) {
-            fputcsv($fp, $row, $this->delimiter);
+            $this->fputcsv($fp, $row, $this->delimiter,$this->enclosure);
         }
         rewind($fp);
         $content = stream_get_contents($fp);
@@ -58,6 +64,25 @@ class CSVWriter extends BaseWriter implements IWriter
      */
     public function setDelimiter($delimiter){
         $this->delimiter = $delimiter;
+    }
+
+    /**
+     * Custom fputcsv
+     * @param $handle
+     * @param array $fields
+     * @param string $delimiter
+     * @param string $enclosure
+     * @return int
+     */
+    public function fputcsv($handle, $fields = array(), $delimiter = ',', $enclosure = '"') {
+        $str = '';
+        $escape_char = '\\';
+        foreach ($fields as $value) {
+            $str .= $enclosure.$value.$enclosure.$delimiter;
+        }
+        $str = substr($str,0,-1);
+        $str .= "\n";
+        return fwrite($handle, $str);
     }
 }
 ?>
