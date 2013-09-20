@@ -11,8 +11,8 @@ class Device
     public $brand;
     public $model;
     public $type_id;
-    public $price;
     public $deleted;
+
     public function exchangeArray($data)
     {
         $this->device_id     = (isset($data['device_id'])) ? $data['device_id'] : 0;
