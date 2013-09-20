@@ -45,6 +45,12 @@ class DeviceForm extends Form
             'id' => 'brand',
             'class' => 'form-control'
         ));
+        $country_id = new Select('country_id');
+        $country_id->setAttributes(array(
+            'id' => 'country_id',
+            'class' => 'form-control'
+        ));
+        $country_id->setValueOptions($this->getCountries());
         $type_id = new Select('type_id');
         $type_id->setAttributes(array(
             'id' => 'type_id',
@@ -77,6 +83,7 @@ class DeviceForm extends Form
             ->add($continue)
             ->add($name)
             ->add($model)
+            ->add($country_id)
             ->add($brand)
             ->add($type_id)
             ->add($condition_id)
@@ -85,7 +92,19 @@ class DeviceForm extends Form
             ->add($csrf)
             ;
     }
-    public function getDeviceConditions($tdm = true)
+    protected function getCountries()
+    {
+        $countryTable = $this->serviceLocator->get('CountryTable');
+        $availableCountries = $countryTable->getAvaiableRows();
+        $data = array(0 => 'Select Country');
+        if(!empty($availableCountries)){
+            foreach($availableCountries as $row){
+                $data[$row->country_id] = $row->name;
+            }
+        }
+        return $data;
+    }
+    protected function getDeviceConditions($tdm = true)
     {
         if($tdm == true){
             $conditionTypeTable = $this->serviceLocator->get('TdmDeviceConditionTable');
@@ -101,7 +120,7 @@ class DeviceForm extends Form
         }
         return $data;
     }
-    public function getTypes()
+    protected function getTypes()
     {
         $deviceTypeTable = $this->serviceLocator->get('DeviceTypeTable');
         $availableTypes = $deviceTypeTable->getAvaiableRows();
