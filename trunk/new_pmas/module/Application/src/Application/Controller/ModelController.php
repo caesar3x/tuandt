@@ -41,7 +41,7 @@ class ModelController extends AbstractActionController
         if (!$this->deviceTable) {
             $sm = $this->getServiceLocator();
             $this->deviceTable = $sm->get('DeviceTable');
-            $rowset = $this->deviceTable->getAvaiableRows();
+            $rowset = $this->deviceTable->getAvaiableTdmDevices();
             $view->setVariable('rowset',$rowset);
         }
         return $view;
@@ -123,7 +123,7 @@ class ModelController extends AbstractActionController
         $view->setVariable('form',$form);
         return $view;
     }
-    public function editTdmAction()
+    public function editAction()
     {
         $this->auth();
         $messages = $this->getMessages();
@@ -138,7 +138,7 @@ class ModelController extends AbstractActionController
         if(!$this->deviceTable){
             $this->deviceTable = $sm->get('DeviceTable');
         }
-        $entry = $this->deviceTable->getEntry($id);
+        $entry = $this->deviceTable->getTdmDevice($id);
         if(empty($entry)){
             $this->getResponse()->setStatusCode(404);
         }
@@ -235,7 +235,69 @@ class ModelController extends AbstractActionController
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
+        $form = new DeviceForm($sm);
         $view = new ViewModel();
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['brand'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_BRAND_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['model'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_MODEL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/model');
+                }
+                if($this->save($data)){
+                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    if($continue == 'yes'){
+                        $lastInsertId = $this->deviceTable->getLastInsertValue();
+                        if($lastInsertId){
+                            return $this->redirect()->toUrl('/model/detail/id/'.$lastInsertId);
+                        }
+                    }
+                    return $this->redirect()->toUrl('/model');
+                }else{
+                    if($continue == 'yes'){
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        return $this->redirect()->toUrl('/model');
+                    }
+                }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                }
+                return $this->redirect()->toUrl('/model');
+            }
+        }
+        $view->setVariable('form',$form);
         return $view;
     }
     public function detailAction()
