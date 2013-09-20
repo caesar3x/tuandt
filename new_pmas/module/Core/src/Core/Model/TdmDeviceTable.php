@@ -27,7 +27,7 @@ class TdmDeviceTable extends AbstractModel
             if ($this->getEntry($id)) {
                 return $this->tableGateway->update($data, array('device_id' => $id));
             } else {
-                throw new \Exception('Data does not exist.');
+                return $this->tableGateway->insert($data);
             }
         }
     }
