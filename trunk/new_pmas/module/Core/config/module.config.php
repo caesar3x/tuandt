@@ -31,46 +31,12 @@ return array(
                 'route' => 'admin',
                 'controller' => 'recycler',
                 'action' => 'index',
-                'pages' => array(
-                    array(
-                        'label' => 'Manage Recycler',
-                        'route' => 'admin',
-                        'controller' => 'recycler',
-                        'action' => 'index',
-                    ),
-                    array(
-                        'label' => 'Add Recycler',
-                        'route' => 'admin',
-                        'controller' => 'recycler',
-                        'action' => 'add',
-                    ),
-                ),
             ),
             array(
-                'label' => 'Models',
+                'label' => 'TDM Model',
                 'route' => 'admin',
                 'controller' => 'model',
                 'action' => 'index',
-                'pages' => array(
-                    array(
-                        'label' => 'TDM Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'index',
-                    ),
-                    /*array(
-                        'label' => 'Recycler Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'recycler',
-                    ),*/
-                    array(
-                        'label' => 'Add Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'add',
-                    ),
-                ),
             ),
             array(
                 'label' => 'Exchange Rate',
@@ -136,47 +102,13 @@ return array(
                 'label' => 'Recycler',
                 'route' => 'admin',
                 'controller' => 'recycler',
-                'action' => 'index',
-                'pages' => array(
-                    array(
-                        'label' => 'Manage Recycler',
-                        'route' => 'admin',
-                        'controller' => 'recycler',
-                        'action' => 'index',
-                    ),
-                    array(
-                        'label' => 'Add Recycler',
-                        'route' => 'admin',
-                        'controller' => 'recycler',
-                        'action' => 'add',
-                    ),
-                ),
+                'action' => 'index'
             ),
             array(
-                'label' => 'Models',
+                'label' => 'TDM Model',
                 'route' => 'admin',
                 'controller' => 'model',
                 'action' => 'index',
-                'pages' => array(
-                    array(
-                        'label' => 'TDM Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'tdm',
-                    ),
-                    /*array(
-                        'label' => 'Recycler Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'recycler',
-                    ),*/
-                    array(
-                        'label' => 'Add Model',
-                        'route' => 'admin',
-                        'controller' => 'model',
-                        'action' => 'add',
-                    ),
-                ),
             ),
             array(
                 'label' => 'Exchange Rate',
