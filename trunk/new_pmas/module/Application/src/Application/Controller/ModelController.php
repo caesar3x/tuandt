@@ -10,6 +10,7 @@ use Core\Model\Device;
 use Core\Model\TdmDevice;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\Digits;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
@@ -172,6 +173,11 @@ class ModelController extends AbstractActionController
                 $view->setVariable('form',$form);
                 return $view;
             }
+            if(!is_numeric($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_VALID']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
@@ -181,6 +187,10 @@ class ModelController extends AbstractActionController
                 if($this->save($data)){
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
+                        $newEntry = $this->deviceTable->getTdmDevice($id);
+                        $view->setVariable('model',$newEntry->name);
+                        $newEntryArray = (array) $newEntry;
+                        $form->setData($newEntryArray);
                         $view->setVariable('form',$form);
                         return $view;
                     }else{
@@ -225,28 +235,34 @@ class ModelController extends AbstractActionController
         $id = $device->device_id;
         $lastestInsertId = $id;
         if($id != 0){
-            $entry = $this->deviceTable->getEntry($id);
+            /*$entry = $this->deviceTable->getEntry($id);
             if(array_diff((array)$device,(array)$entry) != null){
                 $success = $success && $this->deviceTable->save($device);
-            }
+            }*/
+            $result1 = $this->deviceTable->save($device);
         }else{
             if($this->deviceTable->save($device)){
-                $success = $success && true;
+                $result1 = true;
                 $lastestInsertId = $this->deviceTable->getLastInsertValue();
             }else{
-                $success = $success && false;
+                $result1 = false;
             }
         }
         if(isset($lastestInsertId)){
             $dataFinal['device_id'] = $lastestInsertId;
-            $tdmDeviceEntry = $this->tdmDeviceTable->getEntry($lastestInsertId);
+            /*$tdmDeviceEntry = $this->tdmDeviceTable->getEntry($lastestInsertId);*/
             $tdmDevice = new TdmDevice();
             $tdmDevice->exchangeArray($dataFinal);
-            if(array_diff((array)$tdmDevice,(array)$tdmDeviceEntry) != null){
+            /*Debug::dump((array)$tdmDevice);
+            Debug::dump((array)$tdmDeviceEntry);
+            Debug::dump(array_diff_assoc((array)$tdmDevice,(array)$tdmDeviceEntry));die('========');*/
+            /*if(array_diff((array)$tdmDevice,(array)$tdmDeviceEntry) != null){
+                Debug::dump($tdmDevice);die('========');
                 $success = $success && $this->tdmDeviceTable->save($tdmDevice);
-            }
+            }*/
+            $result2 = $this->tdmDeviceTable->save($tdmDevice);
         }
-        return $success;
+        return ($result1 || $result2) ? true : false;
     }
     public function addAction()
     {
@@ -281,6 +297,11 @@ class ModelController extends AbstractActionController
             }
             if(!$empty->isValid($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!is_numeric($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_VALID']));
                 $view->setVariable('form',$form);
                 return $view;
             }

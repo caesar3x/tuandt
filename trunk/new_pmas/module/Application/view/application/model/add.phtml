@@ -50,6 +50,12 @@
                 </div>
             </div>
             <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Country')?>*</span></div>
+                <div class="col-md-3">
+                    <?php echo $this->formRow($form->get('country_id'));?>
+                </div>
+            </div>
+            <div class="row form-row">
                 <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Type')?>*</span></div>
                 <div class="col-md-3">
                     <?php echo $this->formRow($form->get('type_id'));?>
