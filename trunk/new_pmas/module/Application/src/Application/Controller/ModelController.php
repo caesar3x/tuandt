@@ -224,21 +224,12 @@ class ModelController extends AbstractActionController
         if(!$this->tdmDeviceTable){
             $this->tdmDeviceTable = $sm->get('TdmDeviceTable');
         }
-        $success = true;
         $dataFinal = $data;
         $device = new Device();
         $device->exchangeArray($dataFinal);
-
-        /*Debug::dump($data);
-        Debug::dump($device);
-        Debug::dump($tdmDevice);die('=======');*/
         $id = $device->device_id;
         $lastestInsertId = $id;
         if($id != 0){
-            /*$entry = $this->deviceTable->getEntry($id);
-            if(array_diff((array)$device,(array)$entry) != null){
-                $success = $success && $this->deviceTable->save($device);
-            }*/
             $result1 = $this->deviceTable->save($device);
         }else{
             if($this->deviceTable->save($device)){
@@ -250,16 +241,8 @@ class ModelController extends AbstractActionController
         }
         if(isset($lastestInsertId)){
             $dataFinal['device_id'] = $lastestInsertId;
-            /*$tdmDeviceEntry = $this->tdmDeviceTable->getEntry($lastestInsertId);*/
             $tdmDevice = new TdmDevice();
             $tdmDevice->exchangeArray($dataFinal);
-            /*Debug::dump((array)$tdmDevice);
-            Debug::dump((array)$tdmDeviceEntry);
-            Debug::dump(array_diff_assoc((array)$tdmDevice,(array)$tdmDeviceEntry));die('========');*/
-            /*if(array_diff((array)$tdmDevice,(array)$tdmDeviceEntry) != null){
-                Debug::dump($tdmDevice);die('========');
-                $success = $success && $this->tdmDeviceTable->save($tdmDevice);
-            }*/
             $result2 = $this->tdmDeviceTable->save($tdmDevice);
         }
         return ($result1 || $result2) ? true : false;
@@ -316,7 +299,7 @@ class ModelController extends AbstractActionController
                     if($continue == 'yes'){
                         $lastInsertId = $this->deviceTable->getLastInsertValue();
                         if($lastInsertId){
-                            return $this->redirect()->toUrl('/model/detail/id/'.$lastInsertId);
+                            return $this->redirect()->toUrl('/model/edit/id/'.$lastInsertId);
                         }
                     }
                     return $this->redirect()->toUrl('/model');
