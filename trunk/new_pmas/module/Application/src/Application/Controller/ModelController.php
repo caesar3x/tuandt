@@ -7,6 +7,7 @@ namespace Application\Controller;
 
 use Application\Form\DeviceForm;
 use Core\Model\Device;
+use Core\Model\TdmDevice;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\NotEmpty;
@@ -210,11 +211,19 @@ class ModelController extends AbstractActionController
         if(!$this->deviceTable){
             $this->deviceTable = $sm->get('DeviceTable');
         }
+        if(!$this->tdmDeviceTable){
+            $this->tdmDeviceTable = $sm->get('TdmDeviceTable');
+        }
         $success = true;
         $dataFinal = $data;
         $device = new Device();
         $device->exchangeArray($dataFinal);
+
+        /*Debug::dump($data);
+        Debug::dump($device);
+        Debug::dump($tdmDevice);die('=======');*/
         $id = $device->device_id;
+        $lastestInsertId = $id;
         if($id != 0){
             $entry = $this->deviceTable->getEntry($id);
             if(array_diff((array)$device,(array)$entry) != null){
@@ -223,8 +232,18 @@ class ModelController extends AbstractActionController
         }else{
             if($this->deviceTable->save($device)){
                 $success = $success && true;
+                $lastestInsertId = $this->deviceTable->getLastInsertValue();
             }else{
                 $success = $success && false;
+            }
+        }
+        if(isset($lastestInsertId)){
+            $dataFinal['device_id'] = $lastestInsertId;
+            $tdmDeviceEntry = $this->tdmDeviceTable->getEntry($lastestInsertId);
+            $tdmDevice = new TdmDevice();
+            $tdmDevice->exchangeArray($dataFinal);
+            if(array_diff((array)$tdmDevice,(array)$tdmDeviceEntry) != null){
+                $success = $success && $this->tdmDeviceTable->save($tdmDevice);
             }
         }
         return $success;
