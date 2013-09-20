@@ -1,69 +1,78 @@
 <?php
 /**
  * Created by Nguyen Tien Dat.
- * Date: 9/13/13
+ * Date: 9/18/13
  */
 ?>
-<div class="page-header">
-    <div class="pull-left">
-        <h3>New model</h3>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
+    <div class="page-header">
+        <div class="pull-left">
+            <h3><?php echo $this->translate('New model')?></h3>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+        </div>
+        <div class="clearfix">&nbsp;</div>
     </div>
-    <div class="pull-right">
-        <a class="btn btn-sm btn-default add-item"><i class="glyphicon glyphicon-arrow-left"></i>Back</a>
-        <a class="btn btn-sm btn-default add-item"><i class="glyphicon glyphicon-repeat"></i>Reset</a>
-        <a class="btn btn-sm btn-default add-item"><i class="glyphicon glyphicon-saved"></i>Save model</a>
-        <a class="btn btn-sm btn-default add-item"><i class="glyphicon glyphicon-save"></i>Save model and Edit</a>
-    </div>
-    <div class="clearfix">&nbsp;</div>
-</div>
-<div class="panel">
-    <div class="panel-body">
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Device Name*</span></div>
-            <div class="col-md-9"><input type="text" class="form-control" style="width: 50%;"></div>
-        </div>
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Brand*</span></div>
-            <div class="col-md-9"><input type="text" class="form-control" style="width: 50%;"></div>
-        </div>
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Model*</span></div>
-            <div class="col-md-9"><input type="text" class="form-control" style="width: 50%;"></div>
-        </div>
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Type*</span></div>
-            <div class="col-md-9">
-                <select class="form-control" style="width: 40%;">
-                    <option>Use mobile</option>
-                    <option>Use mobile</option>
-                    <option>Use mobile</option>
-                </select>
+<?php echo $this->form()->openTag($form);?>
+<?php echo $this->formRow($form->get('device_id'));?>
+<?php echo $this->formRow($form->get('csrf'));?>
+<?php echo $this->formRow($form->get('continue'));?>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row form-row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+                </div>
             </div>
-        </div>
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Condition*</span></div>
-            <div class="col-md-9">
-                <select class="form-control" style="width: 40%;">
-                    <option>SSA</option>
-                    <option>SSA</option>
-                    <option>SSA</option>
-                </select>
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Device Name')?>*</span></div>
+                <div class="col-md-6">
+                    <?php echo $this->formRow($form->get('name'));?>
+                </div>
             </div>
-        </div>
-        <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Price*</span></div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" style="width: 100%;">
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Brand')?>*</span></div>
+                <div class="col-md-6">
+                    <?php echo $this->formRow($form->get('brand'));?>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="col-md-3"><span class="pull-right">Currency*</span></div>
-                <div class="col-md-9">
-                    <select class="form-control" style="width: 90px">
-                        <option>USD</option>
-                        <option>HKD</option>
-                    </select>
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Model')?>*</span></div>
+                <div class="col-md-6">
+                    <?php echo $this->formRow($form->get('model'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Type')?>*</span></div>
+                <div class="col-md-3">
+                    <?php echo $this->formRow($form->get('type_id'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Condition')?>*</span></div>
+                <div class="col-md-3">
+                    <?php echo $this->formRow($form->get('condition_id'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Price*</span></div>
+                <div class="col-md-3">
+                    <?php echo $this->formRow($form->get('price'));?>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Currency*</span></div>
+                    <div class="col-md-3">
+                        <?php echo $this->formRow($form->get('currency'));?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+<?php echo $this->form()->closeTag();?>

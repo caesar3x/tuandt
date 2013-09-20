@@ -51,18 +51,12 @@ class DeviceForm extends Form
             'class' => 'form-control'
         ));
         $type_id->setValueOptions($this->getTypes());
-        $tmd_condition_id = new Select('tmd_condition_id');
-        $tmd_condition_id->setAttributes(array(
-            'id' => 'tmd_condition_id',
-            'class' => 'form-control'
-        ));
-        $tmd_condition_id->setValueOptions($this->getRecyclerConditions());
-        $recycler_condition_id = new Select('condition_id');
-        $recycler_condition_id->setAttributes(array(
+        $condition_id = new Select('condition_id');
+        $condition_id->setAttributes(array(
             'id' => 'condition_id',
             'class' => 'form-control'
         ));
-        $recycler_condition_id->setValueOptions($this->getRecyclerConditions('recycler'));
+        $condition_id->setValueOptions($this->getDeviceConditions());
         $price = new Text('price');
         $price->setAttributes(array(
             'id' => 'price',
@@ -85,17 +79,20 @@ class DeviceForm extends Form
             ->add($model)
             ->add($brand)
             ->add($type_id)
-            ->add($tmd_condition_id)
-            ->add($recycler_condition_id)
+            ->add($condition_id)
             ->add($price)
             ->add($currency)
             ->add($csrf)
             ;
     }
-    public function getRecyclerConditions($recycler = 'tdm')
+    public function getDeviceConditions($tdm = true)
     {
-        $conditionTypeTable = $this->serviceLocator->get('DeviceConditionTable');
-        $availableConditions = $conditionTypeTable->getRecyclerConditions($recycler);
+        if($tdm == true){
+            $conditionTypeTable = $this->serviceLocator->get('TdmDeviceConditionTable');
+        }else{
+            $conditionTypeTable = $this->serviceLocator->get('RecyclerDeviceConditionTable');
+        }
+        $availableConditions = $conditionTypeTable->getAvaiableRows();
         $data = array(0 => 'Select Condition');
         if(!empty($availableConditions)){
             foreach($availableConditions as $row){

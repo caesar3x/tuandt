@@ -34,12 +34,4 @@ class RecyclerDeviceConditionTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
     }
-    public function getRecyclerConditions($recycler = 'tdm')
-    {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler' => $recycler));
-        if (!$rowset) {
-            return null;
-        }
-        return $rowset;
-    }
 }
