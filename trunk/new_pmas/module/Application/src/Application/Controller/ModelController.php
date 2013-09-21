@@ -6,6 +6,9 @@
 namespace Application\Controller;
 
 use Application\Form\DeviceForm;
+use BasicExcel\Writer\Csv;
+use BasicExcel\Writer\Xls;
+use BasicExcel\Writer\Xlsx;
 use Core\Model\Device;
 use Core\Model\TdmDevice;
 use Zend\Debug\Debug;
@@ -364,5 +367,61 @@ class ModelController extends AbstractActionController
     public function addConditionAction()
     {
 
+    }
+    public function exportAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $format = $this->params('format');
+        if(!$format){
+            return true;
+        }
+        $request = $this->getRequest();
+        $ids = $request->getQuery('id');
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
+        if (!$this->deviceTable) {
+            $sm = $this->getServiceLocator();
+            $this->deviceTable = $sm->get('DeviceTable');
+        }
+        $rowset = $this->deviceTable->getAvaiableTdmDevices($ids);
+        $header = array('Device ID','Brand','Model','Type','Country','Price','Currency','Name','Condition');
+        $data = array($header);
+        if(!empty($rowset)){
+            foreach($rowset as $row){
+                $rowParse = array();
+                $rowParse[] = $row->device_id;
+                $rowParse[] = $row->brand;
+                $rowParse[] = $row->model;
+                $rowParse[] = $viewhelperManager->get('ModelType')->implement($row->type_id);
+                $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
+                $rowParse[] = $row->price;
+                $rowParse[] = $row->currency;
+                $rowParse[] = $row->name;
+                $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
+                $data[] = $rowParse;
+            }
+        }
+        if(!empty($data)){
+            $filename = 'models_export_'.date('Y_m_d');
+            if($format == 'csv'){
+                $excel = new Csv();
+                $excel->fromArray($data);
+                $excel->download($filename.'.csv');
+            }elseif($format == 'xlsx'){
+                $parseExcelData = array($data);
+                $excel = new Xlsx();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xlsx');
+            }elseif($format == 'xls'){
+                $parseExcelData = array($data);
+                $excel = new Xls();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xls');
+            }
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            return $this->redirect()->toUrl('/model');
+        }
+        exit();
     }
 }

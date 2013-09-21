@@ -24,4 +24,8 @@ class Country extends AbstractHelper
         $countryTable = $this->serviceLocator->get('CountryTable');
         return $countryTable->getCountryNameById($id);
     }
+    public function implement($id = null)
+    {
+        return $this->__invoke($id);
+    }
 }

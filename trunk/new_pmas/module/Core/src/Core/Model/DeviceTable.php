@@ -69,17 +69,22 @@ class DeviceTable extends AbstractModel
      * @param string $order
      * @return mixed
      */
-    public function getAvaiableTdmDevices($order = 'DESC')
+    public function getAvaiableTdmDevices($ids = null,$order = 'DESC')
     {
         $tdmDeviceTable = $this->serviceLocator->get('TdmDeviceTable');
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
         $select->join(array('td' => $tdmDeviceTable->tableGateway->table),'m.device_id = td.device_id');
-        $select->where(array('m.deleted' => 0));
+        if($ids == null){
+            $select->where(array('m.deleted' => 0));
+        }else{
+            $select->where(array('m.deleted' => 0,'m.device_id' => $ids));
+        }
         $select->order('m.device_id '.$order);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         return $result;
     }
+
 }

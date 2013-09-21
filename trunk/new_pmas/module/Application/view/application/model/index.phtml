@@ -33,15 +33,14 @@
                 <?php echo $this->translate('Export to')?>
             </a>
             <div class="btn-group">
-                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                    <?php echo $this->translate('Data format')?> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a><?php echo $this->translate('CSV')?></a></li>
-                    <li><a><?php echo $this->translate('Excel')?></a></li>
-                </ul>
+                <select class="form-control" id="export-format" name="export_format">
+                    <option><?php echo $this->translate('Select format')?></option>
+                    <option value="csv"><?php echo $this->translate('CSV')?></option>
+                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                </select>
             </div>
-            <a class="btn btn-warning btn-sm">
+            <a class="btn btn-warning btn-sm" onclick="exportAllModels()">
                 <i class="glyphicon glyphicon-export"></i>
                 <?php echo $this->translate('Export')?>
             </a>
