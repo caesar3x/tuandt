@@ -6,6 +6,9 @@
 namespace Application\Controller;
 
 use Application\Form\RecyclerForm;
+use BasicExcel\Writer\Csv;
+use BasicExcel\Writer\Xls;
+use BasicExcel\Writer\Xlsx;
 use Core\Model\Recycler;
 use SimpleExcel\SimpleExcel;
 use Zend\Debug\Debug;
@@ -251,39 +254,53 @@ class RecyclerController extends AbstractActionController
         $this->auth();
         $messages = $this->getMessages();
         $format = $this->params('format');
-        $row = $this->params('row');
-        if(!isset($format) || !isset($row)){
-            $this->getResponse()->setStatusCode(404);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
-            return $this->redirect()->toUrl('/recycler');
+        if(!$format){
+            return true;
         }
+        $request = $this->getRequest();
+        $ids = $request->getQuery('id');
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         if(!$this->recyclerTable){
             $this->recyclerTable = $this->serviceLocator->get('RecyclerTable');
         }
-        $rowset = $this->recyclerTable->getAvaiableRows();
-        $header = array('recycler_id','name','country','email','website','telephone','address');
-        $data[] = $header;
-        $excel = new SimpleExcel(strtoupper($format));
+        $rowset = $this->recyclerTable->getAvailabeRecyclers($ids);
+        $header = array('Recycler Id','Name','Country','Email','Website','Telephone','Address');
+        $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
-                $data[] = array(
-                    'recycler_id' => $row->recycler_id,
-                    'name' => $row->name,
-                    'country' => $row->country_id,
-                    'email' => $row->email,
-                    'website' => $row->website,
-                    'telephone' => $row->email,
-                    'address' => $row->address,
-                );
+                $rowParse = array();
+                $rowParse[] = $row->recycler_id;
+                $rowParse[] = $row->name;
+                $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
+                $rowParse[] = $row->email;
+                $rowParse[] = $row->website;
+                $rowParse[] = $row->telephone;
+                $rowParse[] = $row->address;
+                $data[] = $rowParse;
             }
-            foreach($data as $r){
-                $excel->writer->addRow($r);
+        }
+        if(!empty($data)){
+            $filename = 'recyclers_export_'.date('Y_m_d');
+            if($format == 'csv'){
+                $excel = new Csv();
+                $excel->fromArray($data);
+                $excel->download($filename.'.csv');
+            }elseif($format == 'xlsx'){
+                $parseExcelData = array($data);
+                $excel = new Xlsx();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xlsx');
+            }elseif($format == 'xls'){
+                $parseExcelData = array($data);
+                $excel = new Xls();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xls');
             }
-            $path = 'export';
-            $excel->writer->saveFile('export/example');
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
             return $this->redirect()->toUrl('/recycler');
         }
+        exit();
         die;
     }
 }

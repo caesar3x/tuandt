@@ -5,6 +5,7 @@
  */
 namespace Core\View\Helper;
 
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
 class Condition extends AbstractHelper
@@ -31,5 +32,15 @@ class Condition extends AbstractHelper
             return null;
         }
         return $conditionEntry->name;
+    }
+
+    /**
+     * @param null $id
+     * @param bool $tdm
+     * @return null
+     */
+    public function implement($id = null,$tdm = true)
+    {
+        return $this->__invoke($id,$tdm);
     }
 }

@@ -254,3 +254,35 @@ function confirmDelete(url)
         return true;
     });
 }
+function exportAllModels()
+{
+    var format = $("#export-format").val();
+    var ids = new Array();
+    $(".check-item").each(function(){
+        if($(this).is(":checked")){
+            ids.push($(this).val());
+        }
+    });
+    var params = new Object();
+    params.id = ids;
+    var urlParams = $.param(params);
+    var url = '/model/export/format/'+format+'?'+urlParams;
+    window.location.assign(url);
+    return true;
+}
+function exportRecyclers()
+{
+    var format = $("#export-format").val();
+    var ids = new Array();
+    $(".check-item").each(function(){
+        if($(this).is(":checked")){
+            ids.push($(this).val());
+        }
+    });
+    var params = new Object();
+    params.id = ids;
+    var urlParams = $.param(params);
+    var url = '/recycler/export/format/'+format+'?'+urlParams;
+    window.location.assign(url);
+    return true;
+}

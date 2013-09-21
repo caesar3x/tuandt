@@ -37,4 +37,23 @@ class RecyclerTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $id));
     }
+
+    /**
+     * Get available recyclers
+     * @param null $ids
+     * @param string $order
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getAvailabeRecyclers($ids = null)
+    {
+        if($ids == null){
+            $rowset = $this->tableGateway->select(array('deleted' => 0));
+        }else{
+            $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $ids));
+        }
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
 }
