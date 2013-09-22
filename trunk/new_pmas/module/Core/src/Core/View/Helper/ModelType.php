@@ -27,8 +27,22 @@ class ModelType extends AbstractHelper
     {
         return $this->__invoke($id);
     }
-    public function getTypeIdByName($type)
-    {
 
+    /**
+     * Get type name by id
+     * @param $type_name
+     * @return null
+     */
+    public function getTypeIdByName($type_name)
+    {
+        if(!$type_name){
+            return null;
+        }
+        $typeTable = $this->serviceLocator->get('DeviceTypeTable');
+        $entry = $typeTable->getEntryByName($type_name);
+        if(!empty($entry)){
+            return $entry->type_id;
+        }
+        return null;
     }
 }

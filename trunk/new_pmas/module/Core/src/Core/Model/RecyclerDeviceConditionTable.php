@@ -34,4 +34,19 @@ class RecyclerDeviceConditionTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
     }
+
+    /**
+     * @param $name
+     * @return array|\ArrayObject|null
+     */
+    public function getEntryByName($name)
+    {
+        $name  = (string) $name;
+        $rowset = $this->tableGateway->select(array('name' => $name));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row;
+    }
 }

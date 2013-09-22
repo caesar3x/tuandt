@@ -35,6 +35,12 @@ class DeviceTypeTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('type_id' => $id));
     }
+
+    /**
+     * Get type name by type id
+     * @param $id
+     * @return mixed
+     */
     public function getTypeNameById($id)
     {
         $entry = $this->getEntry($id);
@@ -42,5 +48,21 @@ class DeviceTypeTable extends AbstractModel
             return $entry->name;
         }
         return;
+    }
+
+    /**
+     * Get type name by id
+     * @param $name
+     * @return array|\ArrayObject|null
+     */
+    public function getEntryByName($name)
+    {
+        $name  = (string) $name;
+        $rowset = $this->tableGateway->select(array('name' => $name));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row;
     }
 }
