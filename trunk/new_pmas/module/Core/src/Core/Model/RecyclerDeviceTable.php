@@ -20,16 +20,7 @@ class RecyclerDeviceTable extends AbstractModel
     public function save(RecyclerDevice $entry)
     {
         $data = (array) $entry;
-        $id = (int)$entry->device_id;
-        if ($id == 0) {
-            return $this->tableGateway->insert($data);
-        } else {
-            if ($this->getEntry($id)) {
-                return $this->tableGateway->update($data, array('device_id' => $id));
-            } else {
-                throw new \Exception('Data does not exist.');
-            }
-        }
+        return $this->tableGateway->insert($data);
     }
     public function deleteEntry($id)
     {

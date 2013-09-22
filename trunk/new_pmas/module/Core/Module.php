@@ -29,6 +29,8 @@ use Core\Model\TdmDevice;
 use Core\Model\TdmDeviceCondition;
 use Core\Model\TdmDeviceConditionTable;
 use Core\Model\TdmDeviceTable;
+use Core\Model\TmpDevice;
+use Core\Model\TmpDeviceTable;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -199,6 +201,18 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new TdmDevice());
                     return new TableGateway('tdm_device', $dbAdapter, null, $resultSetPrototype);
                 },
+                'TmpDeviceTable' => function($sm) {
+                    $tableGateway = $sm->get('TmpDeviceTableGateway');
+                    $table = new TmpDeviceTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'TmpDeviceTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new TmpDevice());
+                    return new TableGateway('tmp_device', $dbAdapter, null, $resultSetPrototype);
+                },
                 'RecyclerDeviceTable' => function($sm) {
                     $tableGateway = $sm->get('RecyclerDeviceTableGateway');
                     $table = new RecyclerDeviceTable($tableGateway);
@@ -209,7 +223,7 @@ class Module
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RecyclerDevice());
-                    return new TableGateway('tdm_device', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('recycler_device', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

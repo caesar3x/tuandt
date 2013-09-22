@@ -25,7 +25,7 @@ Abstract Class AbstractReader {
 
     public function canRead($filename) {
         try {
-            $this->openFile($pFilename);
+            $this->openFile($filename);
         } catch (\BasicExcel\Exception $e) {
             return FALSE;
         }

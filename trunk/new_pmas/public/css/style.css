@@ -56,3 +56,5 @@ table th.action3,table td.action3{width: 180px !important;}
 .alert{padding: 5px 15px;}
 form .alert{max-width: 800px;margin: 0 auto;}
 .alert ul li{list-style: none;}
+#upload-form .control-label{text-align: right;}
+#show-msg{float: left;margin-bottom: 30px;width: 100%;}

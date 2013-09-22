@@ -4,6 +4,7 @@
  */
 var asInitVals = new Array();
 $(function() {
+    $(".uploadform").colorbox({inline:true, width:"60%"});
     var trLeng = $(".example thead").find("tr:first th").length;
     var oTable = $('.example').dataTable( {
         "aoColumnDefs": [
@@ -206,6 +207,7 @@ $(function() {
             }
         });
     }
+
 } );
 function goToModelDetail()
 {
@@ -284,5 +286,16 @@ function exportRecyclers()
     var urlParams = $.param(params);
     var url = '/recycler/export/format/'+format+'?'+urlParams;
     window.location.assign(url);
+    return true;
+}
+function importRecyclerModels()
+{
+    $.colorbox.close();
+}
+function saveImportRecord(url){
+    $.get( url, function( data ) {
+        $("#show-msg").html('<div class="alert alert-success"><span>'+data+'</span></div>');
+    });
+
     return true;
 }

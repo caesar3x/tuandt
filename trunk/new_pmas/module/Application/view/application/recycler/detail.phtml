@@ -39,6 +39,8 @@
 
     </div>
     <div class="col-md-10">
+        <div id="show-msg"></div>
+        <div class="row clearfix">&nbsp;</div>
         <div class="tab-content">
             <div class="tab-pane active" id="recycler-view">
                 <div class="panel panel-default">
@@ -105,77 +107,54 @@
                     <div class="panel-body">
                         <div class="pull-right">
                             <a class="btn">
-                                <?php echo $this->translate('Export to')?>
+                                <?php echo $this->translate('Import from')?>
                             </a>
                             <div class="btn-group">
-                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    <?php echo $this->translate('Data Format')?> <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a><?php echo $this->translate('CSV')?></a></li>
-                                    <li><a><?php echo $this->translate('Excel')?></a></li>
-                                </ul>
+                                <select class="form-control" id="import-format" name="import_format">
+                                    <option><?php echo $this->translate('Select format')?></option>
+                                    <option value="csv"><?php echo $this->translate('CSV')?></option>
+                                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+                                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                </select>
                             </div>
-                            <a class="btn btn-warning btn-sm">
-                                <i class="glyphicon glyphicon-export"></i>
-                                <?php echo $this->translate('Export')?>
+                            <a class="btn btn-success btn-sm uploadform" href="#upload-form">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <?php echo $this->translate('Upload')?>
                             </a>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
-                        <table class="display table table-striped table-condensed table-bordered example" id="example2" cellpadding="0" cellspacing="0">
+                        <table class="display table table-striped table-condensed table-bordered example" id="model-table" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
-                                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                                 <th><?php echo $this->translate('ID')?></th>
                                 <th><?php echo $this->translate('Device Model')?></th>
                                 <th><?php echo $this->translate('Base Price')?></th>
-                                <th><?php echo $this->translate('Exchange Price')?></th>
-                                <th><?php echo $this->translate('Date')?></th>
+                                <th><?php echo $this->translate('Currency')?></th>
                                 <th><?php echo $this->translate('TMD Model')?></th>
-                                <th><?php echo $this->translate('TMD Price')?></th>
+                                <th><?php echo $this->translate('Check')?></th>
+                                <th class="col-save"><?php echo $this->translate('Action')?></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>1</td>
-                                <td>Device 1</td>
-                                <td>100</td>
-                                <td>200</td>
-                                <td>09-13-2014</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>2</td>
-                                <td>Device 2</td>
-                                <td>100</td>
-                                <td>200</td>
-                                <td>09-13-2014</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>3</td>
-                                <td>Device 3</td>
-                                <td>100</td>
-                                <td>200</td>
-                                <td>09-13-2014</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                <td>4</td>
-                                <td>Device 4</td>
-                                <td>100</td>
-                                <td>200</td>
-                                <td>09-13-2014</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <?php if(!empty($this->tmpDevices)):?>
+                            <?php $i =0;?>
+                            <?php foreach($this->tmpDevices as $row):?>
+                                <tr>
+                                    <td><?php echo $i++?></td>
+                                    <td><?php echo $row->name?></td>
+                                    <td><?php echo $row->price?></td>
+                                    <td><?php echo $row->currency?></td>
+                                    <td><?php echo $row->model?></td>
+                                    <td><input type="checkbox" name="device" value="<?php echo $row->id?>"></td>
+                                    <td class="col-save">
+                                        <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
+                                            <i class="glyphicon glyphicon-save"></i>
+                                            <?php echo $this->translate('Save')?>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -185,3 +164,37 @@
     </div>
 </div>
 <?php echo $this->form()->closeTag();?>
+<div style="display: none">
+    <div id="upload-form">
+        <form id="import-form" method="post" action="/recycler/import" enctype="multipart/form-data">
+            <?php echo $this->formRow($form->get('recycler_id'));?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?php echo $this->translate('Import Recycler Models')?></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <div class="control-label"><span><?php echo $this->translate('File')?> : </span></div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-control">
+                                <input type="file" name="upload_file" id="import-file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9" id="upload-action">
+                            <button type="submit" class="btn btn-success btn-sm" id="upload-button">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span><?php echo $this->translate('Upload')?></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

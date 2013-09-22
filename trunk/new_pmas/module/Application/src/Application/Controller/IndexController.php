@@ -9,6 +9,7 @@
 
 namespace Application\Controller;
 
+use BasicExcel\Reader\Csv;
 use BasicExcel\Writer\Xlsx;
 use Core\Model\SimpleXLSX;
 use Zend\Debug\Debug;
@@ -80,5 +81,24 @@ class IndexController extends AbstractActionController
         Debug::dump($excel->parser->getRow(1)) ;
         echo '<br/>';
         die('test action');
+
+        $cache   = \Zend\Cache\StorageFactory::factory(array(
+            'adapter' => array(
+                'name' => 'filesystem'
+            ),
+            'plugins' => array(
+                // Don't throw exceptions on cache errors
+                'exception_handler' => array(
+                    'throw_exceptions' => false
+                ),
+            )
+        ));
+        $key    = 'unique-cache-key';
+        $result = $cache->getItem($key, $success);
+        if (!$success) {
+            $result = array('1','dasdsa','42343');
+            $cache->setItem($key, $result);
+        }
+        Debug::dump($result);die('==============');
     }
 }

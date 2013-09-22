@@ -6,10 +6,14 @@
 namespace Application\Controller;
 
 use Application\Form\RecyclerForm;
+use BasicExcel\Reader;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Model\Device;
 use Core\Model\Recycler;
+use Core\Model\RecyclerDevice;
+use Core\Model\TmpDevice;
 use SimpleExcel\SimpleExcel;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -190,6 +194,9 @@ class RecyclerController extends AbstractActionController
         }else{
             $entryArray = (array) $entry;
             $form->setData($entryArray);
+            $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
+            $tmpDevices = $tmpDeviceTable->getRowsByRecyclerId($id);
+            $view->setVariable('tmpDevices',$tmpDevices);
         }
         $view->setVariable('form',$form);
         return $view;
@@ -301,6 +308,97 @@ class RecyclerController extends AbstractActionController
             return $this->redirect()->toUrl('/recycler');
         }
         exit();
+        die;
+    }
+    public function importAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $messages = $this->getMessages();
+        if($request->isPost()){
+            $post = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+            $path = getcwd() . "/upload/import";
+            if (!is_dir($path)) {
+                if (!@mkdir($path, 0777, true)) {
+                    throw new \Exception("Unable to create destination: " . $path);
+                }
+            }
+            if(empty($post)){
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                return $this->redirect()->toUrl('/recycler');
+            }
+            $recycler_id = (int) $post['recycler_id'];
+            if($post['upload_file']['name'] && trim($post['upload_file']['name']) != ''){
+                if (!file_exists($path .DIRECTORY_SEPARATOR . $post['upload_file']['name'])) {
+                    move_uploaded_file($post['upload_file']['tmp_name'], $path .DIRECTORY_SEPARATOR .$post['upload_file']['name'] );
+                }
+            }
+            $file = new Reader\Csv();
+            $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+            $dataImport = $file->toArray();
+            $dataParse = array();
+            $tmpDevice = new TmpDevice();
+            $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
+            foreach($dataImport as $i=>$row){
+                if($i>0){
+                    $rowParse = array();
+                    $rowParse['recycler_id'] = $recycler_id;
+                    $rowParse['brand'] = $row[0];
+                    $rowParse['model'] = $row[1];
+                    $rowParse['type_id'] = $row[2];
+                    $rowParse['country_id'] = $row[3];
+                    $rowParse['price'] = $row[4];
+                    $rowParse['currency'] = $row[5];
+                    $rowParse['name'] = $row[6];
+                    $rowParse['condition_id'] = $row[7];
+                    $tmpDevice->exchangeArray($rowParse);
+                    $tmpDeviceTable->save($tmpDevice);
+                }
+            }
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
+            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
+        }else{
+            return $this->redirect()->toUrl('/recycler');
+        }
+        exit();
+        /*$excel = new SimpleExcel('CSV');
+        $excel->parser->loadFile($_FILES['upload_file']);
+        Debug::dump($excel->parser->getRow(1)) ;
+        die('importAction');*/
+    }
+    public function saveImportAction()
+    {
+        $id = $this->params('id');
+        if(!$id){
+            echo 'Record does not exist.';
+            return true;
+        }
+        $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
+        $deviceTable = $this->getServiceLocator()->get('DeviceTable');
+        $recyclerDeviceTable = $this->getServiceLocator()->get('RecyclerDeviceTable');
+        $tmpDeviceEntry = $tmpDeviceTable->getEntry($id);
+        if(!empty($tmpDeviceEntry)){
+            $tmpEntryParse = (array) $tmpDeviceEntry;
+
+            $device = new Device();
+            $device->exchangeArray($tmpEntryParse);
+            if($deviceTable->save($device)){
+                $device_id = $deviceTable->getLastInsertValue();
+                $tmpEntryParse['device_id'] = $device_id;
+            }
+            $recyclerDevice = new RecyclerDevice();
+            $recyclerDevice->exchangeArray($tmpEntryParse);
+            if($recyclerDeviceTable->save($recyclerDevice)){
+                echo 'Save record success.';
+            }else{
+                echo 'Save record not success.';
+            }
+        }else{
+            echo 'No data existed.';
+        }
         die;
     }
 }
