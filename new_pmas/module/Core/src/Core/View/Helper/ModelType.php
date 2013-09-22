@@ -27,4 +27,8 @@ class ModelType extends AbstractHelper
     {
         return $this->__invoke($id);
     }
+    public function getTypeIdByName($type)
+    {
+
+    }
 }

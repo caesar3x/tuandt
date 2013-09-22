@@ -43,7 +43,7 @@ Class Xlsx extends \BasicExcel\AbstractReader {
 
     protected function isValidFormat($filename) {
         $zip = new \ZipArchive();
-        $status = $zip->open($file);
+        $status = $zip->open($filename);
         $zip->close();
         unset($zip);
         return $status;
@@ -52,11 +52,7 @@ Class Xlsx extends \BasicExcel\AbstractReader {
     public function load($file) {
         $this->zip = new \ZipArchive();
         $status = $this->zip->open($file);
-        if ($status === true) {
-            $this->parse();
-        } else {
-            throw new \BasicExcel\Exception("Failed to open $file");
-        }
+        $this->parse();
     }
 
     // get a file from the zip

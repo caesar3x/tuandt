@@ -60,7 +60,7 @@ Class Reader {
         $ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : false;
         $type = self::identify($filename, $ext);
         try {
-            $type = self::identify($file, $ext);
+            $type = self::identify($filename, $ext);
             $reader = self::createReader($type);
             return $reader->load($filename);
         } catch (\BasicExcel\Exception $e) {
@@ -109,9 +109,18 @@ Class Reader {
         throw new \BasicExcel\Exception('Unable to identify a reader for this file');
     }
 
-    public static function createReader($type) {
-        $cname = "\\BasicExcel\\Reader\\" . ucfirst(strtolower($type));
-        return new $cname();
+    public static function createReader($type)
+    {
+        $ext = ucfirst(strtolower($type));
+        /*$cname = "\\BasicExcel\\Reader\\" . ucfirst(strtolower($type));*/
+        if($ext == 'Xls'){
+            $reader = new \BasicExcel\Reader\Xls();
+        }elseif($ext == 'Xlsx'){
+            $reader = new \BasicExcel\Reader\Xlsx();
+        }else{
+            $reader = new \BasicExcel\Reader\Csv();
+        }
+        return new $reader();
     }
 
 }

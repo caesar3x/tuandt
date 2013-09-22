@@ -23,4 +23,5 @@ return array(
     'DEVICE_MODEL_NOT_EMPTY'        => 'Device model does not empty',
     'DEVICE_PRICE_NOT_EMPTY'        => 'Device Price does not empty',
     'DEVICE_PRICE_NOT_VALID'        => 'Device Price does not valid',
+    'UPLOAD_SUCCESS'                => 'Upload success',
 );
