@@ -3,7 +3,7 @@
  * Created by Nguyen Tien Dat.
  * Date: 8/8/13
  */
-namespace BasicExcel;
+namespace BasicExcel\Reader;
 
 /*
  * Main Class
@@ -192,9 +192,8 @@ class Xls extends \BasicExcel\AbstractReader {
 
     function toArray($sheet = 0, $startRow = 1) {
         $arr = array();
-
         for ($row = $startRow; $row <= $this->rowcount($sheet); $row++) {
-            for ($col = 0; $col < $this->colcount($sheet); $col++) {
+            for ($col = 1; $col <= $this->colcount($sheet); $col++) {
                 $arr[$row][$col] = trim($this->val($row, $col, $sheet));
             }
         }
@@ -661,7 +660,7 @@ class Xls extends \BasicExcel\AbstractReader {
     }
 
     public static function v($data, $pos) {
-        return \BasicExcel\Ole::v($data, $pos);
+        return \BasicExcel\Reader\Ole::v($data, $pos);
     }
 
     /**
