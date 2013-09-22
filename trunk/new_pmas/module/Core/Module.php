@@ -15,6 +15,8 @@ use Core\Model\DeviceConditionTable;
 use Core\Model\DeviceTable;
 use Core\Model\DeviceType;
 use Core\Model\DeviceTypeTable;
+use Core\Model\Exchange;
+use Core\Model\ExchangeTable;
 use Core\Model\Recycler;
 use Core\Model\RecyclerDevice;
 use Core\Model\RecyclerDeviceCondition;
@@ -224,6 +226,18 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RecyclerDevice());
                     return new TableGateway('recycler_device', $dbAdapter, null, $resultSetPrototype);
+                },
+                'ExchangeRateTable' => function($sm) {
+                    $tableGateway = $sm->get('ExchangeRateTableGateway');
+                    $table = new ExchangeTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'ExchangeRateTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Exchange());
+                    return new TableGateway('exchange', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

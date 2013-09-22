@@ -6,7 +6,9 @@
 namespace Application\Controller;
 
 use Application\Form\CountryForm;
+use Application\Form\UpdateRateForm;
 use Core\Model\Country;
+use Core\Model\Exchange;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
@@ -41,7 +43,68 @@ class ExchangeController extends AbstractActionController
     {
         $this->auth();
         $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $form = new UpdateRateForm($this->getServiceLocator(),'update-rate');
         $view = new ViewModel();
+        $countryTable = $this->getServiceLocator()->get('CountryTable');
+        $exchangeRateTable = $this->getServiceLocator()->get('ExchangeRateTable');
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $form->setData($post);
+            if(empty($post)){
+                $view->setVariable('msg',array('danger' => $messages['NO_DATA']));
+                return $view;
+            }
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['exchange_rate'])){
+                $view->setVariable('msg',array('danger' => $messages['EXCHANGE_RATE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(trim($post['currency']) == 'none' ){
+                $view->setVariable('msg',array('danger' => $messages['MUST_SELECT_CURRENCY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                $continue = $data['continue'];
+                if(empty($data)){
+                    $view->setVariable('msg',array('danger' => $messages['NO_DATA']));
+                    $view->setVariable('form',$form);
+                    return $view;
+                }
+                $dataFinal = $data;
+                if($data['time'] == '' || $data['time'] == null){
+                    $dataFinal['time'] = time();
+                }else{
+                    if (version_compare(phpversion(), '5.3.0', '<')===true) {
+                        $time = \DateTime::createFromFormat('m/d/Y',$post['time']);
+                        $dataFinal['time'] = $time->getTimestamp();
+                    }else{
+                        $dataFinal['time'] = strtotime($post['time']);
+                    }
+                }
+                /**
+                 * get currency id
+                 */
+                $countryId = $countryTable->getCurrencyIdByName($data['currency']);
+                $dataFinal['country_id'] = $countryId;
+                $exchangeRate = new Exchange();
+                $exchangeRate->exchangeArray($dataFinal);
+                if($exchangeRateTable->save($exchangeRate)){
+                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                }else{
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                }
+                if($continue == 'yes'){
+                    return $this->redirect()->toUrl('/exchange/update');
+                }else{
+                    return $this->redirect()->toUrl('/exchange');
+                }
+            }
+        }
+        $view->setVariable('form',$form);
         return $view;
     }
     public function countryAction()
