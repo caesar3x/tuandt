@@ -5,7 +5,7 @@
  */
 namespace BasicExcel\Reader;
 
-Class Xlsx extends \BasicExcel\AbstractReader {
+class Xlsx extends \BasicExcel\AbstractReader {
 
     protected $sharedstrings = array();
     protected $sheetInfo;
