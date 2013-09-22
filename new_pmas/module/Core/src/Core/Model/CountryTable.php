@@ -64,4 +64,14 @@ class CountryTable extends AbstractModel
         }
         return $row;
     }
+    public function getCurrencyIdByName($currency)
+    {
+        $currency  = (string) $currency;
+        $rowset = $this->tableGateway->select(array('currency' => $currency));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row->country_id;
+    }
 }

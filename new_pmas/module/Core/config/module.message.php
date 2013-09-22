@@ -27,4 +27,6 @@ return array(
     'COUNTRY_NAME_NOT_EMPTY'        => 'Country name does not empty',
     'COUNTRY_NAME_EXIST'            => 'Country name existed',
     'CURRENCY_NOT_EMPTY'            => 'Currency does not empty',
+    'EXCHANGE_RATE_NOT_EMPTY'       => 'Exchange rate does not empty',
+    'MUST_SELECT_CURRENCY'          => 'Please select the currency',
 );
