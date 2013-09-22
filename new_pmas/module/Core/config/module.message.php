@@ -24,4 +24,6 @@ return array(
     'DEVICE_PRICE_NOT_EMPTY'        => 'Device Price does not empty',
     'DEVICE_PRICE_NOT_VALID'        => 'Device Price does not valid',
     'UPLOAD_SUCCESS'                => 'Upload success',
+    'COUNTRY_NAME_NOT_EMPTY'        => 'Country name does not empty',
+    'COUNTRY_NAME_EXIST'            => 'Country name existed',
 );
