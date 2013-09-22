@@ -315,6 +315,7 @@ class RecyclerController extends AbstractActionController
         $this->auth();
         $request = $this->getRequest();
         $messages = $this->getMessages();
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         if($request->isPost()){
             $post = array_merge_recursive(
                 $request->getPost()->toArray(),
@@ -348,16 +349,20 @@ class RecyclerController extends AbstractActionController
                     $rowParse['recycler_id'] = $recycler_id;
                     $rowParse['brand'] = $row[0];
                     $rowParse['model'] = $row[1];
-                    $rowParse['type_id'] = $row[2];
-                    $rowParse['country_id'] = $row[3];
+                    $rowParse['type_id'] = $viewhelperManager->get('ModelType')->getTypeIdByName($row[2]);
+                    $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById($row[3]);
                     $rowParse['price'] = $row[4];
                     $rowParse['currency'] = $row[5];
                     $rowParse['name'] = $row[6];
-                    $rowParse['condition_id'] = $row[7];
+                    $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName($row[7]);
                     $tmpDevice->exchangeArray($rowParse);
                     $tmpDeviceTable->save($tmpDevice);
                 }
             }
+            /**
+             * Delete upload file
+             */
+            @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
             return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
         }else{

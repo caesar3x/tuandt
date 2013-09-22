@@ -28,4 +28,21 @@ class Country extends AbstractHelper
     {
         return $this->__invoke($id);
     }
+
+    /**
+     * @param $country
+     * @return null
+     */
+    public function getCountryNameById($country)
+    {
+        if(!$country){
+            return null;
+        }
+        $countryTable = $this->serviceLocator->get('CountryTable');
+        $entry = $countryTable->getEntryByName($country);
+        if(!empty($entry)){
+            return $entry->country_id;
+        }
+        return null;
+    }
 }

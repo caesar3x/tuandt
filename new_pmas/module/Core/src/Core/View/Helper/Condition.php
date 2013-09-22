@@ -43,4 +43,38 @@ class Condition extends AbstractHelper
     {
         return $this->__invoke($id,$tdm);
     }
+
+    /**
+     * @param $condition
+     * @return null
+     */
+    public function getRecyclerConditionIdByName($condition)
+    {
+        if(!$condition){
+            return null;
+        }
+        $ConditionTable = $this->serviceLocator->get('RecyclerDeviceConditionTable');
+        $entry = $ConditionTable->getEntryByName($condition);
+        if(!empty($entry)){
+            return $entry->condition_id;
+        }
+        return null;
+    }
+
+    /**
+     * @param $condition
+     * @return null
+     */
+    public function getTdmConditionIdByName($condition)
+    {
+        if(!$condition){
+            return null;
+        }
+        $ConditionTable = $this->serviceLocator->get('TdmDeviceConditionTable');
+        $entry = $ConditionTable->getEntryByName($condition);
+        if(!empty($entry)){
+            return $entry->condition_id;
+        }
+        return null;
+    }
 }

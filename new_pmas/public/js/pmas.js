@@ -4,7 +4,16 @@
  */
 var asInitVals = new Array();
 $(function() {
-    $(".uploadform").colorbox({inline:true, width:"60%"});
+    if($("#import-format").length > 0){
+        var fileType = $("#import-format").val();
+        console.log(fileType);
+        if(fileType == '' || fileType == null){
+            bootbox.alert("You must select items");
+            return true;
+        }else{
+            $(".uploadform").colorbox({inline:true, width:"60%"});
+        }
+    }
     var trLeng = $(".example thead").find("tr:first th").length;
     var oTable = $('.example').dataTable( {
         "aoColumnDefs": [

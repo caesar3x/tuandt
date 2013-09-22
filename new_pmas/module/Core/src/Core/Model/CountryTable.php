@@ -20,8 +20,7 @@ class CountryTable extends AbstractModel
     public function save(Country $entry)
     {
         $data = (array) $entry;
-        Debug::dump($data);die('--');
-        $id = (int)$entry->resource_id;
+        $id = (int)$entry->country_id;
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {
@@ -49,5 +48,20 @@ class CountryTable extends AbstractModel
             return $entry->name;
         }
         return ;
+    }
+
+    /**
+     * @param $country
+     * @return array|\ArrayObject|null
+     */
+    public function getEntryByName($country)
+    {
+        $country  = (string) $country;
+        $rowset = $this->tableGateway->select(array('name' => $country));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row;
     }
 }
