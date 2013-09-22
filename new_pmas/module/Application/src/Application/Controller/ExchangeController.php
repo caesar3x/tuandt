@@ -81,6 +81,11 @@ class ExchangeController extends AbstractActionController
                 $view->setVariable('form',$form);
                 return $view;
             }
+            if(!$empty->isValid($post['currency'])){
+                $view->setVariable('msg',array('danger' => $messages['CURRENCY_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
             /**
              * check country exist
              */

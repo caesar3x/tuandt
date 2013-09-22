@@ -31,8 +31,13 @@ class CountryForm extends Form
             'id' => 'country_name',
             'class' => 'form-control'
         ));
+        $currency = new Text('currency');
+        $currency->setAttributes(array(
+            'id' => 'currency',
+            'class' => 'form-control'
+        ));
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
-        $this->add($id)->add($name)->add($csrf);
+        $this->add($id)->add($name)->add($currency)->add($csrf);
     }
 }

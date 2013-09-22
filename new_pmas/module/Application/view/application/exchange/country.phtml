@@ -26,6 +26,7 @@
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                 <th><?php echo $this->translate('ID')?></th>
                 <th><?php echo $this->translate('Name')?></th>
+                <th><?php echo $this->translate('Currency')?></th>
                 <th class="action"><?php echo $this->translate('Action')?></th>
             </tr>
             </thead>
@@ -36,6 +37,7 @@
                         <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->country_id?>"></td>
                         <td><?php echo $row->country_id?></td>
                         <td><?php echo $row->name?></td>
+                        <td><?php echo $row->currency?></td>
                         <td class="action">
                             <a class="btn btn-xs btn-warning btn-edit" href="/exchange/country/id/<?php echo $row->country_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
@@ -74,7 +76,12 @@
                                 <?php echo $this->formRow($form->get('country_id'));?>
                                 <?php echo $this->formRow($form->get('csrf'));?>
                             </div>
-
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Currency</span></div>
+                            </div>
+                            <div class="col-md-9"><?php echo $this->formRow($form->get('currency'));?></div>
                         </div>
                         <div class="row form-row">
                             <div class="col-md-3"></div>
