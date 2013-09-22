@@ -4,16 +4,19 @@
  */
 var asInitVals = new Array();
 $(function() {
-    if($("#import-format").length > 0){
-        var fileType = $("#import-format").val();
-        console.log(fileType);
-        if(fileType == '' || fileType == null){
-            bootbox.alert("You must select items");
-            return true;
-        }else{
-            $(".uploadform").colorbox({inline:true, width:"60%"});
+    $(".uploadform").click(function(e){
+        e.stopPropagation();
+        if($("#import-format").length > 0){
+            var fileType = $("#import-format").val();
+            if(fileType == '' || fileType == null || fileType == 'Select format'){
+                bootbox.alert("You must select format type");
+                return true;
+            }else{
+                $.colorbox({inline:true,href:"#upload-form",width:"60%"});
+            }
         }
-    }
+    });
+    /*$("#import-format").colorbox({inline:true, width:"60%"});*/
     var trLeng = $(".example thead").find("tr:first th").length;
     var oTable = $('.example').dataTable( {
         "aoColumnDefs": [
