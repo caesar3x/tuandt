@@ -56,6 +56,12 @@ return array(
                         'controller' => 'exchange',
                         'action' => 'update',
                     ),
+                    array(
+                        'label' => 'Manage Countries',
+                        'route' => 'admin',
+                        'controller' => 'exchange',
+                        'action' => 'country',
+                    ),
                 )
             ),
             array(
@@ -127,6 +133,12 @@ return array(
                         'route' => 'admin',
                         'controller' => 'exchange',
                         'action' => 'update',
+                    ),
+                    array(
+                        'label' => 'Manage Countries',
+                        'route' => 'admin',
+                        'controller' => 'exchange',
+                        'action' => 'country',
                     ),
                 )
             ),
