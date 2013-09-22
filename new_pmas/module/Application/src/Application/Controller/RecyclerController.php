@@ -333,46 +333,61 @@ class RecyclerController extends AbstractActionController
             }
             $recycler_id = (int) $post['recycler_id'];
             if($post['upload_file']['name'] && trim($post['upload_file']['name']) != ''){
+                $ext = pathinfo($post['upload_file']['name'], PATHINFO_EXTENSION);
                 if (!file_exists($path .DIRECTORY_SEPARATOR . $post['upload_file']['name'])) {
                     move_uploaded_file($post['upload_file']['tmp_name'], $path .DIRECTORY_SEPARATOR .$post['upload_file']['name'] );
                 }
-            }
-            $file = new Reader\Csv();
-            $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
-            $dataImport = $file->toArray();
-            $dataParse = array();
-            $tmpDevice = new TmpDevice();
-            $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
-            foreach($dataImport as $i=>$row){
-                if($i>0){
-                    $rowParse = array();
-                    $rowParse['recycler_id'] = $recycler_id;
-                    $rowParse['brand'] = $row[0];
-                    $rowParse['model'] = $row[1];
-                    $rowParse['type_id'] = $viewhelperManager->get('ModelType')->getTypeIdByName($row[2]);
-                    $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById($row[3]);
-                    $rowParse['price'] = $row[4];
-                    $rowParse['currency'] = $row[5];
-                    $rowParse['name'] = $row[6];
-                    $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName($row[7]);
-                    $tmpDevice->exchangeArray($rowParse);
-                    $tmpDeviceTable->save($tmpDevice);
+                $dataImport = array();
+                if(strtolower($ext) == 'xlsx'){
+                    $file = new Reader\Xlsx();
+                    $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
+                }elseif(strtolower($ext) == 'xls'){
+                    $file = new Reader\Xls();
+                    $file->read($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
+                }else{
+                    $file = new Reader\Csv();
+                    $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
                 }
+                $dataParse = array();
+                $tmpDevice = new TmpDevice();
+                $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
+                if(empty($dataImport)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/recycler');
+                }
+                foreach($dataImport as $i=>$row){
+                    if($i>0){
+                        $rowParse = array();
+                        $rowParse['recycler_id'] = $recycler_id;
+                        $rowParse['brand'] = $row[0];
+                        $rowParse['model'] = $row[1];
+                        $rowParse['type_id'] = $viewhelperManager->get('ModelType')->getTypeIdByName($row[2]);
+                        $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById($row[3]);
+                        $rowParse['price'] = $row[4];
+                        $rowParse['currency'] = $row[5];
+                        $rowParse['name'] = $row[6];
+                        $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName($row[7]);
+                        $tmpDevice->exchangeArray($rowParse);
+                        $tmpDeviceTable->save($tmpDevice);
+                    }
+                }
+                /**
+                 * Delete upload file
+                 */
+                @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                return $this->redirect()->toUrl('/recycler');
             }
-            /**
-             * Delete upload file
-             */
-            @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
             return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
         }else{
             return $this->redirect()->toUrl('/recycler');
         }
         exit();
-        /*$excel = new SimpleExcel('CSV');
-        $excel->parser->loadFile($_FILES['upload_file']);
-        Debug::dump($excel->parser->getRow(1)) ;
-        die('importAction');*/
     }
     public function saveImportAction()
     {
