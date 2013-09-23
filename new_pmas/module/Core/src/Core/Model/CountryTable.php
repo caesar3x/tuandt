@@ -7,6 +7,10 @@ namespace Core\Model;
 
 class CountryTable extends AbstractModel
 {
+    /**
+     * @param $id
+     * @return array|\ArrayObject|null
+     */
     public function getEntry($id)
     {
         $id  = (int) $id;

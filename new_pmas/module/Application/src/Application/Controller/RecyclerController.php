@@ -10,6 +10,7 @@ use BasicExcel\Reader;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Model\CreatePath;
 use Core\Model\Device;
 use Core\Model\Recycler;
 use Core\Model\RecyclerDevice;
@@ -322,11 +323,12 @@ class RecyclerController extends AbstractActionController
                 $request->getFiles()->toArray()
             );
             $path = getcwd() . "/upload/import";
-            if (!is_dir($path)) {
+            CreatePath::createPath($path);
+            /*if (!is_dir($path)) {
                 if (!@mkdir($path, 0777, true)) {
                     throw new \Exception("Unable to create destination: " . $path);
                 }
-            }
+            }*/
             if(empty($post)){
                 $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                 return $this->redirect()->toUrl('/recycler');
