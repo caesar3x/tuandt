@@ -33,4 +33,6 @@ return array(
     'CONDITION_NAME_EXIST'          => 'Condition name existed',
     'TYPE_NAME_NOT_EMPTY'           => 'Type name does not empty',
     'TYPE_NAME_EXIST'               => 'Type name existed',
+    'BRAND_NAME_NOT_EMPTY'          => 'Brand name does not empty',
+    'BRAND_NAME_EXIST'              => 'Brand name existed',
 );

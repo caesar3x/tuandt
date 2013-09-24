@@ -32,7 +32,14 @@ class RecyclerProductTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
     }
-
+    /**
+     * @param $brand_id
+     * @return int
+     */
+    public function clearBrandId($brand_id)
+    {
+        return $this->tableGateway->update(array('brand_id' => 0),array('brand_id' => $brand_id));
+    }
     /**
      * Rollback
      * @param $id
@@ -67,6 +74,18 @@ class RecyclerProductTable extends AbstractModel
     public function checkHasRowContainConditionId($condition_id)
     {
         $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition_id));
+        if ($rowset->count() <= 0) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * @param $brand_id
+     * @return bool
+     */
+    public function checkHasRowHasBrandId($brand_id)
+    {
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'brand_id' => $brand_id));
         if ($rowset->count() <= 0) {
             return false;
         }

@@ -18,7 +18,7 @@ class Country extends AbstractHelper
 
     public function __invoke($id = null)
     {
-        if($id == null){
+        if($id == null || $id == 0){
             return $id;
         }
         $countryTable = $this->serviceLocator->get('CountryTable');

@@ -11,7 +11,7 @@ class TdmProductTable extends AbstractModel
 {
     public function getAvaiableRows()
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0));
+        $rowset = $this->tableGateway->select(array('deleted' => 0));
         if ($rowset->count() <= 0) {
             return null;
         }
@@ -55,9 +55,9 @@ class TdmProductTable extends AbstractModel
      * @param $country_id
      * @return int
      */
-    public function deleteByCountry($country_id)
+    public function clearCountry($country_id)
     {
-        return $this->tableGateway->update(array('country_deleted' => 1),array('country_id' => $country_id));
+        return $this->tableGateway->update(array('country_id' => 0),array('country_id' => $country_id));
     }
 
     /**
@@ -69,14 +69,14 @@ class TdmProductTable extends AbstractModel
     {
         return $this->tableGateway->update(array('condition_id' => 0),array('condition_id' => $condition_id));
     }
+
     /**
-     * Roll back
-     * @param $country_id
+     * @param $brand_id
      * @return int
      */
-    public function rollbackDeleteCountry($country_id)
+    public function clearBrandId($brand_id)
     {
-        return $this->tableGateway->update(array('country_deleted' => 0),array('country_id' => $country_id));
+        return $this->tableGateway->update(array('brand_id' => 0),array('brand_id' => $brand_id));
     }
 
     /**
@@ -99,7 +99,20 @@ class TdmProductTable extends AbstractModel
      */
     public function checkHasRowContainConditionId($condition_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0,'condition_id' => $condition_id));
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition_id));
+        if ($rowset->count() <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param $brand_id
+     * @return bool
+     */
+    public function checkHasRowHasBrandId($brand_id)
+    {
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'brand_id' => $brand_id));
         if ($rowset->count() <= 0) {
             return false;
         }
