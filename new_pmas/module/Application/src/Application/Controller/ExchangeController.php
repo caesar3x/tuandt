@@ -128,10 +128,11 @@ class ExchangeController extends AbstractActionController
                 return $this->redirect()->toUrl('/exchange/country');
             }
             $entryParse = (array) $countryEntry;
+            $view->setVariable('name',$countryEntry->name);
             $entryParse['country_name'] = $countryEntry->name;
             $form->setData($entryParse);
         }
-
+        $view->setVariable('id',$id);
         if($request->isPost()){
             $post = $request->getPost()->toArray();
             $form->setData($post);
@@ -205,5 +206,33 @@ class ExchangeController extends AbstractActionController
         $country = new Country();
         $country->exchangeArray($dataFinal);
         return $coutryTable->save($country);
+    }
+    public function deleteCountryAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $id = $this->params('id',0);
+        $countryTable = $this->getServiceLocator()->get('CountryTable');
+        if($id != 0){
+            $this->deleteCountry($id,$countryTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteCountry($id,$countryTable);
+            }
+        }
+        return $this->redirect()->toUrl('/exchange/country');
+        die('deleteCountryAction');
+    }
+    protected function deleteCountry($id,$table)
+    {
+        $messages = $this->getMessages();
+        if($table->clearCountry($id)){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return ;
     }
 }

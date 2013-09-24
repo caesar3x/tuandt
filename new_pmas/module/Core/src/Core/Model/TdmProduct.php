@@ -13,6 +13,7 @@ class TdmProduct
     public $name;
     public $condition_id;
     public $currency;
+    public $deleted;
     public function exchangeArray($data)
     {
         $this->product_id     = (isset($data['product_id'])) ? $data['product_id'] : 0;
@@ -21,5 +22,6 @@ class TdmProduct
         $this->name     = (isset($data['name'])) ? $data['name'] : null;
         $this->condition_id     = (isset($data['condition_id'])) ? $data['condition_id'] : 0;
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : null;
+        $this->deleted     = (isset($data['deleted'])) ? $data['deleted'] : 0;
     }
 }

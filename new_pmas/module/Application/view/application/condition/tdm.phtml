@@ -10,6 +10,17 @@
 <?php $form->prepare();?>
 <?php $id = $this->id;?>
 <?php if($id != 0):?>
+    <div class="page-header">
+        <div class="pull-left">
+            <h3><?php echo $this->translate('Edit Condition')?></h3>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+    </div>
     <div class="row" style="margin-top: 30px;">
         <div class="container" style="width: 50%;">
             <?php echo $this->form()->openTag($form);?>
@@ -19,24 +30,13 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <div class="row row-form">
-                            <div class="col-md-3">
-                                <div class="control-label"><span>Condition Name</span></div>
-                            </div>
-                            <div class="col-md-9">
-                                <?php echo $this->formRow($form->get('name'));?>
-                                <?php echo $this->formRow($form->get('condition_id'));?>
-                                <?php echo $this->formRow($form->get('csrf'));?>
-                            </div>
+                        <div class="col-md-3">
+                            <div class="control-label"><span>Condition Name</span></div>
                         </div>
-                        <div class="row form-row">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-9">
-                                <button class="btn btn-sm btn-success">
-                                    <i class="glyphicon glyphicon-send"></i>
-                                    Submit
-                                </button>
-                            </div>
+                        <div class="col-md-9">
+                            <?php echo $this->formRow($form->get('name'));?>
+                            <?php echo $this->formRow($form->get('condition_id'));?>
+                            <?php echo $this->formRow($form->get('csrf'));?>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
             <?php echo $this->form()->closeTag();?>
         </div>
     </div>
-<?php endif;?>
+<?php else:?>
 <div class="page-header">
     <div class="pull-left">
         <h3><?php echo $this->translate('Manage Conditions')?></h3>
@@ -93,7 +93,6 @@
         </table>
     </form>
 </div>
-<?php if($id == 0):?>
     <div class="row" style="margin-top: 30px;">
         <div class="container" style="width: 50%;">
             <?php echo $this->form()->openTag($form);?>
@@ -103,24 +102,23 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <div class="row row-form">
-                            <div class="col-md-3">
-                                <div class="control-label"><span>Condition Name</span></div>
-                            </div>
-                            <div class="col-md-9">
-                                <?php echo $this->formRow($form->get('name'));?>
-                                <?php echo $this->formRow($form->get('condition_id'));?>
-                                <?php echo $this->formRow($form->get('csrf'));?>
-                            </div>
+                        <div class="col-md-3">
+                            <div class="control-label"><span>Condition Name</span></div>
                         </div>
-                        <div class="row form-row">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-9">
-                                <button class="btn btn-sm btn-success">
-                                    <i class="glyphicon glyphicon-send"></i>
-                                    Submit
-                                </button>
-                            </div>
+                        <div class="col-md-9">
+                            <?php echo $this->formRow($form->get('name'));?>
+                            <?php echo $this->formRow($form->get('condition_id'));?>
+                            <?php echo $this->formRow($form->get('csrf'));?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <button class="btn btn-sm btn-success">
+                                <i class="glyphicon glyphicon-saved"></i>
+                                Submit
+                            </button>
+                            <a class="btn btn-sm btn-default" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
                         </div>
                     </div>
                 </div>

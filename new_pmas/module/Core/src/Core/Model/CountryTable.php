@@ -41,6 +41,43 @@ class CountryTable extends AbstractModel
     }
 
     /**
+     * Clear all data has country
+     * @param $id
+     * @return bool
+     */
+    public function clearCountry($id)
+    {
+        if($this->deleteEntry($id)){
+            $success = true;
+            $tdmProduct = $this->serviceLocator->get('TdmProductTable');
+            if($tdmProduct->checkAvailabelCountry($id)){
+                $success = $success && $tdmProduct->deleteByCountry($id);
+            }
+            $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+            if($recyclerTable->checkAvailabelCountry($id)){
+                $success = $success && $recyclerTable->deleteByCountry($id);
+            }
+            if($success == false){
+                $this->rollBackDeleteEntry($id);
+                $tdmProduct->rollbackDeleteCountry($id);
+                $recyclerTable->rollbackDeleteCountry($id);
+            }
+            return $success;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Rollback delete entry
+     * @param $id
+     * @return int
+     */
+    public function rollBackDeleteEntry($id)
+    {
+        return $this->tableGateway->update(array('deleted' => 0),array('country_id' => $id));
+    }
+    /**
      * Get country name by country id
      * @param $id
      * @return mixed

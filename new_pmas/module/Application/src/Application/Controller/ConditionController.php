@@ -102,11 +102,7 @@ class ConditionController extends AbstractActionController
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
                     }
                 }
-                if($id != 0){
-                    return $this->redirect()->toUrl('/condition/tdm/id/'.$id);
-                }else{
-                    return $this->redirect()->toUrl('/condition/tdm');
-                }
+                return $this->redirect()->toUrl('/condition/tdm');
             }
         }
         return $view;

@@ -22,8 +22,24 @@ class RecyclerProductTable extends AbstractModel
         $data = (array) $entry;
         return $this->tableGateway->insert($data);
     }
+
+    /**
+     * Delete by product id
+     * @param $id
+     * @return int
+     */
     public function deleteEntry($id)
     {
         return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
+    }
+
+    /**
+     * Delete by recycler id
+     * @param $recycler_id
+     * @return int
+     */
+    public function deleteByRecyclerId($recycler_id)
+    {
+        return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $recycler_id));
     }
 }

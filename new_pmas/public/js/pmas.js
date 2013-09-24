@@ -228,8 +228,10 @@ function goToModelDetail()
 function formSaveAndContinue(id)
 {
     var form = $("#"+id);
-    var continueElement = $("#continue");
-    continueElement.val("yes");
+    if($("#continue").length > 0){
+        var continueElement = $("#continue");
+        continueElement.val("yes");
+    }
     form.submit();
     return true;
 }
@@ -240,8 +242,10 @@ function formReset(id)
 }
 function formSave(id)
 {
-    var continueElement = $("#continue");
-    continueElement.val("no");
+    if($("#continue").length > 0){
+        var continueElement = $("#continue");
+        continueElement.val("no");
+    }
     $("#"+id).submit();
     return true;
 }
@@ -261,13 +265,14 @@ function formConfirm(id)
 }
 function confirmDelete(url)
 {
-    bootbox.confirm("Are you sure?", function(result) {
+    bootbox.confirm("Are you sure you want to do this?", function(result) {
         if(result == true){
             window.location.assign(url);
         }
         return true;
     });
 }
+
 function exportAllModels()
 {
     var format = $("#export-format").val();

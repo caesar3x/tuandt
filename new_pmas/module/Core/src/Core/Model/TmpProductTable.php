@@ -35,6 +35,12 @@ class TmpProductTable extends AbstractModel
     {
         return $this->tableGateway->delete(array('id' => $id));
     }
+
+    /**
+     * Get record by recycler id
+     * @param $recycler_id
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
     public function getRowsByRecyclerId($recycler_id)
     {
         $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
