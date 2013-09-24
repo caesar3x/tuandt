@@ -48,12 +48,9 @@ class ProductController extends AbstractActionController
     {
         $this->auth();
         $view = new ViewModel();
-        if (!$this->productTable) {
-            $sm = $this->getServiceLocator();
-            $this->productTable = $sm->get('ProductTable');
-            $rowset = $this->productTable->getAvaiableTdmProducts();
-            $view->setVariable('rowset',$rowset);
-        }
+        $productTable = $this->getServiceLocator()->get('TdmProductTable');
+        $rowset = $productTable->getAvaiableRows();
+        $view->setVariable('rowset',$rowset);
         return $view;
     }
     public function tdmAction()
