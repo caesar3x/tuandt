@@ -1,0 +1,131 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/24/13
+ */
+?>
+<?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
+<?php $id = $this->id;?>
+<?php if($id != 0):?>
+    <div class="row" style="margin-top: 30px;">
+        <div class="container" style="width: 50%;">
+            <?php echo $this->form()->openTag($form);?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?php echo $this->name;?></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row row-form">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Condition Name</span></div>
+                            </div>
+                            <div class="col-md-9">
+                                <?php echo $this->formRow($form->get('name'));?>
+                                <?php echo $this->formRow($form->get('condition_id'));?>
+                                <?php echo $this->formRow($form->get('csrf'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9">
+                                <button class="btn btn-sm btn-success">
+                                    <i class="glyphicon glyphicon-send"></i>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+    </div>
+<?php endif;?>
+<div class="page-header">
+    <div class="pull-left">
+        <h3><?php echo $this->translate('Manage Conditions')?></h3>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+</div>
+<div class="row">
+    <form id="countries" action="/condition/delete-tdm" method="post" enctype="multipart/form-data">
+        <div class="pull-right">
+            <a class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
+                <i class="glyphicon glyphicon-trash"></i>
+                <?php echo $this->translate('Delete Selected Conditions')?>
+            </a>
+        </div>
+        <div class="row clearfix">&nbsp;</div>
+        <table class="display table table-striped table-condensed table-bordered example" id="country" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                <th><?php echo $this->translate('ID')?></th>
+                <th><?php echo $this->translate('Name')?></th>
+                <th class="action"><?php echo $this->translate('Action')?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($this->conditions)):?>
+                <?php foreach($this->conditions as $row):?>
+                    <tr>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->condition_id?>"></td>
+                        <td><?php echo $row->condition_id?></td>
+                        <td><?php echo $row->name?></td>
+                        <td class="action">
+                            <a class="btn btn-xs btn-warning btn-edit" href="/condition/tdm/id/<?php echo $row->condition_id?>">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <?php echo $this->translate('Edit')?>
+                            </a>
+                            <a onclick="confirmDelete('/condition/delete-tdm/id/<?php echo $row->condition_id?>')" class="btn btn-xs btn-danger btn-delete">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <?php echo $this->translate('Delete')?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            <?php endif;?>
+            </tbody>
+        </table>
+    </form>
+</div>
+<?php if($id == 0):?>
+    <div class="row" style="margin-top: 30px;">
+        <div class="container" style="width: 50%;">
+            <?php echo $this->form()->openTag($form);?>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add TDM Condition</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row row-form">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Condition Name</span></div>
+                            </div>
+                            <div class="col-md-9">
+                                <?php echo $this->formRow($form->get('name'));?>
+                                <?php echo $this->formRow($form->get('condition_id'));?>
+                                <?php echo $this->formRow($form->get('csrf'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9">
+                                <button class="btn btn-sm btn-success">
+                                    <i class="glyphicon glyphicon-send"></i>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+    </div>
+<?php endif;?>

@@ -29,4 +29,6 @@ return array(
     'CURRENCY_NOT_EMPTY'            => 'Currency does not empty',
     'EXCHANGE_RATE_NOT_EMPTY'       => 'Exchange rate does not empty',
     'MUST_SELECT_CURRENCY'          => 'Please select the currency',
+    'CONDITION_NAME_NOT_EMPTY'      => 'Condition name does not empty',
+    'CONDITION_NAME_EXIST'          => 'Condition name existed',
 );

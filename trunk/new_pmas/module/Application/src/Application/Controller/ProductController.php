@@ -360,14 +360,6 @@ class ProductController extends AbstractActionController
         }
         return ;
     }
-    public function conditionAction()
-    {
-
-    }
-    public function addConditionAction()
-    {
-
-    }
     public function exportAction()
     {
         $this->auth();
