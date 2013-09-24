@@ -17,7 +17,7 @@ class Type extends AbstractHelper
     }
     public function __invoke($id = null)
     {
-        if(null == $id){
+        if(null == $id || $id == 0){
             return $id;
         }
         $typeTable = $this->serviceLocator->get('ProductTypeTable');

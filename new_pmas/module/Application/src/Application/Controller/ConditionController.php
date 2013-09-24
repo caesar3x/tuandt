@@ -108,6 +108,11 @@ class ConditionController extends AbstractActionController
         }
         return $view;
     }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
     protected function saveTdmCondition($data)
     {
         $sm = $this->getServiceLocator();
@@ -117,6 +122,11 @@ class ConditionController extends AbstractActionController
         $condition->exchangeArray($dataFinal);
         return $conditionTable->save($condition);
     }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
     protected function saveRecyclerCondition($data)
     {
         $sm = $this->getServiceLocator();

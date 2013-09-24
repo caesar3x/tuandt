@@ -35,7 +35,7 @@ return array(
             array(
                 'label' => 'TDM Model',
                 'route' => 'admin',
-                'controller' => 'model',
+                'controller' => 'product',
                 'action' => 'index',
             ),
             array(
@@ -100,6 +100,12 @@ return array(
                         'controller' => 'condition',
                         'action' => 'recycler',
                     ),
+                    array(
+                        'label' => 'Product Types',
+                        'route' => 'admin',
+                        'controller' => 'product',
+                        'action' => 'type',
+                    ),
                 ),
             ),
             array(
@@ -125,7 +131,7 @@ return array(
             array(
                 'label' => 'TDM Model',
                 'route' => 'admin',
-                'controller' => 'model',
+                'controller' => 'product',
                 'action' => 'index',
             ),
             array(

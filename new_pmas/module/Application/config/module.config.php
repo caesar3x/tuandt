@@ -67,7 +67,7 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Admin' => 'Application\Controller\AdminController',
             'Application\Controller\Recycler' => 'Application\Controller\RecyclerController',
-            'Application\Controller\Model' => 'Application\Controller\ModelController',
+            'Application\Controller\Product' => 'Application\Controller\ProductController',
             'Application\Controller\Exchange' => 'Application\Controller\ExchangeController',
             'Application\Controller\System' => 'Application\Controller\SystemController',
             'Application\Controller\Help' => 'Application\Controller\HelpController',
