@@ -44,7 +44,7 @@ class TmpProductTable extends AbstractModel
     public function getRowsByRecyclerId($recycler_id)
     {
         $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
-        if (!$rowset) {
+        if ($rowset->count() <= 0) {
             return null;
         }
         return $rowset;

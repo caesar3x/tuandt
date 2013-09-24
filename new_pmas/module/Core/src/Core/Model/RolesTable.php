@@ -60,7 +60,7 @@ class RolesTable extends AbstractModel
     public function getAvaiableRoles()
     {
         $rowset = $this->tableGateway->select(array('hidden' => 0,'deleted' => 0));
-        if (!$rowset) {
+        if ($rowset->count() <= 0) {
             return null;
         }
         return $rowset;
