@@ -35,6 +35,29 @@ class TdmProductConditionTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
     }
+    public function rollbackDeleteEntry($id)
+    {
+        return $this->tableGateway->update(array('deleted' => 0),array('condition_id' => $id));
+    }
+    /**
+     * Clear data which has condition
+     * @param $id
+     * @return bool
+     */
+    public function clearTdmCondition($id)
+    {
+        if($this->deleteEntry($id)){
+            $success = true;
+            $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+            $success = $success && $tdmProductTable->deleteByCondition($id);
+            if($success == false){
+                $this->rollbackDeleteEntry($id);
+            }
+            return $success;
+        }else{
+            return false;
+        }
+    }
     /**
      * @param $name
      * @return array|\ArrayObject|null

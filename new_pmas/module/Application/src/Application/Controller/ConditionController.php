@@ -110,10 +110,38 @@ class ConditionController extends AbstractActionController
     public function saveTdmCondition($data)
     {
         $sm = $this->getServiceLocator();
-        $coutryTable = $sm->get('TdmProductConditionTable');
+        $conditionTable = $sm->get('TdmProductConditionTable');
         $dataFinal = $data;
         $condition = new TdmProductCondition();
         $condition->exchangeArray($dataFinal);
-        return $coutryTable->save($condition);
+        return $conditionTable->save($condition);
+    }
+    public function deleteTdmAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $id = $this->params('id',0);
+        $conditionTable = $this->getServiceLocator()->get('TdmProductConditionTable');
+        if($id != 0){
+            $this->deleteTdm($id,$conditionTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteTdm($id,$conditionTable);
+            }
+        }
+        return $this->redirect()->toUrl('/condition/tdm');
+    }
+    protected function deleteTdm($id,$table)
+    {
+        $messages = $this->getMessages();
+        $result = $table->clearTdmCondition($id);
+        if($result){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return true;
     }
 }
