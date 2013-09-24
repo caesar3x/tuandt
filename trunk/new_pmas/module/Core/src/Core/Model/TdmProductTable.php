@@ -5,12 +5,14 @@
  */
 namespace Core\Model;
 
+use Zend\Debug\Debug;
+
 class TdmProductTable extends AbstractModel
 {
     public function getAvaiableRows()
     {
         $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0));
-        if (!$rowset) {
+        if ($rowset->count() <= 0) {
             return null;
         }
         return $rowset;
@@ -64,7 +66,7 @@ class TdmProductTable extends AbstractModel
      */
     public function rollbackDeleteCountry($country_id)
     {
-        return $this->tableGateway->update(array('deleted' => 0),array('country_id' => $country_id));
+        return $this->tableGateway->update(array('country_deleted' => 0),array('country_id' => $country_id));
     }
 
     /**
@@ -75,7 +77,7 @@ class TdmProductTable extends AbstractModel
     public function checkAvailabelCountry($country_id)
     {
         $rowset = $this->tableGateway->select(array('country_id' => $country_id,'deleted' => 0));
-        if (!$rowset) {
+        if ($rowset->count() <= 0) {
             return false;
         }
         return true;

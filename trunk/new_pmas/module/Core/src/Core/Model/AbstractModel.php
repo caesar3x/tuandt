@@ -52,7 +52,7 @@ class AbstractModel
     public function getAvaiableRows()
     {
         $rowset = $this->tableGateway->select(array('deleted' => 0));
-        if (!$rowset) {
+        if ($rowset->count() <= 0) {
             return null;
         }
         return $rowset;
