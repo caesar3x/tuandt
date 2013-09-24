@@ -223,16 +223,16 @@ class ExchangeController extends AbstractActionController
             }
         }
         return $this->redirect()->toUrl('/exchange/country');
-        die('deleteCountryAction');
     }
     protected function deleteCountry($id,$table)
     {
         $messages = $this->getMessages();
-        if($table->clearCountry($id)){
+        $result = $table->clearCountry($id);
+        if($result){
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return ;
+        return $result;
     }
 }

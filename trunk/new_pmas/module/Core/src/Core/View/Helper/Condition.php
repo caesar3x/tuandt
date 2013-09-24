@@ -19,8 +19,8 @@ class Condition extends AbstractHelper
 
     public function __invoke($id = null,$tdm = true)
     {
-        if($id == null){
-            return $id;
+        if($id == null || $id == 0){
+            return null;
         }
         if($tdm == true){
             $tdmConditionTable = $this->serviceLocator->get('TdmProductConditionTable');

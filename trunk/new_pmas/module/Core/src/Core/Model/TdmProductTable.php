@@ -59,6 +59,16 @@ class TdmProductTable extends AbstractModel
     {
         return $this->tableGateway->update(array('country_deleted' => 1),array('country_id' => $country_id));
     }
+
+    /**
+     * Delete by condition id
+     * @param $condition_id
+     * @return int
+     */
+    public function deleteByCondition($condition_id)
+    {
+        return $this->tableGateway->update(array('condition_id' => 0),array('condition_id' => $condition_id));
+    }
     /**
      * Roll back
      * @param $country_id
