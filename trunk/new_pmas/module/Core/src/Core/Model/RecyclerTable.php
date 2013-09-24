@@ -9,6 +9,14 @@ use Zend\Debug\Debug;
 
 class RecyclerTable extends AbstractModel
 {
+    public function getAvaiableRows()
+    {
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0));
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
     public function getEntry($id)
     {
         $id  = (int) $id;
@@ -35,13 +43,45 @@ class RecyclerTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $id));
     }
 
     /**
+     * Delete by country id
+     * @param $country_id
+     * @return int
+     */
+    public function deleteByCountry($country_id)
+    {
+        return $this->tableGateway->update(array('country_deleted' => 1),array('country_id' => $country_id));
+    }
+
+    /**
+     * Roll back
+     * @param $country_id
+     * @return int
+     */
+    public function rollbackDeleteCountry($country_id)
+    {
+        return $this->tableGateway->update(array('deleted' => 0),array('country_id' => $country_id));
+    }
+    /**
+     * check if has record contain country id
+     * @param $country_id
+     * @return bool
+     */
+    public function checkAvailabelCountry($country_id)
+    {
+        $rowset = $this->tableGateway->select(array('country_id' => $country_id,'deleted' => 0));
+        if (!$rowset) {
+            return false;
+        }
+        return true;
+    }
+    /**
      * Get available recyclers
      * @param null $ids
-     * @param string $order
      * @return null|\Zend\Db\ResultSet\ResultSet
      */
     public function getAvailabeRecyclers($ids = null)
