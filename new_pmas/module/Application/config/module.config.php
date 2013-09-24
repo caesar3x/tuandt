@@ -75,6 +75,7 @@ return array(
             'Application\Controller\Logout' => 'Application\Controller\LogoutController',
             'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\Resource' => 'Application\Controller\ResourceController',
+            'Application\Controller\Condition' => 'Application\Controller\ConditionController',
         ),
     ),
     'view_manager' => array(

@@ -88,6 +88,18 @@ return array(
                         'controller' => 'resource',
                         'action' => 'index',
                     ),
+                    array(
+                        'label' => 'TDM Conditions',
+                        'route' => 'admin',
+                        'controller' => 'condition',
+                        'action' => 'tdm',
+                    ),
+                    array(
+                        'label' => 'Recycler Conditions',
+                        'route' => 'admin',
+                        'controller' => 'condition',
+                        'action' => 'recycler',
+                    ),
                 ),
             ),
             array(
