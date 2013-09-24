@@ -7,27 +7,27 @@ namespace Core\Model;
 
 use Zend\Db\Sql\Sql;
 
-class DeviceTable extends AbstractModel
+class ProductTable extends AbstractModel
 {
     public function getEntry($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('device_id' => $id));
+        $rowset = $this->tableGateway->select(array('product_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             return null;
         }
         return $row;
     }
-    public function save(Device $entry)
+    public function save(Product $entry)
     {
         $data = (array) $entry;
-        $id = (int)$entry->device_id;
+        $id = (int)$entry->product_id;
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {
             if ($this->getEntry($id)) {
-                return $this->tableGateway->update($data, array('device_id' => $id));
+                return $this->tableGateway->update($data, array('product_id' => $id));
             } else {
                 throw new \Exception('Data does not exist.');
             }
@@ -35,28 +35,28 @@ class DeviceTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('device_id' => $id));
+        return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
     }
 
     /**
-     * Get tdm device info by device_id
-     * @param $device_id
+     * Get tdm product info by product_id
+     * @param $product_id
      * @return null
      */
-    public function getTdmDevice($device_id)
+    public function getTdmProduct($product_id)
     {
-        if($device_id == null){
+        if($product_id == null){
             return;
         }
-        $tdmDeviceTable = $this->serviceLocator->get('TdmDeviceTable');
-        $deviceEntry = $tdmDeviceTable->getEntry($device_id);
-        if(!empty($deviceEntry)){
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $productEntry = $tdmProductTable->getEntry($product_id);
+        if(!empty($productEntry)){
             $adapter = $this->tableGateway->adapter;
             $sql = new Sql($adapter);
             $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-            $select->join(array('td' => $tdmDeviceTable->tableGateway->table),'m.device_id = td.device_id');
-            $select->where(array('m.deleted' => 0,'m.device_id' => $device_id));
-            $select->order('m.device_id DESC');
+            $select->join(array('td' => $tdmProductTable->tableGateway->table),'m.product_id = td.product_id');
+            $select->where(array('m.deleted' => 0,'m.product_id' => $product_id));
+            $select->order('m.product_id DESC');
             $selectString = $sql->getSqlStringForSqlObject($select);
             $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
             return $result->current();
@@ -65,23 +65,23 @@ class DeviceTable extends AbstractModel
     }
 
     /**
-     * Get all available tdm devices
+     * Get all available tdm products
      * @param string $order
      * @return mixed
      */
-    public function getAvaiableTdmDevices($ids = null,$order = 'DESC')
+    public function getAvaiableTdmProducts($ids = null,$order = 'DESC')
     {
-        $tdmDeviceTable = $this->serviceLocator->get('TdmDeviceTable');
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-        $select->join(array('td' => $tdmDeviceTable->tableGateway->table),'m.device_id = td.device_id');
+        $select->join(array('td' => $tdmProductTable->tableGateway->table),'m.product_id = td.product_id');
         if($ids == null){
             $select->where(array('m.deleted' => 0));
         }else{
-            $select->where(array('m.deleted' => 0,'m.device_id' => $ids));
+            $select->where(array('m.deleted' => 0,'m.product_id' => $ids));
         }
-        $select->order('m.device_id '.$order);
+        $select->order('m.product_id '.$order);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         return $result;

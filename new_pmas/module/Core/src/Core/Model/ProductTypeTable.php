@@ -5,7 +5,7 @@
  */
 namespace Core\Model;
 
-class DeviceTypeTable extends AbstractModel
+class ProductTypeTable extends AbstractModel
 {
     public function getEntry($id)
     {
@@ -17,7 +17,7 @@ class DeviceTypeTable extends AbstractModel
         }
         return $row;
     }
-    public function save(DeviceType $entry)
+    public function save(ProductType $entry)
     {
         $data = (array) $entry;
         $id = (int)$entry->type_id;

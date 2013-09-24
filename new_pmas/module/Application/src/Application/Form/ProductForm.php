@@ -12,7 +12,7 @@ use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class DeviceForm extends Form
+class ProductForm extends Form
 {
     protected $serviceLocator;
 
@@ -20,13 +20,13 @@ class DeviceForm extends Form
     {
         $this->serviceLocator = $serviceLocator;
     }
-    public function __construct(ServiceLocatorInterface $sm,$n = 'device')
+    public function __construct(ServiceLocatorInterface $sm,$n = 'product')
     {
         $this->serviceLocator = $sm;
         parent::__construct($n);
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
-        $id = new Hidden('device_id');
+        $id = new Hidden('product_id');
         $continue = new Hidden('continue');
         $continue->setValue('no');
         $continue->setAttribute('id','continue');
@@ -62,7 +62,7 @@ class DeviceForm extends Form
             'id' => 'condition_id',
             'class' => 'form-control'
         ));
-        $condition_id->setValueOptions($this->getDeviceConditions());
+        $condition_id->setValueOptions($this->getProductConditions());
         $price = new Text('price');
         $price->setAttributes(array(
             'id' => 'price',
@@ -104,12 +104,12 @@ class DeviceForm extends Form
         }
         return $data;
     }
-    protected function getDeviceConditions($tdm = true)
+    protected function getProductConditions($tdm = true)
     {
         if($tdm == true){
-            $conditionTypeTable = $this->serviceLocator->get('TdmDeviceConditionTable');
+            $conditionTypeTable = $this->serviceLocator->get('TdmProductConditionTable');
         }else{
-            $conditionTypeTable = $this->serviceLocator->get('RecyclerDeviceConditionTable');
+            $conditionTypeTable = $this->serviceLocator->get('RecyclerProductConditionTable');
         }
         $availableConditions = $conditionTypeTable->getAvaiableRows();
         $data = array(0 => 'Select Condition');
@@ -122,8 +122,8 @@ class DeviceForm extends Form
     }
     protected function getTypes()
     {
-        $deviceTypeTable = $this->serviceLocator->get('DeviceTypeTable');
-        $availableTypes = $deviceTypeTable->getAvaiableRows();
+        $productTypeTable = $this->serviceLocator->get('ProductTypeTable');
+        $availableTypes = $productTypeTable->getAvaiableRows();
         $data = array(0 => 'Select Type');
         if(!empty($availableTypes)){
             foreach($availableTypes as $row){

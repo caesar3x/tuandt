@@ -69,8 +69,8 @@
             <?php if(!empty($this->rowset)):?>
                 <?php foreach($this->rowset as $row):?>
                     <tr>
-                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->device_id?>"></td>
-                        <td><?php echo $row->device_id?></td>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
+                        <td><?php echo $row->product_id?></td>
                         <td><?php echo $row->name?></td>
                         <td><?php echo $this->modelType($row->type_id)?></td>
                         <td><?php echo $row->brand?></td>
@@ -83,15 +83,15 @@
                         <td></td>
                         <td></td>
                         <td class="action3">
-                            <a class="btn btn-xs btn-primary btn-edit" href="/model/detail/id/<?php echo $row->device_id?>">
+                            <a class="btn btn-xs btn-primary btn-edit" href="/model/detail/id/<?php echo $row->product_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <?php echo $this->translate('Detail')?>
                             </a>
-                            <a class="btn btn-xs btn-warning btn-edit" href="/model/edit/id/<?php echo $row->device_id?>">
+                            <a class="btn btn-xs btn-warning btn-edit" href="/model/edit/id/<?php echo $row->product_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <?php echo $this->translate('Edit')?>
                             </a>
-                            <a onclick="confirmDelete('/model/delete/id/<?php echo $row->device_id?>')" class="btn btn-xs btn-danger btn-delete">
+                            <a onclick="confirmDelete('/model/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <?php echo $this->translate('Delete')?>
                             </a>

@@ -1,11 +1,10 @@
 <?php
 /**
  * Created by Nguyen Tien Dat.
- * Date: 9/18/13
+ * Date: 9/20/13
  */
 namespace Core\Model;
-
-class TdmDeviceConditionTable extends AbstractModel
+class RecyclerProductConditionTable extends AbstractModel
 {
     public function getEntry($id)
     {
@@ -17,7 +16,7 @@ class TdmDeviceConditionTable extends AbstractModel
         }
         return $row;
     }
-    public function save(TdmDeviceCondition $entry)
+    public function save(RecyclerProductCondition $entry)
     {
         $data = (array) $entry;
         $id = (int)$entry->condition_id;
@@ -35,6 +34,7 @@ class TdmDeviceConditionTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
     }
+
     /**
      * @param $name
      * @return array|\ArrayObject|null

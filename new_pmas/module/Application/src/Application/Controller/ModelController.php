@@ -5,12 +5,12 @@
  */
 namespace Application\Controller;
 
-use Application\Form\DeviceForm;
+use Application\Form\ProductForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
-use Core\Model\Device;
-use Core\Model\TdmDevice;
+use Core\Model\Product;
+use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Digits;
@@ -19,11 +19,11 @@ use Zend\View\Model\ViewModel;
 
 class ModelController extends AbstractActionController
 {
-    protected $deviceTable;
+    protected $productTable;
 
-    protected $tdmDeviceTable;
+    protected $tdmProductTable;
 
-    protected $recyclerDeviceTable;
+    protected $recyclerProductTable;
 
     public function auth()
     {
@@ -43,10 +43,10 @@ class ModelController extends AbstractActionController
     {
         $this->auth();
         $view = new ViewModel();
-        if (!$this->deviceTable) {
+        if (!$this->productTable) {
             $sm = $this->getServiceLocator();
-            $this->deviceTable = $sm->get('DeviceTable');
-            $rowset = $this->deviceTable->getAvaiableTdmDevices();
+            $this->productTable = $sm->get('ProductTable');
+            $rowset = $this->productTable->getAvaiableTdmProducts();
             $view->setVariable('rowset',$rowset);
         }
         return $view;
@@ -63,7 +63,7 @@ class ModelController extends AbstractActionController
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
-        $form = new DeviceForm($sm);
+        $form = new ProductForm($sm);
         $view = new ViewModel();
         if($request->isPost()){
             $post = $request->getPost()->toArray();
@@ -74,22 +74,22 @@ class ModelController extends AbstractActionController
              */
             $empty = new NotEmpty();
             if(!$empty->isValid($post['name'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_NAME_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['brand'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_BRAND_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['model'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_MODEL_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_MODEL_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['price'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
@@ -102,7 +102,7 @@ class ModelController extends AbstractActionController
                 if($this->save($data)){
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $this->deviceTable->getLastInsertValue();
+                        $lastInsertId = $this->productTable->getLastInsertValue();
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/model/detail/id/'.$lastInsertId);
                         }
@@ -134,16 +134,16 @@ class ModelController extends AbstractActionController
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
-        $form = new DeviceForm($sm);
+        $form = new ProductForm($sm);
         $view = new ViewModel();
         $id = (int) $this->params('id',0);
         if(!$id || $id == 0){
             $this->getResponse()->setStatusCode(404);
         }
-        if(!$this->deviceTable){
-            $this->deviceTable = $sm->get('DeviceTable');
+        if(!$this->productTable){
+            $this->productTable = $sm->get('ProductTable');
         }
-        $entry = $this->deviceTable->getTdmDevice($id);
+        $entry = $this->productTable->getTdmProduct($id);
         if(empty($entry)){
             $this->getResponse()->setStatusCode(404);
         }
@@ -157,27 +157,27 @@ class ModelController extends AbstractActionController
              */
             $empty = new NotEmpty();
             if(!$empty->isValid($post['name'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_NAME_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['brand'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_BRAND_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['model'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_MODEL_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['price'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!is_numeric($post['price'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_VALID']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
                 $view->setVariable('form',$form);
                 return $view;
             }
@@ -190,7 +190,7 @@ class ModelController extends AbstractActionController
                 if($this->save($data)){
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
-                        $newEntry = $this->deviceTable->getTdmDevice($id);
+                        $newEntry = $this->productTable->getTdmProduct($id);
                         $view->setVariable('model',$newEntry->name);
                         $newEntryArray = (array) $newEntry;
                         $form->setData($newEntryArray);
@@ -221,32 +221,32 @@ class ModelController extends AbstractActionController
     public function save($data)
     {
         $sm = $this->getServiceLocator();
-        if(!$this->deviceTable){
-            $this->deviceTable = $sm->get('DeviceTable');
+        if(!$this->productTable){
+            $this->productTable = $sm->get('ProductTable');
         }
-        if(!$this->tdmDeviceTable){
-            $this->tdmDeviceTable = $sm->get('TdmDeviceTable');
+        if(!$this->tdmProductTable){
+            $this->tdmProductTable = $sm->get('TdmProductTable');
         }
         $dataFinal = $data;
-        $device = new Device();
-        $device->exchangeArray($dataFinal);
-        $id = $device->device_id;
+        $product = new Product();
+        $product->exchangeArray($dataFinal);
+        $id = $product->product_id;
         $lastestInsertId = $id;
         if($id != 0){
-            $result1 = $this->deviceTable->save($device);
+            $result1 = $this->productTable->save($product);
         }else{
-            if($this->deviceTable->save($device)){
+            if($this->productTable->save($product)){
                 $result1 = true;
-                $lastestInsertId = $this->deviceTable->getLastInsertValue();
+                $lastestInsertId = $this->productTable->getLastInsertValue();
             }else{
                 $result1 = false;
             }
         }
         if(isset($lastestInsertId)){
-            $dataFinal['device_id'] = $lastestInsertId;
-            $tdmDevice = new TdmDevice();
-            $tdmDevice->exchangeArray($dataFinal);
-            $result2 = $this->tdmDeviceTable->save($tdmDevice);
+            $dataFinal['product_id'] = $lastestInsertId;
+            $tdmProduct = new TdmProduct();
+            $tdmProduct->exchangeArray($dataFinal);
+            $result2 = $this->tdmProductTable->save($tdmProduct);
         }
         return ($result1 || $result2) ? true : false;
     }
@@ -256,7 +256,7 @@ class ModelController extends AbstractActionController
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
-        $form = new DeviceForm($sm);
+        $form = new ProductForm($sm);
         $view = new ViewModel();
         if($request->isPost()){
             $post = $request->getPost()->toArray();
@@ -267,27 +267,27 @@ class ModelController extends AbstractActionController
              */
             $empty = new NotEmpty();
             if(!$empty->isValid($post['name'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_NAME_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['brand'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_BRAND_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['model'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_MODEL_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_MODEL_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['price'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!is_numeric($post['price'])){
-                $view->setVariable('msg',array('danger' => $messages['DEVICE_PRICE_NOT_VALID']));
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
                 $view->setVariable('form',$form);
                 return $view;
             }
@@ -300,7 +300,7 @@ class ModelController extends AbstractActionController
                 if($this->save($data)){
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $this->deviceTable->getLastInsertValue();
+                        $lastInsertId = $this->productTable->getLastInsertValue();
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/model/edit/id/'.$lastInsertId);
                         }
@@ -337,15 +337,15 @@ class ModelController extends AbstractActionController
         $id = $this->params('id',0);
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
-        if(!$this->deviceTable){
-            $this->deviceTable = $this->serviceLocator->get('DeviceTable');
+        if(!$this->productTable){
+            $this->productTable = $this->serviceLocator->get('ProductTable');
         }
         if($id != 0){
-            $this->delete($id,$this->deviceTable);
+            $this->delete($id,$this->productTable);
         }
         if(!empty($ids) && is_array($ids)){
             foreach($ids as $id){
-                $this->delete($id,$this->deviceTable);
+                $this->delete($id,$this->productTable);
             }
         }
         return $this->redirect()->toUrl('/model');
@@ -379,17 +379,17 @@ class ModelController extends AbstractActionController
         $request = $this->getRequest();
         $ids = $request->getQuery('id');
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
-        if (!$this->deviceTable) {
+        if (!$this->productTable) {
             $sm = $this->getServiceLocator();
-            $this->deviceTable = $sm->get('DeviceTable');
+            $this->productTable = $sm->get('ProductTable');
         }
-        $rowset = $this->deviceTable->getAvaiableTdmDevices($ids);
-        $header = array('Device ID','Brand','Model','Type','Country','Price','Currency','Name','Condition');
+        $rowset = $this->productTable->getAvaiableTdmProducts($ids);
+        $header = array('Product ID','Brand','Model','Type','Country','Price','Currency','Name','Condition');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
                 $rowParse = array();
-                $rowParse[] = $row->device_id;
+                $rowParse[] = $row->product_id;
                 $rowParse[] = $row->brand;
                 $rowParse[] = $row->model;
                 $rowParse[] = $viewhelperManager->get('ModelType')->implement($row->type_id);
