@@ -9,14 +9,6 @@ use Zend\Debug\Debug;
 
 class TdmProductTable extends AbstractModel
 {
-    public function getAvaiableRows()
-    {
-        $rowset = $this->tableGateway->select(array('deleted' => 0));
-        if ($rowset->count() <= 0) {
-            return null;
-        }
-        return $rowset;
-    }
     public function getEntry($id)
     {
         $id  = (int) $id;
