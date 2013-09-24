@@ -367,7 +367,7 @@ class RecyclerController extends AbstractActionController
                         $rowParse['recycler_id'] = $recycler_id;
                         $rowParse['brand'] = $row[0];
                         $rowParse['model'] = $row[1];
-                        $rowParse['type_id'] = $viewhelperManager->get('ModelType')->getTypeIdByName($row[2]);
+                        $rowParse['type_id'] = $viewhelperManager->get('Type')->getTypeIdByName($row[2]);
                         $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById($row[3]);
                         $rowParse['price'] = $row[4];
                         $rowParse['currency'] = $row[5];

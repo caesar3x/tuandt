@@ -297,9 +297,9 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
-                'modelType' => function ($helperPluginManager) {
+                'productType' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ModelType();
+                    $viewHelper = new View\Helper\Type();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },

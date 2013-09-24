@@ -17,7 +17,7 @@ use Zend\Validator\Digits;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class ModelController extends AbstractActionController
+class ProductController extends AbstractActionController
 {
     protected $productTable;
 
@@ -97,17 +97,17 @@ class ModelController extends AbstractActionController
                 $data = $form->getData();
                 if(empty($data)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/model');
+                    return $this->redirect()->toUrl('/product');
                 }
                 if($this->save($data)){
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
                         $lastInsertId = $this->productTable->getLastInsertValue();
                         if($lastInsertId){
-                            return $this->redirect()->toUrl('/model/detail/id/'.$lastInsertId);
+                            return $this->redirect()->toUrl('/product/detail/id/'.$lastInsertId);
                         }
                     }
-                    return $this->redirect()->toUrl('/model');
+                    return $this->redirect()->toUrl('/product');
                 }else{
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -115,14 +115,14 @@ class ModelController extends AbstractActionController
                         return $view;
                     }else{
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
-                        return $this->redirect()->toUrl('/model');
+                        return $this->redirect()->toUrl('/product');
                     }
                 }
             }else{
                 foreach($form->getMessages() as $msg){
                     $this->flashMessenger()->setNamespace('error')->addMessage($msg);
                 }
-                return $this->redirect()->toUrl('/model');
+                return $this->redirect()->toUrl('/product');
             }
         }
         $view->setVariable('form',$form);
@@ -185,7 +185,7 @@ class ModelController extends AbstractActionController
                 $data = $form->getData();
                 if(empty($data)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/model');
+                    return $this->redirect()->toUrl('/product');
                 }
                 if($this->save($data)){
                     if($continue == 'yes'){
@@ -198,7 +198,7 @@ class ModelController extends AbstractActionController
                         return $view;
                     }else{
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
-                        return $this->redirect()->toUrl('/model');
+                        return $this->redirect()->toUrl('/product');
                     }
                 }else{
                     if($continue == 'yes'){
@@ -207,7 +207,7 @@ class ModelController extends AbstractActionController
                         return $view;
                     }else{
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
-                        return $this->redirect()->toUrl('/model');
+                        return $this->redirect()->toUrl('/product');
                     }
                 }
             }
@@ -295,17 +295,17 @@ class ModelController extends AbstractActionController
                 $data = $form->getData();
                 if(empty($data)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/model');
+                    return $this->redirect()->toUrl('/product');
                 }
                 if($this->save($data)){
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
                         $lastInsertId = $this->productTable->getLastInsertValue();
                         if($lastInsertId){
-                            return $this->redirect()->toUrl('/model/edit/id/'.$lastInsertId);
+                            return $this->redirect()->toUrl('/product/edit/id/'.$lastInsertId);
                         }
                     }
-                    return $this->redirect()->toUrl('/model');
+                    return $this->redirect()->toUrl('/product');
                 }else{
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -313,14 +313,14 @@ class ModelController extends AbstractActionController
                         return $view;
                     }else{
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
-                        return $this->redirect()->toUrl('/model');
+                        return $this->redirect()->toUrl('/product');
                     }
                 }
             }else{
                 foreach($form->getMessages() as $msg){
                     $this->flashMessenger()->setNamespace('error')->addMessage($msg);
                 }
-                return $this->redirect()->toUrl('/model');
+                return $this->redirect()->toUrl('/product');
             }
         }
         $view->setVariable('form',$form);
@@ -348,7 +348,7 @@ class ModelController extends AbstractActionController
                 $this->delete($id,$this->productTable);
             }
         }
-        return $this->redirect()->toUrl('/model');
+        return $this->redirect()->toUrl('/product');
     }
     protected function delete($id,$table)
     {
@@ -392,7 +392,7 @@ class ModelController extends AbstractActionController
                 $rowParse[] = $row->product_id;
                 $rowParse[] = $row->brand;
                 $rowParse[] = $row->model;
-                $rowParse[] = $viewhelperManager->get('ModelType')->implement($row->type_id);
+                $rowParse[] = $viewhelperManager->get('Type')->implement($row->type_id);
                 $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
                 $rowParse[] = $row->price;
                 $rowParse[] = $row->currency;
@@ -420,7 +420,7 @@ class ModelController extends AbstractActionController
             }
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
-            return $this->redirect()->toUrl('/model');
+            return $this->redirect()->toUrl('/product');
         }
         exit();
     }
