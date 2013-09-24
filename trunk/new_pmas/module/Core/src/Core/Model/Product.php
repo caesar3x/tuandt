@@ -5,9 +5,9 @@
  */
 namespace Core\Model;
 
-class Device
+class Product
 {
-    public $device_id;
+    public $product_id;
     public $brand;
     public $model;
     public $type_id;
@@ -15,7 +15,7 @@ class Device
 
     public function exchangeArray($data)
     {
-        $this->device_id     = (isset($data['device_id'])) ? $data['device_id'] : 0;
+        $this->product_id     = (isset($data['product_id'])) ? $data['product_id'] : 0;
         $this->brand     = (isset($data['brand'])) ? $data['brand'] : null;
         $this->model     = (isset($data['model'])) ? $data['model'] : null;
         $this->type_id     = (isset($data['type_id'])) ? $data['type_id'] : 0;

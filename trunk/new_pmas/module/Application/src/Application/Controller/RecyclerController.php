@@ -11,10 +11,11 @@ use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
 use Core\Model\CreatePath;
-use Core\Model\Device;
+use Core\Model\Product;
 use Core\Model\Recycler;
-use Core\Model\RecyclerDevice;
-use Core\Model\TmpDevice;
+use Core\Model\RecyclerProduct;
+use Core\Model\RecyclerProductTable;
+use Core\Model\TmpProduct;
 use SimpleExcel\SimpleExcel;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -195,9 +196,9 @@ class RecyclerController extends AbstractActionController
         }else{
             $entryArray = (array) $entry;
             $form->setData($entryArray);
-            $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
-            $tmpDevices = $tmpDeviceTable->getRowsByRecyclerId($id);
-            $view->setVariable('tmpDevices',$tmpDevices);
+            $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
+            $tmpProducts = $tmpProductTable->getRowsByRecyclerId($id);
+            $view->setVariable('tmpProducts',$tmpProducts);
         }
         $view->setVariable('form',$form);
         return $view;
@@ -354,8 +355,8 @@ class RecyclerController extends AbstractActionController
                     $dataImport = $file->toArray();
                 }
                 $dataParse = array();
-                $tmpDevice = new TmpDevice();
-                $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
+                $tmpProduct = new TmpProduct();
+                $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
                 if(empty($dataImport)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/recycler');
@@ -372,8 +373,8 @@ class RecyclerController extends AbstractActionController
                         $rowParse['currency'] = $row[5];
                         $rowParse['name'] = $row[6];
                         $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName($row[7]);
-                        $tmpDevice->exchangeArray($rowParse);
-                        $tmpDeviceTable->save($tmpDevice);
+                        $tmpProduct->exchangeArray($rowParse);
+                        $tmpProductTable->save($tmpProduct);
                     }
                 }
                 /**
@@ -398,22 +399,22 @@ class RecyclerController extends AbstractActionController
             echo 'Record does not exist.';
             return true;
         }
-        $tmpDeviceTable = $this->getServiceLocator()->get('TmpDeviceTable');
-        $deviceTable = $this->getServiceLocator()->get('DeviceTable');
-        $recyclerDeviceTable = $this->getServiceLocator()->get('RecyclerDeviceTable');
-        $tmpDeviceEntry = $tmpDeviceTable->getEntry($id);
-        if(!empty($tmpDeviceEntry)){
-            $tmpEntryParse = (array) $tmpDeviceEntry;
+        $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
+        $productTable = $this->getServiceLocator()->get('ProductTable');
+        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $tmpProductEntry = $tmpProductTable->getEntry($id);
+        if(!empty($tmpProductEntry)){
+            $tmpEntryParse = (array) $tmpProductEntry;
 
-            $device = new Device();
-            $device->exchangeArray($tmpEntryParse);
-            if($deviceTable->save($device)){
-                $device_id = $deviceTable->getLastInsertValue();
-                $tmpEntryParse['device_id'] = $device_id;
+            $product = new Product();
+            $product->exchangeArray($tmpEntryParse);
+            if($productTable->save($product)){
+                $product_id = $productTable->getLastInsertValue();
+                $tmpEntryParse['product_id'] = $product_id;
             }
-            $recyclerDevice = new RecyclerDevice();
-            $recyclerDevice->exchangeArray($tmpEntryParse);
-            if($recyclerDeviceTable->save($recyclerDevice)){
+            $recyclerProduct = new RecyclerProduct();
+            $recyclerProduct->exchangeArray($tmpEntryParse);
+            if($recyclerProductTable->save($recyclerProduct)){
                 echo 'Save record success.';
             }else{
                 echo 'Save record not success.';

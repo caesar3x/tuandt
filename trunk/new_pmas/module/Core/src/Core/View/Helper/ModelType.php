@@ -20,7 +20,7 @@ class ModelType extends AbstractHelper
         if(null == $id){
             return $id;
         }
-        $typeTable = $this->serviceLocator->get('DeviceTypeTable');
+        $typeTable = $this->serviceLocator->get('ProductTypeTable');
         return $typeTable->getTypeNameById($id);
     }
     public function implement($id = null)
@@ -38,7 +38,7 @@ class ModelType extends AbstractHelper
         if(!$type_name){
             return null;
         }
-        $typeTable = $this->serviceLocator->get('DeviceTypeTable');
+        $typeTable = $this->serviceLocator->get('ProductTypeTable');
         $entry = $typeTable->getEntryByName($type_name);
         if(!empty($entry)){
             return $entry->type_id;

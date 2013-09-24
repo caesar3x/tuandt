@@ -20,7 +20,7 @@
         <div class="clearfix">&nbsp;</div>
     </div>
 <?php echo $this->form()->openTag($form);?>
-<?php echo $this->formRow($form->get('device_id'));?>
+<?php echo $this->formRow($form->get('product_id'));?>
 <?php echo $this->formRow($form->get('csrf'));?>
 <?php echo $this->formRow($form->get('continue'));?>
     <div class="panel">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Device Name')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Product Name')?>*</span></div>
                 <div class="col-md-6">
                     <?php echo $this->formRow($form->get('name'));?>
                 </div>

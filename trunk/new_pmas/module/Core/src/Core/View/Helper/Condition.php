@@ -23,9 +23,9 @@ class Condition extends AbstractHelper
             return $id;
         }
         if($tdm == true){
-            $tdmConditionTable = $this->serviceLocator->get('TdmDeviceConditionTable');
+            $tdmConditionTable = $this->serviceLocator->get('TdmProductConditionTable');
         }else{
-            $tdmConditionTable = $this->serviceLocator->get('RecyclerDeviceConditionTable');
+            $tdmConditionTable = $this->serviceLocator->get('RecyclerProductConditionTable');
         }
         $conditionEntry = $tdmConditionTable->getEntry($id);
         if(empty($conditionEntry)){
@@ -53,7 +53,7 @@ class Condition extends AbstractHelper
         if(!$condition){
             return null;
         }
-        $ConditionTable = $this->serviceLocator->get('RecyclerDeviceConditionTable');
+        $ConditionTable = $this->serviceLocator->get('RecyclerProductConditionTable');
         $entry = $ConditionTable->getEntryByName($condition);
         if(!empty($entry)){
             return $entry->condition_id;
@@ -70,7 +70,7 @@ class Condition extends AbstractHelper
         if(!$condition){
             return null;
         }
-        $ConditionTable = $this->serviceLocator->get('TdmDeviceConditionTable');
+        $ConditionTable = $this->serviceLocator->get('TdmProductConditionTable');
         $entry = $ConditionTable->getEntryByName($condition);
         if(!empty($entry)){
             return $entry->condition_id;

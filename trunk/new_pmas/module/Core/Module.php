@@ -9,30 +9,30 @@ use Core\Model\AdminUser;
 use Core\Model\AdminUserTable;
 use Core\Model\Country;
 use Core\Model\CountryTable;
-use Core\Model\Device;
-use Core\Model\DeviceCondition;
-use Core\Model\DeviceConditionTable;
-use Core\Model\DeviceTable;
-use Core\Model\DeviceType;
-use Core\Model\DeviceTypeTable;
+use Core\Model\Product;
+use Core\Model\ProductCondition;
+use Core\Model\ProductConditionTable;
+use Core\Model\ProductTable;
+use Core\Model\ProductType;
+use Core\Model\ProductTypeTable;
 use Core\Model\Exchange;
 use Core\Model\ExchangeTable;
 use Core\Model\Recycler;
-use Core\Model\RecyclerDevice;
-use Core\Model\RecyclerDeviceCondition;
-use Core\Model\RecyclerDeviceConditionTable;
-use Core\Model\RecyclerDeviceTable;
+use Core\Model\RecyclerProduct;
+use Core\Model\RecyclerProductCondition;
+use Core\Model\RecyclerProductConditionTable;
+use Core\Model\RecyclerProductTable;
 use Core\Model\RecyclerTable;
 use Core\Model\Resources;
 use Core\Model\ResourcesTable;
 use Core\Model\Roles;
 use Core\Model\RolesTable;
-use Core\Model\TdmDevice;
-use Core\Model\TdmDeviceCondition;
-use Core\Model\TdmDeviceConditionTable;
-use Core\Model\TdmDeviceTable;
-use Core\Model\TmpDevice;
-use Core\Model\TmpDeviceTable;
+use Core\Model\TdmProduct;
+use Core\Model\TdmProductCondition;
+use Core\Model\TdmProductConditionTable;
+use Core\Model\TdmProductTable;
+use Core\Model\TmpProduct;
+use Core\Model\TmpProductTable;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -143,89 +143,89 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new Recycler());
                     return new TableGateway('recycler', $dbAdapter, null, $resultSetPrototype);
                 },
-                'DeviceTypeTable' => function($sm) {
-                    $tableGateway = $sm->get('DeviceTypeTableGateway');
-                    $table = new DeviceTypeTable($tableGateway);
+                'ProductTypeTable' => function($sm) {
+                    $tableGateway = $sm->get('ProductTypeTableGateway');
+                    $table = new ProductTypeTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'DeviceTypeTableGateway' => function ($sm) {
+                'ProductTypeTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new DeviceType());
-                    return new TableGateway('device_type', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductType());
+                    return new TableGateway('product_type', $dbAdapter, null, $resultSetPrototype);
                 },
-                'TdmDeviceConditionTable' => function($sm) {
-                    $tableGateway = $sm->get('TdmDeviceConditionTableGateway');
-                    $table = new TdmDeviceConditionTable($tableGateway);
+                'TdmProductConditionTable' => function($sm) {
+                    $tableGateway = $sm->get('TdmProductConditionTableGateway');
+                    $table = new TdmProductConditionTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'TdmDeviceConditionTableGateway' => function ($sm) {
+                'TdmProductConditionTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new TdmDeviceCondition());
-                    return new TableGateway('tdm_device_condition', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new TdmProductCondition());
+                    return new TableGateway('tdm_product_condition', $dbAdapter, null, $resultSetPrototype);
                 },
-                'RecyclerDeviceConditionTable' => function($sm) {
-                    $tableGateway = $sm->get('RecyclerDeviceConditionTableGateway');
-                    $table = new RecyclerDeviceConditionTable($tableGateway);
+                'RecyclerProductConditionTable' => function($sm) {
+                    $tableGateway = $sm->get('RecyclerProductConditionTableGateway');
+                    $table = new RecyclerProductConditionTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'RecyclerDeviceConditionTableGateway' => function ($sm) {
+                'RecyclerProductConditionTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new RecyclerDeviceCondition());
-                    return new TableGateway('recycler_device_condition', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new RecyclerProductCondition());
+                    return new TableGateway('recycler_product_condition', $dbAdapter, null, $resultSetPrototype);
                 },
-                'DeviceTable' => function($sm) {
-                    $tableGateway = $sm->get('DeviceTableGateway');
-                    $table = new DeviceTable($tableGateway);
+                'ProductTable' => function($sm) {
+                    $tableGateway = $sm->get('ProductTableGateway');
+                    $table = new ProductTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'DeviceTableGateway' => function ($sm) {
+                'ProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Device());
-                    return new TableGateway('device', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new Product());
+                    return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
                 },
-                'TdmDeviceTable' => function($sm) {
-                    $tableGateway = $sm->get('TdmDeviceTableGateway');
-                    $table = new TdmDeviceTable($tableGateway);
+                'TdmProductTable' => function($sm) {
+                    $tableGateway = $sm->get('TdmProductTableGateway');
+                    $table = new TdmProductTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'TdmDeviceTableGateway' => function ($sm) {
+                'TdmProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new TdmDevice());
-                    return new TableGateway('tdm_device', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new TdmProduct());
+                    return new TableGateway('tdm_product', $dbAdapter, null, $resultSetPrototype);
                 },
-                'TmpDeviceTable' => function($sm) {
-                    $tableGateway = $sm->get('TmpDeviceTableGateway');
-                    $table = new TmpDeviceTable($tableGateway);
+                'TmpProductTable' => function($sm) {
+                    $tableGateway = $sm->get('TmpProductTableGateway');
+                    $table = new TmpProductTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'TmpDeviceTableGateway' => function ($sm) {
+                'TmpProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new TmpDevice());
-                    return new TableGateway('tmp_device', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new TmpProduct());
+                    return new TableGateway('tmp_product', $dbAdapter, null, $resultSetPrototype);
                 },
-                'RecyclerDeviceTable' => function($sm) {
-                    $tableGateway = $sm->get('RecyclerDeviceTableGateway');
-                    $table = new RecyclerDeviceTable($tableGateway);
+                'RecyclerProductTable' => function($sm) {
+                    $tableGateway = $sm->get('RecyclerProductTableGateway');
+                    $table = new RecyclerProductTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'RecyclerDeviceTableGateway' => function ($sm) {
+                'RecyclerProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new RecyclerDevice());
-                    return new TableGateway('recycler_device', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new RecyclerProduct());
+                    return new TableGateway('recycler_product', $dbAdapter, null, $resultSetPrototype);
                 },
                 'ExchangeRateTable' => function($sm) {
                     $tableGateway = $sm->get('ExchangeRateTableGateway');

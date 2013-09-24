@@ -5,7 +5,7 @@
  */
 namespace Core\Model;
 
-class TdmDeviceCondition
+class TdmProductCondition
 {
     public $condition_id;
     public $name;

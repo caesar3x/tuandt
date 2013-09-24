@@ -34,7 +34,7 @@
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
             <li class="active"><a data-toggle="tab" href="#recycler-view"><?php echo $this->translate('Recycler View')?></a></li>
-            <li><a data-toggle="tab" href="#device-model"><?php echo $this->translate('Device Models')?></a></li>
+            <li><a data-toggle="tab" href="#product-model"><?php echo $this->translate('Product Models')?></a></li>
         </ul>
 
     </div>
@@ -99,10 +99,10 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="device-model">
+            <div class="tab-pane" id="product-model">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span><?php echo $this->translate('Device Model List')?></span>
+                        <span><?php echo $this->translate('Product Model List')?></span>
                     </div>
                     <div class="panel-body">
                         <div class="pull-right">
@@ -127,7 +127,7 @@
                             <thead>
                             <tr>
                                 <th><?php echo $this->translate('ID')?></th>
-                                <th><?php echo $this->translate('Device Model')?></th>
+                                <th><?php echo $this->translate('Product Model')?></th>
                                 <th><?php echo $this->translate('Base Price')?></th>
                                 <th><?php echo $this->translate('Currency')?></th>
                                 <th><?php echo $this->translate('TDM Model')?></th>
@@ -136,16 +136,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if(!empty($this->tmpDevices)):?>
+                            <?php if(!empty($this->tmpProducts)):?>
                             <?php $i =0;?>
-                            <?php foreach($this->tmpDevices as $row):?>
+                            <?php foreach($this->tmpProducts as $row):?>
                                 <tr>
                                     <td><?php echo $i++?></td>
                                     <td><?php echo $row->name?></td>
                                     <td><?php echo $row->price?></td>
                                     <td><?php echo $row->currency?></td>
                                     <td><?php echo $row->model?></td>
-                                    <td><input type="checkbox" name="device" value="<?php echo $row->id?>"></td>
+                                    <td><input type="checkbox" name="product" value="<?php echo $row->id?>"></td>
                                     <td class="col-save">
                                         <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
                                             <i class="glyphicon glyphicon-save"></i>

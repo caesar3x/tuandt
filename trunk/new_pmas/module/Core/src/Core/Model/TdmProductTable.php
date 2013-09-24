@@ -1,31 +1,31 @@
 <?php
 /**
  * Created by Nguyen Tien Dat.
- * Date: 9/22/13
+ * Date: 9/18/13
  */
 namespace Core\Model;
 
-class TmpDeviceTable extends AbstractModel
+class TdmProductTable extends AbstractModel
 {
     public function getEntry($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('product_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             return null;
         }
         return $row;
     }
-    public function save(TmpDevice $entry)
+    public function save(TdmProduct $entry)
     {
         $data = (array) $entry;
-        $id = (int)$entry->id;
+        $id = (int)$entry->product_id;
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {
             if ($this->getEntry($id)) {
-                return $this->tableGateway->update($data, array('id' => $id));
+                return $this->tableGateway->update($data, array('product_id' => $id));
             } else {
                 return $this->tableGateway->insert($data);
             }
@@ -33,14 +33,6 @@ class TmpDeviceTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->delete(array('id' => $id));
-    }
-    public function getRowsByRecyclerId($recycler_id)
-    {
-        $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
-        if (!$rowset) {
-            return null;
-        }
-        return $rowset;
+        return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
     }
 }
