@@ -43,7 +43,6 @@ class RecyclerTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $id));
     }
 
@@ -54,7 +53,7 @@ class RecyclerTable extends AbstractModel
      */
     public function clearCountry($country_id)
     {
-        return $this->tableGateway->update(array('country_id' => 1),array('country_id' => $country_id));
+        return $this->tableGateway->update(array('country_id' => 0),array('country_id' => $country_id));
     }
     /**
      * check if has record contain country id
