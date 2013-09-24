@@ -6,13 +6,16 @@
 namespace Application\Controller;
 
 use Application\Form\ProductForm;
+use Application\Form\ProductTypeForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
 use Core\Model\Product;
+use Core\Model\ProductType;
 use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\Digits;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
@@ -418,6 +421,123 @@ class ProductController extends AbstractActionController
     }
     public function typeAction()
     {
+        $this->auth();
+        $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $productTypeTable = $this->getServiceLocator()->get('ProductTypeTable');
+        $types = $productTypeTable->getAvaiableRows();
+        $view = new ViewModel();
+        $form = new ProductTypeForm($this->getServiceLocator());
+        $view->setVariable('form',$form);
+        $view->setVariable('types',$types);
+        $id = $this->params('id',0);
+        if($id != 0){
+            $typeEntry = $productTypeTable->getEntry($id);
+            if(empty($typeEntry)){
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                return $this->redirect()->toUrl('/product/type');
+            }
+            $view->setVariable('name',$typeEntry->name);
+            $entryParse = (array) $typeEntry;
+            $form->setData($entryParse);
+        }
+        $view->setVariable('id',$id);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['TYPE_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            /**
+             * check condition exist
+             */
+            $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+            if($id != 0){
+                $exist_valid = new NoRecordExists(array('table' => 'product_type','field' => 'name','adapter' => $dbAdapter,'exclude' => array('field' => 'name','value' => $typeEntry->name)));
+            }else{
+                $exist_valid = new NoRecordExists(array('table' => 'product_type','field' => 'name','adapter' => $dbAdapter));
+            }
+            if(!$exist_valid->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['TYPE_NAME_EXIST']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/product/type');
+                }
+                if($this->saveProductType($data)){
+                    if($id != 0){
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    }
+                }else{
+                    if($id != 0){
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                    }
+                }
+                return $this->redirect()->toUrl('/product/type');
+            }
+        }
+        return $view;
+    }
 
+    /**
+     * Save product type data
+     * @param $data
+     * @return mixed
+     */
+    protected function saveProductType($data)
+    {
+        $productTypeTable = $this->getServiceLocator()->get('ProductTypeTable');
+        $dataFinal = $data;
+        $type = new ProductType();
+        $type->exchangeArray($dataFinal);
+        return $productTypeTable->save($type);
+    }
+    public function deleteTypeAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $id = $this->params('id',0);
+        $productTypeTable = $this->getServiceLocator()->get('ProductTypeTable');
+        if($id != 0){
+            $this->deleteType($id,$productTypeTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteType($id,$productTypeTable);
+            }
+        }
+        return $this->redirect()->toUrl('/product/type');
+    }
+
+    /**
+     * @param $id
+     * @param $table
+     * @return bool
+     */
+    protected function deleteType($id,$table)
+    {
+        $messages = $this->getMessages();
+        $result = $table->clearProductType($id);
+        if($result){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return true;
     }
 }

@@ -35,7 +35,10 @@ class ProductTypeTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('type_id' => $id));
     }
-
+    protected function rollbackDeleteEntry($id)
+    {
+        return $this->tableGateway->update(array('deleted' => 0),array('type_id' => $id));
+    }
     /**
      * Get type name by type id
      * @param $id
@@ -64,5 +67,26 @@ class ProductTypeTable extends AbstractModel
             return null;
         }
         return $row;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function clearProductType($id)
+    {
+        if($this->deleteEntry($id)){
+            $success = true;
+            $productTable = $this->serviceLocator->get('ProductTable');
+            if($productTable->checkHasRowHasTypeId($id)){
+                $success = $success && $productTable->productTypeDeleted($id);
+            }
+            if($success == false){
+                $this->rollbackDeleteEntry($id);
+            }
+            return $success;
+        }else{
+            return false;
+        }
     }
 }

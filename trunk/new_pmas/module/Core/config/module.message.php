@@ -31,4 +31,6 @@ return array(
     'MUST_SELECT_CURRENCY'          => 'Please select the currency',
     'CONDITION_NAME_NOT_EMPTY'      => 'Condition name does not empty',
     'CONDITION_NAME_EXIST'          => 'Condition name existed',
+    'TYPE_NAME_NOT_EMPTY'           => 'Type name does not empty',
+    'TYPE_NAME_EXIST'               => 'Type name existed',
 );
