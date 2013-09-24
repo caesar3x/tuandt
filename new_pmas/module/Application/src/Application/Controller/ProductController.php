@@ -416,4 +416,8 @@ class ProductController extends AbstractActionController
         }
         exit();
     }
+    public function typeAction()
+    {
+
+    }
 }

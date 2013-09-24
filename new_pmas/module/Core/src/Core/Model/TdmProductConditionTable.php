@@ -31,10 +31,22 @@ class TdmProductConditionTable extends AbstractModel
             }
         }
     }
+
+    /**
+     * Delete
+     * @param $id
+     * @return int
+     */
     public function deleteEntry($id)
     {
         return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
     }
+
+    /**
+     * Rollback delete
+     * @param $id
+     * @return int
+     */
     public function rollbackDeleteEntry($id)
     {
         return $this->tableGateway->update(array('deleted' => 0),array('condition_id' => $id));
@@ -49,7 +61,9 @@ class TdmProductConditionTable extends AbstractModel
         if($this->deleteEntry($id)){
             $success = true;
             $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
-            $success = $success && $tdmProductTable->deleteByCondition($id);
+            if($tdmProductTable->checkHasRowContainConditionId($id)){
+                $success = $success && $tdmProductTable->deleteByCondition($id);
+            }
             if($success == false){
                 $this->rollbackDeleteEntry($id);
             }

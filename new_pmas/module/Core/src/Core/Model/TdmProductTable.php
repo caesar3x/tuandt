@@ -92,4 +92,17 @@ class TdmProductTable extends AbstractModel
         }
         return true;
     }
+
+    /**
+     * @param $condition_id
+     * @return bool
+     */
+    public function checkHasRowContainConditionId($condition_id)
+    {
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0,'condition_id' => $condition_id));
+        if ($rowset->count() <= 0) {
+            return false;
+        }
+        return true;
+    }
 }

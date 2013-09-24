@@ -15,7 +15,7 @@
             <h3><?php echo $this->translate('Edit Condition')?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/condition/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
             <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
             <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
         </div>
@@ -45,60 +45,60 @@
         </div>
     </div>
 <?php else:?>
-<div class="page-header">
-    <div class="pull-left">
-        <h3><?php echo $this->translate('Manage Conditions')?></h3>
-    </div>
-    <div class="clearfix">&nbsp;</div>
-</div>
-<div class="row">
-    <form id="tdm-condition" action="/condition/delete-tdm" method="post" enctype="multipart/form-data">
-        <div class="pull-right">
-            <a onclick="formConfirm('tdm-condition');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
-                <i class="glyphicon glyphicon-trash"></i>
-                <?php echo $this->translate('Delete Selected Conditions')?>
-            </a>
+    <div class="page-header">
+        <div class="pull-left">
+            <h3><?php echo $this->translate('Manage Conditions')?></h3>
         </div>
-        <div class="row clearfix">&nbsp;</div>
-        <table class="display table table-striped table-condensed table-bordered example" id="country" cellpadding="0" cellspacing="0">
-            <thead>
-            <tr>
-                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php if(!empty($this->conditions)):?>
-                <?php foreach($this->conditions as $row):?>
-                    <tr>
-                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->condition_id?>"></td>
-                        <td><?php echo $row->condition_id?></td>
-                        <td><?php echo $row->name?></td>
-                        <td class="action">
-                            <a class="btn btn-xs btn-warning btn-edit" href="/condition/tdm/id/<?php echo $row->condition_id?>">
-                                <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit')?>
-                            </a>
-                            <a onclick="confirmDelete('/condition/delete-tdm/id/<?php echo $row->condition_id?>')" class="btn btn-xs btn-danger btn-delete">
-                                <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete')?>
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach;?>
-            <?php endif;?>
-            </tbody>
-        </table>
-    </form>
-</div>
+        <div class="clearfix">&nbsp;</div>
+    </div>
+    <div class="row">
+        <form id="recycler-condition" action="/condition/delete-recycler" method="post" enctype="multipart/form-data">
+            <div class="pull-right">
+                <a onclick="formConfirm('recycler-condition');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo $this->translate('Delete Selected Conditions')?>
+                </a>
+            </div>
+            <div class="row clearfix">&nbsp;</div>
+            <table class="display table table-striped table-condensed table-bordered example" id="country" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                    <th><?php echo $this->translate('ID')?></th>
+                    <th><?php echo $this->translate('Name')?></th>
+                    <th class="action"><?php echo $this->translate('Action')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->conditions)):?>
+                    <?php foreach($this->conditions as $row):?>
+                        <tr>
+                            <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->condition_id?>"></td>
+                            <td><?php echo $row->condition_id?></td>
+                            <td><?php echo $row->name?></td>
+                            <td class="action">
+                                <a class="btn btn-xs btn-warning btn-edit" href="/condition/recycler/id/<?php echo $row->condition_id?>">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                    <?php echo $this->translate('Edit')?>
+                                </a>
+                                <a onclick="confirmDelete('/condition/delete-recycler/id/<?php echo $row->condition_id?>')" class="btn btn-xs btn-danger btn-delete">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    <?php echo $this->translate('Delete')?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+        </form>
+    </div>
     <div class="row" style="margin-top: 30px;">
         <div class="container" style="width: 50%;">
             <?php echo $this->form()->openTag($form);?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add TDM Condition</h3>
+                    <h3 class="panel-title">Add Recycler Condition</h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
