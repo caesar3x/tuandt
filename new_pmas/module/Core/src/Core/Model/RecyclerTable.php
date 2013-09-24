@@ -11,7 +11,7 @@ class RecyclerTable extends AbstractModel
 {
     public function getAvaiableRows()
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_deleted' => 0));
+        $rowset = $this->tableGateway->select(array('deleted' => 0));
         if (!$rowset) {
             return null;
         }
@@ -52,19 +52,9 @@ class RecyclerTable extends AbstractModel
      * @param $country_id
      * @return int
      */
-    public function deleteByCountry($country_id)
+    public function clearCountry($country_id)
     {
-        return $this->tableGateway->update(array('country_deleted' => 1),array('country_id' => $country_id));
-    }
-
-    /**
-     * Roll back
-     * @param $country_id
-     * @return int
-     */
-    public function rollbackDeleteCountry($country_id)
-    {
-        return $this->tableGateway->update(array('country_deleted' => 0),array('country_id' => $country_id));
+        return $this->tableGateway->update(array('country_id' => 1),array('country_id' => $country_id));
     }
     /**
      * check if has record contain country id

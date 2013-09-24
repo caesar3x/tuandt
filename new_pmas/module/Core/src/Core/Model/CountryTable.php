@@ -51,16 +51,14 @@ class CountryTable extends AbstractModel
             $success = true;
             $tdmProduct = $this->serviceLocator->get('TdmProductTable');
             if($tdmProduct->checkAvailabelCountry($id)){
-                $success = $success && $tdmProduct->deleteByCountry($id);
+                $success = $success && $tdmProduct->clearCountry($id);
             }
             $recyclerTable = $this->serviceLocator->get('RecyclerTable');
             if($recyclerTable->checkAvailabelCountry($id)){
-                $success = $success && $recyclerTable->deleteByCountry($id);
+                $success = $success && $recyclerTable->clearCountry($id);
             }
             if($success == false){
                 $this->rollBackDeleteEntry($id);
-                $tdmProduct->rollbackDeleteCountry($id);
-                $recyclerTable->rollbackDeleteCountry($id);
             }
             return $success;
         }else{

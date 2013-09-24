@@ -7,27 +7,27 @@ namespace Core\Model;
 
 use Zend\Db\Sql\Sql;
 
-class ProductTable extends AbstractModel
+class BrandTable extends AbstractModel
 {
     public function getEntry($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('product_id' => $id));
+        $rowset = $this->tableGateway->select(array('brand_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             return null;
         }
         return $row;
     }
-    public function save(Product $entry)
+    public function save(Brand $entry)
     {
         $data = (array) $entry;
-        $id = (int)$entry->product_id;
+        $id = (int)$entry->brand_id;
         if ($id == 0) {
             return $this->tableGateway->insert($data);
         } else {
             if ($this->getEntry($id)) {
-                return $this->tableGateway->update($data, array('product_id' => $id));
+                return $this->tableGateway->update($data, array('brand_id' => $id));
             } else {
                 throw new \Exception('Data does not exist.');
             }
@@ -35,7 +35,7 @@ class ProductTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
+        return $this->tableGateway->update(array('deleted' => 1),array('brand_id' => $id));
     }
 
     /**
@@ -109,5 +109,39 @@ class ProductTable extends AbstractModel
     public function productTypeDeleted($type_id)
     {
         return $this->tableGateway->update(array('type_id' => 0),array('type_id' => $type_id));
+    }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    public function getNameById($id)
+    {
+        $entry = $this->getEntry($id);
+        if($entry != null){
+            return $entry->name;
+        }
+        return null;
+    }
+    /**
+     * @param $brand_id
+     * @return bool
+     */
+    public function clearBrand($brand_id)
+    {
+        if($this->deleteEntry($brand_id)){
+            $success = true;
+            $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+            $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+            if($tdmProductTable->checkHasRowHasBrandId($brand_id)){
+                $success = $success && $tdmProductTable->clearBrandId($brand_id);
+            }
+            if($recyclerProductTable->checkHasRowHasBrandId($brand_id)){
+                $success = $success && $recyclerProductTable->clearBrandId($brand_id);
+            }
+            return $success;
+        }else{
+            return false;
+        }
     }
 }

@@ -7,6 +7,8 @@ namespace Core;
 
 use Core\Model\AdminUser;
 use Core\Model\AdminUserTable;
+use Core\Model\Brand;
+use Core\Model\BrandTable;
 use Core\Model\Country;
 use Core\Model\CountryTable;
 use Core\Model\Product;
@@ -179,17 +181,17 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new RecyclerProductCondition());
                     return new TableGateway('recycler_product_condition', $dbAdapter, null, $resultSetPrototype);
                 },
-                'ProductTable' => function($sm) {
-                    $tableGateway = $sm->get('ProductTableGateway');
-                    $table = new ProductTable($tableGateway);
+                'BrandTable' => function($sm) {
+                    $tableGateway = $sm->get('BrandTableGateway');
+                    $table = new BrandTable($tableGateway);
                     $table->setServiceLocator($sm);
                     return $table;
                 },
-                'ProductTableGateway' => function ($sm) {
+                'BrandTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Product());
-                    return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new Brand());
+                    return new TableGateway('brand', $dbAdapter, null, $resultSetPrototype);
                 },
                 'TdmProductTable' => function($sm) {
                     $tableGateway = $sm->get('TdmProductTableGateway');
@@ -312,6 +314,12 @@ class Module
                 'condition' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\Condition();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'productBrand' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\ProductBrand();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },

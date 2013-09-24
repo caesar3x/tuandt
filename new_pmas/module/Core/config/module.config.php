@@ -89,22 +89,34 @@ return array(
                         'action' => 'index',
                     ),
                     array(
-                        'label' => 'TDM Conditions',
+                        'label' => 'Manage Countries',
+                        'route' => 'admin',
+                        'controller' => 'exchange',
+                        'action' => 'country',
+                    ),
+                    array(
+                        'label' => 'TDM Condition Management',
                         'route' => 'admin',
                         'controller' => 'condition',
                         'action' => 'tdm',
                     ),
                     array(
-                        'label' => 'Recycler Conditions',
+                        'label' => 'Recycler Condition Management',
                         'route' => 'admin',
                         'controller' => 'condition',
                         'action' => 'recycler',
                     ),
                     array(
-                        'label' => 'Product Types',
+                        'label' => 'Product Type Management',
                         'route' => 'admin',
                         'controller' => 'product',
                         'action' => 'type',
+                    ),
+                    array(
+                        'label' => 'Brand Management',
+                        'route' => 'admin',
+                        'controller' => 'product',
+                        'action' => 'brand',
                     ),
                 ),
             ),
@@ -152,12 +164,7 @@ return array(
                         'controller' => 'exchange',
                         'action' => 'update',
                     ),
-                    array(
-                        'label' => 'Manage Countries',
-                        'route' => 'admin',
-                        'controller' => 'exchange',
-                        'action' => 'country',
-                    ),
+
                 )
             ),
             array(

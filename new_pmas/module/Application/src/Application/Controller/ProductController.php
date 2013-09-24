@@ -5,11 +5,13 @@
  */
 namespace Application\Controller;
 
+use Application\Form\BrandForm;
 use Application\Form\ProductForm;
 use Application\Form\ProductTypeForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Model\Brand;
 use Core\Model\Product;
 use Core\Model\ProductType;
 use Core\Model\TdmProduct;
@@ -533,6 +535,126 @@ class ProductController extends AbstractActionController
     {
         $messages = $this->getMessages();
         $result = $table->clearProductType($id);
+        if($result){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return true;
+    }
+    public function brandAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $brandTable = $this->getServiceLocator()->get('BrandTable');
+        $brands = $brandTable->getAvaiableRows();
+        $view = new ViewModel();
+        $form = new BrandForm($this->getServiceLocator());
+        $view->setVariable('form',$form);
+        $view->setVariable('brands',$brands);
+        $id = $this->params('id',0);
+        if($id != 0){
+            $brandEntry = $brandTable->getEntry($id);
+            if(empty($brandEntry)){
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                return $this->redirect()->toUrl('/product/brand');
+            }
+            $view->setVariable('name',$brandEntry->name);
+            $entryParse = (array) $brandEntry;
+            $form->setData($entryParse);
+        }
+        $view->setVariable('id',$id);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['BRAND_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            /**
+             * check condition exist
+             */
+            $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+            if($id != 0){
+                $exist_valid = new NoRecordExists(array('table' => 'brand','field' => 'name','adapter' => $dbAdapter,'exclude' => array('field' => 'name','value' => $brandEntry->name)));
+            }else{
+                $exist_valid = new NoRecordExists(array('table' => 'brand','field' => 'name','adapter' => $dbAdapter));
+            }
+            if(!$exist_valid->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['BRAND_NAME_EXIST']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/product/brand');
+                }
+                if($this->saveProductBrand($data)){
+                    if($id != 0){
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    }
+                }else{
+                    if($id != 0){
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    }else{
+                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                    }
+                }
+                return $this->redirect()->toUrl('/product/brand');
+            }
+        }
+        return $view;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function saveProductBrand($data)
+    {
+        $brandTable = $this->getServiceLocator()->get('BrandTable');
+        $dataFinal = $data;
+        $brand = new Brand();
+        $brand->exchangeArray($dataFinal);
+        return $brandTable->save($brand);
+    }
+    public function deleteBrandAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $id = $this->params('id',0);
+        $brandTable = $this->getServiceLocator()->get('BrandTable');
+        if($id != 0){
+            $this->deleteBrand($id,$brandTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteBrand($id,$brandTable);
+            }
+        }
+        return $this->redirect()->toUrl('/product/brand');
+    }
+
+    /**
+     * @param $id
+     * @param $table
+     * @return bool
+     */
+    protected function deleteBrand($id,$table)
+    {
+        $messages = $this->getMessages();
+        $result = $table->clearBrand($id);
         if($result){
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
