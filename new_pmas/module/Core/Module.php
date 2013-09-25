@@ -323,6 +323,12 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'recyclerImported' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\RecyclerImported();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
             ),
         );
     }

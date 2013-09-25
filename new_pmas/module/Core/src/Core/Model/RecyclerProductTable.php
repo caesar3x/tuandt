@@ -113,4 +113,22 @@ class RecyclerProductTable extends AbstractModel
         }
         return true;
     }
+    public function getAllTempIdsProduct($recycler_id = null)
+    {
+        if($recycler_id == null){
+            $rowset = $this->tableGateway->select(array('deleted' => 0));
+        }else{
+            $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $recycler_id));
+        }
+        if($rowset->count() <= 0){
+            return null;
+        }
+        $data = array();
+        foreach($rowset as $row){
+            if($row->temp_id != null && $row->temp_id != 0){
+                $data[] = $row->temp_id;
+            }
+        }
+        return $data;
+    }
 }

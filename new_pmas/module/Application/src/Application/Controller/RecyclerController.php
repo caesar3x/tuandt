@@ -131,6 +131,7 @@ class RecyclerController extends AbstractActionController
         if(!$id || $id == 0){
             $this->getResponse()->setStatusCode(404);
         }
+        $view->setVariable('id',$id);
         $form = new RecyclerForm('recycler',$sm);
         if(!$this->recyclerTable){
             $this->recyclerTable = $sm->get('RecyclerTable');
@@ -401,18 +402,11 @@ class RecyclerController extends AbstractActionController
             return true;
         }
         $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
-        $productTable = $this->getServiceLocator()->get('ProductTable');
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $tmpProductEntry = $tmpProductTable->getEntry($id);
         if(!empty($tmpProductEntry)){
             $tmpEntryParse = (array) $tmpProductEntry;
-
-            $product = new TdmProduct();
-            $product->exchangeArray($tmpEntryParse);
-            if($productTable->save($product)){
-                $product_id = $productTable->getLastInsertValue();
-                $tmpEntryParse['product_id'] = $product_id;
-            }
+            $tmpEntryParse['temp_id'] = $id;
             $recyclerProduct = new RecyclerProduct();
             $recyclerProduct->exchangeArray($tmpEntryParse);
             if($recyclerProductTable->save($recyclerProduct)){
