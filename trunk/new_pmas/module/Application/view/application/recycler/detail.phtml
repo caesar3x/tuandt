@@ -134,7 +134,8 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                 <th><?php echo $this->translate('Base Price')?></th>
                                 <th><?php echo $this->translate('Currency')?></th>
                                 <th><?php echo $this->translate('TDM Product Name')?></th>
-                                <th><?php echo $this->translate('TDM Price')?></th>
+                                <th><?php echo $this->translate('TDM Base Price')?></th>
+                                <th><?php echo $this->translate('TDM Currency')?></th>
                                 <th class="col-save"><?php echo $this->translate('Action')?></th>
                             </tr>
                             </thead>
@@ -143,12 +144,20 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                             <?php $i =1;?>
                             <?php foreach($this->tmpProducts as $row):?>
                                 <tr>
-                                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
+                                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(!empty($temp_ids) && in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
                                     <td><?php echo $row->name?></td>
                                     <td><?php echo $row->price?></td>
                                     <td><?php echo $row->currency?></td>
-                                    <td><?php echo $row->model?></td>
-                                    <td></td>
+                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($row->model);?>
+                                    <?php if(!empty($tdmProduct)):?>
+                                        <td><?php echo $tdmProduct->name?></td>
+                                        <td><?php echo $tdmProduct->price?></td>
+                                        <td><?php echo $tdmProduct->currency?></td>
+                                    <?php else:?>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                    <?php endif;?>
                                     <td class="col-save">
                                         <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
                                             <i class="glyphicon glyphicon-save"></i>

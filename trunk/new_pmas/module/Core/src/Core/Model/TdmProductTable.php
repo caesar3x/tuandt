@@ -127,4 +127,24 @@ class TdmProductTable extends AbstractModel
         }
         return $rowset;
     }
+
+    /**
+     * @param $model
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getRowByModel($model)
+    {
+        if($model == null){
+            return null;
+        }
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'model' => $model));
+        if($rowset->count() <= 0){
+            return null;
+        }
+        $row = $rowset->current();
+        if(!$row){
+            return null;
+        }
+        return $row;
+    }
 }

@@ -33,4 +33,15 @@ class RecyclerImported extends AbstractHelper
         $temp_ids =  $recyclerProductTable->getAllTempIdsProduct($recycler_id);
         return $temp_ids;
     }
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    public function getTdmProductWithSameModel($model)
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $row = $tdmProductTable->getRowByModel($model);
+        return $row;
+    }
 }
