@@ -1,0 +1,40 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/25/13
+ */
+?>
+<div class="pull-right" style="margin-bottom: 15px;">
+    <a class="btn">
+        Export to
+    </a>
+    <div class="btn-group">
+        <select class="form-control" id="export-format" name="export_format">
+            <option value="none"><?php echo $this->translate('Select format')?></option>
+            <option value="csv"><?php echo $this->translate('CSV')?></option>
+            <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+            <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+        </select>
+    </div>
+    <a class="btn btn-warning btn-sm" onclick="exportEchange()">
+        <i class="glyphicon glyphicon-export"></i>
+        Export
+    </a>
+</div>
+<div class="clearfix">&nbsp;</div>
+<table class="display table table-striped table-condensed table-bordered" id="list-exchange" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <th><?php echo $this->translate('Date')?></th>
+        <th><?php echo $this->translate('Currency')?></th>
+        <th><?php echo $this->translate('Exchange Rate')?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

@@ -79,7 +79,7 @@ class ExchangeController extends AbstractActionController
                     $dataFinal['time'] = time();
                 }else{
                     if (version_compare(phpversion(), '5.3.0', '<')===true) {
-                        $time = \DateTime::createFromFormat('m/d/Y',$post['time']);
+                        $time = \DateTime::createFromFormat('d-m-Y',$post['time']);
                         $dataFinal['time'] = $time->getTimestamp();
                     }else{
                         $dataFinal['time'] = strtotime($post['time']);
@@ -241,8 +241,16 @@ class ExchangeController extends AbstractActionController
         }
         return $result;
     }
-    public function exportAction()
+    public function loadTableAction()
     {
-
+        $this->layout('layout/empty');
+        $view = new ViewModel();
+        return $view;
+    }
+    public function loadChartAction()
+    {
+        $this->layout('layout/empty');
+        $view = new ViewModel();
+        return $view;
     }
 }

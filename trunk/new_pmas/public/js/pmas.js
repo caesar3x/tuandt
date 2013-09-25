@@ -4,6 +4,12 @@
  */
 var asInitVals = new Array();
 $(function() {
+    var currencySelect = $("#select-currency");
+    if(currencySelect.length > 0){
+        if(currencySelect.val() == 'none'){
+            $("#table-view").html('<div class="alert alert-info">Please choose currency</div>');
+        }
+    }
     $(".uploadform").click(function(e){
         e.stopPropagation();
         if($("#import-format").length > 0){
@@ -80,7 +86,9 @@ $(function() {
     /**
      * Datepicker
      */
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+        dateFormat : "dd-mm-yy"
+    });
     /**
      * highcharts
      */
@@ -342,5 +350,33 @@ function saveImportRecord(url){
         $("#show-msg").html('<div class="alert alert-success"><span>'+data+'</span></div>');
     });
 
+    return true;
+}
+function loadExchangeData()
+{
+    var selector = $("#select-currency");
+    var currency = selector.val();
+    if(currency == 'none'){
+        bootbox.alert("You must select currency");
+        return true;
+    }
+    $("#table-view").html('<div class="form-group" style="text-align: center;"><img src="/images/loading.gif" width="48px" style="width: 48px;"></div>');
+    var urlTableLoad = '/exchange/load-table/?';
+    var urlChartLoad = '/exchange/load-chart/?';
+    var startTime = $("#start-time").val();
+    var endTime = $("#end-time").val();
+    var params = new Object();
+    params.currency = currency;
+    params.start = startTime;
+    params.end = endTime;
+    var str = $.param(params);
+    urlTableLoad = urlTableLoad + str;
+    urlChartLoad = urlChartLoad + str;
+    $.get( urlTableLoad, function( data ) {
+        $("#table-view").html(data);
+    });
+    $.get( urlChartLoad, function( data ) {
+        $("#chart-view").html(data);
+    });
     return true;
 }
