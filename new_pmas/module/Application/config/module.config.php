@@ -87,6 +87,7 @@ return array(
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/login'            => __DIR__ . '/../view/layout/login.phtml',
+            'layout/empty'            => __DIR__ . '/../view/layout/empty.phtml',
             'admin/breadcrumbs'       => __DIR__ . '/../view/partial/breadcrumbs.phtml',
             'admin/topmenu'           => __DIR__ . '/../view/partial/menu.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
