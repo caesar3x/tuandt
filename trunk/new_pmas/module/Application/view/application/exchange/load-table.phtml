@@ -16,7 +16,7 @@
             <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
         </select>
     </div>
-    <a class="btn btn-warning btn-sm" onclick="exportEchange()">
+    <a class="btn btn-warning btn-sm" onclick="exportExchange('<?php echo $this->currency?>','<?php echo $this->start?>','<?php echo $this->end?>')">
         <i class="glyphicon glyphicon-export"></i>
         Export
     </a>
@@ -26,15 +26,20 @@
     <thead>
     <tr>
         <th><?php echo $this->translate('Date')?></th>
-        <th><?php echo $this->translate('Currency')?></th>
+        <th><?php echo $this->translate('Country')?></th>
         <th><?php echo $this->translate('Exchange Rate')?></th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+    <?php if(!empty($this->rowset)):?>
+    <?php foreach($this->rowset as $row):?>
+        <tr>
+            <td><?php echo date('d-m-Y',$row->time)?></td>
+            <td><?php echo $this->country($row->country_id) ?></td>
+            <td><?php echo $row->exchange_rate?></td>
+        </tr>
+    <?php endforeach;?>
+    <?php endif;?>
+
     </tbody>
 </table>

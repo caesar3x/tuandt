@@ -307,9 +307,6 @@ class RecyclerController extends AbstractActionController
                 $excel->fromArray($parseExcelData);
                 $excel->download($filename.'.xls');
             }
-        }else{
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
-            return $this->redirect()->toUrl('/recycler');
         }
         exit();
         die;
