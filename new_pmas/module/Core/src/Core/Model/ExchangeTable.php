@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Select;
+
 class ExchangeTable extends AbstractModel
 {
     /**
@@ -26,5 +28,19 @@ class ExchangeTable extends AbstractModel
     {
         $data = (array) $entry;
         return $this->tableGateway->insert($data);
+    }
+
+    /**
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getLastExchange()
+    {
+        $rowset = $this->tableGateway->select(function (Select $select){
+            $select->order('time DESC')->limit(5);
+        });
+        if($rowset->count() <= 0){
+            return null;
+        }
+        return $rowset;
     }
 }

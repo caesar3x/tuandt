@@ -5,6 +5,7 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Select;
 use Zend\Debug\Debug;
 
 class RecyclerTable extends AbstractModel
@@ -102,4 +103,21 @@ class RecyclerTable extends AbstractModel
         }
         return $rowset;
     }
+
+    /**
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getLastRecyclers()
+    {
+        $rowset = $this->tableGateway->select(function (Select $select){
+            $select->where('deleted = 0');
+            $select->order('recycler_id DESC')->limit(10);
+        });
+        if($rowset->count() <= 0){
+            return null;
+        }
+        return $rowset;
+    }
+
+
 }
