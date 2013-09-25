@@ -274,8 +274,30 @@ class ExchangeController extends AbstractActionController
     }
     public function loadChartAction()
     {
+        $this->auth();
+        $messages = $this->getMessages();
         $this->layout('layout/empty');
+        $currency = $this->params('currency',null);
+        $startTime = (string) $this->params('start',null);
+        $endTime = (string) $this->params('end',null);
+        if($currency == null){
+            die($messages['NO_DATA']);
+        }
+        $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
+        $rowset = $exchangeTable->getRowsetByCurrency($currency);
+        if($startTime != null){
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
+        }
+        if($endTime != null){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+        }
         $view = new ViewModel();
+        $view->setVariable('rowset',$rowset);
+        $view->setVariable('currency',$currency);
+        $view->setVariable('start',$startTime);
+        $view->setVariable('end',$endTime);
         return $view;
     }
     public function exportAction()
