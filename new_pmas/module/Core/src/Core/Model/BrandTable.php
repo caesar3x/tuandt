@@ -97,19 +97,7 @@ class BrandTable extends AbstractModel
         return $result;
     }
 
-    /**
-     * Check has row has type id
-     * @param $type_id
-     * @return bool
-     */
-    public function checkHasRowHasTypeId($type_id)
-    {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'type_id' => $type_id));
-        if ($rowset->count() <= 0) {
-            return false;
-        }
-        return true;
-    }
+
 
     /**
      * Update when product type is deleted

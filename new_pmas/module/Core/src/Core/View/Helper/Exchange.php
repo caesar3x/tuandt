@@ -26,7 +26,9 @@ class Exchange extends AbstractHelper
         $exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
         $data = array('none' => 'Select Currency');
         $currencies = $exchangeTable->getAvailableCurrencies();
-        $data = array_merge($data,$currencies);
+        if(!empty($currencies)){
+            $data = array_merge($data,$currencies);
+        }
         return $data;
     }
 }
