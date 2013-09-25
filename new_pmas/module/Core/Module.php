@@ -301,7 +301,7 @@ class Module
                 },
                 'productType' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Type();
+                    $viewHelper = new View\Helper\ProductType();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },

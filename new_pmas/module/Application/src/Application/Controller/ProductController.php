@@ -48,8 +48,8 @@ class ProductController extends AbstractActionController
     {
         $this->auth();
         $view = new ViewModel();
-        $productTable = $this->getServiceLocator()->get('TdmProductTable');
-        $rowset = $productTable->getAvaiableRows();
+        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
+        $rowset = $tdmProductTable->getAvaiableRows();
         $view->setVariable('rowset',$rowset);
         return $view;
     }
@@ -142,10 +142,8 @@ class ProductController extends AbstractActionController
         if(!$id || $id == 0){
             $this->getResponse()->setStatusCode(404);
         }
-        if(!$this->productTable){
-            $this->productTable = $sm->get('ProductTable');
-        }
-        $entry = $this->productTable->getTdmProduct($id);
+        $tdmProductTable = $sm->get('TdmProductTable');
+        $entry = $tdmProductTable->getEntry($id);
         if(empty($entry)){
             $this->getResponse()->setStatusCode(404);
         }
@@ -163,18 +161,29 @@ class ProductController extends AbstractActionController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!$empty->isValid($post['brand'])){
-                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_EMPTY']));
-                $view->setVariable('form',$form);
-                return $view;
-            }
             if(!$empty->isValid($post['model'])){
-                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['MODEL_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['brand_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['country_id'])){
+                $view->setVariable('msg',array('danger' => $messages['COUNTRY_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['type_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_TYPE_NOT_SELECTED']));
                 $view->setVariable('form',$form);
                 return $view;
             }
@@ -189,10 +198,10 @@ class ProductController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/product');
                 }
-                if($this->save($data)){
+                if($this->saveTdmProduct($data)){
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
-                        $newEntry = $this->productTable->getTdmProduct($id);
+                        $newEntry = $tdmProductTable->getEntry($id);
                         $view->setVariable('model',$newEntry->name);
                         $newEntryArray = (array) $newEntry;
                         $form->setData($newEntryArray);
@@ -220,26 +229,32 @@ class ProductController extends AbstractActionController
         $view->setVariable('form',$form);
         return $view;
     }
-    public function save($data)
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function saveTdmProduct($data)
     {
         $sm = $this->getServiceLocator();
-        if(!$this->productTable){
-            $this->productTable = $sm->get('ProductTable');
-        }
-        if(!$this->tdmProductTable){
-            $this->tdmProductTable = $sm->get('TdmProductTable');
-        }
+        $tdmProductTable = $sm->get('TdmProductTable');
         $dataFinal = $data;
-        $product = new Product();
-        $product->exchangeArray($dataFinal);
-        $id = $product->product_id;
+        $tdmProduct = new TdmProduct();
+        $tdmProduct->exchangeArray($dataFinal);
+        return $tdmProductTable->save($tdmProduct);
+        /*$sm = $this->getServiceLocator();
+        $tdmProductTable = $sm->get('TdmProductTable');
+        $dataFinal = $data;
+        $tdmProduct = new TdmProduct();
+        $tdmProduct->exchangeArray($dataFinal);
+        $id = $tdmProduct->product_id;
         $lastestInsertId = $id;
         if($id != 0){
-            $result1 = $this->productTable->save($product);
+            $result1 = $tdmProductTable->save($tdmProduct);
         }else{
-            if($this->productTable->save($product)){
+            if($tdmProductTable->save($tdmProduct)){
                 $result1 = true;
-                $lastestInsertId = $this->productTable->getLastInsertValue();
+                $lastestInsertId = $tdmProductTable->getLastInsertValue();
             }else{
                 $result1 = false;
             }
@@ -250,7 +265,7 @@ class ProductController extends AbstractActionController
             $tdmProduct->exchangeArray($dataFinal);
             $result2 = $this->tdmProductTable->save($tdmProduct);
         }
-        return ($result1 || $result2) ? true : false;
+        return ($result1 || $result2) ? true : false;*/
     }
     public function addAction()
     {
@@ -260,6 +275,7 @@ class ProductController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $form = new ProductForm($sm);
         $view = new ViewModel();
+        $tdmProductTable = $sm->get('TdmProductTable');
         if($request->isPost()){
             $post = $request->getPost()->toArray();
             $continue = $post['continue'];
@@ -273,18 +289,29 @@ class ProductController extends AbstractActionController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!$empty->isValid($post['brand'])){
-                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_EMPTY']));
-                $view->setVariable('form',$form);
-                return $view;
-            }
             if(!$empty->isValid($post['model'])){
-                $view->setVariable('msg',array('danger' => $messages['PRODUCT_MODEL_NOT_EMPTY']));
+                $view->setVariable('msg',array('danger' => $messages['MODEL_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
             }
             if(!$empty->isValid($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['brand_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['country_id'])){
+                $view->setVariable('msg',array('danger' => $messages['COUNTRY_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['type_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_TYPE_NOT_SELECTED']));
                 $view->setVariable('form',$form);
                 return $view;
             }
@@ -299,10 +326,10 @@ class ProductController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/product');
                 }
-                if($this->save($data)){
+                if($this->saveTdmProduct($data)){
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $this->productTable->getLastInsertValue();
+                        $lastInsertId = $tdmProductTable->getLastInsertValue();
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/product/edit/id/'.$lastInsertId);
                         }
@@ -339,15 +366,13 @@ class ProductController extends AbstractActionController
         $id = $this->params('id',0);
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
-        if(!$this->productTable){
-            $this->productTable = $this->serviceLocator->get('ProductTable');
-        }
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         if($id != 0){
-            $this->delete($id,$this->productTable);
+            $this->delete($id,$tdmProductTable);
         }
         if(!empty($ids) && is_array($ids)){
             foreach($ids as $id){
-                $this->delete($id,$this->productTable);
+                $this->delete($id,$tdmProductTable);
             }
         }
         return $this->redirect()->toUrl('/product');
@@ -375,18 +400,18 @@ class ProductController extends AbstractActionController
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         if (!$this->productTable) {
             $sm = $this->getServiceLocator();
-            $this->productTable = $sm->get('ProductTable');
+            $this->productTable = $sm->get('TdmProductTable');
         }
-        $rowset = $this->productTable->getAvaiableTdmProducts($ids);
+        $rowset = $this->productTable->getProductsFilter($ids);
         $header = array('Product ID','Brand','Model','Type','Country','Price','Currency','Name','Condition');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
                 $rowParse = array();
                 $rowParse[] = $row->product_id;
-                $rowParse[] = $row->brand;
+                $rowParse[] = $viewhelperManager->get('ProductBrand')->implement($row->brand_id);
                 $rowParse[] = $row->model;
-                $rowParse[] = $viewhelperManager->get('Type')->implement($row->type_id);
+                $rowParse[] = $viewhelperManager->get('ProductType')->implement($row->type_id);
                 $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
                 $rowParse[] = $row->price;
                 $rowParse[] = $row->currency;
