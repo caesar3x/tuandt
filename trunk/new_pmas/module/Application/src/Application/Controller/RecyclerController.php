@@ -15,6 +15,7 @@ use Core\Model\Product;
 use Core\Model\Recycler;
 use Core\Model\RecyclerProduct;
 use Core\Model\RecyclerProductTable;
+use Core\Model\TdmProduct;
 use Core\Model\TmpProduct;
 use SimpleExcel\SimpleExcel;
 use Zend\Debug\Debug;
@@ -251,7 +252,7 @@ class RecyclerController extends AbstractActionController
     protected function delete($id,$table)
     {
         $messages = $this->getMessages();
-        if($table->deleteEntry($id)){
+        if($table->clearRecycler($id)){
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
@@ -365,14 +366,14 @@ class RecyclerController extends AbstractActionController
                     if($i>0){
                         $rowParse = array();
                         $rowParse['recycler_id'] = $recycler_id;
-                        $rowParse['brand'] = $row[0];
+                        $rowParse['brand_id'] = $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0]));
                         $rowParse['model'] = $row[1];
-                        $rowParse['type_id'] = $viewhelperManager->get('Type')->getTypeIdByName($row[2]);
-                        $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById($row[3]);
+                        $rowParse['type_id'] = $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2]));
+                        $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById(trim($row[3]));
                         $rowParse['price'] = $row[4];
                         $rowParse['currency'] = $row[5];
                         $rowParse['name'] = $row[6];
-                        $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName($row[7]);
+                        $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7]));
                         $tmpProduct->exchangeArray($rowParse);
                         $tmpProductTable->save($tmpProduct);
                     }
@@ -406,7 +407,7 @@ class RecyclerController extends AbstractActionController
         if(!empty($tmpProductEntry)){
             $tmpEntryParse = (array) $tmpProductEntry;
 
-            $product = new Product();
+            $product = new TdmProduct();
             $product->exchangeArray($tmpEntryParse);
             if($productTable->save($product)){
                 $product_id = $productTable->getLastInsertValue();

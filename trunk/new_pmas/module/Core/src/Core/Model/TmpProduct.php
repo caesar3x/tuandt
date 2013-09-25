@@ -13,7 +13,7 @@ class TmpProduct
     public $name;
     public $condition_id;
     public $currency;
-    public $brand;
+    public $brand_id;
     public $model;
     public $type_id;
     public $recycler_id;
@@ -27,7 +27,7 @@ class TmpProduct
         $this->name     = (isset($data['name'])) ? $data['name'] : null;
         $this->condition_id     = (isset($data['condition_id'])) ? $data['condition_id'] : 0;
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : null;
-        $this->brand     = (isset($data['brand'])) ? $data['brand'] : null;
+        $this->brand_id     = (isset($data['brand_id'])) ? $data['brand_id'] : null;
         $this->model     = (isset($data['model'])) ? $data['model'] : null;
         $this->type_id     = (isset($data['type_id'])) ? $data['type_id'] : 0;
     }

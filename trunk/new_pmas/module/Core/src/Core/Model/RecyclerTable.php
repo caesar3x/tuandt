@@ -47,6 +47,23 @@ class RecyclerTable extends AbstractModel
     }
 
     /**
+     * @param $id
+     * @return bool
+     */
+    public function clearRecycler($id)
+    {
+        if($this->deleteEntry($id)){
+            $success = true;
+            $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+            if($recyclerProductTable->checkHasRowHasRecyclerId($id)){
+                $success = $success && $recyclerProductTable->deleteByRecyclerId($id);
+            }
+            return $success;
+        }else{
+            return false;
+        }
+    }
+    /**
      * Delete by country id
      * @param $country_id
      * @return int

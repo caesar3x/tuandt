@@ -29,4 +29,20 @@ class ProductBrand extends AbstractHelper
     {
         return $this->__invoke($id);
     }
+
+    /**
+     * @param $name
+     * @return null
+     */
+    public function getBrandIdByName($name)
+    {
+        if(!$name){
+            return null;
+        }
+        $brandTable = $this->serviceLocator->get('BrandTable');
+        $entry = $brandTable->getEntryByName($name);
+        if(!empty($entry)){
+            return $entry->brand_id;
+        }
+    }
 }
