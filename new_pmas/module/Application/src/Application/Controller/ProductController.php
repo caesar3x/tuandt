@@ -403,7 +403,7 @@ class ProductController extends AbstractActionController
             $this->productTable = $sm->get('TdmProductTable');
         }
         $rowset = $this->productTable->getProductsFilter($ids);
-        $header = array('Product ID','Brand','Model','Type','Country','Price','Currency','Name','Condition');
+        $header = array('Product ID','Brand','Model','Product type','Country','Price','Currency','Name','Condition');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){

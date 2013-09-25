@@ -19,6 +19,16 @@ class BrandTable extends AbstractModel
         }
         return $row;
     }
+    public function getEntryByName($name)
+    {
+        $name  = (string) $name;
+        $rowset = $this->tableGateway->select(array('name' => $name));
+        $row = $rowset->current();
+        if (!$row) {
+            return null;
+        }
+        return $row;
+    }
     public function save(Brand $entry)
     {
         $data = (array) $entry;
