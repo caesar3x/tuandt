@@ -7,13 +7,18 @@
             <div class="row">
                 <div class="col-md-8">
                     <h4><?php echo $this->translate('Last exchange rate')?></h4>
+
                     <table class="table table-striped table-condensed table-bordered">
                         <tbody>
-                        <tr><td>Currency 1</td></tr>
-                        <tr><td>Currency 2</td></tr>
-                        <tr><td>Currency 3</td></tr>
-                        <tr><td>Currency 5</td></tr>
-                        <tr><td>Currency 4</td></tr>
+                        <?php $lastExchange = $this->admin()->getLastExchange();?>
+                        <?php if(!empty($lastExchange)):?>
+                        <?php foreach($lastExchange as $row):?>
+                            <tr>
+                                <td><?php echo $row->currency?></td>
+                                <td><?php echo $row->exchange_rate?></td>
+                            </tr>
+                        <?php endforeach;?>
+                        <?php endif;?>
                         </tbody>
                     </table>
                 </div>
@@ -21,44 +26,24 @@
             <div class="row">
                 <div class="table-bordered">
                     <div class="col-md-12">
-                        <h4><?php echo $this->translate('New added product');?></h4>
-                        <table class="table table-striped table-condensed table-bordered">
+                        <h4><?php echo $this->translate('New added TDM\'s product');?></h4>
+                        <table class="table table-striped table-condensed table-bordered" id="last-tdm">
                             <thead>
-                            <th>Type</th>
-                            <th>Brand</th>
                             <th>Name</th>
+                            <th>Brand</th>
+                            <th>Type</th>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                                <td>Data 1</td>
-                            </tr>
+                            <?php $lastTdmProducts = $this->admin()->getLastTdmProducts();?>
+                            <?php if(!empty($lastTdmProducts)):?>
+                                <?php foreach($lastTdmProducts as $product):?>
+                                    <tr onclick="window.location.assign('/product/detail/id/<?php echo $product->product_id?>')">
+                                        <td><?php echo $product->name;?></td>
+                                        <td><?php echo $this->productBrand($product->brand_id)?></td>
+                                        <td><?php echo $this->productType($product->type_id)?></td>
+                                    </tr>
+                                <?php endforeach;?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -69,36 +54,21 @@
                 <div class="table-bordered">
                     <div class="col-md-12">
                         <h4><?php echo $this->translate('New added recycler information');?></h4>
-                        <table class="table table-striped table-condensed table-bordered">
+                        <table class="table table-striped table-condensed table-bordered" id="last-recycler">
                             <thead>
                             <th>Country</th>
                             <th>Recycler</th>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>12</td>
-                            </tr>
+                            <?php $lastRecyclers = $this->admin()->getLastRecyclers();?>
+                            <?php if(!empty($lastRecyclers)):?>
+                            <?php foreach($lastRecyclers as $recycler):?>
+                                <tr onclick="window.location.assign('/recycler/detail/id/<?php echo $recycler->recycler_id?>')">
+                                    <td><?php echo $this->country($recycler->country_id)?></td>
+                                    <td><?php echo $recycler->name;?></td>
+                                </tr>
+                            <?php endforeach;?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -116,8 +86,9 @@
                     Right now
                     <br/>
                     <ul>
-                        <li>10 recyclers </li>
-                        <li>10 products model</li>
+                        <li><?php echo $this->admin()->getTotalRecycler()?> recyclers </li>
+                        <li><?php echo $this->admin()->getTotalTdmProduct()?> TDM's products</li>
+                        <li><?php echo $this->admin()->getTotalRecyclerProduct()?> Recycler's products</li>
                     </ul>
                 </div>
             </div>

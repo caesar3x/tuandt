@@ -49,6 +49,9 @@ class AbstractModel
         return $this->tableGateway->getLastInsertValue();
     }
 
+    /**
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
     public function getAvaiableRows()
     {
         $rowset = $this->tableGateway->select(array('deleted' => 0));
@@ -56,5 +59,13 @@ class AbstractModel
             return null;
         }
         return $rowset;
+    }
+    /**
+     * @return int
+     */
+    public function getTotalRows()
+    {
+        $availableRows = $this->getAvaiableRows();
+        return $availableRows->count();
     }
 }

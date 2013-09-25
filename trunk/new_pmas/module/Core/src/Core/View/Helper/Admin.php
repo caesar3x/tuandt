@@ -10,15 +10,6 @@ class Admin extends AbstractHelper
 {
     protected $serviceLocator;
 
-    public function __invoke()
-    {
-        $adminTable = $this->getServiceLocator()->get('AdminUserTable');
-        $admins = $adminTable->fetchAll();
-        foreach($admins as $item){
-            echo $item->username.'<br/>';
-        }
-        die('=========');
-    }
     public function setServiceLocator(ServiceManager $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
@@ -26,5 +17,59 @@ class Admin extends AbstractHelper
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastExchange()
+    {
+        $exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
+        return $exchangeTable->getLastExchange();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastTdmProducts()
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        return $tdmProductTable->getLastProducts();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastRecyclers()
+    {
+        $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        return $recyclerTable->getLastRecyclers();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalRecycler()
+    {
+        $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        return $recyclerTable->getTotalRows();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalTdmProduct()
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        return $tdmProductTable->getTotalRows();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalRecyclerProduct()
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $recyclerProductTable->getTotalRows();
     }
 }

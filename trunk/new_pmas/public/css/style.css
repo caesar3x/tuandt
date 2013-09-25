@@ -58,3 +58,5 @@ form .alert{max-width: 800px;margin: 0 auto;}
 .alert ul li{list-style: none;}
 #upload-form .control-label{text-align: right;}
 #show-msg{float: left;margin-bottom: 30px;width: 100%;}
+#last-tdm tr,#last-recycler tr{cursor: pointer;}
+#last-tdm tr:hover,#last-recycler tr:hover{text-decoration: underline;color: #4685DF;}

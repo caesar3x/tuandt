@@ -5,6 +5,7 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Select;
 use Zend\Debug\Debug;
 
 class TdmProductTable extends AbstractModel
@@ -146,5 +147,16 @@ class TdmProductTable extends AbstractModel
             return null;
         }
         return $row;
+    }
+    public function getLastProducts()
+    {
+        $rowset = $this->tableGateway->select(function (Select $select){
+            $select->where('deleted = 0');
+            $select->order('product_id DESC')->limit(10);
+        });
+        if($rowset->count() <= 0){
+            return null;
+        }
+        return $rowset;
     }
 }
