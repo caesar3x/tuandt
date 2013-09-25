@@ -34,13 +34,13 @@
             </a>
             <div class="btn-group">
                 <select class="form-control" id="export-format" name="export_format">
-                    <option><?php echo $this->translate('Select format')?></option>
+                    <option value="none"><?php echo $this->translate('Select format')?></option>
                     <option value="csv"><?php echo $this->translate('CSV')?></option>
                     <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
                     <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
                 </select>
             </div>
-            <a class="btn btn-warning btn-sm" onclick="exportAllModels()">
+            <a class="btn btn-warning btn-sm" onclick="exportProducts()">
                 <i class="glyphicon glyphicon-export"></i>
                 <?php echo $this->translate('Export')?>
             </a>

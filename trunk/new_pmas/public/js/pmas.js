@@ -273,9 +273,13 @@ function confirmDelete(url)
     });
 }
 
-function exportAllModels()
+function exportProducts()
 {
     var format = $("#export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
     var ids = new Array();
     $(".check-item").each(function(){
         if($(this).is(":checked")){
@@ -285,13 +289,17 @@ function exportAllModels()
     var params = new Object();
     params.id = ids;
     var urlParams = $.param(params);
-    var url = '/model/export/format/'+format+'?'+urlParams;
+    var url = '/product/export/format/'+format+'?'+urlParams;
     window.location.assign(url);
     return true;
 }
 function exportRecyclers()
 {
     var format = $("#export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
     var ids = new Array();
     $(".check-item").each(function(){
         if($(this).is(":checked")){

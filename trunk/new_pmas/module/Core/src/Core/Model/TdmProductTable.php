@@ -110,4 +110,21 @@ class TdmProductTable extends AbstractModel
         }
         return true;
     }
+
+    /**
+     * @param $ids
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getProductsFilter($ids)
+    {
+        if(empty($ids)){
+            $rowset = $this->tableGateway->select(array('deleted' => 0));
+        }else{
+            $rowset = $this->tableGateway->select(array('deleted' => 0,'product_id' => $ids));
+        }
+        if ($rowset->count() <= 0) {
+            return null;
+        }
+        return $rowset;
+    }
 }

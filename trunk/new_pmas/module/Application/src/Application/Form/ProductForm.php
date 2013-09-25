@@ -40,11 +40,12 @@ class ProductForm extends Form
             'id' => 'model',
             'class' => 'form-control'
         ));
-        $brand = new Text('brand');
+        $brand = new Select('brand_id');
         $brand->setAttributes(array(
-            'id' => 'brand',
+            'id' => 'brand_id',
             'class' => 'form-control'
         ));
+        $brand->setValueOptions($this->getBrands());
         $country_id = new Select('country_id');
         $country_id->setAttributes(array(
             'id' => 'country_id',
@@ -91,6 +92,22 @@ class ProductForm extends Form
             ->add($currency)
             ->add($csrf)
             ;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getBrands()
+    {
+        $brandTable = $this->serviceLocator->get('BrandTable');
+        $availableBrands = $brandTable->getAvaiableRows();
+        $data = array(0 => 'Select Brand');
+        if(!empty($availableBrands)){
+            foreach($availableBrands as $row){
+                $data[$row->brand_id] = $row->name;
+            }
+        }
+        return $data;
     }
     protected function getCountries()
     {
