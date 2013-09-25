@@ -313,6 +313,26 @@ function exportRecyclers()
     window.location.assign(url);
     return true;
 }
+function exportEchange()
+{
+    var format = $("#export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
+    var ids = new Array();
+    $(".check-item").each(function(){
+        if($(this).is(":checked")){
+            ids.push($(this).val());
+        }
+    });
+    var params = new Object();
+    params.id = ids;
+    var urlParams = $.param(params);
+    var url = '/exchange/export/format/'+format+'?'+urlParams;
+    window.location.assign(url);
+    return true;
+}
 function importRecyclerModels()
 {
     $.colorbox.close();
