@@ -77,7 +77,7 @@ class ProductTypeTable extends AbstractModel
     {
         if($this->deleteEntry($id)){
             $success = true;
-            $productTable = $this->serviceLocator->get('ProductTable');
+            $productTable = $this->serviceLocator->get('TdmProductTable');
             if($productTable->checkHasRowHasTypeId($id)){
                 $success = $success && $productTable->productTypeDeleted($id);
             }
