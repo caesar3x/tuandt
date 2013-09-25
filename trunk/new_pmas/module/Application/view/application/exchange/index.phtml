@@ -37,10 +37,14 @@
                 <br/>
                 <span>Select currency:</span>
                 <div class="clearfix">&nbsp;</div>
-                <div>
-                    <select class="form-control" style="width: 90px;">
-                        <option>USD</option>
-                        <option>HKD</option>
+                <div class="form-group">
+                    <select class="form-control" style="width: 50%;">
+                        <?php $currencies = $this->exchange()->getAvailableCurrencies();?>
+                        <?php if(!empty($currencies)): ?>
+                        <?php foreach($currencies as $key=>$currency):?>
+                            <option value="<?php echo $key?>"><?php echo $currency?></option>
+                        <?php endforeach;?>
+                        <?php endif;?>
                     </select>
                 </div>
                 <div class="clearfix">&nbsp;</div>
@@ -75,15 +79,14 @@
                                 Export to
                             </a>
                             <div class="btn-group">
-                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Data format <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a>CSV</a></li>
-                                    <li><a>Excel</a></li>
-                                </ul>
+                                <select class="form-control" id="export-format" name="export_format">
+                                    <option value="none"><?php echo $this->translate('Select format')?></option>
+                                    <option value="csv"><?php echo $this->translate('CSV')?></option>
+                                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+                                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                </select>
                             </div>
-                            <a class="btn btn-warning btn-sm">
+                            <a class="btn btn-warning btn-sm" onclick="exportEchange()">
                                 <i class="glyphicon glyphicon-export"></i>
                                 Export
                             </a>
@@ -94,8 +97,8 @@
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                                 <th><?php echo $this->translate('Date')?></th>
-                                <th><?php echo $this->translate('Price')?></th>
-                                <th><?php echo $this->translate('Price in HKD')?></th>
+                                <th><?php echo $this->translate('Currency')?></th>
+                                <th><?php echo $this->translate('Exchange Rate')?></th>
                             </tr>
                             </thead>
                             <tbody>

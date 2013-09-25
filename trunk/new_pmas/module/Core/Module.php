@@ -329,6 +329,12 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'exchange' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\Exchange();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
             ),
         );
     }

@@ -43,4 +43,20 @@ class ExchangeTable extends AbstractModel
         }
         return $rowset;
     }
+
+    /**
+     * @return array|null
+     */
+    public function getAvailableCurrencies()
+    {
+        $rowset = $this->tableGateway->select();
+        if($rowset->count() <= 0){
+            return null;
+        }
+        $data = array();
+        foreach($rowset as $row){
+            $data[$row->currency] = $row->currency;
+        }
+        return $data;
+    }
 }
