@@ -7,6 +7,9 @@ namespace Application\Controller;
 
 use Application\Form\CountryForm;
 use Application\Form\UpdateRateForm;
+use BasicExcel\Writer\Csv;
+use BasicExcel\Writer\Xls;
+use BasicExcel\Writer\Xlsx;
 use Core\Model\Country;
 use Core\Model\Exchange;
 use Zend\Debug\Debug;
@@ -79,7 +82,7 @@ class ExchangeController extends AbstractActionController
                     $dataFinal['time'] = time();
                 }else{
                     if (version_compare(phpversion(), '5.3.0', '<')===true) {
-                        $time = \DateTime::createFromFormat('d-m-Y',$post['time']);
+                        $time = \DateTime::createFromFormat('d-m-Y H:i:s',$post['time'].' 00:00:00');
                         $dataFinal['time'] = $time->getTimestamp();
                     }else{
                         $dataFinal['time'] = strtotime($post['time']);
@@ -243,8 +246,30 @@ class ExchangeController extends AbstractActionController
     }
     public function loadTableAction()
     {
+        $this->auth();
+        $messages = $this->getMessages();
         $this->layout('layout/empty');
+        $currency = $this->params('currency',null);
+        $startTime = (string) $this->params('start',null);
+        $endTime = (string) $this->params('end',null);
+        if($currency == null){
+            die($messages['NO_DATA']);
+        }
+        $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
+        $rowset = $exchangeTable->getRowsetByCurrency($currency);
+        if($startTime != null){
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
+        }
+        if($endTime != null){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+        }
         $view = new ViewModel();
+        $view->setVariable('rowset',$rowset);
+        $view->setVariable('currency',$currency);
+        $view->setVariable('start',$startTime);
+        $view->setVariable('end',$endTime);
         return $view;
     }
     public function loadChartAction()
@@ -252,5 +277,57 @@ class ExchangeController extends AbstractActionController
         $this->layout('layout/empty');
         $view = new ViewModel();
         return $view;
+    }
+    public function exportAction()
+    {
+        $this->auth();
+        $format = $this->params('format',null);
+        $currency = $this->params('currency',null);
+        $startTime = (string) $this->params('start',null);
+        $endTime = (string) $this->params('end',null);
+        if($format == null){
+            return true;
+        }
+        $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
+        $header = array('Date','Currency','Exchange Rate');
+        $data = array($header);
+        $rowset = $exchangeTable->getRowsetByCurrency($currency);
+        if($startTime != null){
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
+        }
+        if($endTime != null){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+        }
+        if(!empty($rowset)){
+            foreach($rowset as $row){
+                $rowParse = array();
+                $rowParse[] = date('d-m-Y',$row->time);
+                $rowParse[] = $row->currency;
+                $rowParse[] = $row->exchange_rate;
+                $data[] = $rowParse;
+            }
+        }
+        if(!empty($data)){
+            $filename = 'exchange_rate_export_'.date('Y_m_d');
+            if($format == 'csv'){
+                $excel = new Csv();
+                $excel->fromArray($data);
+                $excel->download($filename.'.csv');
+            }elseif($format == 'xlsx'){
+                $parseExcelData = array($data);
+                $excel = new Xlsx();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xlsx');
+            }elseif($format == 'xls'){
+                $parseExcelData = array($data);
+                $excel = new Xls();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xls');
+            }
+        }
+        exit();
+        die;
     }
 }

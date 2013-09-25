@@ -321,23 +321,14 @@ function exportRecyclers()
     window.location.assign(url);
     return true;
 }
-function exportEchange()
+function exportExchange(currency,startTime,endTime)
 {
     var format = $("#export-format").val();
     if(format == 'none'){
         bootbox.alert("You must select format data");
         return false;
     }
-    var ids = new Array();
-    $(".check-item").each(function(){
-        if($(this).is(":checked")){
-            ids.push($(this).val());
-        }
-    });
-    var params = new Object();
-    params.id = ids;
-    var urlParams = $.param(params);
-    var url = '/exchange/export/format/'+format+'?'+urlParams;
+    var url = '/exchange/export/format/'+format+'/currency/'+currency+'/start/'+startTime+'/end/'+endTime;
     window.location.assign(url);
     return true;
 }
@@ -361,17 +352,10 @@ function loadExchangeData()
         return true;
     }
     $("#table-view").html('<div class="form-group" style="text-align: center;"><img src="/images/loading.gif" width="48px" style="width: 48px;"></div>');
-    var urlTableLoad = '/exchange/load-table/?';
-    var urlChartLoad = '/exchange/load-chart/?';
     var startTime = $("#start-time").val();
     var endTime = $("#end-time").val();
-    var params = new Object();
-    params.currency = currency;
-    params.start = startTime;
-    params.end = endTime;
-    var str = $.param(params);
-    urlTableLoad = urlTableLoad + str;
-    urlChartLoad = urlChartLoad + str;
+    var urlTableLoad = '/exchange/load-table/currency/'+currency+'/'+ 'start/'+startTime+'/end/'+endTime;
+    var urlChartLoad = '/exchange/load-chart/currency/'+currency+'/'+ 'start/'+startTime+'/end/'+endTime;
     $.get( urlTableLoad, function( data ) {
         $("#table-view").html(data);
     });
