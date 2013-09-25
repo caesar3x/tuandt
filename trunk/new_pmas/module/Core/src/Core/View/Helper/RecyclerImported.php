@@ -10,8 +10,14 @@ use Zend\ServiceManager\ServiceManager;
 
 class RecyclerImported extends AbstractHelper
 {
+    /**
+     * @var $serviceLocator
+     */
     protected $serviceLocator;
 
+    /**
+     * @param ServiceManager $serviceLocator
+     */
     public function setServiceLocator(ServiceManager $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
