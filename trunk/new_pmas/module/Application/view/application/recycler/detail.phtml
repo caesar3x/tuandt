@@ -140,6 +140,28 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                             </tr>
                             </thead>
                             <tbody>
+                            <?php if(!empty($this->products)):?>
+                            <?php foreach($this->products as $product):?>
+                                <tr>
+                                    <td class="col-checkbox"><input checked value="<?php echo $product->product_id?>" type="checkbox" disabled></td>
+                                    <td><?php echo $product->name?></td>
+                                    <td><?php echo $product->price?></td>
+                                    <td><?php echo $product->currency?></td>
+                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model);?>
+                                    <?php if(!empty($tdmProduct)):?>
+                                        <td><?php echo $tdmProduct->name?></td>
+                                        <td><?php echo $tdmProduct->price?></td>
+                                        <td><?php echo $tdmProduct->currency?></td>
+                                    <?php else:?>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                    <?php endif;?>
+                                    <td class="col-save">
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                            <?php endif;?>
                             <?php if(!empty($this->tmpProducts)):?>
                             <?php $i =1;?>
                             <?php foreach($this->tmpProducts as $row):?>

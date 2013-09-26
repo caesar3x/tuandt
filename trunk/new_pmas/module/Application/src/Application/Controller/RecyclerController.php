@@ -199,8 +199,15 @@ class RecyclerController extends AbstractActionController
             $entryArray = (array) $entry;
             $form->setData($entryArray);
             $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
+            $upload = $this->params('upload');
+            if(!$upload){
+                $tmpProductTable->deleteByRecyclerId($id);
+            }
             $tmpProducts = $tmpProductTable->getRowsByRecyclerId($id);
+            $reyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+            $productsInRecycler = $reyclerProductTable->getProductsByRecycler($id);
             $view->setVariable('tmpProducts',$tmpProducts);
+            $view->setVariable('products',$productsInRecycler);
         }
         $view->setVariable('form',$form);
         return $view;
@@ -385,7 +392,7 @@ class RecyclerController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                 return $this->redirect()->toUrl('/recycler');
             }
-            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
+            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id.'/upload/sucess');
         }else{
             return $this->redirect()->toUrl('/recycler');
         }
