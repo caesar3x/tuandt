@@ -113,6 +113,11 @@ class RecyclerProductTable extends AbstractModel
         }
         return true;
     }
+
+    /**
+     * @param null $recycler_id
+     * @return array|null
+     */
     public function getAllTempIdsProduct($recycler_id = null)
     {
         if($recycler_id == null){
@@ -130,5 +135,21 @@ class RecyclerProductTable extends AbstractModel
             }
         }
         return $data;
+    }
+
+    /**
+     * @param $recycler_id
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getProductsByRecycler($recycler_id)
+    {
+        if($recycler_id == null){
+            return $recycler_id;
+        }
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $recycler_id));
+        if($rowset->count() <= 0){
+            return null;
+        }
+        return $rowset;
     }
 }
