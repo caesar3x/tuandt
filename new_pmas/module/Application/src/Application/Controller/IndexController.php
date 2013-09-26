@@ -11,7 +11,10 @@ namespace Application\Controller;
 
 use BasicExcel\Reader\Csv;
 use BasicExcel\Writer\Xlsx;
+use Core\Model\CacheSerializer;
 use Core\Model\SimpleXLSX;
+use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\Plugin\Serializer;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Router\Console\Simple;
