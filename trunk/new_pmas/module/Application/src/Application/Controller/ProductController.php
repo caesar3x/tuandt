@@ -466,6 +466,11 @@ class ProductController extends AbstractActionController
             $form->setData($entryParse);
         }
         $view->setVariable('id',$id);
+        $do = $this->params('do',null);
+        $view->setVariable('do',$do);
+        if($do != 'add' && $do != null){
+            $this->redirect()->toUrl('/product/type');
+        }
         if($request->isPost()){
             $post = $request->getPost()->toArray();
             $form->setData($post);
@@ -511,7 +516,12 @@ class ProductController extends AbstractActionController
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
                     }
                 }
-                return $this->redirect()->toUrl('/product/type');
+                if($id != 0){
+                    return $this->redirect()->toUrl('/product/type/id/'.$id);
+                }else{
+
+                    return $this->redirect()->toUrl('/product/type/id/'.$productTypeTable->getLastInsertValue());
+                }
             }
         }
         return $view;

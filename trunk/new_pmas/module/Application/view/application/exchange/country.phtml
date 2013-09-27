@@ -50,94 +50,99 @@
         </div>
     </div>
 <?php else:?>
-    <div class="page-header">
-        <div class="pull-left">
-            <h3><?php echo $this->translate('Manage Countries')?></h3>
+    <?php if($this->do == null):?>
+        <div class="page-header">
+            <div class="pull-left">
+                <h3><?php echo $this->translate('Manage Countries')?></h3>
+            </div>
+            <div class="clearfix">&nbsp;</div>
         </div>
-        <div class="clearfix">&nbsp;</div>
-    </div>
-    <div class="row">
-        <form id="countries" action="/exchange/delete-country" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <form id="countries" action="/exchange/delete-country" method="post" enctype="multipart/form-data">
+                <div class="pull-right">
+                    <a onclick="formConfirm('countries');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <?php echo $this->translate('Delete Selected')?>
+                    </a>
+                    <a class="btn btn-sm btn-success" style="margin-bottom: 15px;" href="/exchange/country/do/add"><i class="glyphicon glyphicon-plus"></i><?php echo $this->translate('Add Country')?> </a>
+                </div>
+                <div class="row clearfix">&nbsp;</div>
+                <table class="display table table-striped table-condensed table-bordered example" id="country-list" cellpadding="0" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                        <th><?php echo $this->translate('ID')?></th>
+                        <th><?php echo $this->translate('Name')?></th>
+                        <th><?php echo $this->translate('Currency')?></th>
+                        <th class="action"><?php echo $this->translate('Action')?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if(!empty($this->countries)):?>
+                        <?php foreach($this->countries as $row):?>
+                            <tr>
+                                <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->country_id?>"></td>
+                                <td><?php echo $row->country_id?></td>
+                                <td><?php echo $row->name?></td>
+                                <td><?php echo $row->currency?></td>
+                                <td class="action">
+                                    <a class="btn btn-xs btn-warning btn-edit" href="/exchange/country/id/<?php echo $row->country_id?>">
+                                        <i class="glyphicon glyphicon-edit"></i>
+                                        <?php echo $this->translate('Edit')?>
+                                    </a>
+                                    <a onclick="confirmDelete('/exchange/delete-country/id/<?php echo $row->country_id?>')" class="btn btn-xs btn-danger btn-delete">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                        <?php echo $this->translate('Delete')?>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    <?php elseif($this->do == 'add'):?>
+        <div class="page-header">
+            <div class="pull-left">
+                <h3><?php echo $this->translate('Add Country')?></h3>
+            </div>
             <div class="pull-right">
-                <a onclick="formConfirm('countries');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete Selected')?>
-                </a>
+                <a class="btn btn-sm btn-default add-item" href="/exchange/country"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
             </div>
-            <div class="row clearfix">&nbsp;</div>
-            <table class="display table table-striped table-condensed table-bordered example" id="country-list" cellpadding="0" cellspacing="0">
-                <thead>
-                <tr>
-                    <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                    <th><?php echo $this->translate('ID')?></th>
-                    <th><?php echo $this->translate('Name')?></th>
-                    <th><?php echo $this->translate('Currency')?></th>
-                    <th class="action"><?php echo $this->translate('Action')?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if(!empty($this->countries)):?>
-                    <?php foreach($this->countries as $row):?>
-                        <tr>
-                            <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->country_id?>"></td>
-                            <td><?php echo $row->country_id?></td>
-                            <td><?php echo $row->name?></td>
-                            <td><?php echo $row->currency?></td>
-                            <td class="action">
-                                <a class="btn btn-xs btn-warning btn-edit" href="/exchange/country/id/<?php echo $row->country_id?>">
-                                    <i class="glyphicon glyphicon-edit"></i>
-                                    <?php echo $this->translate('Edit')?>
-                                </a>
-                                <a onclick="confirmDelete('/exchange/delete-country/id/<?php echo $row->country_id?>')" class="btn btn-xs btn-danger btn-delete">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                    <?php echo $this->translate('Delete')?>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-                <?php endif;?>
-                </tbody>
-            </table>
-        </form>
-    </div>
-
-    <div class="row" style="margin-top: 30px;">
-        <div class="container" style="width: 50%;">
-            <?php echo $this->form()->openTag($form);?>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Add Country</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            <div class="control-label"><span>Country Name</span></div>
-                        </div>
-                        <div class="col-md-9">
-                            <?php echo $this->formRow($form->get('country_name'));?>
-                            <?php echo $this->formRow($form->get('country_id'));?>
-                            <?php echo $this->formRow($form->get('csrf'));?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            <div class="control-label"><span>Currency</span></div>
-                        </div>
-                        <div class="col-md-9"><?php echo $this->formRow($form->get('currency'));?></div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-9">
-                            <button class="btn btn-sm btn-success">
-                                <i class="glyphicon glyphicon-send"></i>
-                                Submit
-                            </button>
-                            <a class="btn btn-sm btn-default" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php echo $this->form()->closeTag();?>
+            <div class="clearfix">&nbsp;</div>
         </div>
-    </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="container" style="width: 50%;">
+                <?php echo $this->form()->openTag($form);?>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add Country</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Country Name</span></div>
+                            </div>
+                            <div class="col-md-9">
+                                <?php echo $this->formRow($form->get('country_name'));?>
+                                <?php echo $this->formRow($form->get('country_id'));?>
+                                <?php echo $this->formRow($form->get('csrf'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Currency</span></div>
+                            </div>
+                            <div class="col-md-9"><?php echo $this->formRow($form->get('currency'));?></div>
+                        </div>
+                    </div>
+                </div>
+                <?php echo $this->form()->closeTag();?>
+            </div>
+        </div>
+    <?php endif;?>
+
 <?php endif;?>
