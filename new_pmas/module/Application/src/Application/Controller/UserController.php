@@ -147,9 +147,11 @@ class UserController extends AbstractActionController
                 }
                 if($this->save($data)){
                     if($continue == 'yes'){
-                        $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/user/detail/id/'.$id);
+                        /*$view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
                         $view->setVariable('form',$form);
-                        return $view;
+                        return $view;*/
                     }else{
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                         return $this->redirect()->toUrl('/user');
@@ -200,9 +202,7 @@ class UserController extends AbstractActionController
                 $data['password'] = $entry->password;
             }
             $adminUser->exchangeArray($data);
-            if(array_diff((array)$adminUser,(array)$entry) != null){
-                $success = $success && $this->adminTable->save($adminUser);
-            }
+            $success = $success && $this->adminTable->save($adminUser);
         }else{
             if($this->adminTable->save($adminUser)){
                 $success = $success && true;
