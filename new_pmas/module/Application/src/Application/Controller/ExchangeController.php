@@ -136,6 +136,11 @@ class ExchangeController extends AbstractActionController
             $form->setData($entryParse);
         }
         $view->setVariable('id',$id);
+        $do = $this->params('do',null);
+        $view->setVariable('do',$do);
+        if($do != 'add' && $do != null){
+            $this->redirect()->toUrl('/exchange/country');
+        }
         if($request->isPost()){
             $post = $request->getPost()->toArray();
             $form->setData($post);
@@ -189,7 +194,8 @@ class ExchangeController extends AbstractActionController
                 if($id != 0){
                     return $this->redirect()->toUrl('/exchange/country/id/'.$id);
                 }else{
-                    return $this->redirect()->toUrl('/exchange/country');
+
+                    return $this->redirect()->toUrl('/exchange/country/id/'.$countryTable->getLastInsertValue());
                 }
             }
         }

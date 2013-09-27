@@ -76,6 +76,7 @@ return array(
             'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\Resource' => 'Application\Controller\ResourceController',
             'Application\Controller\Condition' => 'Application\Controller\ConditionController',
+            'Application\Controller\Country' => 'Application\Controller\CountryController',
         ),
     ),
     'view_manager' => array(
