@@ -53,7 +53,7 @@ echo $productExchangePrice;
                                         <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
                                     </select>
                                 </div>
-                                <a class="btn btn-warning btn-sm">
+                                <a class="btn btn-warning btn-sm" onclick="exportPriceCompare('<?php echo $product->product_id?>');">
                                     <i class="glyphicon glyphicon-export"></i>
                                     <?php echo $this->translate('Export')?>
                                 </a>
@@ -178,8 +178,8 @@ echo $productExchangePrice;
                                     <?php echo $this->translate('')?>Data format <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a><?php echo $this->translate('')?>CSV</a></li>
-                                    <li><a><?php echo $this->translate('')?>Excel</a></li>
+                                    <li><a><?php echo $this->translate('CSV')?></a></li>
+                                    <li><a><?php echo $this->translate('Excel')?></a></li>
                                 </ul>
                             </div>
                             <a class="btn btn-warning btn-sm">
@@ -195,7 +195,7 @@ echo $productExchangePrice;
                                         <table class="display table table-striped table-condensed table-bordered example" id="example2" cellpadding="0" cellspacing="0">
                                             <thead>
                                             <tr>
-                                                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                                                <th class="col-checkbox"><input class="checkall" value="" type="checkbox"></th>
                                                 <th><?php echo $this->translate('Date')?></th>
                                                 <th><?php echo $this->translate('Price')?></th>
                                                 <th><?php echo $this->translate('Price in HKD')?></th>
@@ -203,31 +203,7 @@ echo $productExchangePrice;
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
+                                                <td class="col-checkbox"><input type="checkbox" class="checkitem" value="1"></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
