@@ -19,6 +19,7 @@ use Core\Model\Recycler;
 use Core\Model\RecyclerProduct;
 use Core\Model\RecyclerProductTable;
 use Core\Model\Referer;
+use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
 use Core\Model\TmpProduct;
 use SimpleExcel\SimpleExcel;
@@ -622,5 +623,64 @@ class RecyclerController extends AbstractActionController
             $form->setData($formData);
         }
         return $view;
+    }
+    public function exportRecyclerProductsAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $recycler_id = $this->params('id',0);
+        $format = $this->params('format');
+        if(!$format){
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['FORMAT_EXPORT_INVALID']);
+            return $this->redirect()->toUrl('/recycler/detail/id'.$recycler_id);
+        }
+        if($recycler_id == 0){
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            return $this->redirect()->toUrl('/recycler');
+        }
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
+        $priceHelper = $viewhelperManager->get('Price');
+        $recyclerHelper = $viewhelperManager->get('Recycler');
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        $recyclerProducts = $recyclerProductTable->getProductsByRecycler($recycler_id);
+        $header = array('Recycler ID','Brand','Model','Product type','Price','Currency','Name','Condition');
+        $data = array($header);
+        if(!empty($recyclerProducts)){
+            foreach($recyclerProducts as $row){
+                $rowParse = array();
+                $rowParse[] = $row->recycler_id;
+                $rowParse[] = $viewhelperManager->get('ProductBrand')->implement($row->brand_id);
+                $rowParse[] = $row->model;
+                $rowParse[] = $viewhelperManager->get('ProductType')->implement($row->type_id);
+                $rowParse[] = $priceHelper->format($row->price);
+                $rowParse[] = $row->currency;
+                $rowParse[] = $row->name;
+                $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
+                $data[] = $rowParse;
+            }
+        }
+        if(!empty($data)){
+            $parseRecyclerName = SlugFile::parseFilename($recyclerHelper->getName($recycler_id));
+            $filename = $parseRecyclerName.'_products_export_'.date('Y_m_d');
+            if($format == 'csv'){
+                $excel = new Csv();
+                $excel->fromArray($data);
+                $excel->download($filename.'.csv');
+            }elseif($format == 'xlsx'){
+                $parseExcelData = array($data);
+                $excel = new Xlsx();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xlsx');
+            }elseif($format == 'xls'){
+                $parseExcelData = array($data);
+                $excel = new Xls();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xls');
+            }
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
+        }
+        exit();
     }
 }

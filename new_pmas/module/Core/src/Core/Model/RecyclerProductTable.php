@@ -177,6 +177,11 @@ class RecyclerProductTable extends AbstractModel
         }
         return $rowset;
     }
+
+    /**
+     * @param $ids
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
     public function getAvailabeRecyclerProducts($ids)
     {
         if($ids == null){
