@@ -23,7 +23,7 @@ $(function() {
         }
     });
     /*$("#import-format").colorbox({inline:true, width:"60%"});*/
-    var trLeng = $(".example thead").find("tr:first th").length;
+
     var oTable = $('.example').dataTable( {
         "aoColumnDefs": [
             { "bSortable": false, "aTargets": [ 0 ] }
@@ -34,20 +34,23 @@ $(function() {
         },
         "sPaginationType": "full_numbers"
     } );
-    if(trLeng > 0){
-        var htmlAppend = '<tr class="tr-search">' +
-            '<th><input type="hidden"></th>';
-        for (var i = 1; i < trLeng; i++) {
-            htmlAppend = htmlAppend + '<th>' +
-                ' <div class="input-group-sm">' +
-                '<input type="text" class="form-control search_init" />' +
-                '</div>' +
-                '</th>';
+    $(".example").each(function(){
+        var thead = $(this).find('thead');
+        var trLeng = thead.find("tr:first > th").length;
+        if(trLeng > 0){
+            var htmlAppend = '<tr class="tr-search">' +
+                '<th><input type="hidden"></th>';
+            for (var i = 1; i < trLeng; i++) {
+                htmlAppend = htmlAppend + '<th>' +
+                    ' <div class="input-group-sm">' +
+                    '<input type="text" class="form-control search_init" />' +
+                    '</div>' +
+                    '</th>';
+            }
+            htmlAppend = htmlAppend + '</tr>';
+            thead.append(htmlAppend);
         }
-        htmlAppend = htmlAppend + '</tr>';
-        $('.example thead').append(htmlAppend);
-    }
-
+    });
     $(".tr-search input").keyup( function () {
         /* Filter on the column (the index) of this element */
         oTable.fnFilter( this.value, $(".tr-search input").index(this) );
