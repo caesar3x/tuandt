@@ -12,7 +12,7 @@ use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RecyclerProductForm extends Form
+class TmpProductForm extends Form
 {
     protected $serviceLocator;
 
@@ -20,13 +20,13 @@ class RecyclerProductForm extends Form
     {
         $this->serviceLocator = $serviceLocator;
     }
-    public function __construct(ServiceLocatorInterface $sm,$n = 'recycler-product')
+    public function __construct(ServiceLocatorInterface $sm,$n = 'tmp-product')
     {
         $this->serviceLocator = $sm;
         parent::__construct($n);
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
-        $id = new Hidden('product_id');
+        $id = new Hidden('id');
         $recycler = new Hidden('recycler_id');
         $continue = new Hidden('continue');
         $continue->setValue('no');
@@ -76,8 +76,8 @@ class RecyclerProductForm extends Form
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
         $this->add($id)
-            ->add($recycler)
             ->add($continue)
+            ->add($recycler)
             ->add($name)
             ->add($model)
             ->add($brand)

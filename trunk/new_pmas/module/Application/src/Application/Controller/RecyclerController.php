@@ -7,6 +7,7 @@ namespace Application\Controller;
 
 use Application\Form\RecyclerForm;
 use Application\Form\RecyclerProductForm;
+use Application\Form\TmpProductForm;
 use BasicExcel\Reader;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
@@ -490,7 +491,7 @@ class RecyclerController extends AbstractActionController
                 $data = $form->getData();
                 if(empty($data)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/product');
+                    return $this->redirect()->toUrl('/recycler/product');
                 }
                 if($this->saveRecyclerProduct($data)){
                     if($continue == 'yes'){
@@ -524,5 +525,102 @@ class RecyclerController extends AbstractActionController
         $recyclerProduct = new RecyclerProduct();
         $recyclerProduct->exchangeArray($dataFinal);
         return $recyclerProductTable->save($recyclerProduct);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    protected function saveTemp($data)
+    {
+        $sm = $this->getServiceLocator();
+        $tmpProductTable = $sm->get('TmpProductTable');
+        $dataFinal = $data;
+        $tmpProduct = new TmpProduct();
+        $tmpProduct->exchangeArray($dataFinal);
+        return $tmpProductTable->save($tmpProduct);
+    }
+    public function tempAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $sm = $this->getServiceLocator();
+        $view = new ViewModel();
+        $id = $this->params('id',0);
+        if($id == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $form = new TmpProductForm($this->getServiceLocator());
+        $view->setVariable('form',$form);
+        $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
+        $entry = $tmpProductTable->getEntry($id);
+        if(empty($entry)){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $view->setVariable('model',$entry->name);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['model'])){
+                $view->setVariable('msg',array('danger' => $messages['MODEL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['brand_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['type_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_TYPE_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!is_numeric($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/recycler/temp');
+                }
+                if($this->saveTemp($data)){
+                    if($continue == 'yes'){
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/recycler/temp/id/'.$id);
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/recycler/temp');
+                    }
+                }else{
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    return $this->redirect()->toUrl('/recycler/temp/id/'.$id);
+                }
+            }
+        }else{
+            $formData = (array) $entry;
+            $form->setData($formData);
+        }
+        return $view;
     }
 }
