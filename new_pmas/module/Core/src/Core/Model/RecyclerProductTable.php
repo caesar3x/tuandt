@@ -20,7 +20,17 @@ class RecyclerProductTable extends AbstractModel
     public function save(RecyclerProduct $entry)
     {
         $data = (array) $entry;
-        return $this->tableGateway->insert($data);
+        $id = $entry->product_id;
+        if($id == 0){
+            return $this->tableGateway->insert($data);
+        }else{
+            if($row = $this->getEntry($id)){
+                return $this->tableGateway->update($data, array('product_id' => $id));
+            }else{
+                throw new \Exception('Data does not exist.');
+            }
+        }
+
     }
 
     /**
