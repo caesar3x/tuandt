@@ -158,6 +158,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                         <td>N/A</td>
                                     <?php endif;?>
                                     <td class="col-save">
+                                        <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->translate('Edit')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>
@@ -185,6 +186,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                             <i class="glyphicon glyphicon-save"></i>
                                             <?php echo $this->translate('Save')?>
                                         </a>
+                                        <a class="btn btn-sm btn-default" href="/recycler/temp/id/<?php echo $row->id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->translate('Edit')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>

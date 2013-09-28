@@ -6,6 +6,7 @@
 namespace Application\Controller;
 
 use Application\Form\RecyclerForm;
+use Application\Form\RecyclerProductForm;
 use BasicExcel\Reader;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
@@ -16,6 +17,7 @@ use Core\Model\Product;
 use Core\Model\Recycler;
 use Core\Model\RecyclerProduct;
 use Core\Model\RecyclerProductTable;
+use Core\Model\Referer;
 use Core\Model\TdmProduct;
 use Core\Model\TmpProduct;
 use SimpleExcel\SimpleExcel;
@@ -374,14 +376,14 @@ class RecyclerController extends AbstractActionController
                     if($i>0){
                         $rowParse = array();
                         $rowParse['recycler_id'] = $recycler_id;
-                        $rowParse['brand_id'] = $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0]));
+                        $rowParse['brand_id'] = ($viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0])) != null) ? $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0])) : 0;
                         $rowParse['model'] = $row[1];
-                        $rowParse['type_id'] = $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2]));
-                        $rowParse['country_id'] = $viewhelperManager->get('Country')->getCountryNameById(trim($row[3]));
+                        $rowParse['type_id'] = ($viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2])) != null) ? $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2])) : 0;
+                        $rowParse['country_id'] = ($viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) != null) ? $viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) : 0;
                         $rowParse['price'] = $row[4];
                         $rowParse['currency'] = $row[5];
                         $rowParse['name'] = $row[6];
-                        $rowParse['condition_id'] = $viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7]));
+                        $rowParse['condition_id'] = ($viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7])) != null) ? $viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7])) : 0;
                         $tmpProduct->exchangeArray($rowParse);
                         $tmpProductTable->save($tmpProduct);
                     }
@@ -425,5 +427,102 @@ class RecyclerController extends AbstractActionController
             echo 'No data existed.';
         }
         die;
+    }
+    public function productAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $request = $this->getRequest();
+        $sm = $this->getServiceLocator();
+        $view = new ViewModel();
+        $id = $this->params('id',0);
+        if($id == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $form = new RecyclerProductForm($this->getServiceLocator());
+        $view->setVariable('form',$form);
+        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $entry = $recyclerProductTable->getEntry($id);
+        if(empty($entry)){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $view->setVariable('model',$entry->name);
+        if($request->isPost()){
+            $post = $request->getPost()->toArray();
+            $continue = $post['continue'];
+            $form->setData($post);
+            /**
+             * Check empty
+             */
+            $empty = new NotEmpty();
+            if(!$empty->isValid($post['name'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['model'])){
+                $view->setVariable('msg',array('danger' => $messages['MODEL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$empty->isValid($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['brand_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!$select_empty->isValid($post['type_id'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_TYPE_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if(!is_numeric($post['price'])){
+                $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            if($form->isValid()){
+                $data = $form->getData();
+                if(empty($data)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirect()->toUrl('/product');
+                }
+                if($this->saveRecyclerProduct($data)){
+                    if($continue == 'yes'){
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/recycler/product/id/'.$id);
+                    }else{
+                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        return $this->redirect()->toUrl('/recycler/product');
+                    }
+                }else{
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    return $this->redirect()->toUrl('/recycler/product/id/'.$id);
+                }
+            }
+        }else{
+            $formData = (array) $entry;
+            $form->setData($formData);
+        }
+        return $view;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    protected function saveRecyclerProduct($data)
+    {
+        $sm = $this->getServiceLocator();
+        $recyclerProductTable = $sm->get('RecyclerProductTable');
+        $dataFinal = $data;
+        $recyclerProduct = new RecyclerProduct();
+        $recyclerProduct->exchangeArray($dataFinal);
+        return $recyclerProductTable->save($recyclerProduct);
     }
 }

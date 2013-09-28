@@ -44,5 +44,6 @@ class ProductBrand extends AbstractHelper
         if(!empty($entry)){
             return $entry->brand_id;
         }
+        return null;
     }
 }
