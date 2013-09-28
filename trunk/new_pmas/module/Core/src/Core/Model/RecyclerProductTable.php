@@ -162,4 +162,19 @@ class RecyclerProductTable extends AbstractModel
         }
         return $rowset;
     }
+    /**
+     * @param $model
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getRowsByModel($model)
+    {
+        if($model == null){
+            return null;
+        }
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'model' => $model));
+        if($rowset->count() <= 0){
+            return null;
+        }
+        return $rowset;
+    }
 }

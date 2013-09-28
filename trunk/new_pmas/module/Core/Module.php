@@ -335,6 +335,18 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'recycler' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\Recycler();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'price' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\Price();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
             ),
         );
     }

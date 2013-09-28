@@ -357,7 +357,22 @@ class ProductController extends AbstractActionController
     }
     public function detailAction()
     {
+        $this->auth();
+        $id = $this->params('id',0);
+        if($id == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
+        $entry = $tdmProductTable->getEntry($id);
+        if(empty($entry)){
+            $this->getResponse()->setStatusCode(404);
+        }
         $view = new ViewModel();
+        $view->setVariable('name',$entry->name);
+        $view->setVariable('entry',$entry);
+        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $view->setVariable('products',$recyclerProductsWithSameModel);
         return $view;
     }
     public function deleteAction()

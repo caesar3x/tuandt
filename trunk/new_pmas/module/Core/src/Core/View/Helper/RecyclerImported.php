@@ -11,8 +11,8 @@ use Zend\ServiceManager\ServiceManager;
 class RecyclerImported extends AbstractHelper
 {
     /**
-     * @var $serviceLocator
-     */
+ * @var $serviceLocator
+ */
     protected $serviceLocator;
 
     /**
