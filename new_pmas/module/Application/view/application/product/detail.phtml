@@ -4,14 +4,20 @@
  * Date: 9/13/13
  */
 ?>
+<?php $product = $this->entry;?>
+<?php
+$product_price = $product->price;
+$productExchangePrice = $this->price()->getExchange($product_price,$product->currency);
+echo $productExchangePrice;
+?>
 <div class="page-header">
     <div class="pull-left">
-        <h3>TDM Model name XXX</h3>
+        <h3><?php echo $this->name?></h3>
     </div>
     <div class="pull-right">
         <a class="btn btn-default btn-sm back-top" href="/product/">
             <i class="glyphicon glyphicon-arrow-left"></i>
-            Back
+            <?php echo $this->translate('Back')?>
         </a>
     </div>
     <div class="clearfix">&nbsp;</div>
@@ -19,8 +25,8 @@
 <div class="row">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#price-comparision">Price Comparison</a></li>
-            <li><a data-toggle="tab" href="#historical-prices">Historical Prices</a></li>
+            <li class="active"><a data-toggle="tab" href="#price-comparision"><?php echo $this->translate('Price Comparison')?></a></li>
+            <li><a data-toggle="tab" href="#historical-prices"><?php echo $this->translate('Historical Prices')?></a></li>
         </ul>
     </div>
     <div class="col-md-10">
@@ -30,31 +36,26 @@
                     <div class="panel-body">
                         <div>
                             <div class="pull-left">
-                                <a class="btn btn-outline">Notice</a>
+                                <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
                                 <div class="btn btn-default">
-                                    Price higher than 50%(xx)
+                                    <?php echo $this->translate('Price higher than 50%(xx)')?>
                                 </div>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-outline">
-                                    Export to
+                                    <?php echo $this->translate('Export to')?>
                                 </a>
                                 <div class="btn-group">
-                                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                        Data format <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a>CSV</a></li>
-                                        <li><a>Excel</a></li>
-                                    </ul>
+                                    <select class="form-control" id="export-format" name="export_format">
+                                        <option value="none"><?php echo $this->translate('Select format')?></option>
+                                        <option value="csv"><?php echo $this->translate('CSV')?></option>
+                                        <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+                                        <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                    </select>
                                 </div>
                                 <a class="btn btn-warning btn-sm">
                                     <i class="glyphicon glyphicon-export"></i>
-                                    Export
-                                </a>
-                                <a class="btn btn-success btn-sm">
-                                    <i class="glyphicon glyphicon-refresh"></i>
-                                    Reset
+                                    <?php echo $this->translate('Export')?>
                                 </a>
                             </div>
                         </div>
@@ -70,144 +71,25 @@
                             <th><?php echo $this->translate('Price')?></th>
                             <th><?php echo $this->translate('Exchange Price')?></th>
                             <th><?php echo $this->translate('%')?></th>
-                            <th><?php echo $this->translate('Exchange')?></th>
+                            <th><?php echo $this->translate('Tdm Exchange Price')?></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>1</td>
-                            <td>Recycler 1</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>2</td>
-                            <td>Recycler 2</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>3</td>
-                            <td>Recycler 3</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>4</td>
-                            <td>Recycler 4</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>5</td>
-                            <td>Recycler 5</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>6</td>
-                            <td>Recycler 6</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>7</td>
-                            <td>Recycler 7</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="col-checkbox"><input type="checkbox" class="check-item" value="1"></td>
-                            <td>8</td>
-                            <td>Recycler 8</td>
-                            <td>Vietnam</td>
-                            <td>Product</td>
-                            <td>09-13-2014</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th><input type="hidden"></th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control search_init" />
-                                </div>
-                            </th>
-                        </tr>
-                        </tfoot>
+                        <?php if(!empty($this->products)):?>
+                        <?php foreach($this->products as $_product):?>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
+                                <td><?php echo $_product->recycler_id?></td>
+                                <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
+                                <td><?php echo $this->recycler()->getCountryName($_product->recycler_id)?></td>
+                                <td><?php echo $_product->name;?></td>
+                                <td><?php echo $this->price()->format($_product->price);?></td>
+                                <td><?php echo $this->price()->format($this->price()->getExchange($_product->price,$_product->currency))?></td>
+                                <td><?php echo $this->price()->getPercent($this->price()->getExchange($_product->price,$_product->currency),$productExchangePrice)?></td>
+                                <td><?php echo $this->price()->format($productExchangePrice)?></td>
+                            </tr>
+                        <?php endforeach;?>
+                        <?php endif;?>
                         </table>
                     </div>
                 </div>
@@ -219,29 +101,23 @@
                             <div class="panel-body">
                                 <div class="row form-row">
                                     <div class="col-md-2">
-                                        <a class="btn btn-outline">Set time :</a>
+                                        <a class="btn btn-outline"><?php echo $this->translate('')?>Set time :</a>
                                     </div>
                                     <div class="col-md-10">
                                         <div class="row">
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon">Start time</span>
+                                                    <span class="input-group-addon"><?php echo $this->translate('')?>Start time</span>
                                                     <input class="form-control datepicker" name="start-time" id="start-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon">End time</span>
+                                                    <span class="input-group-addon"><?php echo $this->translate('')?>End time</span>
                                                     <input class="form-control datepicker" name="end-time" id="end-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
-                                            </div>
-                                            <div class="pull-left margin20">
-                                                <input type="radio" name="every">
-                                                <span>Every hour</span>
-                                                <input type="radio" name="every">
-                                                <span>Every day</span>
                                             </div>
                                         </div>
                                     </div>
@@ -253,33 +129,39 @@
                                     <div class="col-md-10">
                                         <div class="row">
                                             <input type="radio" name="search">
-                                            <span>Recycler</span>
+                                            <span><?php echo $this->translate('')?>Recycler</span>
                                             <select>
-                                                <option>Recycler Name</option>
-                                                <option>Recycler Brand</option>
-                                                <option>Recycler Type</option>
+                                                <option><?php echo $this->translate('')?>Recycler Name</option>
+                                                <option><?php echo $this->translate('')?>Recycler Brand</option>
+                                                <option><?php echo $this->translate('')?>Recycler Type</option>
                                             </select>
                                         </div>
                                         <div class="row form-row">
                                             <input type="radio" name="search">
-                                            <span>Highest price</span>
+                                            <span><?php echo $this->translate('')?>Highest price</span>
                                         </div>
 
                                     </div>
                                 </div>
                                 <div class="clearfix">&nbsp;</div>
+                                <div class="pull-left">
+                                    <a onclick="submitHistoricalModelPrice();" class="btn btn-sm btn-success">
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                        <?php echo $this->translate('Submit');?>
+                                    </a>
+                                </div>
                                 <div class="pull-right">
                                     <ul class="nav-tabs nav-pills" data-tabs="tabs" id="model-view-tabs">
                                         <li>
                                             <a class="btn btn-sm" data-toggle="tab" href="#chart-view">
                                                 <i class="glyphicon glyphicon-stats"></i>
-                                                Chart
+                                                <?php echo $this->translate('Chart')?>
                                             </a>
                                         </li>
                                         <li class="active">
                                             <a class="btn btn-sm" data-toggle="tab" href="#table-view">
                                                 <i class="glyphicon glyphicon-th"></i>
-                                                Table
+                                                <?php echo $this->translate('Table')?>
                                             </a>
                                         </li>
                                     </ul>
@@ -289,20 +171,20 @@
                         </div>
                         <div class="pull-right">
                             <a class="btn">
-                                Export to
+                                <?php echo $this->translate('')?>Export to
                             </a>
                             <div class="btn-group">
                                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Data format <span class="caret"></span>
+                                    <?php echo $this->translate('')?>Data format <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a>CSV</a></li>
-                                    <li><a>Excel</a></li>
+                                    <li><a><?php echo $this->translate('')?>CSV</a></li>
+                                    <li><a><?php echo $this->translate('')?>Excel</a></li>
                                 </ul>
                             </div>
                             <a class="btn btn-warning btn-sm">
                                 <i class="glyphicon glyphicon-export"></i>
-                                Export
+                                <?php echo $this->translate('')?>Export
                             </a>
                         </div>
                         <div class="clearfix">&nbsp;</div>

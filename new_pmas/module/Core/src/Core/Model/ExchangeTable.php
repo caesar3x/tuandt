@@ -47,6 +47,30 @@ class ExchangeTable extends AbstractModel
     }
 
     /**
+     * @param $currency
+     */
+    public function getLastCurrencyExchange($currency)
+    {
+        if(!$currency){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->where(array('currency' => $currency));
+        $select->order('m.time DESC');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        $row = $result->current();
+        if(!empty($row)){
+            return $row;
+        }
+        return null;
+    }
+    /**
      * @return array|null
      */
     public function getAvailableCurrencies()

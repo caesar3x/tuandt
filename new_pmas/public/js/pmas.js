@@ -229,3 +229,25 @@ function loadExchangeData()
     });
     return true;
 }
+function submitHistoricalModelPrice()
+{
+    var startTime = $("#start-time").val();
+    if(!startTime || !startTime.length){
+        bootbox.alert("You must select start time");
+        return false;
+    }
+    var endTime = $("#end-time").val();
+    if(!endTime || !endTime.length){
+        bootbox.confirm("Are you sure you do not want to set end time?", function(result) {
+            return true;
+        });
+    }
+    var startTimeSplit = startTime.split("-");
+    var endTimeSplit = endTime.split("-");
+    var startParse  = new Date(startTimeSplit[2],startTimeSplit[1],startTimeSplit[0]);
+    var endParse  = new Date(endTimeSplit[2],endTimeSplit[1],endTimeSplit[0]);
+    if(startParse.getTime() > endParse.getTime()){
+        bootbox.alert("You must select end time greater than start time");
+        return false;
+    }
+}
