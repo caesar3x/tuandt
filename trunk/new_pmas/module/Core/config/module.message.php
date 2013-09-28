@@ -38,4 +38,6 @@ return array(
     'PRODUCT_BRAND_NOT_SELECTED'    => 'You must select brand',
     'COUNTRY_NOT_SELECTED'          => 'You must select country',
     'PRODUCT_TYPE_NOT_SELECTED'     => 'You must select product type',
+    'FORMAT_EXPORT_INVALID'         => 'Format of export file invalid',
+    'FORMAT_IMPORT_INVALID'         => 'Format of import file invalid',
 );

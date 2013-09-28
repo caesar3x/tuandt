@@ -281,3 +281,14 @@ function submitHistoricalModelPrice()
         return false;
     }
 }
+function exportRecyclerProducts(recycler)
+{
+    var format = $("#export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
+    var url = '/recycler/export-recycler-products/id/'+recycler+'/format/'+format;
+    window.location.assign(url);
+    return true;
+}
