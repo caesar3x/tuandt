@@ -177,4 +177,16 @@ class RecyclerProductTable extends AbstractModel
         }
         return $rowset;
     }
+    public function getAvailabeRecyclerProducts($ids)
+    {
+        if($ids == null){
+            $rowset = $this->tableGateway->select(array('deleted' => 0));
+        }else{
+            $rowset = $this->tableGateway->select(array('deleted' => 0,'product_id' => $ids));
+        }
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
 }

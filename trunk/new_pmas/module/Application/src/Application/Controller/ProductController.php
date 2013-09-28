@@ -14,6 +14,7 @@ use BasicExcel\Writer\Xlsx;
 use Core\Model\Brand;
 use Core\Model\Product;
 use Core\Model\ProductType;
+use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -708,5 +709,65 @@ class ProductController extends AbstractActionController
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
+    }
+    public function exportPriceCompareAction()
+    {
+        $this->auth();
+        $format = $this->params('format');
+        if(!$format){
+            return true;
+        }
+        $request = $this->getRequest();
+        $ids = $request->getQuery('id');
+        $tdm = $this->params('tdm');
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
+        $priceHelper = $viewhelperManager->get('Price');
+
+        $recyclerHelper = $viewhelperManager->get('Recycler');
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $rowset = $recyclerProductTable->getAvailabeRecyclerProducts($ids);
+        $tdmEntry = $tdmProductTable->getEntry($tdm);
+        if(!empty($tdmEntry)){
+            $tdmExchangePrice = $priceHelper->getExchange($tdmEntry->price,$tdmEntry->currency);
+        }else{
+            exit();
+        }
+        $header = array('Recycler Id','Recycler Name','Country','Product Name','Price','Exchange Price','%','Tdm Exchange Price');
+        $data = array($header);
+        if(!empty($rowset)){
+            foreach($rowset as $row){
+                $rowParse = array();
+                $rowParse[] = $row->recycler_id;
+                $rowParse[] = $recyclerHelper->getName($row->recycler_id);
+                $rowParse[] = $recyclerHelper->getCountryName($row->recycler_id);
+                $rowParse[] = $row->name;
+                $rowParse[] = $priceHelper->format($row->price);
+                $rowParse[] = $priceHelper->format($priceHelper->getExchange($row->price,$row->currency));
+                $rowParse[] = $priceHelper->getPercent($priceHelper->getExchange($row->price,$row->currency),$tdmExchangePrice);
+                $rowParse[] = $tdmExchangePrice;
+                $data[] = $rowParse;
+            }
+        }
+        if(!empty($data)){
+            $parseProductName = SlugFile::parseFilename((string) $tdmEntry->name);
+            $filename = $parseProductName.'_price_compare_'.date('Y_m_d');
+            if($format == 'csv'){
+                $excel = new Csv();
+                $excel->fromArray($data);
+                $excel->download($filename.'.csv');
+            }elseif($format == 'xlsx'){
+                $parseExcelData = array($data);
+                $excel = new Xlsx();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xlsx');
+            }elseif($format == 'xls'){
+                $parseExcelData = array($data);
+                $excel = new Xls();
+                $excel->fromArray($parseExcelData);
+                $excel->download($filename.'.xls');
+            }
+        }
+        exit();
     }
 }

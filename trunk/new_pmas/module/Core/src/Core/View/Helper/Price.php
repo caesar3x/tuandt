@@ -45,6 +45,9 @@ class Price extends AbstractHelper
     }
     public function getPercent($price1,$price2)
     {
+        if($price2 == 0 || $price2 == null){
+            return null;
+        }
         $percent = $price1/$price2;
         $percent2 = $percent*100;
         return number_format($percent2,2);

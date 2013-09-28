@@ -86,6 +86,10 @@ $(function() {
         var checked = $(this).is(":checked");
         $(".check-item").prop('checked',checked);
     });
+    $(".checkall").on("click", function () {
+        var checked = $(this).is(":checked");
+        $(".checkitem").prop('checked',checked);
+    });
     /**
      * Datepicker
      */
@@ -227,6 +231,32 @@ function loadExchangeData()
     $.get( urlChartLoad, function( data ) {
         $("#chart-view").html(data);
     });
+    return true;
+}
+function exportPriceCompare(tdm)
+{
+    var format = $("#export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
+    var ids = new Array();
+    if(!$(".check-item:checked").length){
+        $(".check-item").each(function(){
+            ids.push($(this).val());
+        });
+    }else{
+        $(".check-item").each(function(){
+            if($(this).is(":checked")){
+                ids.push($(this).val());
+            }
+        });
+    }
+    var params = new Object();
+    params.id = ids;
+    var urlParams = $.param(params);
+    var url = '/product/export-price-compare/tdm/'+tdm+'/format/'+format+'?'+urlParams;
+    window.location.assign(url);
     return true;
 }
 function submitHistoricalModelPrice()
