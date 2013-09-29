@@ -30,6 +30,7 @@
                     <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
                     <th><?php echo $this->translate('Date')?></th>
                     <th><?php echo $this->translate('Price')?></th>
+                    <th><?php echo $this->translate('Currency')?></th>
                     <th><?php echo $this->translate('Price in HKD')?></th>
                 </tr>
                 </thead>
@@ -40,6 +41,7 @@
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
                         <td><?php echo ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A'?></td>
                         <td><?php echo $this->price()->format($highest['price'])?></td>
+                        <td><?php echo $highest['currency']?></td>
                         <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
                     </tr>
                 <?php endif;?>
@@ -74,6 +76,40 @@
                         <td><?php echo $this->price()->format($highest['price'])?></td>
                         <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
                     </tr>
+                <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="chart-view">
+            <div id="chart-demo" class="chart-demo">
+                <h2><?php echo $this->translate('No chart');?></h2>
+            </div>
+        </div>
+    </div>
+<?php elseif($this->search == 'recycler'):?>
+    <div class="tab-content">
+        <div class="tab-pane active" id="table-view">
+            <table class="display table table-striped table-condensed table-bordered example2" id="example2" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
+                    <th><?php echo $this->translate('Date')?></th>
+                    <th><?php echo $this->translate('Price')?></th>
+                    <th><?php echo $this->translate('Currency')?></th>
+                    <th><?php echo $this->translate('Price in HKD')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->highest)):?>
+                <?php foreach($this->highest as $highest):?>
+                    <tr>
+                        <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
+                        <td><?php echo ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A'?></td>
+                        <td><?php echo $this->price()->format($highest['price'])?></td>
+                        <td><?php echo $this->price()->format($highest['currency'])?></td>
+                        <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
+                    </tr>
+                <?php endforeach?>
                 <?php endif;?>
                 </tbody>
             </table>

@@ -133,7 +133,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                         <div class="row form-row">
                                             <input type="radio" name="search" value="country">
                                             <span><?php echo $this->translate('Country')?></span>
-                                            <select id="country-select" name="country-select">
+                                            <select id="country-select" name="country-select" >
                                                 <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
                                                     <option value="<?php echo $id?>"><?php echo $country?></option>
                                                 <?php endforeach;?>
@@ -142,7 +142,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                         <div class="row form-row">
                                             <input type="radio" name="search" value="recycler">
                                             <span><?php echo $this->translate('Recycler')?></span>
-                                            <select id="recycler-country-select" name="recycler-country-select">
+                                            <select id="recycler-country-select" name="recycler-country-select" onchange="loadRecyclers();">
                                                 <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
                                                     <option value="<?php echo $id?>"><?php echo $country?></option>
                                                 <?php endforeach;?>

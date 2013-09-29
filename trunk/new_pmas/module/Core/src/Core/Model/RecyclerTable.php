@@ -119,5 +119,17 @@ class RecyclerTable extends AbstractModel
         return $rowset;
     }
 
-
+    /**
+     * @param $country_id
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
+    public function getRecyclersByCountry($country_id)
+    {
+        $country_id = (int) $country_id;
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_id' => $country_id));
+        if (!$rowset) {
+            return null;
+        }
+        return $rowset;
+    }
 }

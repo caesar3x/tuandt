@@ -263,13 +263,18 @@ class ExchangeController extends AbstractActionController
         }
         $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
         $rowset = $exchangeTable->getRowsetByCurrency($currency);
-        if($startTime != null){
+        if($startTime != null && $endTime == null){
             $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
             $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
         }
-        if($endTime != null){
+        if($startTime != null && $endTime != null ){
             $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
-            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp(),$end->getTimestamp());
+        }
+        if($startTime == null && $endTime != null ){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,null,$end->getTimestamp());
         }
         $view = new ViewModel();
         $view->setVariable('rowset',$rowset);
@@ -291,13 +296,18 @@ class ExchangeController extends AbstractActionController
         }
         $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
         $rowset = $exchangeTable->getRowsetByCurrency($currency);
-        if($startTime != null){
+        if($startTime != null && $endTime == null){
             $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
             $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
         }
-        if($endTime != null){
+        if($startTime != null && $endTime != null ){
             $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
-            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp(),$end->getTimestamp());
+        }
+        if($startTime == null && $endTime != null ){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,null,$end->getTimestamp());
         }
         $view = new ViewModel();
         $view->setVariable('rowset',$rowset);
@@ -320,13 +330,18 @@ class ExchangeController extends AbstractActionController
         $header = array('Date','Currency','Exchange Rate');
         $data = array($header);
         $rowset = $exchangeTable->getRowsetByCurrency($currency);
-        if($startTime != null){
+        if($startTime != null && $endTime == null){
             $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
             $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp());
         }
-        if($endTime != null){
+        if($startTime != null && $endTime != null ){
             $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
-            $rowset = $exchangeTable->getRowsetByCurrency($currency,$end->getTimestamp());
+            $start = \DateTime::createFromFormat('d-m-Y H:i:s',$startTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,$start->getTimestamp(),$end->getTimestamp());
+        }
+        if($startTime == null && $endTime != null ){
+            $end = \DateTime::createFromFormat('d-m-Y H:i:s',$endTime.' 00:00:00');
+            $rowset = $exchangeTable->getRowsetByCurrency($currency,null,$end->getTimestamp());
         }
         if(!empty($rowset)){
             foreach($rowset as $row){
