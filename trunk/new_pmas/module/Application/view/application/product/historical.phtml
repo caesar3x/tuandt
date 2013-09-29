@@ -38,7 +38,7 @@
                     <?php $highest = $this->highest;?>
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
-                        <td><?php echo date('d-m-Y',(int)$highest['time'])?></td>
+                        <td><?php echo ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A'?></td>
                         <td><?php echo $this->price()->format($highest['price'])?></td>
                         <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
                     </tr>
@@ -49,7 +49,7 @@
         </div>
         <div class="tab-pane" id="chart-view">
             <div id="chart-demo" class="chart-demo">
-
+                <h2><?php echo $this->translate('No chart');?></h2>
             </div>
         </div>
     </div>
