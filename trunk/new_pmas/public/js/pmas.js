@@ -87,8 +87,8 @@ $(function() {
         $(".check-item").prop('checked',checked);
     });
     $(".checkall").on("click", function () {
-        var checked = $(this).is(":checked");
-        $(".checkitem").prop('checked',checked);
+        var checkedd = $(this).is(":checked");
+        $(".checkitem").prop('checked',checkedd);
     });
     /**
      * Datepicker
@@ -259,7 +259,7 @@ function exportPriceCompare(tdm)
     window.location.assign(url);
     return true;
 }
-function submitHistoricalModelPrice()
+function submitHistoricalModelPrice(productId)
 {
     var startTime = $("#start-time").val();
     if(!startTime || !startTime.length){
@@ -280,6 +280,45 @@ function submitHistoricalModelPrice()
         bootbox.alert("You must select end time greater than start time");
         return false;
     }
+    var searchBy = $( "input:radio[name=search]:checked" ).val();
+    var countryId = $("#country-select").val();
+    var recyclerId = $("#recycler-select").val();
+    var multiRecyclerId = $("#recycler-multi-select").val();
+    var recyclerCountryId = $("#recycler-country-select").val();
+    var url = '/product/historical/id/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
+    if(searchBy.length > 0){
+        url = url + 'search/' + searchBy;
+        if(searchBy == 'country'){
+            if(countryId == 0 || countryId == '0'){
+                bootbox.alert("You must select country");
+                return false;
+            }
+            url = url + '/country/' + countryId;
+        }
+        if(searchBy == 'recycler'){
+            if(recyclerCountryId == 0 || recyclerCountryId == '0'){
+                bootbox.alert("You must select country");
+                return false;
+            }
+            if(recyclerId == 0 || recyclerId == '0'){
+                bootbox.alert("You must select recycler");
+                return false;
+            }
+            url = url + '/country/' + recyclerCountryId + '/recycler/' + recyclerId;
+        }
+        if(searchBy == 'multi-recycler'){
+            if(multiRecyclerId == null){
+                bootbox.alert("You must select recyclers");
+                return false;
+            }
+            var params = new Object();
+            params.multirecycler = multiRecyclerId;
+            var urlParams = $.param(params);
+            url = url + '?' + urlParams;
+        }
+    }
+    $("#search-result").load(url);
+    return true;
 }
 function exportRecyclerProducts(recycler)
 {

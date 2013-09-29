@@ -8,7 +8,6 @@
 <?php
 $product_price = $product->price;
 $productExchangePrice = $this->price()->getExchange($product_price,$product->currency);
-echo $productExchangePrice;
 ?>
 <div class="page-header">
     <div class="pull-left">
@@ -107,14 +106,14 @@ echo $productExchangePrice;
                                         <div class="row">
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon"><?php echo $this->translate('')?>Start time</span>
+                                                    <span class="input-group-addon"><?php echo $this->translate('Start time')?></span>
                                                     <input class="form-control datepicker" name="start-time" id="start-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon"><?php echo $this->translate('')?>End time</span>
+                                                    <span class="input-group-addon"><?php echo $this->translate('End time')?></span>
                                                     <input class="form-control datepicker" name="end-time" id="end-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
@@ -127,25 +126,51 @@ echo $productExchangePrice;
                                         <a class="btn btn-outline">Search by :</a>
                                     </div>
                                     <div class="col-md-10">
-                                        <div class="row">
-                                            <input type="radio" name="search">
-                                            <span><?php echo $this->translate('')?>Recycler</span>
-                                            <select>
-                                                <option><?php echo $this->translate('')?>Recycler Name</option>
-                                                <option><?php echo $this->translate('')?>Recycler Brand</option>
-                                                <option><?php echo $this->translate('')?>Recycler Type</option>
+                                        <div class="row ">
+                                            <input checked type="radio" name="search" id="highest-price" value="highest">
+                                            <span><?php echo $this->translate('Highest price')?></span>
+                                        </div>
+                                        <div class="row form-row">
+                                            <input type="radio" name="search" value="country">
+                                            <span><?php echo $this->translate('Country')?></span>
+                                            <select id="country-select" name="country-select">
+                                                <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
+                                                    <option value="<?php echo $id?>"><?php echo $country?></option>
+                                                <?php endforeach;?>
                                             </select>
                                         </div>
                                         <div class="row form-row">
-                                            <input type="radio" name="search">
-                                            <span><?php echo $this->translate('')?>Highest price</span>
+                                            <input type="radio" name="search" value="recycler">
+                                            <span><?php echo $this->translate('Recycler')?></span>
+                                            <select id="recycler-country-select" name="recycler-country-select">
+                                                <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
+                                                    <option value="<?php echo $id?>"><?php echo $country?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                            <select id="recycler-select" name="recycler-select">
+                                                <?php foreach($this->recycler()->getListSelectRecycler() as $recycler_id=>$recycler_name):?>
+                                                    <option value="<?php echo $recycler_id?>"><?php echo $recycler_name?></option>
+                                                <?php endforeach;?>
+                                            </select>
                                         </div>
-
+                                        <div class="row form-row">
+                                            <div class="pull-left">
+                                                <input type="radio" name="search" value="multi-recycler">
+                                                <span><?php echo $this->translate('Multi Recyclers')?></span>
+                                            </div>
+                                            <div class="pull-left" id="multi-select-recyclers">
+                                                <select size="10" multiple id="recycler-multi-select" name="recycler-select">
+                                                    <?php foreach($this->recycler()->getListSelectRecycler(false) as $recycler_id=>$recycler_name):?>
+                                                        <option value="<?php echo $recycler_id?>"><?php echo $recycler_name?></option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="clearfix">&nbsp;</div>
                                 <div class="pull-left">
-                                    <a onclick="submitHistoricalModelPrice();" class="btn btn-sm btn-success">
+                                    <a onclick="submitHistoricalModelPrice('<?php echo $product->product_id?>');" class="btn btn-sm btn-success">
                                         <i class="glyphicon glyphicon-ok"></i>
                                         <?php echo $this->translate('Submit');?>
                                     </a>
@@ -169,53 +194,11 @@ echo $productExchangePrice;
                             </div>
 
                         </div>
-                        <div class="pull-right">
-                            <a class="btn">
-                                <?php echo $this->translate('')?>Export to
-                            </a>
-                            <div class="btn-group">
-                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                    <?php echo $this->translate('')?>Data format <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a><?php echo $this->translate('CSV')?></a></li>
-                                    <li><a><?php echo $this->translate('Excel')?></a></li>
-                                </ul>
-                            </div>
-                            <a class="btn btn-warning btn-sm">
-                                <i class="glyphicon glyphicon-export"></i>
-                                <?php echo $this->translate('')?>Export
-                            </a>
-                        </div>
                         <div class="clearfix">&nbsp;</div>
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="table-view">
-                                        <table class="display table table-striped table-condensed table-bordered example" id="example2" cellpadding="0" cellspacing="0">
-                                            <thead>
-                                            <tr>
-                                                <th class="col-checkbox"><input class="checkall" value="" type="checkbox"></th>
-                                                <th><?php echo $this->translate('Date')?></th>
-                                                <th><?php echo $this->translate('Price')?></th>
-                                                <th><?php echo $this->translate('Price in HKD')?></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td class="col-checkbox"><input type="checkbox" class="checkitem" value="1"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="tab-pane" id="chart-view">
-                                        <div id="chart-demo" class="chart-demo">
+                                <div id="search-result">
 
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
