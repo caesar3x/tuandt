@@ -770,4 +770,81 @@ class ProductController extends AbstractActionController
         }
         exit();
     }
+    public function historicalAction()
+    {
+        $this->auth();
+        $this->layout('layout/empty');
+        $request = $this->getRequest();
+        $id = $this->params('id',null);
+        $searchBy = $this->params('search',null);
+        $start = $this->params('start',null);
+        $end = $this->params('end',null);
+        if($searchBy == null || $id == null || $start == null){
+            echo 'Can\'t load data';
+            exit();
+        }
+        $startTime = \DateTime::createFromFormat('d-m-Y H:i:s',$start.' 00:00:00');
+        if($end != null && $end != ''){
+            $endTime = \DateTime::createFromFormat('d-m-Y H:i:s',$end.' 00:00:00');
+        }else{
+            $endTime = null;
+        }
+        Debug::dump($startTime->getTimestamp());
+        Debug::dump($endTime->getTimestamp());
+        echo (1380470400-1380492000);
+        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
+        $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
+        $entry = $tdmProductTable->getEntry($id);
+        if(empty($entry)){
+            echo 'Can\'t load data';
+            exit();
+        }
+        $view = new ViewModel();
+        $view->setVariable('search',$searchBy);
+        $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $productsCurrency = array();
+        if(!empty($productWithSameModel)){
+            foreach($productWithSameModel as $product){
+                $productsCurrency[$product->product_id] = array('currency' => $product->currency,'price' => $product->price);
+            }
+        }
+        Debug::dump($productsCurrency);
+        echo date('d-m-Y',1380492000);
+        if($searchBy == 'highest'){
+            $productsExchangePrice = array();
+            $productsExchangeDate = array();
+            if(!empty($productsCurrency)){
+                foreach($productsCurrency as $product_id=>$val){
+                    /**
+                     * Get echange rate in time range
+                     */
+                    $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                    if(!empty($rowset)){
+                        $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                        $productsExchangeDate[$product_id] = $rowset->time;
+                    }else{
+                        $productsExchangePrice[$product_id] = (float)$val['price'];
+                        $productsExchangeDate[$product_id] = null;
+                    }
+                }
+                arsort($productsExchangePrice);
+                $highest = array();
+                if(!empty($productsExchangePrice)){
+                    foreach($productsExchangePrice as $product_id=>$price){
+                        $highest = array(
+                            'product_id' => $product_id,
+                            'exchange_price' => $price,
+                            'price' => $productsCurrency[$product_id]['price'],
+                            'time' => $productsExchangeDate[$product_id]
+                        );
+                        break;
+                    }
+                }
+                $view->setVariable('highest',$highest);
+            }
+        }
+        $ids = $request->getQuery('multirecycler',null);
+        return $view;
+    }
 }

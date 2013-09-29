@@ -56,4 +56,37 @@ class Recycler extends AbstractHelper
         }
         return $entry;
     }
+    public function getListSelectCountry()
+    {
+        $countryTable = $this->serviceLocator->get('CountryTable');
+        $countries = $countryTable->getAvaiableRows();
+        $data = array(0 => 'Select Country');
+        if(!empty($countries)){
+            foreach($countries as $country){
+                $data[$country->country_id] = $country->name;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param bool $includeSelect
+     * @return array
+     */
+    public function getListSelectRecycler($includeSelect = true)
+    {
+        $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        $recyclers = $recyclerTable->getAvaiableRows();
+        if($includeSelect == true){
+            $data = array(0 => 'Select Recycler');
+        }else{
+            $data = array();
+        }
+        if(!empty($recyclers)){
+            foreach($recyclers as $recycler){
+                $data[$recycler->recycler_id] = $recycler->name;
+            }
+        }
+        return $data;
+    }
 }

@@ -1,0 +1,116 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/28/13
+ */
+?>
+<div class="pull-right" style="margin-bottom: 15px;">
+    <a class="btn">
+        <?php echo $this->translate('Export to')?>
+    </a>
+    <div class="btn-group">
+        <select class="form-control" id="export-format" name="export_format">
+            <option value="none"><?php echo $this->translate('Select format')?></option>
+            <option value="csv"><?php echo $this->translate('CSV')?></option>
+            <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
+            <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+        </select>
+    </div>
+    <a class="btn btn-warning btn-sm">
+        <i class="glyphicon glyphicon-export"></i>
+        <?php echo $this->translate('Export')?>
+    </a>
+</div>
+<?php if($this->search == 'highest'):?>
+    <div class="tab-content">
+        <div class="tab-pane active" id="table-view">
+            <table class="display table table-striped table-condensed table-bordered example2" id="example2" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th><?php echo $this->translate('Date')?></th>
+                    <th><?php echo $this->translate('Price')?></th>
+                    <th><?php echo $this->translate('Price in HKD')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($this->highest)):?>
+                    <?php $highest = $this->highest;?>
+                    <tr>
+                        <td><?php echo date('d-m-Y',(int)$highest['time'])?></td>
+                        <td><?php echo $this->price()->format($highest['price'])?></td>
+                        <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
+                    </tr>
+                <?php endif;?>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="chart-view">
+            <div id="chart-demo" class="chart-demo">
+
+            </div>
+        </div>
+    </div>
+<?php elseif($this->search == ''):?>
+<?php endif;?>
+
+<script type="text/javascript">
+    $(function(){
+        $(".checkall").on("click", function () {
+            var checkedd = $(this).is(":checked");
+            $(".checkitem").prop('checked',checkedd);
+        });
+        var oTable = $('.example2').dataTable( {
+            "aaSorting": [[1, 'asc']],
+            "oLanguage": {
+                "sSearch": "Search all columns:"
+            },
+            "sPaginationType": "full_numbers"
+        } );
+        $(".example2").each(function(){
+            var thead = $(this).find('thead');
+            var trLeng = thead.find("tr:first > th").length;
+            if(trLeng > 0){
+                var htmlAppend = '<tr class="tr-search">' +
+                    '';
+                for (var i = 0; i < trLeng; i++) {
+                    htmlAppend = htmlAppend + '<th>' +
+                        ' <div class="input-group-sm">' +
+                        '<input type="text" class="form-control search_init" />' +
+                        '</div>' +
+                        '</th>';
+                }
+                htmlAppend = htmlAppend + '</tr>';
+                thead.append(htmlAppend);
+            }
+        });
+        $(".tr-search input").keyup( function () {
+            /* Filter on the column (the index) of this element */
+            oTable.fnFilter( this.value, $(".tr-search input").index(this) );
+        } );
+
+        /*
+         * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
+         * the footer
+         */
+        $(".tr-search input").each( function (i) {
+            asInitVals[i] = this.value;
+        } );
+
+        $(".tr-search input").focus( function () {
+            if ( $(this).hasClass("search_init"))
+            {
+                $(this).removeClass("search_init");
+                this.value = "";
+            }
+        } );
+
+        $(".tr-search input").blur( function (i) {
+            if ( this.value == "" )
+            {
+                $(this).addClass("search_init");
+                this.value = asInitVals[$(".tr-search input").index(this)];
+            }
+        } );
+    });
+</script>

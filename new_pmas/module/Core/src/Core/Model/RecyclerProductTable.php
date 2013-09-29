@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Sql;
+
 class RecyclerProductTable extends AbstractModel
 {
     public function getEntry($id)
@@ -176,6 +178,32 @@ class RecyclerProductTable extends AbstractModel
             return null;
         }
         return $rowset;
+    }
+
+    /**
+     * @param $model
+     * @return $result
+     */
+    public function getHighestPrice($model)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->where(array('m.deleted' => 0,'m.model' => $model));
+        $select->order('m.price DESC')->limit(1);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        $row = $result->current();
+        if(empty($row)){
+            return null;
+        }
+        return $row;
     }
 
     /**
