@@ -115,6 +115,37 @@ class ExchangeTable extends AbstractModel
         }
         return $result;
     }
+
+    /**
+     * @param null $currency
+     * @param null $start
+     * @param null $end
+     * @return null
+     */
+    public function getExchangeByCurrency($currency = null,$start = null,$end = null)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        if($currency != null){
+            if($start == null && $end == null){
+                $select->where('m.currency = \''.$currency.'\'');
+            }elseif($start != null && $end == null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time >= '.$start);
+            }elseif($start == null && $end != null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$end);
+            }elseif($start != null && $end != null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time >= '.$start.' AND m.time <= '.$end);
+            }
+        }
+        $select->order('exchange_rate DESC')->limit(1);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     public function getHighestExchangeByCurrency($currency = null,$start = null,$end = null)
     {
         $adapter = $this->tableGateway->adapter;

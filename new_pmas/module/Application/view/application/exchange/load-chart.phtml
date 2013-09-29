@@ -6,11 +6,15 @@
 ?>
 <?php
 $data = array();
-foreach($this->rowset as $row){
-    $data[] = array(
-        'exchange' => $row->exchange_rate,
-        'date' => date('Y-m-d',$row->time)
-    );
+if(!empty($this->rowset)){
+    foreach($this->rowset as $row){
+        $data[] = array(
+            'exchange' => $row->exchange_rate,
+            'date' => date('Y-m-d',$row->time)
+        );
+    }
+}else{
+    echo '<h3>No data availables.</h3>';
 }
 ?>
 <div id="chart1" style="min-height: 600px; width:90%;"></div>
@@ -32,7 +36,7 @@ foreach($this->rowset as $row){
             title:'Exchange Rate Chart',
             axes:{
                 xaxis:{
-                    renderer:$.jqplot.DateAxisRenderer,
+                    renderer:$.jqplot.DateAxisRenderer
                 },
                 yaxis:{
                     tickOptions:{

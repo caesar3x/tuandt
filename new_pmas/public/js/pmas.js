@@ -398,3 +398,12 @@ function exportHistorical(productId)
     window.location.assign(url);
     return true;
 }
+function loadRecyclers()
+{
+    var countryId = $("#recycler-country-select").val();
+    if(countryId == 0 || countryId == '0'){
+        bootbox.alert("You must select country");
+        return false;
+    }
+    $("#recycler-select").load('/product/select-recycler/country/'+countryId);
+}
