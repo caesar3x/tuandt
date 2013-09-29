@@ -317,6 +317,7 @@ function submitHistoricalModelPrice(productId)
             url = url + '?' + urlParams;
         }
     }
+    $("#search-result").html('<div class="form-group" style="text-align: center;"><img src="/images/loading.gif" width="48px" style="width: 48px;"></div>');
     $("#search-result").load(url);
     return true;
 }
@@ -328,6 +329,72 @@ function exportRecyclerProducts(recycler)
         return false;
     }
     var url = '/recycler/export-recycler-products/id/'+recycler+'/format/'+format;
+    window.location.assign(url);
+    return true;
+}
+function exportHistorical(productId)
+{
+    var format = $("#historical-export-format").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
+    var startTime = $("#start-time").val();
+    if(!startTime || !startTime.length){
+        bootbox.alert("You must select start time");
+        return false;
+    }
+    var endTime = $("#end-time").val();
+    if(!endTime || !endTime.length){
+        bootbox.confirm("Are you sure you do not want to set end time?", function(result) {
+            return true;
+        });
+    }
+    var startTimeSplit = startTime.split("-");
+    var endTimeSplit = endTime.split("-");
+    var startParse  = new Date(startTimeSplit[2],startTimeSplit[1],startTimeSplit[0]);
+    var endParse  = new Date(endTimeSplit[2],endTimeSplit[1],endTimeSplit[0]);
+    if(startParse.getTime() > endParse.getTime()){
+        bootbox.alert("You must select end time greater than start time");
+        return false;
+    }
+    var searchBy = $( "input:radio[name=search]:checked" ).val();
+    var countryId = $("#country-select").val();
+    var recyclerId = $("#recycler-select").val();
+    var multiRecyclerId = $("#recycler-multi-select").val();
+    var recyclerCountryId = $("#recycler-country-select").val();
+    var url = '/product/export-historical/format/'+format+'/product/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
+    if(searchBy.length > 0){
+        url = url + 'search/' + searchBy;
+        if(searchBy == 'country'){
+            if(countryId == 0 || countryId == '0'){
+                bootbox.alert("You must select country");
+                return false;
+            }
+            url = url + '/country/' + countryId;
+        }
+        if(searchBy == 'recycler'){
+            if(recyclerCountryId == 0 || recyclerCountryId == '0'){
+                bootbox.alert("You must select country");
+                return false;
+            }
+            if(recyclerId == 0 || recyclerId == '0'){
+                bootbox.alert("You must select recycler");
+                return false;
+            }
+            url = url + '/country/' + recyclerCountryId + '/recycler/' + recyclerId;
+        }
+        if(searchBy == 'multi-recycler'){
+            if(multiRecyclerId == null){
+                bootbox.alert("You must select recyclers");
+                return false;
+            }
+            var params = new Object();
+            params.multirecycler = multiRecyclerId;
+            var urlParams = $.param(params);
+            url = url + '?' + urlParams;
+        }
+    }
     window.location.assign(url);
     return true;
 }
