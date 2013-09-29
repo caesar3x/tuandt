@@ -103,6 +103,11 @@ class CountryTable extends AbstractModel
         }
         return $row;
     }
+
+    /**
+     * @param $currency
+     * @return null
+     */
     public function getCurrencyIdByName($currency)
     {
         $currency  = (string) $currency;
@@ -112,5 +117,20 @@ class CountryTable extends AbstractModel
             return null;
         }
         return $row->country_id;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function checkCountryAvailable($id)
+    {
+        $id  = (int) $id;
+        $rowset = $this->tableGateway->select(array('country_id' => $id,'deleted' => 0));
+        $row = $rowset->current();
+        if (!$row) {
+            return false;
+        }
+        return true;
     }
 }

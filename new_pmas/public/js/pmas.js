@@ -285,7 +285,7 @@ function submitHistoricalModelPrice(productId)
     var recyclerId = $("#recycler-select").val();
     var multiRecyclerId = $("#recycler-multi-select").val();
     var recyclerCountryId = $("#recycler-country-select").val();
-    var url = '/product/historical/id/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
+    var url = '/product/historical/product/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
     if(searchBy.length > 0){
         url = url + 'search/' + searchBy;
         if(searchBy == 'country'){

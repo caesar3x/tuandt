@@ -775,7 +775,7 @@ class ProductController extends AbstractActionController
         $this->auth();
         $this->layout('layout/empty');
         $request = $this->getRequest();
-        $id = $this->params('id',null);
+        $id = $this->params('product',null);
         $searchBy = $this->params('search',null);
         $start = $this->params('start',null);
         $end = $this->params('end',null);
@@ -800,11 +800,13 @@ class ProductController extends AbstractActionController
         $view = new ViewModel();
         $view->setVariable('search',$searchBy);
         $view->setVariable('id',$id);
+        $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
         $productsCurrency = array();
         if(!empty($productWithSameModel)){
             foreach($productWithSameModel as $product){
-                $productsCurrency[$product->product_id] = array('currency' => $product->currency,'price' => $product->price);
+                $countryId = $viewhelperManager->get('Recycler')->getCountryId($product->recycler_id);
+                $productsCurrency[$product->product_id] = array('country_id' => $countryId,'recycler_id' => $product->recycler_id,'currency' => $product->currency,'price' => $product->price);
             }
         }
         if($searchBy == 'highest'){
@@ -839,6 +841,44 @@ class ProductController extends AbstractActionController
                 }
                 $view->setVariable('highest',$highest);
             }
+        }elseif($searchBy == 'country'){
+            $highest = array();
+            $country = $this->params('country',0);
+            if($country != 0){
+                $productsExchangePrice = array();
+                $productsExchangeDate = array();
+                foreach($productsCurrency as $product_id=>$val){
+                    if((int) $val['country_id'] == (int) $country){
+                        /**
+                         * Get echange rate in time range
+                         */
+                        $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                        if(!empty($rowset)){
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                            $productsExchangeDate[$product_id] = $rowset->time;
+                        }else{
+                            $productsExchangePrice[$product_id] = (float)$val['price'];
+                            $productsExchangeDate[$product_id] = null;
+                        }
+                    }
+                }
+                arsort($productsExchangePrice);
+                $highest = array();
+                if(!empty($productsExchangePrice)){
+                    foreach($productsExchangePrice as $product_id=>$price){
+                        $highest = array(
+                            'product_id' => $product_id,
+                            'exchange_price' => $price,
+                            'price' => $productsCurrency[$product_id]['price'],
+                            'time' => $productsExchangeDate[$product_id]
+                        );
+                        break;
+                    }
+                }
+                $view->setVariable('highest',$highest);
+            }
+        }elseif($searchBy == 'recycler'){
+
         }
         $ids = $request->getQuery('multirecycler',null);
         return $view;
@@ -911,7 +951,71 @@ class ProductController extends AbstractActionController
                 $data = array($header);
                 if(!empty($highest)){
                     $rowParse = array();
-                    $rowParse[] = date('d-m-Y',$highest['time']);
+                    $rowParse[] = ($highest['time'] != null && $highest['time'] != '') ? date('d-m-Y',$highest['time']) : '';
+                    $rowParse[] = $viewhelperManager->get('Price')->format($highest['price']);
+                    $rowParse[] = $viewhelperManager->get('Price')->format($highest['exchange_price']);
+                    $data[] = $rowParse;
+                }
+                if(!empty($data)){
+                    $parseProductName = SlugFile::parseFilename($entry->name);
+                    $filename = $parseProductName.'_highest_price_export_'.date('Y_m_d');
+                    if($format == 'csv'){
+                        $excel = new Csv();
+                        $excel->fromArray($data);
+                        $excel->download($filename.'.csv');
+                    }elseif($format == 'xlsx'){
+                        $parseExcelData = array($data);
+                        $excel = new Xlsx();
+                        $excel->fromArray($parseExcelData);
+                        $excel->download($filename.'.xlsx');
+                    }elseif($format == 'xls'){
+                        $parseExcelData = array($data);
+                        $excel = new Xls();
+                        $excel->fromArray($parseExcelData);
+                        $excel->download($filename.'.xls');
+                    }
+                    exit();
+                }
+            }
+        }elseif($searchBy == 'country'){
+            $highest = array();
+            $country = $this->params('country',0);
+            if($country != 0){
+                $productsExchangePrice = array();
+                $productsExchangeDate = array();
+                foreach($productsCurrency as $product_id=>$val){
+                    if((int) $val['country_id'] == (int) $country){
+                        /**
+                         * Get echange rate in time range
+                         */
+                        $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                        if(!empty($rowset)){
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                            $productsExchangeDate[$product_id] = $rowset->time;
+                        }else{
+                            $productsExchangePrice[$product_id] = (float)$val['price'];
+                            $productsExchangeDate[$product_id] = null;
+                        }
+                    }
+                }
+                arsort($productsExchangePrice);
+                $highest = array();
+                if(!empty($productsExchangePrice)){
+                    foreach($productsExchangePrice as $product_id=>$price){
+                        $highest = array(
+                            'product_id' => $product_id,
+                            'exchange_price' => $price,
+                            'price' => $productsCurrency[$product_id]['price'],
+                            'time' => $productsExchangeDate[$product_id]
+                        );
+                        break;
+                    }
+                }
+                $header = array('Date','Price','Price Exchange');
+                $data = array($header);
+                if(!empty($highest)){
+                    $rowParse = array();
+                    $rowParse[] = ($highest['time'] != null && $highest['time'] != '') ? date('d-m-Y',$highest['time']) : '';
                     $rowParse[] = $viewhelperManager->get('Price')->format($highest['price']);
                     $rowParse[] = $viewhelperManager->get('Price')->format($highest['exchange_price']);
                     $data[] = $rowParse;
