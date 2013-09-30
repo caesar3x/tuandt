@@ -359,7 +359,6 @@ function exportHistorical(productId)
     var countryId = $("#country-select").val();
     var recyclerId = $("#recycler-select").val();
     var multiRecyclerId = $("#recycler-multi-select").val();
-    var recyclerCountryId = $("#recycler-country-select").val();
     var url = '/product/export-historical/format/'+format+'/product/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
     if(searchBy.length > 0){
         url = url + 'search/' + searchBy;
@@ -371,15 +370,11 @@ function exportHistorical(productId)
             url = url + '/country/' + countryId;
         }
         if(searchBy == 'recycler'){
-            if(recyclerCountryId == 0 || recyclerCountryId == '0'){
-                bootbox.alert("You must select country");
-                return false;
-            }
             if(recyclerId == 0 || recyclerId == '0'){
                 bootbox.alert("You must select recycler");
                 return false;
             }
-            url = url + '/country/' + recyclerCountryId + '/recycler/' + recyclerId;
+            url = url + '/recycler/' + recyclerId;
         }
         if(searchBy == 'multi-recycler'){
             if(multiRecyclerId == null){
