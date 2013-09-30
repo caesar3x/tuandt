@@ -783,12 +783,15 @@ class ProductController extends AbstractActionController
             echo 'Can\'t load data';
             exit();
         }
-        $startTime = \DateTime::createFromFormat('d-m-Y H:i:s',$start.' 00:00:00');
+        $startTime1 = \DateTime::createFromFormat('d-m-Y H:i:s',$start.' 00:00:00');
+        $startTime = $startTime1->getTimestamp();
         if($end != null && $end != ''){
-            $endTime = \DateTime::createFromFormat('d-m-Y H:i:s',$end.' 00:00:00');
+            $endTime1 = \DateTime::createFromFormat('d-m-Y H:i:s',$end.' 00:00:00');
+            $endTime = $endTime1->getTimestamp();
         }else{
             $endTime = null;
         }
+
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
         $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
@@ -800,6 +803,8 @@ class ProductController extends AbstractActionController
         $view = new ViewModel();
         $view->setVariable('search',$searchBy);
         $view->setVariable('id',$id);
+        $view->setVariable('start',$startTime);
+        $view->setVariable('end',$endTime);
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
         $productsCurrency = array();
@@ -809,8 +814,17 @@ class ProductController extends AbstractActionController
                 $productsCurrency[$product->product_id] = array('country_id' => $countryId,'recycler_id' => $product->recycler_id,'currency' => $product->currency,'price' => $product->price);
             }
         }
+        /**
+         * Get the highest one
+         */
         $highest = array();
+        if(!empty($productsCurrency)){
+            $highest = $viewhelperManager->get('Product')->getHighestPrice($productsCurrency,$startTime,$endTime);
+        }
         if($searchBy == 'highest'){
+            $view->setVariable('highest',$highest);
+        }elseif($searchBy == 'country'){
+            $country = $this->params('country',0);
             $productsExchangePrice = array();
             $productsExchangeDate = array();
             $productsExchangeRate = array();
@@ -819,143 +833,164 @@ class ProductController extends AbstractActionController
                     /**
                      * Get echange rate in time range
                      */
-                    $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
-                    if(!empty($rowset)){
-                        $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
-                        $productsExchangeDate[$product_id] = $rowset->time;
-                        $productsExchangeRate[$product_id] = $rowset->exchange_rate;
-                    }else{
-                        $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
-                        if(!empty($currentExchange)){
-                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
-                            $productsExchangeDate[$product_id] = $currentExchange->time;
-                            $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
+                    if((int)$val['country_id'] == (int) $country){
+                        $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime,$endTime);
+                        if(!empty($rowset)){
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                            $productsExchangeDate[$product_id] = $rowset->time;
+                            $productsExchangeRate[$product_id] = $rowset->exchange_rate;
                         }else{
-                            $productsExchangePrice[$product_id] = (float)$val['price'];
-                            $productsExchangeDate[$product_id] = null;
-                            $productsExchangeRate[$product_id] = null;
+                            $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
+                            if(!empty($currentExchange)){
+                                $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangeDate[$product_id] = $currentExchange->time;
+                                $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
+                            }else{
+                                $productsExchangePrice[$product_id] = (float)$val['price'];
+                                $productsExchangeDate[$product_id] = null;
+                                $productsExchangeRate[$product_id] = null;
+                            }
                         }
                     }
                 }
                 arsort($productsExchangePrice);
+                $highestInCountry = array();
                 if(!empty($productsExchangePrice)){
                     foreach($productsExchangePrice as $product_id=>$price){
-                        $highest = array(
+                        $highestInCountry = array(
                             'product_id' => $product_id,
                             'exchange_price' => $price,
                             'price' => $productsCurrency[$product_id]['price'],
                             'currency' => $productsCurrency[$product_id]['currency'],
                             'time' => $productsExchangeDate[$product_id],
                             'exchange_rate' => $productsExchangeRate[$product_id],
+                            'country_id' => $country,
                             'recycler_id' => $productsCurrency[$product_id]['recycler_id']
                         );
                         break;
                     }
                 }
                 $view->setVariable('highest',$highest);
-            }
-        }elseif($searchBy == 'country'){
-            $country = $this->params('country',0);
-            if($country != 0){
-                $productsExchangePrice = array();
-                $productsExchangeDate = array();
-                foreach($productsCurrency as $product_id=>$val){
-                    if((int) $val['country_id'] == (int) $country){
-                        /**
-                         * Get echange rate in time range
-                         */
-                        $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
-                        if(!empty($rowset)){
-                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
-                            $productsExchangeDate[$product_id] = $rowset->time;
-                        }else{
-                            $productsExchangePrice[$product_id] = (float)$val['price'];
-                            $productsExchangeDate[$product_id] = null;
-                        }
-                    }
-                }
-                arsort($productsExchangePrice);
-                if(!empty($productsExchangePrice)){
-                    foreach($productsExchangePrice as $product_id=>$price){
-                        $highest = array(
-                            'product_id' => $product_id,
-                            'exchange_price' => $price,
-                            'price' => $productsCurrency[$product_id]['price'],
-                            'time' => $productsExchangeDate[$product_id]
-                        );
-                        break;
-                    }
-                }
-                $view->setVariable('highest',$highest);
+                $view->setVariable('highestInCountry',$highestInCountry);
             }
         }elseif($searchBy == 'recycler'){
-            $country = $this->params('country',0);
             $recycler_id = $this->params('recycler',0);
-            if($country != 0){
-                $productsExchangePrice = array();
-                $productsExchangeDate = array();
+            $productsExchangePrice = array();
+            $productsExchangeDate = array();
+            $productsExchangeRate = array();
+            if(!empty($productsCurrency)){
                 foreach($productsCurrency as $product_id=>$val){
-                    if((int) $val['country_id'] == (int) $country && (int) $val['recycler'] == (int) $recycler_id){
-                        /**
-                         * Get echange rate in time range
-                         */
-                        $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                    /**
+                     * Get echange rate in time range
+                     */
+                    if((int) $val['recycler_id'] == (int) $recycler_id){
+                        $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
                         if(!empty($rowset)){
-                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
-                            $productsExchangeDate[$product_id] = $rowset->time;
+                            foreach($rowset as $row){
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                $productsExchangeRate[$product_id][] = $row->exchange_rate;
+                                $productsExchangeDate[$product_id][] = $row->time;
+                            }
                         }else{
-                            $productsExchangePrice[$product_id] = (float)$val['price'];
-                            $productsExchangeDate[$product_id] = null;
+                            $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
+                            if(!empty($currentExchange)){
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
+                                $productsExchangeDate[$product_id][] = $currentExchange->time;
+                            }else{
+                                $productsExchangePrice[$product_id][] = (float)$val['price'];
+                                $productsExchangeRate[$product_id][] = null;
+                                $productsExchangeDate[$product_id][] = null;
+                            }
                         }
                     }
                 }
-                arsort($productsExchangePrice);
+                $highestInRecycler = array();
+                $chartFormat = array();
                 if(!empty($productsExchangePrice)){
-                    foreach($productsExchangePrice as $product_id=>$price){
-                        $highest[] = array(
-                            'product_id' => $product_id,
-                            'exchange_price' => $price,
-                            'price' => $productsCurrency[$product_id]['price'],
-                            'time' => $productsExchangeDate[$product_id]
-                        );
+                    foreach($productsExchangePrice as $product_id=>$rateArray){
+                        foreach($rateArray as $key=>$price){
+                            $highestInRecycler[] = array(
+                                'product_id' => $product_id,
+                                'exchange_price' => $price,
+                                'price' => $productsCurrency[$product_id]['price'],
+                                'currency' => $productsCurrency[$product_id]['currency'],
+                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'exchange_rate' => $productsExchangeRate[$product_id][$key],
+                                'country_id' => $productsCurrency[$product_id]['country_id'],
+                                'recycler_id' => $recycler_id
+                            );
+                            $chartFormat[$product_id][] = array(
+                                'exchange_price' => $price,
+                                'price' => $productsCurrency[$product_id]['price'],
+                                'currency' => $productsCurrency[$product_id]['currency'],
+                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'exchange_rate' => $productsExchangeRate[$product_id][$key],
+                                'country_id' => $productsCurrency[$product_id]['country_id'],
+                                'recycler_id' => $recycler_id
+                            );
+                        }
                     }
                 }
                 $view->setVariable('highest',$highest);
+                $view->setVariable('productsExchangePrice',$productsExchangePrice);
+                $view->setVariable('productsExchangeDate',$productsExchangeDate);
+                $view->setVariable('highestInRecycler',$highestInRecycler);
             }
         }elseif($searchBy == 'multi-recycler'){
             $ids = $request->getQuery('multirecycler',null);
             if(!empty($ids)){
-                foreach($ids as $recycler_id){
-                    if($recycler_id != 0){
-                        $productsExchangePrice = array();
-                        $productsExchangeDate = array();
-                        foreach($productsCurrency as $product_id=>$val){
-                            if((int) $val['recycler'] == (int) $recycler_id){
-                                /**
-                                 * Get echange rate in time range
-                                 */
-                                $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
-                                if(!empty($rowset)){
-                                    $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
-                                    $productsExchangeDate[$product_id] = $rowset->time;
+                $productsExchangePrice = array();
+                $productsExchangeDate = array();
+                $productsExchangeRate = array();
+                if(!empty($productsCurrency)){
+                    foreach($productsCurrency as $product_id=>$val){
+                        /**
+                         * Get echange rate in time range
+                         */
+                        if(in_array($val['recycler_id'],$ids)){
+                            $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
+                            if(!empty($rowset)){
+                                foreach($rowset as $row){
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                    $productsExchangeRate[$product_id][] = $row->exchange_rate;
+                                    $productsExchangeDate[$product_id][] = $row->time;
+                                }
+                            }else{
+                                $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
+                                if(!empty($currentExchange)){
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                    $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
+                                    $productsExchangeDate[$product_id][] = $currentExchange->time;
                                 }else{
-                                    $productsExchangePrice[$product_id] = (float)$val['price'];
-                                    $productsExchangeDate[$product_id] = null;
+                                    $productsExchangePrice[$product_id][] = (float)$val['price'];
+                                    $productsExchangeRate[$product_id][] = null;
+                                    $productsExchangeDate[$product_id][] = null;
                                 }
                             }
                         }
-                        arsort($productsExchangePrice);
-                        if(!empty($productsExchangePrice)){
-                            foreach($productsExchangePrice as $product_id=>$price){
-                                $highest[$recycler_id] = array(
+                    }
+                    $highestInRecycler = array();
+                    if(!empty($productsExchangePrice)){
+                        foreach($productsExchangePrice as $product_id=>$rateArray){
+                            foreach($rateArray as $key=>$price){
+                                $highestInRecycler[] = array(
                                     'product_id' => $product_id,
                                     'exchange_price' => $price,
                                     'price' => $productsCurrency[$product_id]['price'],
-                                    'time' => $productsExchangeDate[$product_id]
+                                    'currency' => $productsCurrency[$product_id]['currency'],
+                                    'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                    'exchange_rate' => $productsExchangeRate[$product_id][$key],
+                                    'country_id' => $productsCurrency[$product_id]['country_id'],
+                                    'recycler_id' => $productsCurrency[$product_id]['recycler_id']
                                 );
                             }
                         }
                     }
+                    $view->setVariable('productsExchangePrice',$productsExchangePrice);
+                    $view->setVariable('productsExchangeDate',$productsExchangeDate);
+                    $view->setVariable('highest',$highest);
+                    $view->setVariable('highestInRecycler',$highestInRecycler);
                 }
             }
         }

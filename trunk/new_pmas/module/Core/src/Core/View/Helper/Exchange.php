@@ -31,4 +31,25 @@ class Exchange extends AbstractHelper
         }
         return $data;
     }
+
+    /**
+     * @param $currency
+     * @param null $time
+     * @return null
+     */
+    public function getCurrentExchangeOfCurrency($currency,$time = null)
+    {
+        $exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
+        $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($currency,$time);
+        if(empty($currentExchange)){
+            return 1;
+        }
+        return (float) $currentExchange->exchange_rate;
+    }
+    public function getExchangeByCurrency($currency = null,$start = null,$end = null)
+    {
+        $exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
+        $exchanges = $exchangeTable->getExchangeByCurrency($currency,$start,$end);
+        return $exchanges;
+    }
 }
