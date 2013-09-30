@@ -813,6 +813,7 @@ class ProductController extends AbstractActionController
         if($searchBy == 'highest'){
             $productsExchangePrice = array();
             $productsExchangeDate = array();
+            $productsExchangeRate = array();
             if(!empty($productsCurrency)){
                 foreach($productsCurrency as $product_id=>$val){
                     /**
@@ -822,14 +823,17 @@ class ProductController extends AbstractActionController
                     if(!empty($rowset)){
                         $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
                         $productsExchangeDate[$product_id] = $rowset->time;
+                        $productsExchangeRate[$product_id] = $rowset->exchange_rate;
                     }else{
                         $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
                         if(!empty($currentExchange)){
                             $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
                             $productsExchangeDate[$product_id] = $currentExchange->time;
+                            $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
                         }else{
                             $productsExchangePrice[$product_id] = (float)$val['price'];
                             $productsExchangeDate[$product_id] = null;
+                            $productsExchangeRate[$product_id] = null;
                         }
                     }
                 }
@@ -841,7 +845,9 @@ class ProductController extends AbstractActionController
                             'exchange_price' => $price,
                             'price' => $productsCurrency[$product_id]['price'],
                             'currency' => $productsCurrency[$product_id]['currency'],
-                            'time' => $productsExchangeDate[$product_id]
+                            'time' => $productsExchangeDate[$product_id],
+                            'exchange_rate' => $productsExchangeRate[$product_id],
+                            'recycler_id' => $productsCurrency[$product_id]['recycler_id']
                         );
                         break;
                     }

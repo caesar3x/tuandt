@@ -29,9 +29,14 @@
                 <tr>
                     <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
                     <th><?php echo $this->translate('Date')?></th>
+                    <th><?php echo $this->translate('Model Name')?></th>
+                    <th><?php echo $this->translate('Condition')?></th>
+                    <th><?php echo $this->translate('Recycler Detail')?></th>
                     <th><?php echo $this->translate('Price')?></th>
                     <th><?php echo $this->translate('Currency')?></th>
+                    <th><?php echo $this->translate('Exchange Rate')?></th>
                     <th><?php echo $this->translate('Price in HKD')?></th>
+                    <th><?php echo $this->translate('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,12 +45,16 @@
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
                         <td><?php echo ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A'?></td>
+                        <td><?php echo $this->product()->getRecyclerProductName($highest['product_id'])?></td>
+                        <td><?php echo $this->product()->getRecyclerProductCondition($highest['product_id'])?></td>
+                        <td><?php echo $this->recycler()->getName($highest['recycler_id'])?></td>
                         <td><?php echo $this->price()->format($highest['price'])?></td>
                         <td><?php echo $highest['currency']?></td>
+                        <td><?php echo $highest['exchange_rate']?></td>
+                        <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
                         <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
                     </tr>
                 <?php endif;?>
-
                 </tbody>
             </table>
         </div>
