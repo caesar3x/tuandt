@@ -118,4 +118,13 @@ class Recycler extends AbstractHelper
         }
         return $data;
     }
+    public function getRecyclerDetail($recycler_id)
+    {
+        $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        if(!$recycler_id){
+            return null;
+        }
+        $entry = $recyclerTable->getEntry($recycler_id);
+
+    }
 }

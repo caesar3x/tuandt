@@ -9,6 +9,10 @@ use Zend\Db\Sql\Sql;
 
 class RecyclerProductTable extends AbstractModel
 {
+    /**
+     * @param $id
+     * @return array|\ArrayObject|null
+     */
     public function getEntry($id)
     {
         $id  = (int) $id;
