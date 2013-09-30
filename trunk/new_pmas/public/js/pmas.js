@@ -225,6 +225,7 @@ function loadExchangeData()
     var endTime = $("#end-time").val();
     var urlTableLoad = '/exchange/load-table/currency/'+currency+'/'+ 'start/'+startTime+'/end/'+endTime;
     var urlChartLoad = '/exchange/load-chart/currency/'+currency+'/'+ 'start/'+startTime+'/end/'+endTime;
+    $('a[href=#chart-view]').tab('show');
     $.get( urlTableLoad, function( data ) {
         $("#table-view").html(data);
     });
