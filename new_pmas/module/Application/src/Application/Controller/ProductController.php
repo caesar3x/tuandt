@@ -823,11 +823,16 @@ class ProductController extends AbstractActionController
                         $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
                         $productsExchangeDate[$product_id] = $rowset->time;
                     }else{
-                        $productsExchangePrice[$product_id] = (float)$val['price'];
-                        $productsExchangeDate[$product_id] = null;
+                        $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                        if(!empty($currentExchange)){
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                            $productsExchangeDate[$product_id] = $currentExchange->time;
+                        }else{
+                            $productsExchangePrice[$product_id] = (float)$val['price'];
+                            $productsExchangeDate[$product_id] = null;
+                        }
                     }
                 }
-                Debug::dump($productsExchangePrice);
                 arsort($productsExchangePrice);
                 if(!empty($productsExchangePrice)){
                     foreach($productsExchangePrice as $product_id=>$price){
@@ -841,7 +846,6 @@ class ProductController extends AbstractActionController
                         break;
                     }
                 }
-                Debug::dump($highest);
                 $view->setVariable('highest',$highest);
             }
         }elseif($searchBy == 'country'){
@@ -999,8 +1003,14 @@ class ProductController extends AbstractActionController
                         $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
                         $productsExchangeDate[$product_id] = $rowset->time;
                     }else{
-                        $productsExchangePrice[$product_id] = (float)$val['price'];
-                        $productsExchangeDate[$product_id] = null;
+                        $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime->getTimestamp(),$endTime->getTimestamp());
+                        if(!empty($currentExchange)){
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                            $productsExchangeDate[$product_id] = $currentExchange->time;
+                        }else{
+                            $productsExchangePrice[$product_id] = (float)$val['price'];
+                            $productsExchangeDate[$product_id] = null;
+                        }
                     }
                 }
                 arsort($productsExchangePrice);
@@ -1016,7 +1026,7 @@ class ProductController extends AbstractActionController
                         break;
                     }
                 }
-                $header = array('Date','Price','Price Exchange');
+                $header = array('Date','Price','Currency','Price Exchange');
                 $data = array($header);
                 if(!empty($highest)){
                     $rowParse = array();

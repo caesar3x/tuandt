@@ -124,6 +124,9 @@ class ExchangeTable extends AbstractModel
      */
     public function getExchangeByCurrency($currency = null,$start = null,$end = null)
     {
+        if($currency == null){
+            return null;
+        }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
@@ -148,6 +151,9 @@ class ExchangeTable extends AbstractModel
     }
     public function getHighestExchangeByCurrency($currency = null,$start = null,$end = null)
     {
+        if($currency == null){
+            return null;
+        }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
@@ -163,6 +169,35 @@ class ExchangeTable extends AbstractModel
             }
         }
         $select->order('exchange_rate DESC')->limit(1);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        $row = $result->current();
+        if(empty($row)){
+            return null;
+        }
+        return $row;
+    }
+    public function getCurrentExchangeOfCurrency($currency = null,$start = null,$end = null)
+    {
+        if($currency == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        if($currency != null){
+            if($start == null && $end == null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.time());
+            }elseif($start != null && $end == null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$start);
+            }elseif($end != null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$end);
+            }
+        }
+        $select->order('m.time DESC')->limit(1);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
