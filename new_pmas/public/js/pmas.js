@@ -285,7 +285,6 @@ function submitHistoricalModelPrice(productId)
     var countryId = $("#country-select").val();
     var recyclerId = $("#recycler-select").val();
     var multiRecyclerId = $("#recycler-multi-select").val();
-    var recyclerCountryId = $("#recycler-country-select").val();
     var url = '/product/historical/product/'+productId+'/start/'+startTime+'/end/'+endTime+'/';
     if(searchBy.length > 0){
         url = url + 'search/' + searchBy;
@@ -297,15 +296,11 @@ function submitHistoricalModelPrice(productId)
             url = url + '/country/' + countryId;
         }
         if(searchBy == 'recycler'){
-            if(recyclerCountryId == 0 || recyclerCountryId == '0'){
-                bootbox.alert("You must select country");
-                return false;
-            }
             if(recyclerId == 0 || recyclerId == '0'){
                 bootbox.alert("You must select recycler");
                 return false;
             }
-            url = url + '/country/' + recyclerCountryId + '/recycler/' + recyclerId;
+            url = url + '/recycler/' + recyclerId;
         }
         if(searchBy == 'multi-recycler'){
             if(multiRecyclerId == null){
@@ -318,6 +313,7 @@ function submitHistoricalModelPrice(productId)
             url = url + '?' + urlParams;
         }
     }
+    $('a[href=#table-view]').tab('show');
     $("#search-result").html('<div class="form-group" style="text-align: center;"><img src="/images/loading.gif" width="48px" style="width: 48px;"></div>');
     $("#search-result").load(url);
     return true;

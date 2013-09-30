@@ -29,9 +29,27 @@ class ExchangeTable extends AbstractModel
     public function save(Exchange $entry)
     {
         $data = (array) $entry;
-        return $this->tableGateway->insert($data);
+        if($this->checkExistExchange($data) == false){
+            return $this->tableGateway->insert($data);
+        }else{
+            return 0;
+        }
     }
-
+    public function checkExistExchange($data)
+    {
+        if(!empty($data)){
+            $rowset = $this->tableGateway->select(array(
+                'currency' => $data['currency'],
+                'exchange_rate' => $data['exchange_rate'],
+                'time' => $data['time'],
+            ));
+            $row = $rowset->current();
+            if(!$row){
+                return false;
+            }
+            return true;
+        }
+    }
     /**
      * @return null|\Zend\Db\ResultSet\ResultSet
      */
@@ -141,7 +159,7 @@ class ExchangeTable extends AbstractModel
                 $select->where('m.currency = \''.$currency.'\' AND m.time >= '.$start.' AND m.time <= '.$end);
             }
         }
-        $select->order('exchange_rate DESC')->limit(1);
+        $select->order('exchange_rate DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
@@ -160,15 +178,15 @@ class ExchangeTable extends AbstractModel
         if($currency != null){
             if($start == null && $end == null){
                 $select->where('m.currency = \''.$currency.'\'');
+            }elseif($start != null && $end != null){
+                $select->where('m.currency = \''.$currency.'\' AND m.time BETWEEN '.$start.' AND '.$end);
             }elseif($start != null && $end == null){
                 $select->where('m.currency = \''.$currency.'\' AND m.time >= '.$start);
             }elseif($start == null && $end != null){
                 $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$end);
-            }elseif($start != null && $end != null){
-                $select->where('m.currency = \''.$currency.'\' AND m.time >= '.$start.' AND m.time <= '.$end);
             }
         }
-        $select->order('exchange_rate DESC')->limit(1);
+        $select->order('exchange_rate DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
@@ -180,7 +198,7 @@ class ExchangeTable extends AbstractModel
         }
         return $row;
     }
-    public function getCurrentExchangeOfCurrency($currency = null,$start = null,$end = null)
+    public function getCurrentExchangeOfCurrency($currency = null,$time = null)
     {
         if($currency == null){
             return null;
@@ -189,12 +207,10 @@ class ExchangeTable extends AbstractModel
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
         if($currency != null){
-            if($start == null && $end == null){
+            if($time == null){
                 $select->where('m.currency = \''.$currency.'\' AND m.time <= '.time());
-            }elseif($start != null && $end == null){
-                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$start);
-            }elseif($end != null){
-                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$end);
+            }else{
+                $select->where('m.currency = \''.$currency.'\' AND m.time <= '.$time);
             }
         }
         $select->order('m.time DESC')->limit(1);
