@@ -42,4 +42,6 @@ return array(
     'FORMAT_IMPORT_INVALID'         => 'Format of import file invalid',
     'RESOURCE_NAME_NOT_EMPTY'       => 'Resource name does not empty',
     'PATH_EXIST'                    => 'Resource path existed',
+    'ROLE_NAME_NOT_EMPTY'           => 'Role name does not empty',
+    'ROLE_NAME_EXISTED'             => 'Role name existed',
 );

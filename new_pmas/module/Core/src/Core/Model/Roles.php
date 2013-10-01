@@ -9,7 +9,7 @@ class Roles
 {
     public $role_id;
     public $created_at;
-    public $update_at;
+    public $updated_at;
     public $hidden;
     public $deleted;
     public $sort_order;
@@ -17,11 +17,12 @@ class Roles
     public $role;
     public $name;
     public $resource_ids;
+
     public function exchangeArray($data)
     {
         $this->role_id     = (isset($data['role_id'])) ? $data['role_id'] : 0;
         $this->created_at = (isset($data['created_at'])) ? $data['created_at'] : time();
-        $this->update_at = (isset($data['update_at'])) ? $data['update_at'] : time();
+        $this->updated_at = (isset($data['updated_at'])) ? $data['updated_at'] : time();
         $this->hidden = (isset($data['hidden'])) ? $data['hidden'] : 0;
         $this->deleted = (isset($data['deleted'])) ? $data['deleted'] : 0;
         $this->sort_order = (isset($data['sort_order'])) ? $data['sort_order'] : 0;

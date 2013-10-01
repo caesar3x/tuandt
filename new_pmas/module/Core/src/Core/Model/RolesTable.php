@@ -21,17 +21,7 @@ class RolesTable extends AbstractModel
     }
     public function save(Roles $entry)
     {
-        $data = array(
-            'created_at' => $entry->created_at,
-            'update_at' => $entry->update_at,
-            'hidden' => $entry->hidden,
-            'deleted'  => $entry->deleted,
-            'sort_order'  => $entry->sort_order,
-            'parent_id'  => $entry->parent_id,
-            'role'  => $entry->role,
-            'name'  => $entry->name,
-            'resource_ids'  => $entry->resource_ids
-        );
+        $data = (array) $entry;
 
         $id = (int)$entry->role_id;
         if ($id == 0) {

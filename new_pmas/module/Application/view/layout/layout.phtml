@@ -11,6 +11,7 @@
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath() . '/css/style.css')
+                        ->prependStylesheet($this->basePath() . '/css/chosen.min.css')
                         ->prependStylesheet($this->basePath() . '/css/colorbox.css')
                         ->prependStylesheet($this->basePath() . '/css/jqplot/jquery.jqplot.min.css')
                         ->prependStylesheet($this->basePath() . '/css/jquery-ui-1.10.3.custom.css')
@@ -20,6 +21,7 @@
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->prependFile($this->basePath() . '/js/pmas.js')
+            ->prependFile($this->basePath() . '/js/chosen.jquery.min.js')
             ->prependFile($this->basePath() . '/js/jquery.colorbox-min.js')
             ->prependFile($this->basePath() . '/js/jqplot/plugins/jqplot.cursor.min.js')
             ->prependFile($this->basePath() . '/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js')
