@@ -153,7 +153,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                 <th><?php echo $this->translate('TDM Product Name')?></th>
                                 <th><?php echo $this->translate('TDM Base Price')?></th>
                                 <th><?php echo $this->translate('TDM Currency')?></th>
-                                <th class="col-save"><?php echo $this->translate('Action')?></th>
+                                <th><?php echo $this->translate('Action')?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -174,7 +174,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                         <td>N/A</td>
                                         <td>N/A</td>
                                     <?php endif;?>
-                                    <td class="col-save">
+                                    <td>
                                         <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->translate('Edit')?></a>
                                     </td>
                                 </tr>
@@ -198,7 +198,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
                                         <td>N/A</td>
                                         <td>N/A</td>
                                     <?php endif;?>
-                                    <td class="col-save">
+                                    <td>
                                         <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
                                             <i class="glyphicon glyphicon-save"></i>
                                             <?php echo $this->translate('Save')?>
