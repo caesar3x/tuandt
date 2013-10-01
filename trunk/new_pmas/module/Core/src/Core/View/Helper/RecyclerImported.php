@@ -41,7 +41,7 @@ class RecyclerImported extends AbstractHelper
     public function getTdmProductWithSameModel($model)
     {
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
-        $row = $tdmProductTable->getRowByModel($model);
+        $row = $tdmProductTable->getRowByModel(trim($model));
         return $row;
     }
 }
