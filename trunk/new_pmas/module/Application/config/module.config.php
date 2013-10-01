@@ -65,6 +65,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Role' => 'Application\Controller\RoleController',
             'Application\Controller\Admin' => 'Application\Controller\AdminController',
             'Application\Controller\Recycler' => 'Application\Controller\RecyclerController',
             'Application\Controller\Product' => 'Application\Controller\ProductController',
