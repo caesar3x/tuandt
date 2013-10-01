@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 10/1/13
+ */
+?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
+<?php echo $this->form()->openTag($form);?>
+<?php echo $this->formRow($form->get('resource_id'));?>
+<?php echo $this->formRow($form->get('csrf'));?>
+<?php echo $this->formRow($form->get('continue'));?>
+<?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+<div class="page-header">
+    <div class="pull-left">
+        <h3><?php echo $this->translate('Add Resource')?></h3>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-sm btn-default add-item" href="/resource"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save and Continue')?></a>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Resource Information
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <div class="control-label"><span class="pull-right">Resource Name : </span></div>
+            </div>
+            <div class="col-md-4">
+                <?php echo $this->formRow($form->get('name'));?>
+            </div>
+        </div>
+        <div class="form-group form-row row">
+            <div class="col-md-3">
+                <div class="control-label"><span class="pull-right">Resource Path : </span></div>
+            </div>
+            <div class="col-md-4">
+                <?php echo $this->formRow($form->get('path'));?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag();?>

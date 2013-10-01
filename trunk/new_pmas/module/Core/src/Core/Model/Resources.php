@@ -13,6 +13,7 @@ class Resources
     public $sort_order;
     public $name;
     public $path;
+
     public function exchangeArray($data)
     {
         $this->resource_id     = (isset($data['resource_id'])) ? $data['resource_id'] : 0;

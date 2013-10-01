@@ -19,13 +19,7 @@ class ResourcesTable extends AbstractModel
     }
     public function save(Resources $entry)
     {
-        $data = array(
-            'hidden' => $entry->hidden,
-            'deleted' => $entry->deleted,
-            'sort_order' => $entry->sort_order,
-            'name'  => $entry->name,
-            'path'  => $entry->path,
-        );
+        $data = (array) $entry;
 
         $id = (int)$entry->resource_id;
         if ($id == 0) {
@@ -50,5 +44,14 @@ class ResourcesTable extends AbstractModel
             return null;
         }
         return $rowset;
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function deleteEntry($id)
+    {
+        return $this->tableGateway->update(array('deleted' => 1),array('resource_id' => $id));
     }
 }
