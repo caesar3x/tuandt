@@ -40,4 +40,6 @@ return array(
     'PRODUCT_TYPE_NOT_SELECTED'     => 'You must select product type',
     'FORMAT_EXPORT_INVALID'         => 'Format of export file invalid',
     'FORMAT_IMPORT_INVALID'         => 'Format of import file invalid',
+    'RESOURCE_NAME_NOT_EMPTY'       => 'Resource name does not empty',
+    'PATH_EXIST'                    => 'Resource path existed',
 );
