@@ -381,7 +381,7 @@ class Module
         foreach($avaiableResources as $r){
             $resourcesData[$r->group][] = $r->path;
         }
-        $results = $rolesTable->fetchAll();
+        $results = $rolesTable->getAvaiableRoles();
         $roles = array();
         foreach($results as $row){
             if(!empty($row->resource_ids) && $row->resource_ids != ''){
