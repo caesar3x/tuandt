@@ -353,6 +353,12 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'menu' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\Menu();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
             ),
         );
     }
@@ -377,7 +383,9 @@ class Module
                 if(!empty($resource_groups)){
                     foreach($resource_groups as $resource_group){
                         if(array_key_exists($resource_group,$resourcesData)){
-                            $roles[$row->role] = $resourcesData[$resource_group];
+                            foreach($resourcesData[$resource_group] as $resource_item){
+                                $roles[$row->role][] = $resource_item;
+                            }
                         }
                     }
                 }

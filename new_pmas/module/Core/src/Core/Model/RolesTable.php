@@ -47,6 +47,21 @@ class RolesTable extends AbstractModel
         }
         return;
     }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    public function getResourcesById($id)
+    {
+        if($entry = $this->getEntry($id)){
+            return $entry->resource_ids;
+        }
+        return null;
+    }
+    /**
+     * @return null|\Zend\Db\ResultSet\ResultSet
+     */
     public function getAvaiableRoles()
     {
         $rowset = $this->tableGateway->select(array('hidden' => 0,'deleted' => 0));
