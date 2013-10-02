@@ -46,22 +46,26 @@ class ResourceForm extends Form
             'class' => 'form-control'
         ));
         $group->setValueOptions($this->getGroups());
+        $user_define = new Hidden('user_define');
+        $user_define->setValue(1);
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
-        $this->add($id)->add($name)->add($path)->add($continue)->add($group)->add($csrf);
+        $this->add($id)->add($name)->add($path)->add($continue)->add($user_define)->add($group)->add($csrf);
     }
     protected function getGroups()
     {
         $groupArray = array(
             0 => 'Select Group',
             'user' => 'Manage Users',
+            'resource' => 'Manage Resources',
             'tdm-product' => 'Manage TDM Products',
+            'recycler' => 'Manage Recyclers',
             'recycler-product' => 'Manage Recycler Products',
             'country' => 'Manage Countries',
             'brand' => 'Manage Brands',
             'tdm-condition' => 'Manage TDM Conditions',
             'recycler-condition' => 'Manage Recycler Conditions',
-            'exchange' => 'Manage Exchange',
+            'exchange' => 'Manage Exchanges',
             'product-type' => 'Manage Product Types'
         );
         return $groupArray;

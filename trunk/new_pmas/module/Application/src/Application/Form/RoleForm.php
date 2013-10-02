@@ -40,14 +40,14 @@ class RoleForm extends Form
             'id' => 'role',
             'class' => 'form-control'
         ));
-        $resources = new Select('resources');
+        $resources = new Select('groups');
         $resources->setAttributes(array(
-            'id' => 'resources',
+            'id' => 'groups',
             'class' => 'form-control chosen-select',
             'multiple' => 'multiple',
             'data-placeholder' => 'Choose Resources'
         ));
-        $resources->setValueOptions($this->getResources());
+        $resources->setValueOptions($this->getGroups());
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
         $this->add($id)->add($name)->add($role)->add($resources)->add($continue)->add($csrf);
@@ -67,5 +67,22 @@ class RoleForm extends Form
             }
         }
         return $data;
+    }
+    protected function getGroups()
+    {
+        $groupArray = array(
+            'user' => 'Manage Users',
+            'resource' => 'Manage Resources',
+            'tdm-product' => 'Manage TDM Products',
+            'recycler' => 'Manage Recyclers',
+            'recycler-product' => 'Manage Recycler Products',
+            'country' => 'Manage Countries',
+            'brand' => 'Manage Brands',
+            'tdm-condition' => 'Manage TDM Conditions',
+            'recycler-condition' => 'Manage Recycler Conditions',
+            'exchange' => 'Manage Exchanges',
+            'product-type' => 'Manage Product Types'
+        );
+        return $groupArray;
     }
 }

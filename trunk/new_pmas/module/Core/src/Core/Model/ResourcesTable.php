@@ -54,4 +54,5 @@ class ResourcesTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('resource_id' => $id));
     }
+
 }
