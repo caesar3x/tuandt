@@ -29,6 +29,7 @@
                 <th><?php echo $this->translate('ID')?></th>
                 <th><?php echo $this->translate('Name')?></th>
                 <th><?php echo $this->translate('Path')?></th>
+                <th><?php echo $this->translate('Define')?></th>
                 <th class="action"><?php echo $this->translate('Action')?></th>
             </tr>
             </thead>
@@ -40,6 +41,7 @@
                         <td><?php echo $row->resource_id?></td>
                         <td><?php echo $row->name?></td>
                         <td><?php echo $row->path?></td>
+                        <td><?php if($row->user_define){echo 'User';}else{echo 'System';}?></td>
                         <td class="action">
                             <a class="btn btn-xs btn-primary btn-edit" href="/resource/edit/id/<?php echo $row->resource_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
