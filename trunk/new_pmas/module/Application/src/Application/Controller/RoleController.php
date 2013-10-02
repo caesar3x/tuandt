@@ -102,7 +102,7 @@ class RoleController extends AbstractActionController
         $form = new RoleForm($this->getServiceLocator());
         $view->setVariable('form',$form);
         $id = $this->params('id',0);
-        if($id == 0){
+        if($id == 0 || (int) $id == 5){
             $this->getResponse()->setStatusCode(404);
         }
         $view->setVariable('id',$id);
@@ -175,5 +175,37 @@ class RoleController extends AbstractActionController
         $roles = new Roles();
         $roles->exchangeArray($dataFinale);
         return $rolesTable->save($roles);
+    }
+    public function deleteAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $id = $this->params('id',0);
+        $rolesTable = $this->getServiceLocator()->get('RolesTable');
+        if( (int) $id == 5)
+        {
+            return $this->redirect()->toUrl('/role');
+        }
+        if($id != 0){
+            $this->deleteRole($id,$rolesTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteRole($id,$rolesTable);
+            }
+        }
+        return $this->redirect()->toUrl('/role');
+    }
+    protected function deleteRole($id,$table)
+    {
+        $messages = $this->getMessages();
+        $result = $table->deleteEntry($id);
+        if($result){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+        return true;
     }
 }

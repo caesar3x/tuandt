@@ -56,7 +56,9 @@ class ResourceForm extends Form
     {
         $groupArray = array(
             0 => 'Select Group',
+            'io' => 'Manage Login/Logout',
             'user' => 'Manage Users',
+            'role' => 'Manage Roles',
             'resource' => 'Manage Resources',
             'tdm-product' => 'Manage TDM Products',
             'recycler' => 'Manage Recyclers',

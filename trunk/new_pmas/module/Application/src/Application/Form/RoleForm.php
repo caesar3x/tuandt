@@ -71,7 +71,9 @@ class RoleForm extends Form
     protected function getGroups()
     {
         $groupArray = array(
+            'io' => 'Manage Login/Logout',
             'user' => 'Manage Users',
+            'role' => 'Manage Roles',
             'resource' => 'Manage Resources',
             'tdm-product' => 'Manage TDM Products',
             'recycler' => 'Manage Recyclers',

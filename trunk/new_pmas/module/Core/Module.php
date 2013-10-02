@@ -367,17 +367,22 @@ class Module
         $avaiableResources = $resourcesTable->getAvaiableResources();
         $resourcesData = array();
         foreach($avaiableResources as $r){
-            $resourcesData[$r->resource_id] = $r->path;
+            $resourcesData[$r->group][] = $r->path;
         }
         $results = $rolesTable->fetchAll();
         $roles = array();
         foreach($results as $row){
-            $resource_ids = unserialize($row->resource_ids);
-            if(!empty($resource_ids)){
-                foreach($resource_ids as $resource_id){
-                    $roles[$row->role][] = $resourcesData[$resource_id];
+            if(!empty($row->resource_ids) && $row->resource_ids != ''){
+                $resource_groups = unserialize($row->resource_ids);
+                if(!empty($resource_groups)){
+                    foreach($resource_groups as $resource_group){
+                        if(array_key_exists($resource_group,$resourcesData)){
+                            $roles[$row->role] = $resourcesData[$resource_group];
+                        }
+                    }
                 }
             }
+
         }
         foreach ($roles as $role => $resources) {
 

@@ -5,6 +5,7 @@
  */
 namespace Core\View\Helper;
 
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
 class Resource extends AbstractHelper
@@ -12,8 +13,9 @@ class Resource extends AbstractHelper
     protected $serviceLocator;
 
     public $groupArray = array(
-        'io' => 'Login/Logout',
+        'io' => 'Manage Login/Logout',
         'user' => 'Manage Users',
+        'role' => 'Manage Roles',
         'resource' => 'Manage Resources',
         'tdm-product' => 'Manage TDM Products',
         'recycler' => 'Manage Recyclers',
