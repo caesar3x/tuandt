@@ -7,6 +7,7 @@ namespace Application\Form;
 
 use Zend\Form\Element\Csrf;
 use Zend\Form\Element\Hidden;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -39,8 +40,30 @@ class ResourceForm extends Form
             'id' => 'name',
             'class' => 'form-control'
         ));
+        $group = new Select('group');
+        $group->setAttributes(array(
+            'id' => 'group',
+            'class' => 'form-control'
+        ));
+        $group->setValueOptions($this->getGroups());
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
-        $this->add($id)->add($name)->add($path)->add($continue)->add($csrf);
+        $this->add($id)->add($name)->add($path)->add($continue)->add($group)->add($csrf);
+    }
+    protected function getGroups()
+    {
+        $groupArray = array(
+            0 => 'Select Group',
+            'user' => 'Manage Users',
+            'tdm-product' => 'Manage TDM Products',
+            'recycler-product' => 'Manage Recycler Products',
+            'country' => 'Manage Countries',
+            'brand' => 'Manage Brands',
+            'tdm-condition' => 'Manage TDM Conditions',
+            'recycler-condition' => 'Manage Recycler Conditions',
+            'exchange' => 'Manage Exchange',
+            'product-type' => 'Manage Product Types'
+        );
+        return $groupArray;
     }
 }

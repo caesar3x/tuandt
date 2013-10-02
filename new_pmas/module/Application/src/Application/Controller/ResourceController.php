@@ -56,6 +56,12 @@ class ResourceController extends AbstractActionController
             $post = $request->getPost()->toArray();
             $continue = $post['continue'];
             $form->setData($post);
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['group'])){
+                $view->setVariable('msg',array('danger' => $messages['RESOURCE_GROUP_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
             /**
              * Check empty
              */
@@ -121,6 +127,12 @@ class ResourceController extends AbstractActionController
             $post = $request->getPost()->toArray();
             $continue = $post['continue'];
             $form->setData($post);
+            $select_empty = new NotEmpty(array('integer','zero'));
+            if(!$select_empty->isValid($post['group'])){
+                $view->setVariable('msg',array('danger' => $messages['RESOURCE_GROUP_NOT_SELECTED']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
             /**
              * Check empty
              */

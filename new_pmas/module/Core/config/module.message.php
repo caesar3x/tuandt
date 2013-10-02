@@ -44,4 +44,5 @@ return array(
     'PATH_EXIST'                    => 'Resource path existed',
     'ROLE_NAME_NOT_EMPTY'           => 'Role name does not empty',
     'ROLE_NAME_EXISTED'             => 'Role name existed',
+    'RESOURCE_GROUP_NOT_SELECTED'   => 'Please select resource group',
 );
