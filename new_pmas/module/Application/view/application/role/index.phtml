@@ -40,7 +40,9 @@
                         <td><?php echo $row->role_id?></td>
                         <td><?php echo $row->role?></td>
                         <td><?php echo $row->name?></td>
+
                         <td class="action">
+                            <?php if((int)$row->role_id != 5 ):?>
                             <a class="btn btn-xs btn-primary btn-edit" href="/role/edit/id/<?php echo $row->role_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <?php echo $this->translate('Edit') ?>
@@ -49,7 +51,9 @@
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <?php echo $this->translate('Delete') ?>
                             </a>
+                            <?php endif;?>
                         </td>
+
                     </tr>
                 <?php endforeach;?>
             <?php endif;?>

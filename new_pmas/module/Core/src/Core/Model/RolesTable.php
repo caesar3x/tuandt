@@ -55,4 +55,12 @@ class RolesTable extends AbstractModel
         }
         return $rowset;
     }
+    /**
+     * @param $id
+     * @return int
+     */
+    public function deleteEntry($id)
+    {
+        return $this->tableGateway->update(array('deleted' => 1),array('role_id' => $id));
+    }
 }
