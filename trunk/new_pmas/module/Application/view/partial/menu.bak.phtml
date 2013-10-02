@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 9/12/13
+ */
+?>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav nav-top">
+                <?php foreach ($this->container as $page): ?>
+                    <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
+                    <?php // when using partials we need to manually check for ACL conditions ?>
+                    <?php if( ! $page->isVisible() || !$this->navigation()->accept($page)) continue; ?>
+                    <?php $hasChildren = $page->hasPages() ?>
+                    <?php if( ! $hasChildren): ?>
+                        <li class="<?php if($page->isActive()){echo 'active';}?>">
+                            <a class="nav-header" href="<?php echo $page->getHref() ?>">
+                                <?php echo $this->translate($page->getLabel()) ?>
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="dropdown <?php if($page->isActive()){echo 'active';}?>">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span><?php echo $this->translate($page->getLabel()) ?></span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <?php foreach($page->getPages() as $child): ?>
+                                    <?php // when using partials we need to manually check for ACL conditions ?>
+                                    <?php if( ! $child->isVisible() || !$this->navigation()->accept($child)) continue; ?>
+                                    <li>
+                                        <a href="<?php echo $child->getHref() ?>">
+                                            <?php echo $this->translate($child->getLabel()) ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach ?>
+                            </ul>
+                        </li>
+
+                    <?php endif ?>
+                <?php endforeach ?>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div>
+</nav>

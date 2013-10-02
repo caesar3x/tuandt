@@ -4,44 +4,197 @@
  * Date: 9/12/13
  */
 ?>
+<?php
+$role = $this->menu()->getRole();
+$groups = $this->menu()->getResourceGroups();
+?>
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav nav-top">
-                <?php foreach ($this->container as $page): ?>
-                    <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
-                    <?php // when using partials we need to manually check for ACL conditions ?>
-                    <?php if( ! $page->isVisible() || !$this->navigation()->accept($page)) continue; ?>
-                    <?php $hasChildren = $page->hasPages() ?>
-                    <?php if( ! $hasChildren): ?>
-                        <li class="<?php if($page->isActive()){echo 'active';}?>">
-                            <a class="nav-header" href="<?php echo $page->getHref() ?>">
-                                <?php echo $this->translate($page->getLabel()) ?>
-                            </a>
+            <?php if($role == 'super_admin'):?>
+                <ul class="nav navbar-nav nav-top">
+                    <li class="">
+                        <a href="/index/" class="nav-header">
+                            Dashboard </a>
+                    </li>
+                    <li class="">
+                        <a href="/recycler/" class="nav-header">
+                            Recycler </a>
+                    </li>
+                    <li class="">
+                        <a href="/product/" class="nav-header">
+                            TDM Model </a>
+                    </li>
+                    <li class="dropdown ">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            <span>Exchange Rate</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/exchange/">
+                                    Historical Exchange Date </a>
+                            </li>
+                            <li>
+                                <a href="/exchange/update/">
+                                    Update Exchange Rate </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown ">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            <span>System</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/user/">
+                                    Manage Users </a>
+                            </li>
+                            <li>
+                                <a href="/role/">
+                                    Manage Roles </a>
+                            </li>
+                            <li>
+                                <a href="/resource/">
+                                    Manage Resources </a>
+                            </li>
+                            <li>
+                                <a href="/exchange/country/">
+                                    Manage Countries </a>
+                            </li>
+                            <li>
+                                <a href="/condition/tdm/">
+                                    TDM Condition Management </a>
+                            </li>
+                            <li>
+                                <a href="/condition/recycler/">
+                                    Recycler Condition Management </a>
+                            </li>
+                            <li>
+                                <a href="/product/type/">
+                                    Product Type Management </a>
+                            </li>
+                            <li>
+                                <a href="/product/brand/">
+                                    Brand Management </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="">
+                        <a href="/help/" class="nav-header">
+                            Help </a>
+                    </li>
+                </ul>
+            <?php else:?>
+                <ul class="nav navbar-nav nav-top">
+                    <li class="">
+                        <a href="/index/" class="nav-header">
+                            Dashboard </a>
+                    </li>
+                    <?php if(!empty($groups)):?>
+                    <?php if(in_array('recycler',$groups)):?>
+                        <li class="">
+                            <a href="/recycler/" class="nav-header">
+                                Recycler </a>
                         </li>
-                    <?php else: ?>
-                        <li class="dropdown <?php if($page->isActive()){echo 'active';}?>">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span><?php echo $this->translate($page->getLabel()) ?></span>
+                    <?php endif;?>
+                    <?php if(in_array('tdm-product',$groups)):?>
+                        <li class="">
+                            <a href="/product/" class="nav-header">
+                                TDM Model </a>
+                        </li>
+                    <?php endif;?>
+                    <?php if(in_array('exchange',$groups)):?>
+                        <li class="dropdown ">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <span>Exchange Rate</span>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <?php foreach($page->getPages() as $child): ?>
-                                    <?php // when using partials we need to manually check for ACL conditions ?>
-                                    <?php if( ! $child->isVisible() || !$this->navigation()->accept($child)) continue; ?>
-                                    <li>
-                                        <a href="<?php echo $child->getHref() ?>">
-                                            <?php echo $this->translate($child->getLabel()) ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach ?>
+                                <li>
+                                    <a href="/exchange/">
+                                        Historical Exchange Date </a>
+                                </li>
+                                <li>
+                                    <a href="/exchange/update/">
+                                        Update Exchange Rate </a>
+                                </li>
                             </ul>
                         </li>
+                    <?php endif;?>
+                    <?php if(in_array('user',$groups) || in_array('role',$groups) || in_array('resource',$groups)
+                            || in_array('country',$groups) || in_array('tdm-condition',$groups) || in_array('recycler-condition',$groups)
+                            || in_array('product-type',$groups) || in_array('brand',$groups)):?>
+                        <li class="dropdown ">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <span>System</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <?php if(in_array('user',$groups)):?>
+                                    <li>
+                                        <a href="/user/">
+                                            Manage Users </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('role',$groups)):?>
+                                    <li>
+                                        <a href="/role/">
+                                            Manage Roles </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('resource',$groups)):?>
+                                    <li>
+                                        <a href="/resource/">
+                                            Manage Resources </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('country',$groups)):?>
+                                    <li>
+                                        <a href="/exchange/country/">
+                                            Manage Countries </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('tdm-condition',$groups)):?>
+                                    <li>
+                                        <a href="/condition/tdm/">
+                                            TDM Condition Management </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('recycler-condition',$groups)):?>
+                                    <li>
+                                        <a href="/condition/recycler/">
+                                            Recycler Condition Management </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('product-type',$groups)):?>
+                                    <li>
+                                        <a href="/product/type/">
+                                            Product Type Management </a>
+                                    </li>
+                                <?php endif;?>
+                                <?php if(in_array('brand',$groups)):?>
+                                    <li>
+                                        <a href="/product/brand/">
+                                            Brand Management </a>
+                                    </li>
+                                <?php endif;?>
+                            </ul>
+                        </li>
+                    <?php endif;?>
+                    <?php endif;?>
 
-                    <?php endif ?>
-                <?php endforeach ?>
-            </ul>
+                    <li class="">
+                        <a href="/help/" class="nav-header">
+                            Help </a>
+                    </li>
+                </ul>
+            <?php endif;?>
+
         </div><!-- /.navbar-collapse -->
     </div>
 </nav>
