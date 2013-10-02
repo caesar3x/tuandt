@@ -156,7 +156,7 @@ class RoleController extends AbstractActionController
             }
         }else{
             $entryArray = (array) $entry;
-            $entryArray['resources'] = unserialize($entry->resource_ids);
+            $entryArray['groups'] = unserialize($entry->resource_ids);
             $form->setData($entryArray);
         }
         return $view;
@@ -169,8 +169,8 @@ class RoleController extends AbstractActionController
         if($data['name'] && $data['name'] != ''){
             $dataFinale['role'] = $viewhelperManager->get('Slugify')->implement($data['name']);
         }
-        if($data['resources']){
-            $dataFinale['resource_ids'] = serialize($data['resources']);
+        if($data['groups']){
+            $dataFinale['resource_ids'] = serialize($data['groups']);
         }
         $roles = new Roles();
         $roles->exchangeArray($dataFinale);

@@ -14,13 +14,15 @@ class Resource extends AbstractHelper
     public $groupArray = array(
         'io' => 'Login/Logout',
         'user' => 'Manage Users',
+        'resource' => 'Manage Resources',
         'tdm-product' => 'Manage TDM Products',
+        'recycler' => 'Manage Recyclers',
         'recycler-product' => 'Manage Recycler Products',
         'country' => 'Manage Countries',
         'brand' => 'Manage Brands',
         'tdm-condition' => 'Manage TDM Conditions',
         'recycler-condition' => 'Manage Recycler Conditions',
-        'exchange' => 'Manage Exchange',
+        'exchange' => 'Manage Exchanges',
         'product-type' => 'Manage Product Types'
     );
     public function setServiceLocator(ServiceManager $serviceLocator)
@@ -29,6 +31,10 @@ class Resource extends AbstractHelper
     }
     public function parseGroupName($group)
     {
-
+        if(array_key_exists($group,$this->groupArray)){
+            return $this->groupArray[$group];
+        }else{
+            return null;
+        }
     }
 }
