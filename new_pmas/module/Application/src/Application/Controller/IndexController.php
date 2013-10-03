@@ -45,7 +45,6 @@ class IndexController extends AbstractActionController
         $this->auth();
         $cache = CacheSerializer::init();
         $popular = $cache->getItem('popular');
-        Debug::dump($popular);
         $view = new ViewModel();
         $view->setVariable('popular',$popular);
         return $view;

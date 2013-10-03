@@ -1408,6 +1408,7 @@ class ProductController extends AbstractActionController
     public function popularAction()
     {
         $this->auth();
+        $cache = CacheSerializer::init();
         $request = $this->getRequest();
         if($request->isPost())
         {
@@ -1421,13 +1422,14 @@ class ProductController extends AbstractActionController
                 return $this->redirect()->toUrl('/product/popular');
             }
             $data = $post;
-            $cache = CacheSerializer::init();
             $cache->removeItem('popular');
             $cache->addItem('popular',$data);
             $this->flashMessenger()->setNamespace('success')->addMessage('Update popular products success');
             return $this->redirect()->toUrl('/product/popular');
         }
         $view = new ViewModel();
+        $popular = $cache->getItem('popular');
+        $view->setVariable('popular',$popular);
         return $view;
     }
 }

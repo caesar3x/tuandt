@@ -4,6 +4,19 @@
  * Date: 10/2/13
  */
 ?>
+<?php
+$popular = $this->popular;
+if($popular){
+    $start = $popular['start'];
+    $end = $popular['end'];
+    $ps = $popular['products'];
+}
+else{
+    $start = '';
+    $end = '';
+    $ps = array(0);
+}
+?>
 <div class="page-header">
     <div class="pull-left">
         <h3><?php echo $this->translate('Set Popular Products')?></h3>
@@ -31,14 +44,14 @@
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon">Start time</span>
-                        <input id="start-time" name="start" class="form-control datepicker">
+                        <input id="start-time" name="start" class="form-control datepicker" value="<?php echo $start?>">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon">End time</span>
-                        <input id="end-time" name="end" class="form-control datepicker">
+                        <input id="end-time" name="end" class="form-control datepicker" value="<?php echo $end?>">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
@@ -52,7 +65,7 @@
                         <?php $products = $this->product()->getAllTdmProducts();?>
                         <?php if(!empty($products)):?>
                             <?php foreach($products as $row):?>
-                                <option value="<?php echo $row->product_id?>"><?php echo $row->name;?></option>
+                                <option <?php if(in_array($row->product_id,$ps)){echo 'selected';}?> value="<?php echo $row->product_id?>"><?php echo $row->name;?></option>
                             <?php endforeach;?>
                         <?php endif;?>
                         <?php ?>
