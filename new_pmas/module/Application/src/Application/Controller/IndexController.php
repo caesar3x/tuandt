@@ -43,6 +43,11 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $this->auth();
-        return new ViewModel();
+        $cache = CacheSerializer::init();
+        $popular = $cache->getItem('popular');
+        Debug::dump($popular);
+        $view = new ViewModel();
+        $view->setVariable('popular',$popular);
+        return $view;
     }
 }
