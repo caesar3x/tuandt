@@ -52,6 +52,11 @@ class Product extends AbstractHelper
         }
         return $entry->model;
     }
+
+    /**
+     * @param $product_id
+     * @return null
+     */
     public function getRecyclerProductCurrency($product_id)
     {
         if($product_id == null || $product_id == 0){
@@ -64,6 +69,23 @@ class Product extends AbstractHelper
         }
         return null;
     }
+
+    /**
+     * @param $product_id
+     * @return null
+     */
+    public function getTdmProductCurrency($product_id)
+    {
+        if($product_id == null || $product_id == 0){
+            return null;
+        }
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $entry = $tdmProductTable->getEntry($product_id);
+        if(!empty($entry)){
+            return $entry->currency;
+        }
+        return null;
+    }
     public function getRecyclerProductPrice($product_id)
     {
         if($product_id == null || $product_id == 0){
@@ -71,6 +93,23 @@ class Product extends AbstractHelper
         }
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         $entry = $recyclerProductTable->getEntry($product_id);
+        if(!empty($entry)){
+            return  (float) $entry->price;
+        }
+        return null;
+    }
+
+    /**
+     * @param $product_id
+     * @return float|null
+     */
+    public function getTdmProductPrice($product_id)
+    {
+        if($product_id == null || $product_id == 0){
+            return null;
+        }
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $entry = $tdmProductTable->getEntry($product_id);
         if(!empty($entry)){
             return  (float) $entry->price;
         }
@@ -151,5 +190,15 @@ class Product extends AbstractHelper
             }
         }
         return $highest;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllTdmProducts()
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $products = $tdmProductTable->getAvaiableRows();
+        return $products;
     }
 }

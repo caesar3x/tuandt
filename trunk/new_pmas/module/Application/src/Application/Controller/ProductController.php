@@ -12,6 +12,7 @@ use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
 use Core\Model\Brand;
+use Core\Model\CacheSerializer;
 use Core\Model\Product;
 use Core\Model\ProductType;
 use Core\Model\SlugFile;
@@ -1403,5 +1404,30 @@ class ProductController extends AbstractActionController
         }
         echo $html;
         exit();
+    }
+    public function popularAction()
+    {
+        $this->auth();
+        $request = $this->getRequest();
+        if($request->isPost())
+        {
+            $post = $request->getPost()->toArray();
+            if(empty($post['start']) || $post['start'] == ''){
+                $this->flashMessenger()->setNamespace('error')->addMessage('Please set start time');
+                return $this->redirect()->toUrl('/product/popular');
+            }
+            if(empty($post['products']) || $post['products'] == ''){
+                $this->flashMessenger()->setNamespace('error')->addMessage('Please select products');
+                return $this->redirect()->toUrl('/product/popular');
+            }
+            $data = $post;
+            $cache = CacheSerializer::init();
+            $cache->removeItem('popular');
+            $cache->addItem('popular',$data);
+            $this->flashMessenger()->setNamespace('success')->addMessage('Update popular products success');
+            return $this->redirect()->toUrl('/product/popular');
+        }
+        $view = new ViewModel();
+        return $view;
     }
 }

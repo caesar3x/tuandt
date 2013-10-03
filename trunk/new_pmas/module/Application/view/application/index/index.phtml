@@ -96,10 +96,108 @@
                 <div class="panel-body">
                     <span>Popular product model price fluctuation diagram</span>
                     <div id="chart-demo" class="chart-demo">
-                        <div id="chart1" style="height:300px; width:600px;"></div>
+                        <div id="chart-dashboard">
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?php
+$popular = $this->popular;
+if(!empty($popular['products'])){
+    $start = \DateTime::createFromFormat('d-m-Y',$popular['start']);
+    $startTime = $start->getTimestamp();
+    if($this->end == ''){
+        $endTime = time();
+    }else{
+        $end = \DateTime::createFromFormat('d-m-Y',$popular['end']);
+        $endTime = $end->getTimestamp();
+    }
+    $data = array();
+    foreach($popular['products'] as $_p){
+        $currency = $this->product()->getTdmProductCurrency($_p);
+        $price = $this->product()->getTdmProductPrice($_p);
+        $exchangeAtStart = $this->exchange()->getCurrentExchangeOfCurrency($currency,$startTime);
+        $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
+        $exchangeRates = $this->exchange()->getExchangeByCurrency($currency,$startTime,$endTime);
+
+        $data[$_p][] = array(
+            'price' => $price*$exchangeAtStart,
+            'time' => date('Y-m-d',$startTime)
+        );
+        $data[$_p][] = array(
+            'price' => $price*$exchangeAtEnd,
+            'time' => date('Y-m-d',$endTime)
+        );
+        if(!empty($exchangeRates)){
+            foreach($exchangeRates as $exchange){
+                $rate = (float) $exchange->exchange_rate;
+                $data[$_p][] = array(
+                    'price' => $price*$rate,
+                    'time' => date('Y-m-d',$exchange->time)
+                );
+            }
+        }
+    }
+    ?>
+    <script type="text/javascript">
+        $(function(){
+            /**
+             * Exchange Rate chart
+             */
+                <?php if(!empty($data)):?>
+            var lines = new Array();
+            <?php foreach($data as $line=>$val):?>
+            var line<?php echo $line?> = new Array();
+            <?php if(!empty($val)):?>
+            <?php foreach($val as $index=>$row):?>
+            var item<?php echo $index?> = new Array();
+            item<?php echo $index?>.push('<?php echo $row['time']?>');
+            item<?php echo $index?>.push(<?php echo $row['price']?>);
+            line<?php echo $line?>.push(item<?php echo $index?>);
+            <?php endforeach;?>
+            <?php endif;?>
+            lines.push(line<?php echo $line?>);
+            <?php endforeach;?>
+            var seriesLabels = [
+                <?php if(!empty($data)):?>
+                <?php foreach($data as $line=>$val):?>
+                {'label': '<?php echo $this->product()->getRecyclerProductName($line)?>' },
+                <?php endforeach;?>
+                <?php endif;?>
+            ];
+            var plot100 = $.jqplot('chart-dashboard', lines, {
+                title:'Popular Products',
+                axes:{
+                    xaxis:{
+                        renderer:$.jqplot.DateAxisRenderer
+                    },
+                    yaxis:{
+                        tickOptions:{
+                            formatString:'%.2f'
+                        }
+                    }
+                },
+                series:seriesLabels,
+                highlighter: {
+                    show: true,
+                    sizeAdjust: 10,
+                    tooltipContentEditor: function(str, seriesIndex, pointIndex, plot){
+                        return seriesLabels[seriesIndex].label + ': ' + str;
+                    },
+                    tooltipAxes: 'y'
+                },
+                cursor: {
+                    show: false
+                }
+            });
+            <?php endif;?>
+        });
+    </script>
+<?php
+}
+
+?>

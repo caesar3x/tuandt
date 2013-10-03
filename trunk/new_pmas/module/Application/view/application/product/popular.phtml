@@ -1,0 +1,76 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 10/2/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h3><?php echo $this->translate('Set Popular Products')?></h3>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-success btn-sm add-item" onclick="formSave('popular-form');">
+            <i class="glyphicon glyphicon-saved"></i>
+            <?php echo $this->translate('Save')?>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Select Products
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form id="popular-form" action="<?php echo $this->currentUrl();?>" enctype="multipart/form-data" method="post">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <div class="control-label pull-right">Set time : </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Start time</span>
+                        <input id="start-time" name="start" class="form-control datepicker">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">End time</span>
+                        <input id="end-time" name="end" class="form-control datepicker">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <div class="control-label pull-right">Select Products : </div>
+                </div>
+                <div class="col-md-6">
+                    <select multiple data-placeholder="Choose Products" class="chosen-select form-group" name="products[]">
+                        <?php $products = $this->product()->getAllTdmProducts();?>
+                        <?php if(!empty($products)):?>
+                            <?php foreach($products as $row):?>
+                                <option value="<?php echo $row->product_id?>"><?php echo $row->name;?></option>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                        <?php ?>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var config = {
+        '.chosen-select'           : {},
+        '.chosen-select-deselect'  : {allow_single_deselect:true},
+        '.chosen-select-no-single' : {disable_search_threshold:10},
+        '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+        '.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+</script>
