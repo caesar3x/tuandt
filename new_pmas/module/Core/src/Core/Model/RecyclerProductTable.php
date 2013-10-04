@@ -183,7 +183,23 @@ class RecyclerProductTable extends AbstractModel
         }
         return $rowset;
     }
-
+    public function getProductsByModel($model,$limit)
+    {
+        if(!$model || $model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->where(array('m.deleted' => 0,'m.model' => trim($model)));
+        $select->limit($limit);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * @param $model
      * @return $result

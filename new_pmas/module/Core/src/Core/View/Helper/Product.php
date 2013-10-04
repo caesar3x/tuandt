@@ -201,4 +201,10 @@ class Product extends AbstractHelper
         $products = $tdmProductTable->getAvaiableRows();
         return $products;
     }
+    public function getRecyclerProductsByModel($model,$limit = 3)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        $rowset = $recyclerProductTable->getProductsByModel($model,$limit);
+        return $rowset;
+    }
 }

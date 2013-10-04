@@ -60,6 +60,7 @@
                 <th><?php echo $this->translate('Recycler 2')?></th>
                 <th><?php echo $this->translate('Price 2')?></th>
                 <th><?php echo $this->translate('Percentage 2')?></th>
+                <th><?php echo $this->translate('Recycler 3')?></th>
                 <th><?php echo $this->translate('Price 3')?></th>
                 <th><?php echo $this->translate('Percentage 3')?></th>
                 <th class="action3"><?php echo $this->translate('Action')?></th>
@@ -74,14 +75,64 @@
                         <td><?php echo $row->name?></td>
                         <td><?php echo $this->productType($row->type_id)?></td>
                         <td><?php echo $this->productBrand($row->brand_id)?></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <?php
+                        $model = $row->model;
+                        $price = (float) $row->price;
+                        $tdmCurrentExchange = $this->exchange()->getCurrentExchangeOfCurrency($row->currency);
+                        $tdmPriceExchange = $price*$tdmCurrentExchange;
+                        $data = array();
+                        if($model != null && $model != ''){
+                            $recyclerProducts = $this->product()->getRecyclerProductsByModel($model);
+                            if(!empty($recyclerProducts)){
+                                foreach($recyclerProducts as $rp){
+                                    $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
+                                    $priceExchange = (float) $rp->price * $currentExchange;
+                                    if($tdmPriceExchange != 0){
+                                        $percentage = ($priceExchange/$tdmPriceExchange)*100;
+                                    }else{
+                                        $percentage = 'N/A';
+                                    }
+                                    $data[] = array(
+                                        'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                        'price' => $priceExchange,
+                                        'percentag' => $percentage
+                                    );
+                                }
+                            }
+                        }
+                        ?>
+                        <?php if(!empty($data)):?>
+                        <?php $i=0;foreach($data as $item):?>
+                            <td><?php echo $item['recycler']?></td>
+                            <td><?php echo $this->price()->format($item['price'])?></td>
+                            <td><?php echo $this->price()->format($item['percentag']).' %'?></td>
+                            <?php $i++;?>
+                        <?php endforeach;?>
+                        <?php if($i==1):?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php elseif($i==2):?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php endif;?>
+                        <?php ?>
+                        <?php else:?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php endif;?>
+                        <?php ?>
                         <td class="action3">
                             <a class="btn btn-xs btn-primary btn-edit" href="/product/detail/id/<?php echo $row->product_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
