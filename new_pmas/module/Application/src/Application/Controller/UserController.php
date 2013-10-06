@@ -100,6 +100,12 @@ class UserController extends AbstractActionController
                         return $this->redirect()->toUrl('/user');
                     }
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         $view->setVariable('form',$form);
@@ -168,9 +174,10 @@ class UserController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                    $view->setVariable('msg',array('danger' => $msg));
                 }
-                return $this->redirect()->toUrl('/user');
+                $view->setVariable('form',$form);
+                return $view;
             }
         }else{
             $entryArray = (array) $entry;

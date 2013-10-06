@@ -91,6 +91,12 @@ class CountryController extends AbstractController
                 }else{
                     return $this->redirectUrl('/exchange/country');
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $this->setViewVariable('msg',array('danger' => $msg));
+                }
+                $this->setViewVariable('form',$form);
+                return $this->view;
             }
         }
         return $this->view;

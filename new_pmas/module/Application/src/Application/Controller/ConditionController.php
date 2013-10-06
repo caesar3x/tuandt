@@ -114,6 +114,12 @@ class ConditionController extends AbstractActionController
 
                     return $this->redirect()->toUrl('/condition/tdm/id/'.$tdmConditionTable->getLastInsertValue());
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;
@@ -287,6 +293,12 @@ class ConditionController extends AbstractActionController
 
                     return $this->redirect()->toUrl('/condition/recycler/id/'.$recyclerConditionTable->getLastInsertValue());
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;
