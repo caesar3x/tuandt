@@ -28,6 +28,7 @@ use Zend\Cache\Storage\Plugin\Serializer;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
+use Zend\Validator\EmailAddress;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
@@ -79,6 +80,20 @@ class RecyclerController extends AbstractActionController
             $empty = new NotEmpty();
             if(!$empty->isValid($post['name'])){
                 $view->setVariable('msg',array('danger' => $messages['RECYCLER_NAME_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            /**
+             * Check empty
+             */
+            if(!$empty->isValid($post['email'])){
+                $view->setVariable('msg',array('danger' => $messages['RECYCLER_EMAIL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
+            $emailAddress = new EmailAddress();
+            if(!$emailAddress->isValid($post['email'])){
+                $view->setVariable('msg',array('danger' => $messages['RECYCLER_EMAIL_INVALID']));
                 $view->setVariable('form',$form);
                 return $view;
             }
