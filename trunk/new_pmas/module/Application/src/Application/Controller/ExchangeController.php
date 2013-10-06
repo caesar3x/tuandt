@@ -105,6 +105,12 @@ class ExchangeController extends AbstractActionController
                 }else{
                     return $this->redirect()->toUrl('/exchange');
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         $view->setVariable('form',$form);
@@ -197,6 +203,12 @@ class ExchangeController extends AbstractActionController
 
                     return $this->redirect()->toUrl('/exchange/country/id/'.$countryTable->getLastInsertValue());
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;

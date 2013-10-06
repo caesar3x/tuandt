@@ -119,9 +119,10 @@ class RecyclerController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                    $view->setVariable('msg',array('danger' => $msg));
                 }
-                return $this->redirect()->toUrl('/recycler');
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         $view->setVariable('form',$form);
@@ -198,9 +199,10 @@ class RecyclerController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                    $view->setVariable('msg',array('danger' => $msg));
                 }
-                return $this->redirect()->toUrl('/recycler');
+                $view->setVariable('form',$form);
+                return $view;
             }
         }else{
             $entryArray = (array) $entry;

@@ -223,6 +223,12 @@ class ProductController extends AbstractActionController
                         return $this->redirect()->toUrl('/product');
                     }
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }else{
             $entryArray = (array) $entry;
@@ -349,9 +355,10 @@ class ProductController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($msg);
+                    $view->setVariable('msg',array('danger' => $msg));
                 }
-                return $this->redirect()->toUrl('/product');
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         $view->setVariable('form',$form);
@@ -539,6 +546,12 @@ class ProductController extends AbstractActionController
 
                     return $this->redirect()->toUrl('/product/type/id/'.$productTypeTable->getLastInsertValue());
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;
@@ -670,6 +683,12 @@ class ProductController extends AbstractActionController
 
                     return $this->redirect()->toUrl('/product/brand/id/'.$brandTable->getLastInsertValue());
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;

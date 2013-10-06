@@ -89,6 +89,12 @@ class RoleController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
                     return $this->redirect()->toUrl('/role/add');
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }
         return $view;
@@ -153,6 +159,12 @@ class RoleController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     return $this->redirect()->toUrl('/role/edit/id/'.$id);
                 }
+            }else{
+                foreach($form->getMessages() as $msg){
+                    $view->setVariable('msg',array('danger' => $msg));
+                }
+                $view->setVariable('form',$form);
+                return $view;
             }
         }else{
             $entryArray = (array) $entry;
