@@ -164,6 +164,11 @@ class ExchangeController extends AbstractActionController
                 $view->setVariable('form',$form);
                 return $view;
             }
+            if(!$empty->isValid($post['symbol'])){
+                $view->setVariable('msg',array('danger' => $messages['SYMBOL_NOT_EMPTY']));
+                $view->setVariable('form',$form);
+                return $view;
+            }
             /**
              * check country exist
              */

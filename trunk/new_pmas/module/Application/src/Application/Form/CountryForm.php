@@ -7,6 +7,7 @@ namespace Application\Form;
 
 use Zend\Form\Element\Csrf;
 use Zend\Form\Element\Hidden;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -36,8 +37,22 @@ class CountryForm extends Form
             'id' => 'currency',
             'class' => 'form-control'
         ));
+        $symbol = new Text('symbol');
+        $symbol->setAttributes(array(
+            'id' => 'symbol',
+            'class' => 'form-control',
+        ));
+        $position = new Select('position');
+        $position->setAttributes(array(
+            'id' => 'position',
+            'class' => 'form-control',
+        ));
+        $position->setValueOptions(array(
+            'before' => 'Before',
+            'after' => 'After'
+        ));
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
-        $this->add($id)->add($name)->add($currency)->add($csrf);
+        $this->add($id)->add($name)->add($symbol)->add($position)->add($currency)->add($csrf);
     }
 }
