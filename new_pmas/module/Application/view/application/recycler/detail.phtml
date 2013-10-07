@@ -6,7 +6,15 @@
 ?>
 <?php
 $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
+$upload = $this->upload;
 ?>
+<?php if($upload == 'success'):?>
+    <script type="text/javascript">
+        $(function(){
+            $('a[href=#product-model]').tab('show');
+        });
+    </script>
+<?php endif;?>
 <?php $form = $this->form;?>
 <?php $form->setAttribute('action', $this->currentUrl());?>
 <?php $form->prepare();?>
