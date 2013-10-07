@@ -232,6 +232,7 @@ class RecyclerController extends AbstractActionController
             $productsInRecycler = $reyclerProductTable->getProductsByRecycler($id);
             $view->setVariable('tmpProducts',$tmpProducts);
             $view->setVariable('products',$productsInRecycler);
+            $view->setVariable('upload',$upload);
         }
         $view->setVariable('form',$form);
         return $view;
@@ -416,7 +417,7 @@ class RecyclerController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                 return $this->redirect()->toUrl('/recycler');
             }
-            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id.'/upload/sucess');
+            return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id.'/upload/success');
         }else{
             return $this->redirect()->toUrl('/recycler');
         }
