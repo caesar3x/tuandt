@@ -392,18 +392,29 @@ class RecyclerController extends AbstractActionController
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/recycler');
                 }
+                $header = array();
+                $first = $dataImport[0];
+                foreach($first as $index=>$value){
+                    $header[$index] = $viewhelperManager->get('slugify')->implement($value);
+                }
+                /**
+                 * If header null, return
+                 */
+                if(empty($header)){
+                    exit();
+                }
                 foreach($dataImport as $i=>$row){
                     if($i>0){
                         $rowParse = array();
                         $rowParse['recycler_id'] = $recycler_id;
-                        $rowParse['brand_id'] = ($viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0])) != null) ? $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[0])) : 0;
-                        $rowParse['model'] = $row[1];
-                        $rowParse['type_id'] = ($viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2])) != null) ? $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[2])) : 0;
-                        $rowParse['country_id'] = ($viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) != null) ? $viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) : 0;
-                        $rowParse['price'] = $row[4];
-                        $rowParse['currency'] = $row[5];
-                        $rowParse['name'] = $row[6];
-                        $rowParse['condition_id'] = ($viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7])) != null) ? $viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[7])) : 0;
+                        $rowParse['brand_id'] = ($viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
+                        $rowParse['model'] = $row[array_search('model',$header)];
+                        $rowParse['type_id'] = ($viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
+                        /*$rowParse['country_id'] = ($viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) != null) ? $viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) : 0;*/
+                        $rowParse['price'] = $row[array_search('price',$header)];
+                        $rowParse['currency'] = $row[array_search('currency',$header)];
+                        $rowParse['name'] = $row[array_search('name',$header)];
+                        $rowParse['condition_id'] = ($viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) != null) ? $viewhelperManager->get('Condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) : 0;
                         $tmpProduct->exchangeArray($rowParse);
                         $tmpProductTable->save($tmpProduct);
                     }
@@ -673,7 +684,7 @@ class RecyclerController extends AbstractActionController
                 $rowParse[] = $priceHelper->format($row->price);
                 $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
-                $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
+                $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id,false);
                 $data[] = $rowParse;
             }
         }
