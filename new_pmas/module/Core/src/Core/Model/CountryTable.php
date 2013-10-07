@@ -133,4 +133,42 @@ class CountryTable extends AbstractModel
         }
         return true;
     }
+    public function getEntryByCurrency($currency)
+    {
+        if(!$currency || $currency == null){
+            return null;
+        }
+        $rowset = $this->tableGateway->select(array('currency' => $currency,'deleted' => 0));
+        $row = $rowset->current();
+        if(!$row){
+            return null;
+        }
+        return $row;
+    }
+    /**
+     * Get symbol by currency
+     * @param $currency
+     * @return string
+     */
+    public function getSymbolByCurrency($currency)
+    {
+        $entry = $this->getEntryByCurrency($currency);
+        if(!empty($entry)){
+            return $entry->symbol;
+        }
+        return null;
+    }
+
+    /**
+     * @param $currency
+     * @return string
+     */
+    public function getPositionByCurrency($currency)
+    {
+        $entry = $this->getEntryByCurrency($currency);
+        if(!empty($entry)){
+            return $entry->position;
+        }
+        return null;
+    }
 }
