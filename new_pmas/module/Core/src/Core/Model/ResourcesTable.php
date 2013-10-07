@@ -55,4 +55,20 @@ class ResourcesTable extends AbstractModel
         return $this->tableGateway->update(array('deleted' => 1),array('resource_id' => $id));
     }
 
+    /**
+     * @param $path
+     * @return array|\ArrayObject|null
+     */
+    public function getEntryByPath($path)
+    {
+        if(!$path || $path == null){
+            return null;
+        }
+        $rowset = $this->tableGateway->select(array('path' => $path,'deleted' => 0));
+        $row = $rowset->current();
+        if(!$row){
+            return null;
+        }
+        return $row;
+    }
 }

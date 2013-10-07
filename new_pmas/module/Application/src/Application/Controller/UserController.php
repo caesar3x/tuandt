@@ -248,4 +248,51 @@ class UserController extends AbstractActionController
         }
         /*return $this->redirect()->toUrl('/user');*/
     }
+    public function viewLogAction()
+    {
+        $this->auth();
+        $messages = $this->getMessages();
+        $id = $this->params('id',0);
+        if($id == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $usermetaTable = $this->getServiceLocator()->get('UsermetaTable');
+        $logs = $usermetaTable->getUserLog($id);
+        $view = new ViewModel();
+        $view->setVariable('logs',$logs);
+        $view->setVariable('id',$id);
+        return $view;
+    }
+    public function deleteLogAction()
+    {
+        $this->auth();
+        $id = $this->params('id',0);
+        $request = $this->getRequest();
+        $ids = $request->getPost('ids');
+        $user = $this->params('user',0);
+        $usermetaTable = $this->getServiceLocator()->get('UsermetaTable');
+        if($id != 0){
+            $this->deleteLog($id,$usermetaTable);
+        }
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->deleteLog($id,$usermetaTable);
+            }
+        }
+        if($user == 0){
+            return $this->redirect()->toUrl('/user');
+        }else{
+            return $this->redirect()->toUrl('/user/view-log/user/id/'.$user);
+        }
+
+    }
+    protected function deleteLog($id,$table)
+    {
+        $messages = $this->getMessages();
+        if($table->deleteEntry($id)){
+            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+        }else{
+            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+        }
+    }
 }

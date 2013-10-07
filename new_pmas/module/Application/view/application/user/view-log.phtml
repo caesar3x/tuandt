@@ -1,0 +1,57 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Date: 10/7/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2><?php echo $this->username($this->id) ?></h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-default btn-sm add-item" href="/user/detail/id/<?php echo $this->id?>">
+            <i class="glyphicon glyphicon-plus"></i>
+            <?php echo $this->translate('Back') ?>
+        </a>
+        <a onclick="formConfirm('user-log');" class="btn btn-danger btn-sm add-item">
+            <i class="glyphicon glyphicon-trash"></i>
+            <?php echo $this->translate('Delete selected') ?>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="row">
+    <form id="user-log" action="/user/delete-log/user/<?php echo $this->id?>" method="post" enctype="multipart/form-data">
+        <table class="display table table-striped table-condensed table-bordered" id="example" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                <th><?php echo $this->translate('ID')?></th>
+                <th><?php echo $this->translate('Resource Name')?></th>
+                <th><?php echo $this->translate('Time')?></th>
+                <th><?php echo $this->translate('Note')?></th>
+                <th class="action"><?php echo $this->translate('Action')?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($this->logs)):?>
+                <?php foreach($this->logs as $row):?>
+                    <tr>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->meta_id?>"></td>
+                        <td><?php echo $row->meta_id?></td>
+                        <td><?php echo $this->user()->getResourceName($row->meta_value)?></td>
+                        <td><?php echo date('d-m-Y H:i:s',$row->time)?></td>
+                        <td><?php if($this->user()->is_serialized($row->note)){print_r(unserialize($row->note));}else{echo $row->note;}?></td>
+                        <td class="action">
+                            <a class="btn btn-sm btn-danger" onclick="confirmDelete('/user/delete-log/user/<?php echo $this->id?>/id/<?php echo $row->meta_id?>')">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <?php echo $this->translate('Delete') ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            <?php endif;?>
+            </tbody>
+        </table>
+    </form>
+</div>

@@ -68,6 +68,10 @@ class LoginController extends AbstractActionController
                 null,
                 'password'
             ));
+            /**
+             * Log user
+             */
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\login\\auth','Authenticate Success');
             $this->flashMessenger()->setNamespace('success')->addMessage('Login success.');
             return $this->redirect()->toUrl('/index');
         }else{

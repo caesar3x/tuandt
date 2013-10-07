@@ -33,7 +33,7 @@
                 <th><?php echo $this->translate('Email')?></th>
                 <th><?php echo $this->translate('Created at')?></th>
                 <th><?php echo $this->translate('Status')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
+                <th class="action4"><?php echo $this->translate('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -48,7 +48,11 @@
                         <td><?php echo $row->email?></td>
                         <td><?php echo date('Y-m-d H:i:s',$row->created_at)?></td>
                         <td><?php echo ((int)$row->status == 1) ? 'Activated' : 'Disabled';?></td>
-                        <td class="action">
+                        <td class="action4">
+                            <a class="btn btn-xs btn-primary btn-info" href="/user/view-log/id/<?php echo $row->id?>">
+                                <i class="glyphicon glyphicon-book"></i>
+                                <?php echo $this->translate('View log') ?>
+                            </a>
                             <a class="btn btn-xs btn-primary btn-edit" href="/user/detail/id/<?php echo $row->id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <?php echo $this->translate('Edit') ?>
