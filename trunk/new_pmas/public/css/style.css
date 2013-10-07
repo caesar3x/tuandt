@@ -53,6 +53,7 @@ div.container a.brand {
 #model-view-tabs li{list-style: none;}
 table th.action,table td.action{width: 135px !important;}
 table th.action3,table td.action3{width: 180px !important;}
+table th.action4,table td.action4{width: 210px !important;}
 .alert{padding: 5px 15px;}
 form .alert{max-width: 800px;margin: 0 auto;}
 .alert ul li{list-style: none;}

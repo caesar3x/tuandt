@@ -35,6 +35,8 @@ use Core\Model\TdmProductConditionTable;
 use Core\Model\TdmProductTable;
 use Core\Model\TmpProduct;
 use Core\Model\TmpProductTable;
+use Core\Model\Usermeta;
+use Core\Model\UsermetaTable;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -241,6 +243,18 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new Exchange());
                     return new TableGateway('exchange', $dbAdapter, null, $resultSetPrototype);
                 },
+                'UsermetaTable' => function($sm) {
+                    $tableGateway = $sm->get('UsermetaTableGateway');
+                    $table = new UsermetaTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'UsermetaTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Usermeta());
+                    return new TableGateway('usermeta', $dbAdapter, null, $resultSetPrototype);
+                },
             ),
         );
     }
@@ -362,6 +376,12 @@ class Module
                 'resource' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\Resource();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'user' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\UserHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
