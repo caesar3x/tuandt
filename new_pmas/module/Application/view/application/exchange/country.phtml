@@ -44,6 +44,18 @@
                         </div>
                         <div class="col-md-9"><?php echo $this->formRow($form->get('currency'));?></div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <div class="control-label"><span>Symbol*</span></div>
+                        </div>
+                        <div class="col-md-9"><?php echo $this->formRow($form->get('symbol'));?></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <div class="control-label"><span>Position*</span></div>
+                        </div>
+                        <div class="col-md-9"><?php echo $this->formRow($form->get('position'));?></div>
+                    </div>
                 </div>
             </div>
             <?php echo $this->form()->closeTag();?>
@@ -74,6 +86,8 @@
                         <th><?php echo $this->translate('ID')?></th>
                         <th><?php echo $this->translate('Name')?></th>
                         <th><?php echo $this->translate('Currency')?></th>
+                        <th><?php echo $this->translate('Symbol')?></th>
+                        <th><?php echo $this->translate('Position')?></th>
                         <th class="action"><?php echo $this->translate('Action')?></th>
                     </tr>
                     </thead>
@@ -85,6 +99,8 @@
                                 <td><?php echo $row->country_id?></td>
                                 <td><?php echo $row->name?></td>
                                 <td><?php echo $row->currency?></td>
+                                <td><?php echo $row->symbol?></td>
+                                <td><?php echo ucfirst($row->position)?></td>
                                 <td class="action">
                                     <a class="btn btn-xs btn-warning btn-edit" href="/exchange/country/id/<?php echo $row->country_id?>">
                                         <i class="glyphicon glyphicon-edit"></i>
@@ -134,9 +150,21 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <div class="control-label"><span>Currency</span></div>
+                                <div class="control-label"><span>Currency*</span></div>
                             </div>
                             <div class="col-md-9"><?php echo $this->formRow($form->get('currency'));?></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Symbol*</span></div>
+                            </div>
+                            <div class="col-md-9"><?php echo $this->formRow($form->get('symbol'));?></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="control-label"><span>Position*</span></div>
+                            </div>
+                            <div class="col-md-9"><?php echo $this->formRow($form->get('position'));?></div>
                         </div>
                     </div>
                 </div>

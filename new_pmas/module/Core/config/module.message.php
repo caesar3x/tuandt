@@ -47,4 +47,5 @@ return array(
     'RESOURCE_GROUP_NOT_SELECTED'   => 'Please select resource group',
     'RECYCLER_EMAIL_NOT_EMPTY'      => 'Recycler email can not be empty',
     'RECYCLER_EMAIL_INVALID'        => 'Recycler email is invalid',
+    'SYMBOL_NOT_EMPTY'              => 'Symbol can not be empty',
 );

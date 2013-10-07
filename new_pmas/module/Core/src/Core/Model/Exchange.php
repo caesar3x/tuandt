@@ -14,8 +14,8 @@ class Exchange
     public function exchangeArray($data)
     {
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : null;
-        $this->country_id     = (isset($data['country_id'])) ? $data['country_id'] : 0;
-        $this->exchange_rate     = (isset($data['exchange_rate'])) ? $data['exchange_rate'] : 0;
+        $this->country_id     = (isset($data['country_id'])) ? (int) $data['country_id'] : 0;
+        $this->exchange_rate     = (isset($data['exchange_rate'])) ? (float)$data['exchange_rate'] : 0;
         $this->time     = (isset($data['time'])) ? $data['time'] : time();
     }
 }
