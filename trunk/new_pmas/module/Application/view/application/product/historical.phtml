@@ -53,11 +53,11 @@
                         <td><?php echo $this->product()->getRecyclerProductName($highest['product_id'])?></td>
                         <td><?php echo $this->product()->getRecyclerProductCondition($highest['product_id'])?></td>
                         <td><?php echo $this->recycler()->getRecyclerDetail($highest['recycler_id'])?></td>
-                        <td><?php echo $this->price()->format($highest['price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($highest['price'],$highest['currency'])?></td>
                         <td><?php echo $highest['currency']?></td>
                         <td><?php echo $this->price()->format($highest['exchange_rate'])?></td>
-                        <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
-                        <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
+                        <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                     </tr>
                 <?php endif;?>
                 </tbody>
@@ -168,13 +168,13 @@
                         <td><?php echo $this->product()->getRecyclerProductName($highestInCountry['product_id'])?></td>
                         <td><?php echo $this->product()->getRecyclerProductCondition($highestInCountry['product_id'])?></td>
                         <td><?php echo $this->recycler()->getRecyclerDetail($highestInCountry['recycler_id'])?></td>
-                        <td><?php echo $this->price()->format($highestInCountry['price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($highestInCountry['price'],$highestInCountry['currency'])?></td>
                         <td><?php echo $highestInCountry['currency']?></td>
                         <td><?php echo $this->price()->format($highestInCountry['exchange_rate'])?></td>
-                        <td><?php echo $this->price()->format($highestInCountry['exchange_price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($highestInCountry['exchange_price'],'HKD')?></td>
                         <?php if(!empty($this->highest)):?>
                         <?php $highest = $this->highest;?>
-                            <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
+                            <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                         <?php else:?>
                             <td></td>
                         <?php endif;?>
@@ -287,13 +287,13 @@
                         <td><?php echo $this->product()->getRecyclerProductName($h['product_id'])?></td>
                         <td><?php echo $this->product()->getRecyclerProductCondition($h['product_id'])?></td>
                         <td><?php echo $this->recycler()->getRecyclerDetail($h['recycler_id'])?></td>
-                        <td><?php echo $this->price()->format($h['price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($h['price'],$h['currency'])?></td>
                         <td><?php echo $h['currency']?></td>
                         <td><?php echo $this->price()->format($h['exchange_rate'])?></td>
-                        <td><?php echo $this->price()->format($h['exchange_price'])?></td>
+                        <td><?php echo $this->price()->formatCurrency($h['exchange_price'],'HKD')?></td>
                         <?php if(!empty($this->highest)):?>
                             <?php $highest = $this->highest;?>
-                            <td><?php echo $this->price()->format($highest['exchange_price'])?></td>
+                            <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                         <?php else:?>
                             <td></td>
                         <?php endif;?>

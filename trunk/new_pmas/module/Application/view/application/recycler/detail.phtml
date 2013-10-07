@@ -172,17 +172,17 @@ $upload = $this->upload;
                                 <tr>
                                     <td class="col-checkbox"><input checked value="<?php echo $product->product_id?>" type="checkbox" disabled class="recycler-product"></td>
                                     <td><?php echo $product->name?></td>
-                                    <td><?php echo $this->price()->format($product->price)?></td>
+                                    <td><?php echo $this->price()->formatCurrency($product->price,$product->currency)?></td>
                                     <td><?php echo $product->currency?></td>
                                     <?php $rExchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency,time());?>
-                                    <td><?php echo $this->price()->format((float)$product->price * $rExchange);?></td>
+                                    <td><?php echo $this->price()->formatCurrency((float)$product->price * $rExchange,'HKD');?></td>
                                     <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
-                                        <td><?php echo $this->price()->format($tdmProduct->price)?></td>
+                                        <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
                                         <td><?php echo $tdmProduct->currency?></td>
                                         <?php $tdmExchange = $this->exchange()->getCurrentExchangeOfCurrency($tdmProduct->currency,time());?>
-                                        <td><?php echo $this->price()->format((float)$tdmProduct->price * $tdmExchange);?></td>
+                                        <td><?php echo $this->price()->formatCurrency((float)$tdmProduct->price * $tdmExchange,'HKD');?></td>
                                     <?php else:?>
                                         <td>N/A</td>
                                         <td>N/A</td>
@@ -201,14 +201,19 @@ $upload = $this->upload;
                                 <tr>
                                     <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(!empty($temp_ids) && in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
                                     <td><?php echo $row->name?></td>
-                                    <td><?php echo $this->price()->format($row->price)?></td>
+                                    <td><?php echo $this->price()->formatCurrency($row->price,$row->currency)?></td>
                                     <td><?php echo $row->currency?></td>
+                                    <?php $rExchange2 = $this->exchange()->getCurrentExchangeOfCurrency($row->currency,time());?>
+                                    <td><?php echo $this->price()->formatCurrency((float)$row->price * $rExchange2,'HKD');?></td>
                                     <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($row->model);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
-                                        <td><?php echo $this->price()->format($tdmProduct->price)?></td>
+                                        <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
                                         <td><?php echo $tdmProduct->currency?></td>
+                                        <?php $tdmExchange2 = $this->exchange()->getCurrentExchangeOfCurrency($tdmProduct->currency,time());?>
+                                        <td><?php echo $this->price()->formatCurrency((float)$tdmProduct->price * $tdmExchange2,'HKD');?></td>
                                     <?php else:?>
+                                        <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
