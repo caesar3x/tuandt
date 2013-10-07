@@ -158,9 +158,11 @@ $upload = $this->upload;
                                 <th><?php echo $this->translate('Product Name')?></th>
                                 <th><?php echo $this->translate('Base Price')?></th>
                                 <th><?php echo $this->translate('Currency')?></th>
+                                <th><?php echo $this->translate('Exchange Price')?></th>
                                 <th><?php echo $this->translate('TDM Product Name')?></th>
                                 <th><?php echo $this->translate('TDM Base Price')?></th>
                                 <th><?php echo $this->translate('TDM Currency')?></th>
+                                <th><?php echo $this->translate('TDM Exchange Price')?></th>
                                 <th><?php echo $this->translate('Action')?></th>
                             </tr>
                             </thead>
@@ -172,12 +174,17 @@ $upload = $this->upload;
                                     <td><?php echo $product->name?></td>
                                     <td><?php echo $this->price()->format($product->price)?></td>
                                     <td><?php echo $product->currency?></td>
+                                    <?php $rExchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency,time());?>
+                                    <td><?php echo $this->price()->format((float)$product->price * $rExchange);?></td>
                                     <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
                                         <td><?php echo $this->price()->format($tdmProduct->price)?></td>
                                         <td><?php echo $tdmProduct->currency?></td>
+                                        <?php $tdmExchange = $this->exchange()->getCurrentExchangeOfCurrency($tdmProduct->currency,time());?>
+                                        <td><?php echo $this->price()->format((float)$tdmProduct->price * $tdmExchange);?></td>
                                     <?php else:?>
+                                        <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
