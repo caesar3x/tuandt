@@ -24,6 +24,9 @@ class Price extends AbstractHelper
     }
     public function format($price)
     {
+        if(!is_numeric($price)){
+            return $price;
+        }
         return number_format($price,2);
     }
 
