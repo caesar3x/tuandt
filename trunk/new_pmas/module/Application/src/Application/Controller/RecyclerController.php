@@ -390,7 +390,7 @@ class RecyclerController extends AbstractActionController
                 $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
                 if(empty($dataImport)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/recycler');
+                    return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
                 }
                 $header = array();
                 $first = $dataImport[0];
@@ -410,7 +410,7 @@ class RecyclerController extends AbstractActionController
                         $rowParse['brand_id'] = ($viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
                         $rowParse['model'] = $row[array_search('model',$header)];
                         $rowParse['type_id'] = ($viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
-                        /*$rowParse['country_id'] = ($viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) != null) ? $viewhelperManager->get('Country')->getCountryNameById(trim($row[3])) : 0;*/
+                        $rowParse['date'] = $row[array_search('date',$header)];
                         $rowParse['price'] = $row[array_search('price',$header)];
                         $rowParse['currency'] = $row[array_search('currency',$header)];
                         $rowParse['name'] = $row[array_search('name',$header)];
@@ -426,7 +426,7 @@ class RecyclerController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
             }else{
                 $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                return $this->redirect()->toUrl('/recycler');
+                return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
             }
             return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id.'/upload/success');
         }else{
@@ -447,6 +447,12 @@ class RecyclerController extends AbstractActionController
         if(!empty($tmpProductEntry)){
             $tmpEntryParse = (array) $tmpProductEntry;
             $tmpEntryParse['temp_id'] = $id;
+            $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$tmpProductEntry->date.' 00:00:00');
+            if($pDate){
+                $tmpEntryParse['date'] = $pDate->getTimestamp();
+            }else{
+                $tmpEntryParse['date'] = 0;
+            }
             $recyclerProduct = new RecyclerProduct();
             $recyclerProduct->exchangeArray($tmpEntryParse);
             if($recyclerProductTable->save($recyclerProduct)){
@@ -672,7 +678,7 @@ class RecyclerController extends AbstractActionController
         $recyclerHelper = $viewhelperManager->get('Recycler');
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         $recyclerProducts = $recyclerProductTable->getProductsByRecycler($recycler_id);
-        $header = array('Recycler ID','Brand','Model','Product type','Price','Currency','Name','Condition');
+        $header = array('Recycler ID','Brand','Model','Product type','Price','Currency','Name','Date','Condition');
         $data = array($header);
         if(!empty($recyclerProducts)){
             foreach($recyclerProducts as $row){
@@ -684,6 +690,7 @@ class RecyclerController extends AbstractActionController
                 $rowParse[] = $priceHelper->format($row->price);
                 $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
+                $rowParse[] = (!empty($row->date)) ? date('d-m-Y',$row->date) : 'N/A';
                 $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id,false);
                 $data[] = $rowParse;
             }

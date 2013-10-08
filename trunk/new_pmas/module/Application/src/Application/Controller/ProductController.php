@@ -55,6 +55,17 @@ class ProductController extends AbstractActionController
         $view->setVariable('rowset',$rowset);
         return $view;
     }
+    public function filterAction()
+    {
+        $this->auth();
+        $view = new ViewModel();
+        $higher = $this->params('higher',50);
+        $view->setVariable('higher',$higher);
+        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
+        $rowset = $tdmProductTable->getAvaiableRows();
+        $view->setVariable('rowset',$rowset);
+        return $view;
+    }
     public function tdmAction()
     {
         $this->auth();

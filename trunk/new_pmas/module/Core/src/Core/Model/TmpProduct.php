@@ -8,7 +8,7 @@ namespace Core\Model;
 class TmpProduct
 {
     public $id;
-    public $country_id;
+    public $date;
     public $price;
     public $name;
     public $condition_id;
@@ -22,7 +22,7 @@ class TmpProduct
     {
         $this->id     = (isset($data['id'])) ? $data['id'] : 0;
         $this->recycler_id     = (isset($data['recycler_id'])) ? $data['recycler_id'] : 0;
-        $this->country_id     = (isset($data['country_id'])) ? $data['country_id'] : 0;
+        $this->date     = (isset($data['date'])) ? $data['date'] : null;
         $this->price     = (isset($data['price'])) ? $data['price'] : 0;
         $this->name     = (isset($data['name'])) ? $data['name'] : null;
         $this->condition_id     = (isset($data['condition_id'])) ? $data['condition_id'] : 0;
