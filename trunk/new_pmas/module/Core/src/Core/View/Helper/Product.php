@@ -207,4 +207,27 @@ class Product extends AbstractHelper
         $rowset = $recyclerProductTable->getProductsByModel($model,$limit);
         return $rowset;
     }
+
+    /**
+     * @return array
+     */
+    public function getAllModelNames()
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        $tdmProducts = $tdmProductTable->getAvaiableRows();
+        $recyclerProducts = $recyclerProductTable->getAvaiableRows();
+        $data = array();
+        if(!empty($tdmProducts)){
+            foreach($tdmProducts as $tp){
+                $data[] = $tp->model;
+            }
+        }
+        if(!empty($recyclerProducts)){
+            foreach($recyclerProducts as $rp){
+                $data[] = $rp->model;
+            }
+        }
+        return array_unique($data);
+    }
 }
