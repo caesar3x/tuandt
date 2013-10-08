@@ -75,7 +75,7 @@ class Price extends AbstractHelper
         if($price2 == 0 || $price2 == null){
             return null;
         }
-        $percent = $price1/$price2;
+        $percent = ($price1-$price2)/$price2;
         $percent2 = $percent*100;
         return number_format($percent2,2);
     }
