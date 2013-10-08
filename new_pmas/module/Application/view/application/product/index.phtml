@@ -76,12 +76,14 @@
                         <td><?php echo $row->name?></td>
                         <td><?php echo $this->productType($row->type_id)?></td>
                         <td><?php echo $this->productBrand($row->brand_id)?></td>
-                        <td><?php echo $this->price()->formatCurrency($row->price,'HKD')?></td>
                         <?php
-                        $model = $row->model;
                         $price = (float) $row->price;
                         $tdmCurrentExchange = $this->exchange()->getCurrentExchangeOfCurrency($row->currency);
                         $tdmPriceExchange = $price*$tdmCurrentExchange;
+                        ?>
+                        <td><?php echo $this->price()->formatCurrency($tdmPriceExchange,'HKD')?></td>
+                        <?php
+                        $model = $row->model;
                         $data = array();
                         if($model != null && $model != ''){
                             $recyclerProducts = $this->product()->getRecyclerProductsByModel($model);
@@ -90,7 +92,7 @@
                                     $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
                                     $priceExchange = (float) $rp->price * $currentExchange;
                                     if($tdmPriceExchange != 0){
-                                        $percentage = ($priceExchange/$tdmPriceExchange)*100;
+                                        $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
                                     }else{
                                         $percentage = 'N/A';
                                     }
