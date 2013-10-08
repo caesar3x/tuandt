@@ -73,6 +73,11 @@ class RecyclerProductForm extends Form
             'HKD' => 'HKD',
             'USD' => 'USD'
         ));
+        $date = new Text('date');
+        $date->setAttributes(array(
+            'id' => 'date',
+            'class' => 'form-control datepicker2'
+        ));
         $csrf = new Csrf('csrf');
         $csrf->setCsrfValidatorOptions(array('timeout' => 600));
         $this->add($id)
@@ -86,6 +91,7 @@ class RecyclerProductForm extends Form
             ->add($price)
             ->add($currency)
             ->add($csrf)
+            ->add($date)
         ;
     }
 

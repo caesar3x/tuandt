@@ -477,13 +477,11 @@ class RecyclerController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
         }
         $form = new RecyclerProductForm($this->getServiceLocator());
-        $view->setVariable('form',$form);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $entry = $recyclerProductTable->getEntry($id);
         if(empty($entry)){
             $this->getResponse()->setStatusCode(404);
         }
-        $view->setVariable('model',$entry->name);
         if($request->isPost()){
             $post = $request->getPost()->toArray();
             $continue = $post['continue'];
@@ -525,9 +523,10 @@ class RecyclerController extends AbstractActionController
             }
             if($form->isValid()){
                 $data = $form->getData();
+                $data['temp_id'] = $entry->temp_id;
                 if(empty($data)){
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
-                    return $this->redirect()->toUrl('/recycler/product');
+                    return $this->redirect()->toUrl('/recycler/detail/id/'.$entry->recycler_id);
                 }
                 if($this->saveRecyclerProduct($data)){
                     if($continue == 'yes'){
@@ -535,7 +534,7 @@ class RecyclerController extends AbstractActionController
                         return $this->redirect()->toUrl('/recycler/product/id/'.$id);
                     }else{
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
-                        return $this->redirect()->toUrl('/recycler/product');
+                        return $this->redirect()->toUrl('/recycler/detail/id/'.$entry->recycler_id);
                     }
                 }else{
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
@@ -544,8 +543,16 @@ class RecyclerController extends AbstractActionController
             }
         }else{
             $formData = (array) $entry;
+            if(!empty($entry->date)){
+                $formData['date'] = date('d-m-Y',$entry->date);
+            }else{
+                $formData['date'] = '';
+            }
             $form->setData($formData);
+            $view->setVariable('recycler_id',$entry->recycler_id);
         }
+        $view->setVariable('model',$entry->name);
+        $view->setVariable('form',$form);
         return $view;
     }
 
@@ -558,6 +565,10 @@ class RecyclerController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $recyclerProductTable = $sm->get('RecyclerProductTable');
         $dataFinal = $data;
+        $date = \DateTime::createFromFormat('d-m-Y',$data['date']);
+        if($date){
+            $dataFinal['date'] = $date->getTimestamp();
+        }
         $recyclerProduct = new RecyclerProduct();
         $recyclerProduct->exchangeArray($dataFinal);
         return $recyclerProductTable->save($recyclerProduct);

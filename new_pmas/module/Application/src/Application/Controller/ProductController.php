@@ -774,7 +774,7 @@ class ProductController extends AbstractActionController
         }else{
             exit();
         }
-        $header = array('Recycler Id','Recycler Name','Country','Product Name','Price','Exchange Price','%','Tdm Exchange Price');
+        $header = array('Recycler Id','Recycler Name','Country','Product Name','Condition','Date','Price','Price in HKD','%','TDM Price in HKD');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
@@ -783,6 +783,8 @@ class ProductController extends AbstractActionController
                 $rowParse[] = $recyclerHelper->getName($row->recycler_id);
                 $rowParse[] = $recyclerHelper->getCountryName($row->recycler_id);
                 $rowParse[] = $row->name;
+                $rowParse[] = $viewhelperManager->get('condition')->implement($row->condition_id,false);
+                $rowParse[] = (!empty($row->date)) ? date('d-m-Y',$row->date) : 'N/A';
                 $rowParse[] = $priceHelper->format($row->price);
                 $rowParse[] = $priceHelper->format($priceHelper->getExchange($row->price,$row->currency));
                 $rowParse[] = $priceHelper->getPercent($priceHelper->getExchange($row->price,$row->currency),$tdmExchangePrice);

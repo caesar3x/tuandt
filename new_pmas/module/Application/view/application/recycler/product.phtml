@@ -12,7 +12,7 @@
             <h3><?php echo $this->model?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/product"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/recycler/detail/id/<?php echo $this->recycler_id?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
             <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
             <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
             <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
@@ -74,6 +74,16 @@
 
             </div>
             <div class="form-group">
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Date</span></div>
+                <div class="col-md-3">
+                    <div class="input-group" style="width: 150px;float: left;">
+                        <?php echo $this->formRow($form->get('date'));?>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
                 <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('')?>Currency*</span></div>
                 <div class="col-md-3">
                     <?php echo $this->formRow($form->get('currency'));?>
@@ -82,3 +92,17 @@
         </div>
     </div>
 <?php echo $this->form()->closeTag();?>
+<script type="text/javascript">
+    $(function(){
+        var models = new Array();
+        <?php $models = $this->product()->getAllModelNames();?>
+        <?php if(!empty($models)):?>
+        <?php foreach($models as $model):?>
+            models.push('<?php echo $model?>');
+        <?php endforeach;?>
+        <?php endif;?>
+        $( "#model" ).autocomplete({
+            source: models
+        });
+    });
+</script>
