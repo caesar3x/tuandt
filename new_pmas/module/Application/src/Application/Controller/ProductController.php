@@ -382,6 +382,8 @@ class ProductController extends AbstractActionController
         if($id == 0){
             $this->getResponse()->setStatusCode(404);
         }
+        $filter = $this->params('filter',null);
+
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
         $entry = $tdmProductTable->getEntry($id);
         if(empty($entry)){
@@ -389,9 +391,35 @@ class ProductController extends AbstractActionController
         }
         $view = new ViewModel();
         $view->setVariable('name',$entry->name);
+        $view->setVariable('id',$id);
         $view->setVariable('entry',$entry);
+        $view->setVariable('filter',$filter);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        if($filter == 'higher'){
+            $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
+            $price = (float) $entry->price;
+            $tdmCurrentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($entry->currency);
+            $tdmPriceExchange = $price*$tdmCurrentExchange;
+            /**
+             * Filter higher than 50%
+             */
+            if(!empty($recyclerProductsWithSameModel)){
+                $products = array();
+                foreach($recyclerProductsWithSameModel as $product){
+                    $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
+                    $priceExchange = (float) $product->price * $currentExchange;
+                    if($tdmPriceExchange != 0){
+                        $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
+                        if($percentage > 50){
+                            $products[] = $product;
+                        }
+                    }
+                }
+                $view->setVariable('products',$products);
+                return $view;
+            }
+        }
         $view->setVariable('products',$recyclerProductsWithSameModel);
         return $view;
     }

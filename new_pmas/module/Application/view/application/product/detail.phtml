@@ -35,12 +35,14 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div>
+                            <?php if($this->filter != 'higher'):?>
                             <div class="pull-left">
                                 <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
-                                <div class="btn btn-default">
+                                <div class="btn btn-default" onclick="window.location.assign('/product/detail/id/<?php echo $this->id?>/filter/higher')">
                                     <?php echo $this->translate('Price higher than 50%(xx)')?>
                                 </div>
                             </div>
+                            <?php endif;?>
                             <div class="pull-right">
                                 <a class="btn btn-outline">
                                     <?php echo $this->translate('Export to')?>
