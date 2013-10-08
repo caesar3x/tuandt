@@ -4,6 +4,7 @@
  * Date: 9/13/13
  */
 ?>
+<?php $higher = ($this->higher) ? $this->higher : 50;?>
 <div class="page-header">
     <div class="pull-left">
         <h3><?php echo $this->translate('Models')?></h3>
@@ -52,7 +53,6 @@
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                 <th><?php echo $this->translate('ID')?></th>
                 <th><?php echo $this->translate('Name')?></th>
-                <th><?php echo $this->translate('Condition')?></th>
                 <th><?php echo $this->translate('Type')?></th>
                 <th><?php echo $this->translate('Brand')?></th>
                 <th><?php echo $this->translate('Tdm Price')?></th>
@@ -75,7 +75,6 @@
                         <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
                         <td><?php echo $row->product_id?></td>
                         <td><?php echo $row->name?></td>
-                        <td><?php echo $this->condition($row->condition_id)?></td>
                         <td><?php echo $this->productType($row->type_id)?></td>
                         <td><?php echo $this->productBrand($row->brand_id)?></td>
                         <?php
@@ -98,35 +97,38 @@
                                     }else{
                                         $percentage = 'N/A';
                                     }
-                                    $data[] = array(
-                                        'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                        'price' => $priceExchange,
-                                        'percentag' => $percentage,
-                                    );
+                                    if($percentage > $higher){
+                                        $data[] = array(
+                                            'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                            'price' => $priceExchange,
+                                            'percentag' => $percentage,
+                                        );
+                                    }
+
                                 }
                             }
                         }
                         ?>
                         <?php if(!empty($data)):?>
-                        <?php $i=0;foreach($data as $item):?>
-                            <td><?php echo $item['recycler']?></td>
-                            <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
-                            <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
-                            <?php $i++;?>
-                        <?php endforeach;?>
-                        <?php if($i==1):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php elseif($i==2):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php endif;?>
-                        <?php ?>
+                            <?php $i=0;foreach($data as $item):?>
+                                <td><?php echo $item['recycler']?></td>
+                                <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
+                                <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
+                                <?php $i++;?>
+                            <?php endforeach;?>
+                            <?php if($i==1):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php elseif($i==2):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php endif;?>
+                            <?php ?>
                         <?php else:?>
                             <td></td>
                             <td></td>

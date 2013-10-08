@@ -156,6 +156,8 @@ $upload = $this->upload;
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                                 <th><?php echo $this->translate('Product Name')?></th>
+                                <th><?php echo $this->translate('Condition')?></th>
+                                <th><?php echo $this->translate('Date time')?></th>
                                 <th><?php echo $this->translate('Base Price')?></th>
                                 <th><?php echo $this->translate('Currency')?></th>
                                 <th><?php echo $this->translate('Exchange Price')?></th>
@@ -172,6 +174,8 @@ $upload = $this->upload;
                                 <tr>
                                     <td class="col-checkbox"><input checked value="<?php echo $product->product_id?>" type="checkbox" disabled class="recycler-product"></td>
                                     <td><?php echo $product->name?></td>
+                                    <td><?php echo $this->condition($product->condition_id,false)?></td>
+                                    <td><?php echo (!empty($product->date)) ? date('d-m-Y',$product->date) : 'N/A'?></td>
                                     <td><?php echo $this->price()->formatCurrency($product->price,$product->currency)?></td>
                                     <td><?php echo $product->currency?></td>
                                     <?php $rExchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency,time());?>
@@ -201,6 +205,7 @@ $upload = $this->upload;
                                 <tr>
                                     <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(!empty($temp_ids) && in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
                                     <td><?php echo $row->name?></td>
+                                    <td><?php echo $row->date?></td>
                                     <td><?php echo $this->price()->formatCurrency($row->price,$row->currency)?></td>
                                     <td><?php echo $row->currency?></td>
                                     <?php $rExchange2 = $this->exchange()->getCurrentExchangeOfCurrency($row->currency,time());?>
