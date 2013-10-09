@@ -97,15 +97,33 @@ class ConditionController extends AbstractActionController
                 }
                 if($this->saveTdmCondition($data)){
                     if($id != 0){
+                        /**
+                         * Log user
+                         */
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\tdm',$messages['LOG_UPDATE_CONDITION_SUCCESS'].$id);
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     }else{
+                        /**
+                         * Log user
+                         */
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\tdm',$messages['LOG_INSERT_CONDITION_SUCCESS'].$tdmConditionTable->getLastInsertValue());
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        /**
+                         * Log user
+                         */
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\tdm',$messages['LOG_UPDATE_CONDITION_FAIL'].$id);
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        /**
+                         * Log user
+                         */
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\tdm',$messages['LOG_INSERT_CONDITION_FAIL']);
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
                     }
                 }
                 if($id != 0){
@@ -197,8 +215,10 @@ class ConditionController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->clearTdmCondition($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-tdm',$messages['LOG_DELETE_CONDITION_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-tdm',$messages['LOG_DELETE_CONDITION_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
@@ -208,8 +228,10 @@ class ConditionController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->clearRecyclerCondition($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-recycler',$messages['LOG_DELETE_RECYCLER_CONDITION_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-recycler',$messages['LOG_DELETE_RECYCLER_CONDITION_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
@@ -276,15 +298,24 @@ class ConditionController extends AbstractActionController
                 }
                 if($this->saveRecyclerCondition($data)){
                     if($id != 0){
+                        /**
+                         * Log user
+                         */
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\recycler',$messages['LOG_UPDATE_RECYCLER_CONDITION_SUCCESS'].$id);
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     }else{
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\recycler',$messages['LOG_INSERT_RECYCLER_CONDITION_SUCCESS'].$recyclerConditionTable->getLastInsertValue());
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\recycler',$messages['LOG_UPDATE_RECYCLER_CONDITION_FAIL'].$id);
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\recycler',$messages['LOG_INSERT_RECYCLER_CONDITION_FAIL']);
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
                     }
                 }
                 if($id != 0){

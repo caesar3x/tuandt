@@ -77,20 +77,23 @@ class RoleController extends AbstractActionController
                     return $this->redirect()->toUrl('/role');
                 }
                 if($this->saveRole($data)){
+                    $lastInsertId = $rolesTable->getLastInsertValue();
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\add',$messages['LOG_INSERT_ROLE_SUCCESS'].$lastInsertId);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $rolesTable->getLastInsertValue();
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/role/edit/id/'.$lastInsertId);
                         }
                     }
                     return $this->redirect()->toUrl('/role');
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\add',$messages['LOG_INSERT_ROLE_FAIL']);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
                     return $this->redirect()->toUrl('/role/add');
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\add',$messages['LOG_INSERT_ROLE_FAIL']);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -148,6 +151,7 @@ class RoleController extends AbstractActionController
                     return $this->redirect()->toUrl('/role');
                 }
                 if($this->saveRole($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\edit',$messages['LOG_UPDATE_ROLE_SUCCESS'].$id);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     if($continue == 'yes'){
                         if($id){
@@ -156,10 +160,12 @@ class RoleController extends AbstractActionController
                     }
                     return $this->redirect()->toUrl('/role');
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\edit',$messages['LOG_UPDATE_ROLE_FAIL'].$id);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     return $this->redirect()->toUrl('/role/edit/id/'.$id);
                 }
             }else{
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\edit',$messages['LOG_UPDATE_ROLE_FAIL'].$id);
                 foreach($form->getMessages() as $msg){
                     $view->setVariable('msg',array('danger' => $msg));
                 }
@@ -214,8 +220,10 @@ class RoleController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->deleteEntry($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\delete',$messages['LOG_DELETE_ROLE_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\delete',$messages['LOG_DELETE_ROLE_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;

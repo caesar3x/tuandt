@@ -61,6 +61,8 @@ class ProductController extends AbstractActionController
         $view = new ViewModel();
         $higher = $this->params('higher',50);
         $view->setVariable('higher',$higher);
+        $messages = $this->getMessages();
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $rowset = $recyclerProductTable->getAvaiableRows();
         $view->setVariable('rowset',$rowset);
@@ -213,6 +215,7 @@ class ProductController extends AbstractActionController
                     return $this->redirect()->toUrl('/product');
                 }
                 if($this->saveTdmProduct($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\edit',$messages['LOG_UPDATE_TDM_PRODUCT_SUCCESS'].$id);
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
                         $newEntry = $tdmProductTable->getEntry($id);
@@ -226,17 +229,14 @@ class ProductController extends AbstractActionController
                         return $this->redirect()->toUrl('/product');
                     }
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
-                        return $this->redirect()->toUrl('/product');
-                    }
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\edit',$messages['LOG_UPDATE_TDM_PRODUCT_FAIL'].$id);
+                    $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
+                    $view->setVariable('form',$form);
+                    return $view;
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\edit',$messages['LOG_UPDATE_TDM_PRODUCT_FAIL'].$id);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -347,27 +347,25 @@ class ProductController extends AbstractActionController
                     return $this->redirect()->toUrl('/product');
                 }
                 if($this->saveTdmProduct($data)){
+                    $lastInsertId = $tdmProductTable->getLastInsertValue();
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\add',$messages['LOG_INSERT_TDM_PRODUCT_SUCCESS'].$lastInsertId);
                     if($continue == 'yes'){
-                        $lastInsertId = $tdmProductTable->getLastInsertValue();
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/product/edit/id/'.$lastInsertId);
                         }
                     }
                     return $this->redirect()->toUrl('/product');
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
-                        return $this->redirect()->toUrl('/product');
-                    }
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\add',$messages['LOG_INSERT_TDM_PRODUCT_FAIL']);
+                    $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                    $view->setVariable('form',$form);
+                    return $view;
                 }
             }else{
                 foreach($form->getMessages() as $msg){
                     $view->setVariable('msg',array('danger' => $msg));
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\add',$messages['LOG_INSERT_TDM_PRODUCT_FAIL']);
                 }
                 $view->setVariable('form',$form);
                 return $view;
@@ -397,7 +395,10 @@ class ProductController extends AbstractActionController
         $view->setVariable('filter',$filter);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $messages = $this->getMessages();
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
         if($filter == 'higher'){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
             $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
             $price = (float) $entry->price;
             $tdmCurrentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($entry->currency);
@@ -445,8 +446,10 @@ class ProductController extends AbstractActionController
     {
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_DELETE_TDM_PRODUCT_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_DELETE_TDM_PRODUCT_FAILT'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return ;
@@ -501,7 +504,9 @@ class ProductController extends AbstractActionController
                 $excel->fromArray($parseExcelData);
                 $excel->download($filename.'.xls');
             }
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_EXPORT_TDM_PRODUCTS_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_EXPORT_TDM_PRODUCTS_FAIL']);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
             return $this->redirect()->toUrl('/product');
         }
@@ -569,15 +574,21 @@ class ProductController extends AbstractActionController
                 }
                 if($this->saveProductType($data)){
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_UPDATE_PRODUCT_TYPE_SUCCESS'].$id);
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     }else{
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_INSERT_PRODUCT_TYPE_SUCCESS'].$productTypeTable->getLastInsertValue());
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_UPDATE_PRODUCT_TYPE_FAIL'].$id);
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_INSERT_PRODUCT_TYPE_FAIL'].$id);
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
                     }
                 }
                 if($id != 0){
@@ -638,8 +649,10 @@ class ProductController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->clearProductType($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-type',$messages['LOG_DELETE_PRODUCT_TYPE_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-type',$messages['LOG_DELETE_PRODUCT_TYPE_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
@@ -706,15 +719,21 @@ class ProductController extends AbstractActionController
                 }
                 if($this->saveProductBrand($data)){
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_UPDATE_BRAND_SUCCESS'].$id);
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     }else{
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_INSERT_BRAND_SUCCESS'].$brandTable->getLastInsertValue());
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_UPDATE_BRAND_FAIL'].$id);
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_INSERT_BRAND_FAIL']);
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
                     }
                 }
                 if($id != 0){
@@ -725,6 +744,7 @@ class ProductController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$msg);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -774,8 +794,10 @@ class ProductController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->clearBrand($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-brand',$messages['LOG_DELETE_BRAND_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-brand',$messages['LOG_DELETE_BRAND_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
@@ -792,7 +814,8 @@ class ProductController extends AbstractActionController
         $tdm = $this->params('tdm');
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $priceHelper = $viewhelperManager->get('Price');
-
+        $messages = $this->getMessages();
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\export-price-compare',$messages['LOG_EXPORT_PRICE_COMPARE'].$tdm);
         $recyclerHelper = $viewhelperManager->get('Recycler');
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
@@ -1082,6 +1105,8 @@ class ProductController extends AbstractActionController
         if($searchBy == null || $id == null || $start == null || $format == null){
             exit();
         }
+        $messages = $this->getMessages();
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\export-historical',$messages['LOG_EXPORT_HISTORICAL_PRICE'].$id);
         $startTime1 = \DateTime::createFromFormat('d-m-Y H:i:s',$start.' 00:00:00');
         $startTime = $startTime1->getTimestamp();
         if($end != null && $end != ''){

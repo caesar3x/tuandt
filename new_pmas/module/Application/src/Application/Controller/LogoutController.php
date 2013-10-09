@@ -18,6 +18,7 @@ class LogoutController extends AbstractActionController
         }
         $authService->clearIdentity();
         $this->flashMessenger()->setNamespace('success')->addMessage('Logout success');
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\logout\\index','Logout success');
         return $this->redirect()->toUrl('/login');
     }
 }

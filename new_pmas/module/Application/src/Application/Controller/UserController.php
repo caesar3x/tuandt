@@ -61,6 +61,7 @@ class UserController extends AbstractActionController
              */
             $empty = new NotEmpty();
             if(!$empty->isValid($post['password'])){
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_FAIL'].' : '.$messages['PASSWORD_NOT_EMPTY']);
                 $view->setVariable('msg',array('danger' => $messages['PASSWORD_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
@@ -71,6 +72,7 @@ class UserController extends AbstractActionController
             $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
             $email_valid = new NoRecordExists(array('table' => 'admin_user','field' => 'email','adapter' => $dbAdapter));
             if(!$email_valid->isValid($post['email'])){
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_FAIL'].' : '.$messages['EMAIL_EXIST']);
                 $view->setVariable('msg',array('danger' => $messages['EMAIL_EXIST']));
                 $view->setVariable('form',$form);
                 return $view;
@@ -78,30 +80,35 @@ class UserController extends AbstractActionController
             if($form->isValid()) {
                 $data = $form->getData();
                 if(empty($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_FAIL'].' : '.$messages['NO_DATA']);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                     return $this->redirect()->toUrl('/user');
                 }
                 if($this->save($data)){
+                    $lastInsertId = $this->adminTable->getLastInsertValue();
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
-                    if($continue == 'yes'){
-                        $lastInsertId = $this->adminTable->getLastInsertValue();
-                        if($lastInsertId){
-                            return $this->redirect()->toUrl('/user/detail/id/'.$lastInsertId);
-                        }
-                    }
-                    return $this->redirect()->toUrl('/user');
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_SUCCESS'].$lastInsertId);
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
-                        return $this->redirect()->toUrl('/user');
+                    $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                    $view->setVariable('form',$form);
+                    /**
+                     * Log user
+                     */
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_FAIL']);
+                    return $view;
+                }
+                if($continue == 'yes'){
+                    if($lastInsertId){
+                        return $this->redirect()->toUrl('/user/detail/id/'.$lastInsertId);
                     }
                 }
+                return $this->redirect()->toUrl('/user');
             }else{
                 foreach($form->getMessages() as $msg){
+                    /**
+                     * Log user
+                     */
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$msg);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -141,6 +148,7 @@ class UserController extends AbstractActionController
             $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
             $email_valid = new NoRecordExists(array('table' => 'admin_user','field' => 'email','adapter' => $dbAdapter,'exclude' => array('field' => 'email','value' => $entry->email)));
             if(!$email_valid->isValid($post['email'])){
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\detail',$messages['LOG_USER_UPDATE_FAIL'].$id.' : '.$messages['EMAIL_EXIST']);
                 $view->setVariable('msg',array('danger' => $messages['EMAIL_EXIST']));
                 $view->setVariable('form',$form);
                 return $view;
@@ -152,29 +160,33 @@ class UserController extends AbstractActionController
                     return $this->redirect()->toUrl('/user');
                 }
                 if($this->save($data)){
+                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    /**
+                     * Log user
+                     */
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\detail',$messages['LOG_USER_UPDATE_SUCCESS'].$id);
                     if($continue == 'yes'){
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                         return $this->redirect()->toUrl('/user/detail/id/'.$id);
-                        /*$view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
-                        $view->setVariable('form',$form);
-                        return $view;*/
                     }else{
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                         return $this->redirect()->toUrl('/user');
                     }
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
-                        return $this->redirect()->toUrl('/user');
-                    }
+                    /**
+                     * Log user
+                     */
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\detail',$messages['LOG_USER_UPDATE_FAIL'].$id);
+                    $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
+                    $view->setVariable('form',$form);
+                    return $view;
+
                 }
             }else{
                 foreach($form->getMessages() as $msg){
                     $view->setVariable('msg',array('danger' => $msg));
+                    /**
+                     * Log user
+                     */
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\detail',$msg);
                 }
                 $view->setVariable('form',$form);
                 return $view;
@@ -242,8 +254,16 @@ class UserController extends AbstractActionController
     {
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
+            /**
+             * Log user
+             */
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete',$messages['LOG_USER_DELETE_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            /**
+             * Log user
+             */
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete',$messages['LOG_USER_DELETE_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         /*return $this->redirect()->toUrl('/user');*/
@@ -256,6 +276,10 @@ class UserController extends AbstractActionController
         if($id == 0){
             $this->getResponse()->setStatusCode(404);
         }
+        /**
+         * Log user
+         */
+        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\view-log',$messages['LOG_USER_VIEW_LOG'].$id);
         $usermetaTable = $this->getServiceLocator()->get('UsermetaTable');
         $logs = $usermetaTable->getUserLog($id);
         $view = new ViewModel();
@@ -272,11 +296,11 @@ class UserController extends AbstractActionController
         $user = $this->params('user',0);
         $usermetaTable = $this->getServiceLocator()->get('UsermetaTable');
         if($id != 0){
-            $this->deleteLog($id,$usermetaTable);
+            $this->deleteLog($id,$usermetaTable,$user);
         }
         if(!empty($ids) && is_array($ids)){
             foreach($ids as $id){
-                $this->deleteLog($id,$usermetaTable);
+                $this->deleteLog($id,$usermetaTable,$user);
             }
         }
         if($user == 0){
@@ -286,12 +310,20 @@ class UserController extends AbstractActionController
         }
 
     }
-    protected function deleteLog($id,$table)
+    protected function deleteLog($id,$table,$user)
     {
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
+            /**
+             * Log user
+             */
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete-log',$messages['LOG_USER_DELETE_LOG_SUCCESS'].$user);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            /**
+             * Log user
+             */
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete-log',$messages['LOG_USER_DELETE_LOG_FAIL'].$user);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
     }

@@ -96,8 +96,10 @@ class ExchangeController extends AbstractActionController
                 $exchangeRate = new Exchange();
                 $exchangeRate->exchangeArray($dataFinal);
                 if($exchangeRateTable->save($exchangeRate)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\update',$messages['LOG_UPDATE_EXCHANGE_SUCCESS'].$data['currency']);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\update',$messages['LOG_UPDATE_EXCHANGE_FAIL'].$data['currency']);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                 }
                 if($continue == 'yes'){
@@ -107,6 +109,7 @@ class ExchangeController extends AbstractActionController
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\update',$messages['LOG_UPDATE_EXCHANGE_FAIL']);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -191,15 +194,21 @@ class ExchangeController extends AbstractActionController
                 }
                 if($this->saveCountry($data)){
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_SUCCESS'].$id);
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     }else{
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_SUCCESS'].$countryTable->getLastInsertValue());
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_FAIL'].$id);
                         $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_INSERT_COUNTRY_FAIL']);
+                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $view->setVariable('form',$form);
+                        return $view;
                     }
                 }
                 if($id != 0){
@@ -261,8 +270,10 @@ class ExchangeController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->clearCountry($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\delete-country',$messages['LOG_DELETE_COUNTRY_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\delete-country',$messages['LOG_DELETE_COUNTRY_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return $result;
@@ -336,6 +347,7 @@ class ExchangeController extends AbstractActionController
     public function exportAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $format = $this->params('format',null);
         $currency = $this->params('currency',null);
         $startTime = (string) $this->params('start',null);
@@ -386,6 +398,7 @@ class ExchangeController extends AbstractActionController
                 $excel->fromArray($parseExcelData);
                 $excel->download($filename.'.xls');
             }
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\export',$messages['LOG_EXPORT_EXCHANGE_SUCCESS']);
         }
         exit();
         die;
