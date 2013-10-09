@@ -230,4 +230,32 @@ class Product extends AbstractHelper
         }
         return array_unique($data);
     }
+    public function getExchangeHelper()
+    {
+        return $this->serviceLocator->get('viewhelpermanager')->get('exchange');
+    }
+    public function filterHigherProduct($recycler_product)
+    {
+        if(!$recycler_product){
+            return null;
+        }
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $tdmProductsWithSameModel = $tdmProductTable->getRowByModel($recycler_product->model);
+        if(empty($tdmProductsWithSameModel)){
+            return null;
+        }
+        $tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());
+        $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
+        $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
+        $tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;
+        if($tdmExchangePrice){
+            $percentage = (($recyclerExchangePrice - $tdmExchangePrice)/$tdmExchangePrice)*100;
+            if($percentage > 50)
+            {
+                return array('percentage' => $percentage,'tdmExchangePrice' => $tdmExchangePrice);
+            }
+            return null;
+        }
+        return null;
+    }
 }
