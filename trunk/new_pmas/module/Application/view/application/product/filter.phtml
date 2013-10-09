@@ -9,156 +9,49 @@
     <div class="pull-left">
         <h3><?php echo $this->translate('Models')?></h3>
     </div>
-    <div class="pull-right">
-        <a onclick="formConfirm('model');" class="btn btn-danger btn-sm add-item">
-            <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
-        </a>
-        <a class="btn btn-success btn-sm add-item" href="/product/add">
-            <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new model')?>
-        </a>
-    </div>
     <div class="clearfix"></div>
 </div>
 <form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="pull-left">
-            <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
-            <div class="btn btn-default">
-                <?php echo $this->translate('Price higher than 50%(xx)')?>
-            </div>
-        </div>
-        <div class="pull-right">
-            <a class="btn">
-                <?php echo $this->translate('Export to')?>
-            </a>
-            <div class="btn-group">
-                <select class="form-control" id="export-format" name="export_format">
-                    <option value="none"><?php echo $this->translate('Select format')?></option>
-                    <option value="csv"><?php echo $this->translate('CSV')?></option>
-                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
-                </select>
-            </div>
-            <a class="btn btn-warning btn-sm" onclick="exportProducts()">
-                <i class="glyphicon glyphicon-export"></i>
-                <?php echo $this->translate('Export')?>
-            </a>
-        </div>
-        <div class="row clearfix">&nbsp;</div>
         <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0">
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th><?php echo $this->translate('Type')?></th>
+                <th><?php echo $this->translate('Product Id')?></th>
+                <th><?php echo $this->translate('Product Name')?></th>
+                <th><?php echo $this->translate('Condition')?></th>
+                <th><?php echo $this->translate('Product Type')?></th>
                 <th><?php echo $this->translate('Brand')?></th>
-                <th><?php echo $this->translate('Tdm Price')?></th>
-                <th><?php echo $this->translate('Recycler 1')?></th>
-                <th><?php echo $this->translate('Price 1')?></th>
-                <th><?php echo $this->translate('Percentage 1')?></th>
-                <th><?php echo $this->translate('Recycler 2')?></th>
-                <th><?php echo $this->translate('Price 2')?></th>
-                <th><?php echo $this->translate('Percentage 2')?></th>
-                <th><?php echo $this->translate('Recycler 3')?></th>
-                <th><?php echo $this->translate('Price 3')?></th>
-                <th><?php echo $this->translate('Percentage 3')?></th>
-                <th class="action3"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->translate('TDM Price in HKD')?></th>
+                <th><?php echo $this->translate('Recycler Name')?></th>
+                <th><?php echo $this->translate('Recycler Price')?></th>
+                <th><?php echo $this->translate('Price in HKD')?></th>
+                <th><?php echo $this->translate('Percentage')?></th>
             </tr>
             </thead>
             <tbody>
             <?php if(!empty($this->rowset)):?>
-                <?php foreach($this->rowset as $row):?>
+                <?php foreach($this->rowset as $_product):?>
+                    <?php $data = $this->product()->filterHigherProduct($_product);?>
+                    <?php if(!empty($data)):?>
+                    <?php ?>
                     <tr>
-                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
-                        <td><?php echo $row->product_id?></td>
-                        <td><?php echo $row->name?></td>
-                        <td><?php echo $this->productType($row->type_id)?></td>
-                        <td><?php echo $this->productBrand($row->brand_id)?></td>
-                        <?php
-                        $price = (float) $row->price;
-                        $tdmCurrentExchange = $this->exchange()->getCurrentExchangeOfCurrency($row->currency);
-                        $tdmPriceExchange = $price*$tdmCurrentExchange;
-                        ?>
-                        <td><?php echo $this->price()->formatCurrency($tdmPriceExchange,'HKD')?></td>
-                        <?php
-                        $model = $row->model;
-                        $data = array();
-                        if($model != null && $model != ''){
-                            $recyclerProducts = $this->product()->getRecyclerProductsByModel($model);
-                            if(!empty($recyclerProducts)){
-                                foreach($recyclerProducts as $rp){
-                                    $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
-                                    $priceExchange = (float) $rp->price * $currentExchange;
-                                    if($tdmPriceExchange != 0){
-                                        $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
-                                    }else{
-                                        $percentage = 'N/A';
-                                    }
-                                    if($percentage > $higher){
-                                        $data[] = array(
-                                            'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                            'price' => $priceExchange,
-                                            'percentag' => $percentage,
-                                        );
-                                    }
-
-                                }
-                            }
-                        }
-                        ?>
-                        <?php if(!empty($data)):?>
-                            <?php $i=0;foreach($data as $item):?>
-                                <td><?php echo $item['recycler']?></td>
-                                <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
-                                <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
-                                <?php $i++;?>
-                            <?php endforeach;?>
-                            <?php if($i==1):?>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            <?php elseif($i==2):?>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            <?php endif;?>
-                            <?php ?>
-                        <?php else:?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php endif;?>
-                        <?php ?>
-                        <td class="action3">
-                            <a class="btn btn-xs btn-primary btn-edit" href="/product/detail/id/<?php echo $row->product_id?>">
-                                <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Detail')?>
-                            </a>
-                            <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
-                                <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit')?>
-                            </a>
-                            <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
-                                <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete')?>
-                            </a>
-                        </td>
+                        <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
+                        <td><?php echo $_product->product_id?></td>
+                        <td><?php echo $_product->name;?></td>
+                        <td><?php echo $this->condition($_product->condition_id,false);?></td>
+                        <td><?php echo $this->productType($_product->type_id);?></td>
+                        <td><?php echo $this->productBrand($_product->brand_id);?></td>
+                        <!--process tdm exchange price here-->
+                        <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
+                        <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
+                        <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
+                        <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
+                        <td><?php echo $this->price()->format($data['percentage']).' %';?></td>
                     </tr>
+                    <?php endif; ?>
                 <?php endforeach;?>
             <?php endif;?>
-            </tbody>
         </table>
     </div>
 </form>

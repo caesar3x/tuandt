@@ -61,11 +61,12 @@ class ProductController extends AbstractActionController
         $view = new ViewModel();
         $higher = $this->params('higher',50);
         $view->setVariable('higher',$higher);
-        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
-        $rowset = $tdmProductTable->getAvaiableRows();
+        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $rowset = $recyclerProductTable->getAvaiableRows();
         $view->setVariable('rowset',$rowset);
         return $view;
     }
+
     public function tdmAction()
     {
         $this->auth();
