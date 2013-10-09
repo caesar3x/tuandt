@@ -87,3 +87,17 @@
         </div>
     </div>
 <?php echo $this->form()->closeTag();?>
+<script type="text/javascript">
+    $(function(){
+        var models = new Array();
+        <?php $models = $this->product()->getAllModelNames();?>
+        <?php if(!empty($models)):?>
+        <?php foreach($models as $model):?>
+        models.push('<?php echo $model?>');
+        <?php endforeach;?>
+        <?php endif;?>
+        $( "#model" ).autocomplete({
+            source: models
+        });
+    });
+</script>

@@ -133,12 +133,12 @@ class TdmProductTable extends AbstractModel
      * @param $model
      * @return null|\Zend\Db\ResultSet\ResultSet
      */
-    public function getRowByModel($model)
+    public function getRowByModel($model,$condition)
     {
-        if($model == null){
+        if($model == null || !$condition){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'model' => $model));
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => $model));
         if($rowset->count() <= 0){
             return null;
         }

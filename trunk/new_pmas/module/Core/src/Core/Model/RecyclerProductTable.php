@@ -172,26 +172,26 @@ class RecyclerProductTable extends AbstractModel
      * @param $model
      * @return null|\Zend\Db\ResultSet\ResultSet
      */
-    public function getRowsByModel($model)
+    public function getRowsByModel($model,$condition)
     {
         if($model == null){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'model' => $model));
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => $model));
         if($rowset->count() <= 0){
             return null;
         }
         return $rowset;
     }
-    public function getProductsByModel($model,$limit)
+    public function getProductsByModel($model,$condition,$limit)
     {
-        if(!$model || $model == null){
+        if(!$model || $model == null || !$condition || $condition == null){
             return null;
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-        $select->where(array('m.deleted' => 0,'m.model' => trim($model)));
+        $select->where(array('m.deleted' => 0,'m.condition_id' => (int)$condition,'m.model' => trim($model)));
         $select->limit($limit);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
