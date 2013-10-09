@@ -88,20 +88,24 @@ class ResourceController extends AbstractActionController
                     return $this->redirect()->toUrl('/resource');
                 }
                 if($this->saveResource($data)){
+                    $lastInsertId = $resourceTable->getLastInsertValue();
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\add',$messages['LOG_INSERT_RESOURCE_SUCCESS'].$lastInsertId);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $resourceTable->getLastInsertValue();
+
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/resource/edit/id/'.$lastInsertId);
                         }
                     }
                     return $this->redirect()->toUrl('/resource');
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\add',$messages['LOG_INSERT_RESOURCE_FAIL']);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
                     return $this->redirect()->toUrl('/resource/add');
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\add',$messages['LOG_INSERT_RESOURCE_FAIL']);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -165,17 +169,20 @@ class ResourceController extends AbstractActionController
                     return $this->redirect()->toUrl('/resource');
                 }
                 if($this->saveResource($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\edit',$messages['LOG_UPDATE_RESOURCE_SUCCESS'].$id);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                     if($continue == 'yes'){
                         return $this->redirect()->toUrl('/resource/edit/id/'.$id);
                     }
                     return $this->redirect()->toUrl('/resource');
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\edit',$messages['LOG_UPDATE_RESOURCE_FAIL'].$id);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     return $this->redirect()->toUrl('/resource/edit/id/'.$id);
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\edit',$messages['LOG_UPDATE_RESOURCE_FAIL'].$id);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -229,8 +236,10 @@ class ResourceController extends AbstractActionController
         $messages = $this->getMessages();
         $result = $table->deleteEntry($id);
         if($result){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\delete',$messages['LOG_DELETE_RESOURCE_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\resource\\delete',$messages['LOG_DELETE_RESOURCE_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;

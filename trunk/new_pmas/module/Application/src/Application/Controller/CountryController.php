@@ -75,21 +75,27 @@ class CountryController extends AbstractController
                 }
                 if($this->saveCountry($data)){
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\country\\index',$messages['LOG_UPDATE_COUNTRY_SUCCESS'].$id);
                         $this->addSuccessFlashMessenger($messages['UPDATE_SUCCESS']);
                     }else{
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\country\\index',$messages['LOG_INSERT_COUNTRY_SUCCESS'].$countryTable->getLastInsertValue());
                         $this->addSuccessFlashMessenger($messages['INSERT_SUCCESS']);
                     }
                 }else{
                     if($id != 0){
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\country\\index',$messages['LOG_UPDATE_COUNTRY_FAIL'].$id);
                         $this->addErrorFlashMessenger($messages['UPDATE_FAIL']);
                     }else{
-                        $this->addErrorFlashMessenger($messages['INSERT_FAIL']);
+                        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\country\\index',$messages['LOG_INSERT_COUNTRY_FAIL']);
+                        $this->setViewVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                        $this->setViewVariable('form',$form);
+                        return $this->view;
                     }
                 }
                 if($id != 0){
                     return $this->redirectUrl('/exchange/country/id/'.$id);
                 }else{
-                    return $this->redirectUrl('/exchange/country');
+                    return $this->redirectUrl('/exchange/country/id/');
                 }
             }else{
                 foreach($form->getMessages() as $msg){

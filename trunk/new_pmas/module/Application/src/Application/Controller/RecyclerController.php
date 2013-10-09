@@ -114,26 +114,25 @@ class RecyclerController extends AbstractActionController
                     return $this->redirect()->toUrl('/recycler');
                 }
                 if($this->save($data)){
+                    $lastInsertId = $this->recyclerTable->getLastInsertValue();
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\add',$messages['LOG_INSERT_RECYCLER_SUCCESS'].$lastInsertId);
                     $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
                     if($continue == 'yes'){
-                        $lastInsertId = $this->recyclerTable->getLastInsertValue();
+
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/recycler/detail/id/'.$lastInsertId);
                         }
                     }
                     return $this->redirect()->toUrl('/recycler');
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
-                        return $this->redirect()->toUrl('/recycler');
-                    }
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\add',$messages['LOG_INSERT_RECYCLER_FAIL']);
+                    $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
+                    $view->setVariable('form',$form);
+                    return $view;
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\add',$messages['LOG_INSERT_RECYCLER_FAIL']);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -194,6 +193,7 @@ class RecyclerController extends AbstractActionController
                     return $this->redirect()->toUrl('/recycler');
                 }
                 if($this->save($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\detail',$messages['LOG_UPDATE_RECYCLER_SUCCESS'].$id);
                     if($continue == 'yes'){
                         $view->setVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
                         $view->setVariable('form',$form);
@@ -203,17 +203,14 @@ class RecyclerController extends AbstractActionController
                         return $this->redirect()->toUrl('/recycler');
                     }
                 }else{
-                    if($continue == 'yes'){
-                        $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
-                        $view->setVariable('form',$form);
-                        return $view;
-                    }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
-                        return $this->redirect()->toUrl('/recycler');
-                    }
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\detail',$messages['LOG_UPDATE_RECYCLER_FAIL'].$id);
+                    $view->setVariable('msg',array('danger' => $messages['UPDATE_FAIL']));
+                    $view->setVariable('form',$form);
+                    return $view;
                 }
             }else{
                 foreach($form->getMessages() as $msg){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\detail',$messages['LOG_UPDATE_RECYCLER_FAIL'].$id);
                     $view->setVariable('msg',array('danger' => $msg));
                 }
                 $view->setVariable('form',$form);
@@ -286,8 +283,10 @@ class RecyclerController extends AbstractActionController
     {
         $messages = $this->getMessages();
         if($table->clearRecycler($id)){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete',$messages['LOG_DELETE_RECYCLER_SUCCESS'].$id);
             $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete',$messages['LOG_DELETE_RECYCLER_FAIL'].$id);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return true;
@@ -339,6 +338,7 @@ class RecyclerController extends AbstractActionController
                 $excel->fromArray($parseExcelData);
                 $excel->download($filename.'.xls');
             }
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\export',$messages['LOG_EXPORT_RECYCLERS_SUCCESS']);
         }
         exit();
         die;
@@ -423,8 +423,10 @@ class RecyclerController extends AbstractActionController
                  * Delete upload file
                  */
                 @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\import',$messages['LOG_IMPORT_RECYCLERS_SUCCESS'].$recycler_id);
                 $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPLOAD_SUCCESS']);
             }else{
+                $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\import',$messages['LOG_IMPORT_RECYCLERS_FAIL'].$recycler_id);
                 $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
                 return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
             }
@@ -529,6 +531,7 @@ class RecyclerController extends AbstractActionController
                     return $this->redirect()->toUrl('/recycler/detail/id/'.$entry->recycler_id);
                 }
                 if($this->saveRecyclerProduct($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\product',$messages['LOG_UPDATE_RECYCLER_PRODUCT_SUCCESS'].$id);
                     if($continue == 'yes'){
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                         return $this->redirect()->toUrl('/recycler/product/id/'.$id);
@@ -537,6 +540,7 @@ class RecyclerController extends AbstractActionController
                         return $this->redirect()->toUrl('/recycler/detail/id/'.$entry->recycler_id);
                     }
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\product',$messages['LOG_UPDATE_RECYCLER_PRODUCT_FAIL'].$id);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     return $this->redirect()->toUrl('/recycler/product/id/'.$id);
                 }
@@ -652,6 +656,7 @@ class RecyclerController extends AbstractActionController
                     return $this->redirect()->toUrl('/recycler/temp');
                 }
                 if($this->saveTemp($data)){
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\temp',$messages['LOG_UPDATE_TEMP_RECYCLER_PRODUCT_SUCCESS'].$id);
                     if($continue == 'yes'){
                         $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
                         return $this->redirect()->toUrl('/recycler/temp/id/'.$id);
@@ -660,6 +665,7 @@ class RecyclerController extends AbstractActionController
                         return $this->redirect()->toUrl('/recycler/temp');
                     }
                 }else{
+                    $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\temp',$messages['LOG_UPDATE_TEMP_RECYCLER_PRODUCT_FAIL'].$id);
                     $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
                     return $this->redirect()->toUrl('/recycler/temp/id/'.$id);
                 }
@@ -724,8 +730,10 @@ class RecyclerController extends AbstractActionController
                 $excel->fromArray($parseExcelData);
                 $excel->download($filename.'.xls');
             }
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\temp',$messages['LOG_EXPORT_RECYCLER_PRODUCT_SUCCESS'].$recycler_id);
         }else{
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\temp',$messages['LOG_EXPORT_RECYCLER_PRODUCT_FAIL'].$recycler_id);
             return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
         }
         exit();
