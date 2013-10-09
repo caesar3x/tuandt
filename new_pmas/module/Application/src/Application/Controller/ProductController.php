@@ -394,7 +394,7 @@ class ProductController extends AbstractActionController
         $view->setVariable('entry',$entry);
         $view->setVariable('filter',$filter);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $messages = $this->getMessages();
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
         if($filter == 'higher'){
@@ -901,7 +901,7 @@ class ProductController extends AbstractActionController
         $view->setVariable('start',$startTime);
         $view->setVariable('end',$endTime);
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
-        $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $productsCurrency = array();
         if(!empty($productWithSameModel)){
             foreach($productWithSameModel as $product){
@@ -1010,7 +1010,7 @@ class ProductController extends AbstractActionController
                                 'exchange_price' => $price,
                                 'price' => $productsCurrency[$product_id]['price'],
                                 'currency' => $productsCurrency[$product_id]['currency'],
-                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                 'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                 'country_id' => $productsCurrency[$product_id]['country_id'],
                                 'recycler_id' => $recycler_id
@@ -1019,7 +1019,7 @@ class ProductController extends AbstractActionController
                                 'exchange_price' => $price,
                                 'price' => $productsCurrency[$product_id]['price'],
                                 'currency' => $productsCurrency[$product_id]['currency'],
-                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                 'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                 'country_id' => $productsCurrency[$product_id]['country_id'],
                                 'recycler_id' => $recycler_id
@@ -1074,7 +1074,7 @@ class ProductController extends AbstractActionController
                                     'exchange_price' => $price,
                                     'price' => $productsCurrency[$product_id]['price'],
                                     'currency' => $productsCurrency[$product_id]['currency'],
-                                    'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                    'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                     'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                     'country_id' => $productsCurrency[$product_id]['country_id'],
                                     'recycler_id' => $productsCurrency[$product_id]['recycler_id']
@@ -1125,7 +1125,7 @@ class ProductController extends AbstractActionController
             exit();
         }
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
-        $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model);
+        $productWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $productsCurrency = array();
         if(!empty($productWithSameModel)){
             foreach($productWithSameModel as $product){
@@ -1148,7 +1148,7 @@ class ProductController extends AbstractActionController
             $data = array($header);
             if(!empty($highest)){
                 $rowParse = array();
-                $rowParse[] = ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A';
+                $rowParse[] = (!empty($highest['time'])) ? date('d-m-Y',(int)$highest['time']) : 'N/A';
                 $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductName($highest['product_id']);
                 $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductCondition($highest['product_id']);
                 $rowParse[] = $viewhelperManager->get('Recycler')->getRecyclerDetail($highest['recycler_id']);
@@ -1218,7 +1218,7 @@ class ProductController extends AbstractActionController
                             'exchange_price' => $price,
                             'price' => $productsCurrency[$product_id]['price'],
                             'currency' => $productsCurrency[$product_id]['currency'],
-                            'time' => $productsExchangeDate[$product_id],
+                            'time' => $viewhelperManager->get('product')->getRecyclerProductDate([$product_id]),
                             'exchange_rate' => $productsExchangeRate[$product_id],
                             'country_id' => $country,
                             'recycler_id' => $productsCurrency[$product_id]['recycler_id']
@@ -1233,7 +1233,7 @@ class ProductController extends AbstractActionController
                 $data = array($header);
                 if(!empty($highestInCountry)){
                     $rowParse = array();
-                    $rowParse[] = ($highestInCountry['time'] != null) ? date('d-m-Y',(int)$highestInCountry['time']) : 'N/A';
+                    $rowParse[] = (!empty($highestInCountry['time'])) ? date('d-m-Y',(int)$highestInCountry['time']) : 'N/A';
                     $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductName($highestInCountry['product_id']);
                     $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductCondition($highestInCountry['product_id']);
                     $rowParse[] = $viewhelperManager->get('Recycler')->getRecyclerDetail($highestInCountry['recycler_id']);
@@ -1311,7 +1311,7 @@ class ProductController extends AbstractActionController
                                 'exchange_price' => $price,
                                 'price' => $productsCurrency[$product_id]['price'],
                                 'currency' => $productsCurrency[$product_id]['currency'],
-                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                 'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                 'country_id' => $productsCurrency[$product_id]['country_id'],
                                 'recycler_id' => $recycler_id
@@ -1320,7 +1320,7 @@ class ProductController extends AbstractActionController
                                 'exchange_price' => $price,
                                 'price' => $productsCurrency[$product_id]['price'],
                                 'currency' => $productsCurrency[$product_id]['currency'],
-                                'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                 'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                 'country_id' => $productsCurrency[$product_id]['country_id'],
                                 'recycler_id' => $recycler_id
@@ -1336,7 +1336,7 @@ class ProductController extends AbstractActionController
                 if(!empty($highestInRecycler)){
                     foreach($highestInRecycler as $h){
                         $rowParse = array();
-                        $rowParse[] = ($h['time'] != null) ? date('d-m-Y',(int)$h['time']) : 'N/A';
+                        $rowParse[] = (!empty($h['time'])) ? date('d-m-Y',(int)$h['time']) : 'N/A';
                         $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductName($h['product_id']);
                         $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductCondition($h['product_id']);
                         $rowParse[] = $viewhelperManager->get('Recycler')->getRecyclerDetail($h['recycler_id']);
@@ -1415,7 +1415,7 @@ class ProductController extends AbstractActionController
                                     'exchange_price' => $price,
                                     'price' => $productsCurrency[$product_id]['price'],
                                     'currency' => $productsCurrency[$product_id]['currency'],
-                                    'time' => ((int) $productsExchangeDate[$product_id][$key] != 0) ? $productsExchangeDate[$product_id][$key] : null,
+                                    'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                                     'exchange_rate' => $productsExchangeRate[$product_id][$key],
                                     'country_id' => $productsCurrency[$product_id]['country_id'],
                                     'recycler_id' => $productsCurrency[$product_id]['recycler_id']
@@ -1431,7 +1431,7 @@ class ProductController extends AbstractActionController
                     if(!empty($highestInRecycler)){
                         foreach($highestInRecycler as $h){
                             $rowParse = array();
-                            $rowParse[] = ($h['time'] != null) ? date('d-m-Y',(int)$h['time']) : 'N/A';
+                            $rowParse[] = (!empty($h['time'])) ? date('d-m-Y',(int)$h['time']) : 'N/A';
                             $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductName($h['product_id']);
                             $rowParse[] = $viewhelperManager->get('Product')->getRecyclerProductCondition($h['product_id']);
                             $rowParse[] = $viewhelperManager->get('Recycler')->getRecyclerDetail($h['recycler_id']);

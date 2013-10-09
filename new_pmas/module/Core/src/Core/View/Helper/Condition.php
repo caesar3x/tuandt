@@ -22,11 +22,7 @@ class Condition extends AbstractHelper
         if($id == null || $id == 0){
             return null;
         }
-        if($tdm == true){
-            $tdmConditionTable = $this->serviceLocator->get('TdmProductConditionTable');
-        }else{
-            $tdmConditionTable = $this->serviceLocator->get('RecyclerProductConditionTable');
-        }
+        $tdmConditionTable = $this->serviceLocator->get('TdmProductConditionTable');
         $conditionEntry = $tdmConditionTable->getEntry($id);
         if(empty($conditionEntry)){
             return null;
@@ -53,7 +49,7 @@ class Condition extends AbstractHelper
         if(!$condition){
             return null;
         }
-        $ConditionTable = $this->serviceLocator->get('RecyclerProductConditionTable');
+        $ConditionTable = $this->serviceLocator->get('TdmProductConditionTable');
         $entry = $ConditionTable->getEntryByName($condition);
         if(!empty($entry)){
             return $entry->condition_id;

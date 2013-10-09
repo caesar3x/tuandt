@@ -180,7 +180,7 @@ $upload = $this->upload;
                                     <td><?php echo $product->currency?></td>
                                     <?php $rExchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency,time());?>
                                     <td><?php echo $this->price()->formatCurrency((float)$product->price * $rExchange,'HKD');?></td>
-                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model);?>
+                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model,$product->condition_id);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
                                         <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
@@ -210,7 +210,7 @@ $upload = $this->upload;
                                     <td><?php echo $row->currency?></td>
                                     <?php $rExchange2 = $this->exchange()->getCurrentExchangeOfCurrency($row->currency,time());?>
                                     <td><?php echo $this->price()->formatCurrency((float)$row->price * $rExchange2,'HKD');?></td>
-                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($row->model);?>
+                                    <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($row->model,$row->condition_id);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
                                         <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>

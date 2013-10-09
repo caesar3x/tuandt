@@ -40,6 +40,18 @@ class Product extends AbstractHelper
         }
         return $entry->name;
     }
+    public function getRecyclerProductDate($product_id)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        if(!$product_id || $product_id == 0){
+            return null;
+        }
+        $entry = $recyclerProductTable->getEntry($product_id);
+        if(empty($entry)){
+            return null;
+        }
+        return $entry->date;
+    }
     public function getRecyclerProductModel($product_id)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
@@ -129,7 +141,7 @@ class Product extends AbstractHelper
         if(!$condition_id || (int)$condition_id == 0){
             return null;
         }
-        $conditionTable = $this->serviceLocator->get('RecyclerProductConditionTable');
+        $conditionTable = $this->serviceLocator->get('TdmProductConditionTable');
         $conditionEntry = $conditionTable->getEntry($condition_id);
         if(empty($conditionEntry)){
             return null;
@@ -181,7 +193,7 @@ class Product extends AbstractHelper
                         'exchange_price' => $price,
                         'price' => $productsCurrency[$product_id]['price'],
                         'currency' => $productsCurrency[$product_id]['currency'],
-                        'time' => $productsExchangeDate[$product_id],
+                        'time' => $this->getRecyclerProductDate($product_id),
                         'exchange_rate' => $productsExchangeRate[$product_id],
                         'recycler_id' => $productsCurrency[$product_id]['recycler_id']
                     );
@@ -201,10 +213,10 @@ class Product extends AbstractHelper
         $products = $tdmProductTable->getAvaiableRows();
         return $products;
     }
-    public function getRecyclerProductsByModel($model,$limit = 3)
+    public function getRecyclerProductsByModel($model,$condition_id,$limit = 3)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
-        $rowset = $recyclerProductTable->getProductsByModel($model,$limit);
+        $rowset = $recyclerProductTable->getProductsByModel($model,$condition_id,$limit);
         return $rowset;
     }
 
@@ -240,7 +252,7 @@ class Product extends AbstractHelper
             return null;
         }
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
-        $tdmProductsWithSameModel = $tdmProductTable->getRowByModel($recycler_product->model);
+        $tdmProductsWithSameModel = $tdmProductTable->getRowByModel($recycler_product->model,$recycler_product->condition_id);
         if(empty($tdmProductsWithSameModel)){
             return null;
         }

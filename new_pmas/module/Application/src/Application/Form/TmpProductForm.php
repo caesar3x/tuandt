@@ -116,13 +116,9 @@ class TmpProductForm extends Form
         }
         return $data;
     }
-    protected function getProductConditions($tdm = true)
+    protected function getProductConditions()
     {
-        if($tdm == true){
-            $conditionTypeTable = $this->serviceLocator->get('TdmProductConditionTable');
-        }else{
-            $conditionTypeTable = $this->serviceLocator->get('RecyclerProductConditionTable');
-        }
+        $conditionTypeTable = $this->serviceLocator->get('TdmProductConditionTable');
         $availableConditions = $conditionTypeTable->getAvaiableRows();
         $data = array(0 => 'Select Condition');
         if(!empty($availableConditions)){
