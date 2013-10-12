@@ -5,7 +5,7 @@
  */
 ?>
 <?php defined('BASEPATH') or exit('No direct script access allowed');
-class Module_Science extends Module {
+class Module_Sr_homepage extends Module {
 
     public $version = '1.0.1';
 

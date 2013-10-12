@@ -4,7 +4,7 @@
  * Date: 10/11/13
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Science extends Public_Controller
+class Sr_homepage extends Public_Controller
 {
     public function __construct()
     {
