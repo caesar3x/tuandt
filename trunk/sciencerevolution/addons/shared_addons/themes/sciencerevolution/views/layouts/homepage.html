@@ -1,0 +1,12 @@
+{{ theme:partial name="header2" }}
+<!-- slogan -->
+{{ if { url:segments segment="1" } == '' AND theme:options:slogan == 'yes' }}
+{{ theme:options:slogan }}
+{{ endif }}
+<!-- content -->
+<section id="content">
+    {{ template:body }}
+</section>
+<!-- /content -->
+
+{{ theme:partial name="footer" }}

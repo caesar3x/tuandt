@@ -1,0 +1,15 @@
+{{ theme:partial name="header" }}
+<!-- slogan -->
+
+       <h1>About us layout</h1>
+{{ if { url:segments segment="1" } == '' AND theme:options:slogan == 'yes' }}
+{{ theme:options:slogan }}
+{{ endif }}
+<!-- content -->
+<section id="content">
+    {{ theme:partial name="breadcrumbs" }}
+    {{ template:body }}
+</section>
+<!-- /content -->
+
+{{ theme:partial name="footer" }}
