@@ -42,7 +42,7 @@
     {{ integration:analytics }}
 </head>
 
-<body class="contact-us page">
+<body class="{{ sr_template:body_class }} page">
 <section id="wrapper">
     <header id="header">
         <div class="container">
@@ -53,8 +53,8 @@
                     </a></h1>
                 </div>
                 <div class="quick-access span9">
-                    <a href="{{ url:site }}login" class="button signup right">Sign up</a>
-                    <a href="{{ url:site }}logout" class="button login right">Login</a>
+                  <a href="{{ url:site }}signup" class="button signup right">Sign up</a>
+                    <a href="{{ url:site }}login" class="button login right">Login</a>
 
                     <ul class="toplinks right">
                         <li><a href="{{ url }}" title="home">Home</a></li>

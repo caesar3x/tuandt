@@ -3,7 +3,7 @@
  * Science Events Class
  * 
  * @package        PyroCMS
- * @subpackage    Science Module
+ * @subpackage    Science Contact Module
  * @category    events
  * @author        datnguyen.cntt@gmail.com
  * @website        http://vdragons.com

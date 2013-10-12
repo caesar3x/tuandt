@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller']                = 'science';
+$route['default_controller']                = 'sr_homepage/index';
 $route['404_override']                      = 'pages';
 
 $route['admin/help/([a-zA-Z0-9_-]+)']       = 'admin/help/$1';

@@ -8,7 +8,7 @@
  * @author        datnguyen.cntt@gmail.com
  * @website        http://vdragons.com
  */
-class Events_Science {
+class Events_Sr_homepage {
     
     protected $ci;
     

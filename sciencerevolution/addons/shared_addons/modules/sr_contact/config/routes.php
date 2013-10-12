@@ -5,4 +5,4 @@
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 // front-end
-$route['(sr_contact)(/)'] = 'contact/index';
+$route['sr_contact/index'] = 'sr_contact/index';
