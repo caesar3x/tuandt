@@ -25,4 +25,12 @@ class Science extends Public_Controller
     {
         die('==dsadsadsa==');
     }
+    public function taxo()
+    {
+        die('test function');
+    }
+    public function check()
+    {
+        die('chekc');
+    }
 }
