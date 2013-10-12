@@ -59,4 +59,7 @@ $route['sitemap.xml']                       = 'sitemap/xml';
 
 $route['contact']                           = 'sr_contact/index';
 
+$route['profile']                           = 'sr_users/profile';
+$route['dashboard']                           = 'sr_users/dashboard';
+
 /* End of file routes.php */
