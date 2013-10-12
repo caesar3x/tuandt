@@ -57,6 +57,6 @@ $route['edit-profile']	                    = 'users/edit';
 
 $route['sitemap.xml']                       = 'sitemap/xml';
 
-$route['anh-dat']                           = 'science/check';
+$route['contact']                           = 'sr_contact/index';
 
 /* End of file routes.php */

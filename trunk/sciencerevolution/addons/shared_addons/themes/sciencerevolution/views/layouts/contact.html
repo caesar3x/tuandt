@@ -1,13 +1,10 @@
-{{ theme:partial name="header" }}
+{{ theme:partial name="header-contact" }}
 <!-- slogan -->
-
-       <h1>About us layout</h1>
 {{ if { url:segments segment="1" } == '' AND theme:options:slogan == 'yes' }}
 {{ theme:options:slogan }}
 {{ endif }}
 <!-- content -->
 <section id="content">
-    {{ theme:partial name="breadcrumbs" }}
     {{ template:body }}
 </section>
 <!-- /content -->

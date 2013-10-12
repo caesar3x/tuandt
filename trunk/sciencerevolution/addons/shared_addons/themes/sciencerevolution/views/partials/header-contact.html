@@ -11,8 +11,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
     <title>{{ settings:site_name }} &raquo; {{ template:title }}</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="Science revolution, Contact us" />
+    <meta name="keywords" content="Science revolution, Contact us" />
 
     <!-- Mobile viewport optimized -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
@@ -34,7 +34,6 @@
     <!-- All JavaScript at the bottom, except for Modernizr. -->
     {{ theme:js file="modernizr.js" }}
     {{ theme:js file="jquery.js" }}
-    {{ theme:js file="science.js" }}
 
 
     {{ template:metadata }}
@@ -43,7 +42,7 @@
     {{ integration:analytics }}
 </head>
 
-<body class="page home cusout">
+<body class="contact-us page">
 <section id="wrapper">
     <header id="header">
         <div class="container">
@@ -54,17 +53,14 @@
                     </a></h1>
                 </div>
                 <div class="quick-access span9">
-                    <a href="#" class="button signup right">Sign up</a>
-                    <a href="#" class="button login right">Login</a>
+                    <a href="{{ url:site }}login" class="button signup right">Sign up</a>
+                    <a href="{{ url:site }}logout" class="button login right">Login</a>
 
                     <ul class="toplinks right">
                         <li><a href="{{ url }}" title="home">Home</a></li>
                         <li><a href="{{ url:site }}about-us" title="About us">About us</a></li>
                         <li><a href="{{ url:site }}contact" title="Contact us" >Contact us</a></li>
                     </ul>
-
-
-
                 </div>
             </div>
         </div>
@@ -84,6 +80,7 @@
         </div>
     </section>
     <section id="banner">
-        {{theme:image file="homebanner.jpg"}}
+        <div class="container">
+            {{theme:image file="banner.jpg"}}
+        </div>
     </section>
-    <section id="content">
