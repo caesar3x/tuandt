@@ -28,4 +28,11 @@ class Sr_users extends Public_Controller
             ->title('User Profile')
             ->build('profile/index');
     }
+    public function register()
+    {
+        $this->template
+            ->set_layout('contact.html')
+            ->title('Sign up')
+            ->build('form/register');
+    }
 }
