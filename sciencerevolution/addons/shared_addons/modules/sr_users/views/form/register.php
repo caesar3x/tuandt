@@ -11,7 +11,7 @@
             <div class="page-content">
                 <div class="row-fluid">
                     <div class="span12">
-                        <form id="contact_us_form" method="get" action="#">
+                        <form id="signup-form" method="post" action="{{ url:current}}">
                             <label>Name</label>
                             <input class="large" type="text" class="input-text"  placeholder="Fisrt & Last" value="" name="name" id="name" />
                             <label>Phone number</label>

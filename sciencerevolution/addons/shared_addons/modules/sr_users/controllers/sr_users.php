@@ -31,7 +31,7 @@ class Sr_users extends Public_Controller
     public function register()
     {
         $this->template
-            ->set_layout('contact.html')
+            ->set_layout('signup.html')
             ->title('Sign up')
             ->build('form/register');
     }

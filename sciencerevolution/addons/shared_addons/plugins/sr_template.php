@@ -44,9 +44,38 @@ class Plugin_Sr_template extends Plugin
                     ),
                 ),
             ),
+            'is_signup' => array(
+                'description' => array(// a single sentence to explain the purpose of this method
+                    'en' => 'Check is sign up page .'
+                ),
+                'single' => true,// will it work as a single tag?
+                'double' => false,// how about as a double tag?
+                'variables' => '',// list all variables available inside the double tag. Separate them|like|this
+                'attributes' => array(
+                    'is' => array(// this is the name="World" attribute
+                        'type' => 'flag',// Can be: slug, number, flag, text, array, any.
+                        'flags' => '',// flags are predefined values like asc|desc|random.
+                        'default' => false,// this attribute defaults to this if no value is given
+                        'required' => false,// is this attribute required?
+                    ),
+                ),
+            ),
         );
 
         return $info;
+    }
+    public function is_signup()
+    {
+        $segment = $this->segments(1);
+        if($segment && $segment != ''){
+            if(strpos($segment,'contact') !== false || strpos($segment,'signup') !== false){
+                $class = $this->attribute('class', 'contact-us');
+            }else{
+                $class = $this->attribute('class', $segment);
+            }
+        }else{
+            $class = $this->attribute('class', 'home');
+        }
     }
     public function body_class()
     {
