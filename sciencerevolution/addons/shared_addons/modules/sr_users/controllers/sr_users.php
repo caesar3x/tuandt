@@ -9,6 +9,11 @@ class Sr_users extends Public_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('sr_users_m');
+        $this->load->model('sr_private_profile');
+        $this->lang->load('users');
+        $this->load->helper('virgo');
+        $this->load->helper('form');
     }
     public function index()
     {
