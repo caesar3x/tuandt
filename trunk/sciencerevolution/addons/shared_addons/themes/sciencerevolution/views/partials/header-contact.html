@@ -21,8 +21,9 @@
     <!-- End base -->
 
     <!-- CSS. No need to specify the media attribute unless specifically targeting a media type, leaving blank implies media=all -->
-    {{ theme:css file="style.css" }}
-    {{ theme:css file="layout.css" }}
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/style.css">
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/layout.css">
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/extend.css">
     <!-- End CSS-->
     <!--Load font-->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:300,600,400' rel='stylesheet' type='text/css'>
@@ -30,8 +31,11 @@
     <!-- Load up some favicons -->
 
     <!-- All JavaScript at the bottom, except for Modernizr. -->
-    {{ theme:js file="modernizr.js" }}
-    {{ theme:js file="jquery.js" }}
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.ui.datepicker.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/science.js"></script>
 
 
     {{ template:metadata }}
