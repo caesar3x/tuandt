@@ -1218,7 +1218,7 @@ class ProductController extends AbstractActionController
                             'exchange_price' => $price,
                             'price' => $productsCurrency[$product_id]['price'],
                             'currency' => $productsCurrency[$product_id]['currency'],
-                            'time' => $viewhelperManager->get('product')->getRecyclerProductDate([$product_id]),
+                            'time' => $viewhelperManager->get('product')->getRecyclerProductDate($product_id),
                             'exchange_rate' => $productsExchangeRate[$product_id],
                             'country_id' => $country,
                             'recycler_id' => $productsCurrency[$product_id]['recycler_id']

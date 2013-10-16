@@ -67,11 +67,7 @@ $groups = $this->menu()->getResourceGroups();
                             </li>
                             <li>
                                 <a href="/condition/tdm/">
-                                    TDM Condition Management </a>
-                            </li>
-                            <li>
-                                <a href="/condition/recycler/">
-                                    Recycler Condition Management </a>
+                                    Condition Management </a>
                             </li>
                             <li>
                                 <a href="/product/type/">
@@ -131,7 +127,7 @@ $groups = $this->menu()->getResourceGroups();
                         </li>
                     <?php endif;?>
                     <?php if(in_array('user',$groups) || in_array('role',$groups) || in_array('resource',$groups)
-                            || in_array('country',$groups) || in_array('tdm-condition',$groups) || in_array('recycler-condition',$groups)
+                            || in_array('country',$groups) || in_array('tdm-condition',$groups)
                             || in_array('product-type',$groups) || in_array('brand',$groups) || in_array('tdm-product',$groups)):?>
                         <li class="dropdown ">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
@@ -167,12 +163,6 @@ $groups = $this->menu()->getResourceGroups();
                                     <li>
                                         <a href="/condition/tdm/">
                                             TDM Condition Management </a>
-                                    </li>
-                                <?php endif;?>
-                                <?php if(in_array('recycler-condition',$groups)):?>
-                                    <li>
-                                        <a href="/condition/recycler/">
-                                            Recycler Condition Management </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('product-type',$groups)):?>
