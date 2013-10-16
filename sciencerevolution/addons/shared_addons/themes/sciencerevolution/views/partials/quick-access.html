@@ -1,0 +1,14 @@
+<div class="quick-access span9">
+    {{ if sr_template:is_loggin == 'no'}}
+    <a href="{{url:site}}login" class="button signup right">Login</a>
+    <a href="{{url:site}}signup" class="button login right">Sign up</a>
+    {{ else}}
+    <a href="{{url:site}}logout" class="button login right">Logout</a>
+    <a href="{{url:site}}dashboard" class="button signup right">Dashboard</a>
+    {{ endif}}
+    <ul class="toplinks right">
+        <li><a href="{{ url }}" title="home">Home</a></li>
+        <li><a href="{{ url:site }}about-us" title="About us">About us</a></li>
+        <li><a href="{{ url:site }}contact" title="Contact us" >Contact us</a></li>
+    </ul>
+</div>
