@@ -16,23 +16,11 @@ class Sr_homepage extends Public_Controller
     }
     public function index()
     {
-        $current_sr_user = $this->virgo_auth_model->get_current_sr_user();
-        vdebug($current_sr_user);
+        /*$current_sr_user = $this->virgo_auth_model->get_current_sr_user();
+        vdebug($current_sr_user);*/
         $this->template
             ->set_layout('homepage.html')
             ->title('Homepage')
             ->build('home/index');
-    }
-    public function num()
-    {
-        die('==dsadsadsa==');
-    }
-    public function taxo()
-    {
-        die('test function');
-    }
-    public function check()
-    {
-        die('chekc');
     }
 }
