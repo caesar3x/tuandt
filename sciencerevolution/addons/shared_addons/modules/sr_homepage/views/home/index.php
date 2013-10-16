@@ -4,6 +4,7 @@
  * Date: 10/11/13
  */
 ?>
+<?php vdebug(get_current_sr_user());die;?>
 <div class="col-left">
     <div class="block block-filters">
         <div class="block-title">
