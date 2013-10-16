@@ -72,6 +72,18 @@ class Sr_users extends Public_Controller
         if(is_sr_user_loggin()){
             redirect('/');
         }
+
+        /**========================================================**/
+        $this->template
+            ->set_layout('signup.html')
+            ->title('Sign up')
+            ->build('form/register');
+    }
+    public function personal_register()
+    {
+        if(is_sr_user_loggin()){
+            redirect('/');
+        }
         $this->load->model('sr_users/virgo_auth_model');
         $params = $this->input->post();
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[12]|callback_check_username');
@@ -89,7 +101,31 @@ class Sr_users extends Public_Controller
         $this->template
             ->set_layout('signup.html')
             ->title('Sign up')
-            ->build('form/register');
+            ->build('form/personal');
+    }
+    public function company_register()
+    {
+        if(is_sr_user_loggin()){
+            redirect('/');
+        }
+        $this->load->model('sr_users/virgo_auth_model');
+        $params = $this->input->post();
+        $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[12]|callback_check_username');
+        $this->form_validation->set_rules('password', 'Password', 'required|matches[confirm_password]');
+        $this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'required');
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('form/register');
+        }else{
+            if($this->virgo_auth_model->register($params['username'],$params['password'])){
+                redirect('?success');
+            }
+        }
+        /**========================================================**/
+        $this->template
+            ->set_layout('signup.html')
+            ->title('Sign up')
+            ->build('form/company');
     }
     public function check_username($username)
     {

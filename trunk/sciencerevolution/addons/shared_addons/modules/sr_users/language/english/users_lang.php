@@ -30,3 +30,8 @@ $lang['placeholder:User@domain.com']			        =	'User@domain.com';
  * User messages
  */
 $lang['logout_success']     = 'You have been logout success';
+/**
+ * Button label
+ */
+$lang['signup_as_company'] = 'SIGN UP AS COMPANY';
+$lang['signup_as_personal'] = 'SIGN UP AS PERSONAL';

@@ -62,6 +62,8 @@ $route['contact']                           = 'sr_contact/index';
 $route['profile']                           = 'sr_users/profile';
 $route['dashboard']                           = 'sr_users/dashboard';
 $route['signup']                           = 'sr_users/register';
+$route['signup/personal']                           = 'sr_users/personal_register';
+$route['signup/company']                           = 'sr_users/company_register';
 $route['login']                           = 'sr_users/login';
 $route['logout']                           = 'sr_users/logout';
 
