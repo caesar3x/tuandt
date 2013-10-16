@@ -10,6 +10,13 @@ if(!function_exists('is_sr_user_loggin')){
         return (isset(get_instance()->current_sr_user->id)) ? true : false;
     }
 }
+if(!function_exists('get_current_sr_user')){
+    function get_current_sr_user()
+    {
+        ci()->load->model('sr_users/virgo_auth_model');
+        return ci()->virgo_auth_model->get_current_sr_user();
+    }
+}
 if (!function_exists("vdebug")) {
     /**
      * vdebug()
