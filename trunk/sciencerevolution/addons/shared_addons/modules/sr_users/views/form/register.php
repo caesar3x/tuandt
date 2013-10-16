@@ -55,17 +55,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-right span3">
-            <div class="block blsssock-quicklinks">
-                <ul>
-                    <li class="first"><a href="#"><i class="icon-letter"></i> Contact & support</a></li>
-                    <li class=""><a href="#"><i class="icon-info-sign"></i> Information & advertiser</a></li>
-                    <li class=""><a href="#"><i class="icon-book"></i> Terms & conditions</a></li>
-                    <li class=""><a href="#"><i class="icon-lock"></i> Privacy policy</a></li>
-                    <li class=""><a href="#"><i class="icon-question-sign"></i> How it work</a></li>
-                    <li class="last"><a href="#"><i class="icon-pencil"></i> FAQ</a></li>
-                </ul>
-            </div>
-        </div>
+        {{ theme:partial name="block-quicklinks" }}
     </div>
 </div>
