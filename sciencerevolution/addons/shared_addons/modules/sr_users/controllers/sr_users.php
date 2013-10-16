@@ -11,12 +11,14 @@ class Sr_users extends Public_Controller
         parent::__construct();
         $this->load->model('sr_user_m');
         $this->load->model('sr_private_profile');
+        $this->load->model('sr_users/virgo_auth_model');
         $this->lang->load('users');
         $this->load->helper('virgo');
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->helper('url');
         $this->load->library('session');
+        $this->template->current_sr_user = ci()->current_sr_user = $this->current_sr_user = $this->virgo_auth_model->get_current_sr_user();
     }
     public function index()
     {
@@ -24,12 +26,9 @@ class Sr_users extends Public_Controller
     }
     public function login()
     {
-        $this->load->model('sr_users/virgo_auth_model');
-        /*$users = $this->sr_user_m->get_all_active_users();
-        vdebug($users);die;*/
-        /*$this->session->set_userdata(array(1,2,3));
-        $user = $this->session->userdata('dasdsadas');
-        vdebug($user);die;*/
+        if(is_sr_user_loggin()){
+            redirect('/');
+        }
         $params = $this->input->post();
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -37,7 +36,6 @@ class Sr_users extends Public_Controller
         {
             $this->load->view('form/login');
         }else{
-            /*die('==============');*/
             if($this->virgo_auth_model->login($params['username'],$params['password'])){
                 redirect('?success');
             }
@@ -47,6 +45,13 @@ class Sr_users extends Public_Controller
             ->set_layout('login.html')
             ->title('Login')
             ->build('form/login');
+    }
+    public function logout()
+    {
+        if($this->virgo_auth_model->logout()){
+            $this->session->set_flashdata('flass_messages', lang('logout_success'));
+        }
+        redirect('/');
     }
     public function profile()
     {
@@ -64,7 +69,9 @@ class Sr_users extends Public_Controller
     }
     public function register()
     {
-        /*$this->load->library('virgo_auth');*/
+        if(is_sr_user_loggin()){
+            redirect('/');
+        }
         $this->load->model('sr_users/virgo_auth_model');
         $params = $this->input->post();
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[12]|callback_check_username');
