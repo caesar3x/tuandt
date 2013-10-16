@@ -12,10 +12,17 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <?php echo form_open_multipart(current_url(),array('id' => 'signup-form','method' => 'post'));?>
+                        <div class="msg_error"><?php echo validation_errors(); ?></div>
                         <label><?php echo lang('label:first_name')?></label>
                         <?php echo form_input(array('name' => 'first_name','id' => 'first-name','class' => 'input-text'))?>
                         <label><?php echo lang('label:last_name')?></label>
                         <?php echo form_input(array('name' => 'last_name','id' => 'last-name','class' => 'input-text'))?>
+                        <label><?php echo lang('label:username')?></label>
+                        <?php echo form_input(array('name' => 'username','id' => 'username','class' => 'input-text'))?>
+                        <label><?php echo lang('label:password')?></label>
+                        <?php echo form_password(array('name' => 'password','id' => 'password','class' => 'input-text'))?>
+                        <label><?php echo lang('label:confirm_password')?></label>
+                        <?php echo form_password(array('name' => 'confirm_password','id' => 'confirm_password','class' => 'input-text'))?>
                         <label><?php echo lang('label:job')?></label>
                         <?php echo form_dropdown('job',array(
                             0 => 'Chose a Job',
@@ -42,16 +49,14 @@
                         <?php echo form_input(array('name' => 'state','id' => 'state','class' => 'input-text'))?>
                         <label><?php echo lang('label:country')?></label>
                         <?php echo form_input(array('name' => 'country','id' => 'country','class' => 'input-text'))?>
-                            <label>Message</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Any additional information about your location or inquiry"></textarea>
-                            <button class="button large right" title="Search" type="submit"><span>SUBMIT</span></button>
+                        <button class="button large right" title="Search" type="submit"><span>SUBMIT</span></button>
                         <?php echo form_close()?>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-right span3">
-            <div class="block block-quicklinks">
+            <div class="block blsssock-quicklinks">
                 <ul>
                     <li class="first"><a href="#"><i class="icon-letter"></i> Contact & support</a></li>
                     <li class=""><a href="#"><i class="icon-info-sign"></i> Information & advertiser</a></li>
