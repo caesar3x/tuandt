@@ -52,16 +52,7 @@
                         {{theme:image file="logo.png"}}
                     </a></h1>
                 </div>
-                <div class="quick-access span9">
-                    <a href="{{ url:site }}signup" class="button signup right">Sign up</a>
-                    <a href="{{ url:site }}login" class="button login right">Login</a>
-
-                    <ul class="toplinks right">
-                        <li><a href="{{ url }}" title="home">Home</a></li>
-                        <li><a href="{{ url:site }}about-us" title="About us">About us</a></li>
-                        <li><a href="{{ url:site }}contact" title="Contact us" >Contact us</a></li>
-                    </ul>
-                </div>
+                {{ theme:partial name="quick-access" }}
             </div>
         </div>
     </header>

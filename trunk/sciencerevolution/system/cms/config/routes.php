@@ -63,5 +63,6 @@ $route['profile']                           = 'sr_users/profile';
 $route['dashboard']                           = 'sr_users/dashboard';
 $route['signup']                           = 'sr_users/register';
 $route['login']                           = 'sr_users/login';
+$route['logout']                           = 'sr_users/logout';
 
 /* End of file routes.php */

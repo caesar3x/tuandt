@@ -7,7 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed.');
 if(!function_exists('is_sr_user_loggin')){
     function is_sr_user_loggin()
     {
-        return (isset(get_instance()->current_sr_user->id)) ? true : false;
+        ci()->load->model('sr_users/virgo_auth_model');
+        $user = ci()->virgo_auth_model->get_current_sr_user();
+        return (isset($user->id)) ? true : false;
     }
 }
 if(!function_exists('get_current_sr_user')){

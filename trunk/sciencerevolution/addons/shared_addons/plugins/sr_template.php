@@ -60,9 +60,32 @@ class Plugin_Sr_template extends Plugin
                     ),
                 ),
             ),
+            'is_loggin' => array(
+                'description' => array(// a single sentence to explain the purpose of this method
+                    'en' => 'Check is user loggedin .'
+                ),
+                'single' => true,// will it work as a single tag?
+                'double' => false,// how about as a double tag?
+                'variables' => '',// list all variables available inside the double tag. Separate them|like|this
+                'attributes' => array(
+                    'is' => array(// this is the name="World" attribute
+                        'type' => 'flag',// Can be: slug, number, flag, text, array, any.
+                        'flags' => '',// flags are predefined values like asc|desc|random.
+                        'default' => false,// this attribute defaults to this if no value is given
+                        'required' => false,// is this attribute required?
+                    ),
+                ),
+            ),
         );
 
         return $info;
+    }
+    public function is_loggin()
+    {
+        $this->load->model('sr_users/virgo_auth_model');
+        $this->lang->load('sr_users/virgo_auth');
+        $user = $this->virgo_auth_model->get_current_sr_user();
+        return (isset($user->id)) ? 'yes' : 'no';
     }
     public function is_signup()
     {
