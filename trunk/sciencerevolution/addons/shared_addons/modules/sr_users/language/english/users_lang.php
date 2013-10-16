@@ -26,3 +26,7 @@ $lang['label:confirm_password']                = 'Confirm Password';
  * Placeholder value
  */
 $lang['placeholder:User@domain.com']			        =	'User@domain.com';
+/**
+ * User messages
+ */
+$lang['logout_success']     = 'You have been logout success';

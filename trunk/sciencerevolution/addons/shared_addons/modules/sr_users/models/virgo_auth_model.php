@@ -350,4 +350,14 @@ class Virgo_auth_model extends CI_Model
         }
         return null;
     }
+    public function logout()
+    {
+        $this->ci->session->unset_userdata('current_sr_user');
+        if (get_cookie('remember_code'))
+        {
+            delete_cookie('remember_code');
+        }
+        $this->ci->session->sess_regenerate(true);
+        return true;
+    }
 }
