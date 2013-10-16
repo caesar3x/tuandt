@@ -8,6 +8,7 @@
  */
 $lang['sign_up']                    =   'Sign up';
 $lang['label:email']                = 'Email address';
+$lang['label:username']                = 'Username';
 $lang['label:dob']                = 'Date of Birth';
 $lang['label:first_name']                = 'First Name';
 $lang['label:last_name']                = 'Last Name';
@@ -19,6 +20,8 @@ $lang['label:state']                = 'State';
 $lang['label:country']                = 'Country';
 $lang['label:postcode']                = 'Postcode';
 $lang['label:job']                = 'Job';
+$lang['label:password']                = 'Password';
+$lang['label:confirm_password']                = 'Confirm Password';
 /**
  * Placeholder value
  */

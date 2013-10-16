@@ -81,7 +81,7 @@ class Plugin_Sr_template extends Plugin
     {
         $segment = $this->segments(1);
         if($segment && $segment != ''){
-            if(strpos($segment,'contact') !== false || strpos($segment,'signup') !== false){
+            if(strpos($segment,'contact') !== false || strpos($segment,'signup') !== false || strpos($segment,'login') !== false){
                 $class = $this->attribute('class', 'contact-us');
             }else{
                 $class = $this->attribute('class', $segment);
