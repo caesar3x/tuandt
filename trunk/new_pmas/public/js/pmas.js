@@ -97,7 +97,18 @@ $(function() {
         dateFormat : "dd-mm-yy"
     }).datepicker("setDate", new Date());
     $('.datepicker2').datepicker({dateFormat : "dd-mm-yy"});
-
+    /**
+     * Onchange price filter
+     */
+    $('#price_percentage').change(function(e){
+        e.preventDefault();
+        var product = $("#productid").val();
+        if(typeof  product !== 'undefined'){
+            window.location.assign(siteurl+'product/detail/id/'+product+'/filter/'+$(this).val());
+        }else{
+            window.location.assign(siteurl +'product/filter');
+        }
+    });
 } );
 function goToModelDetail()
 {
