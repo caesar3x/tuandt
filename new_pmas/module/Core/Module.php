@@ -11,10 +11,6 @@ use Core\Model\Brand;
 use Core\Model\BrandTable;
 use Core\Model\Country;
 use Core\Model\CountryTable;
-use Core\Model\Product;
-use Core\Model\ProductCondition;
-use Core\Model\ProductConditionTable;
-use Core\Model\ProductTable;
 use Core\Model\ProductType;
 use Core\Model\ProductTypeTable;
 use Core\Model\Exchange;
@@ -388,6 +384,12 @@ class Module
                 'getUrl' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\UrlHelper();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'files' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\FilesHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
