@@ -80,6 +80,10 @@ class Plugin_Sr_template extends Plugin
 
         return $info;
     }
+    public function flash_messages()
+    {
+
+    }
     public function is_loggin()
     {
         $this->load->model('sr_users/virgo_auth_model');
