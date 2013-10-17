@@ -7,7 +7,7 @@ namespace Core\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceManager;
 
-class Country extends AbstractHelper
+class CountryHelper extends AbstractHelper
 {
     protected $serviceLocator;
 

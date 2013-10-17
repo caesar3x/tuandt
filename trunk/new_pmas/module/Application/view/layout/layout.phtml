@@ -20,6 +20,9 @@
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
         <!-- Scripts -->
+        <script type="text/javascript">
+            var siteurl = '';
+        </script>
         <?php echo $this->headScript()
             ->prependFile($this->basePath() . '/js/pmas.js')
             ->prependFile($this->basePath() . '/js/chosen.jquery.min.js')
@@ -87,5 +90,17 @@
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
+    <script type="text/javascript">
+        var config = {
+            '.chosen-select'           : {},
+            '.chosen-select-deselect'  : {allow_single_deselect:true},
+            '.chosen-select-no-single' : {disable_search_threshold:10},
+            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+            '.chosen-select-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
     </body>
 </html>

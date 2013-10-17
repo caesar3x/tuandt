@@ -8,7 +8,7 @@ namespace Core\View\Helper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Resource extends AbstractHelper
+class ResourceHelper extends AbstractHelper
 {
     protected $serviceLocator;
 

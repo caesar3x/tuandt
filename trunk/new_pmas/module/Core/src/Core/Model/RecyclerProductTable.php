@@ -200,6 +200,24 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
+    public function getTopPriceProductsByModel($model,$condition,$limit = 3)
+    {
+        if(!$model || $model == null || !$condition || $condition == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->where(array('m.deleted' => 0,'m.condition_id' => (int)$condition,'m.model' => trim($model)));
+        $select->order('m.price DESC');
+        $select->limit($limit);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * @param $model
      * @return $result

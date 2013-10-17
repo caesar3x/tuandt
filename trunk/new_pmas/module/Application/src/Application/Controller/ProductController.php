@@ -397,7 +397,7 @@ class ProductController extends AbstractActionController
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $messages = $this->getMessages();
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
-        if($filter == 'higher'){
+        if(is_numeric($filter)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
             $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
             $price = (float) $entry->price;
@@ -413,7 +413,7 @@ class ProductController extends AbstractActionController
                     $priceExchange = (float) $product->price * $currentExchange;
                     if($tdmPriceExchange != 0){
                         $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
-                        if($percentage > 50){
+                        if($percentage > $filter){
                             $products[] = $product;
                         }
                     }
@@ -826,7 +826,7 @@ class ProductController extends AbstractActionController
         }else{
             exit();
         }
-        $header = array('Recycler Id','Recycler Name','Country','Product Name','Condition','Date','Price','Price in HKD','%','TDM Price in HKD');
+        $header = array('Recycler Id','Recycler Name','Country','Product Name','Condition','Date','Price','Price in HKD','%','SSA Price');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){

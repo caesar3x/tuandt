@@ -9,7 +9,7 @@ use Zend\Debug\Debug;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Product extends AbstractHelper
+class ProductHelper extends AbstractHelper
 {
     /**
      * @var $serviceLocator
@@ -213,6 +213,13 @@ class Product extends AbstractHelper
         $products = $tdmProductTable->getAvaiableRows();
         return $products;
     }
+
+    /**
+     * @param $model
+     * @param $condition_id
+     * @param int $limit
+     * @return mixed
+     */
     public function getRecyclerProductsByModel($model,$condition_id,$limit = 3)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
@@ -220,6 +227,18 @@ class Product extends AbstractHelper
         return $rowset;
     }
 
+    /**
+     * @param $model
+     * @param $condition_id
+     * @param int $limit
+     * @return mixed
+     */
+    public function getTopPriceRecyclerProductByModel($model,$condition_id,$limit = 3)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        $rowset = $recyclerProductTable->getTopPriceProductsByModel($model,$condition_id,$limit);
+        return $rowset;
+    }
     /**
      * @return array
      */

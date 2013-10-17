@@ -55,7 +55,7 @@
                 <th><?php echo $this->translate('Condition')?></th>
                 <th><?php echo $this->translate('Type')?></th>
                 <th><?php echo $this->translate('Brand')?></th>
-                <th><?php echo $this->translate('Tdm Price in HKD')?></th>
+                <th><?php echo $this->translate('SSA Price')?></th>
                 <th><?php echo $this->translate('Recycler 1')?></th>
                 <th><?php echo $this->translate('Price in HKD 1')?></th>
                 <th><?php echo $this->translate('Percentage 1')?></th>
@@ -88,7 +88,7 @@
                         $model = $row->model;
                         $data = array();
                         if($model != null && $model != ''){
-                            $recyclerProducts = $this->product()->getRecyclerProductsByModel($model,$row->condition_id);
+                            $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($model,$row->condition_id);
                             if(!empty($recyclerProducts)){
                                 foreach($recyclerProducts as $rp){
                                     $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);

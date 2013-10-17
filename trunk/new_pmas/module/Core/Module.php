@@ -267,7 +267,7 @@ class Module
             'factories' => array(
                 'admin' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Admin();
+                    $viewHelper = new View\Helper\AdminHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
@@ -279,7 +279,7 @@ class Module
                 },
                 'role' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Role();
+                    $viewHelper = new View\Helper\RoleHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
@@ -309,13 +309,13 @@ class Module
                 },
                 'country' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Country();
+                    $viewHelper = new View\Helper\CountryHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'productType' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ProductType();
+                    $viewHelper = new View\Helper\ProductTypeHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
@@ -327,7 +327,7 @@ class Module
                 },
                 'condition' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Condition();
+                    $viewHelper = new View\Helper\ConditionHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
@@ -339,49 +339,55 @@ class Module
                 },
                 'recyclerImported' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\RecyclerImported();
+                    $viewHelper = new View\Helper\RecyclerImportedHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'exchange' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Exchange();
+                    $viewHelper = new View\Helper\ExchangeHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'recycler' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Recycler();
+                    $viewHelper = new View\Helper\RecyclerHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'price' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Price();
+                    $viewHelper = new View\Helper\PriceHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'product' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Product();
+                    $viewHelper = new View\Helper\ProductHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'menu' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Menu();
+                    $viewHelper = new View\Helper\MenuHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'resource' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\Resource();
+                    $viewHelper = new View\Helper\ResourceHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
                 'user' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\UserHelper();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                },
+                'getUrl' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\UrlHelper();
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },

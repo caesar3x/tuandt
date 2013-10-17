@@ -8,7 +8,7 @@ namespace Core\View\Helper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Price extends AbstractHelper
+class PriceHelper extends AbstractHelper
 {
     /**
      * @var $serviceLocator

@@ -9,7 +9,7 @@ use Zend\Debug\Debug;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Exchange extends AbstractHelper
+class ExchangeHelper extends AbstractHelper
 {
     protected $serviceLocator;
 
