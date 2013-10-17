@@ -24,6 +24,20 @@ jQuery(function($) {
 			$('input',_this).attr('checked','checked');
 		}
 	});
+    $(window).load(function(){
+        var lefth = $(".col-left").height();
+        var mainh = $(".col-main").height();
+        var righth = $(".col-right").height();
+        var max = lefth;
+        if(max < mainh)
+            max = mainh;
+        if(max < righth)
+            max = righth;
+
+        $(".col-left").css("height",max);
+        $(".col-main").css("height",max);
+        $(".col-right").css("height",max);
+    });
     /**
      * Date picker
      */
