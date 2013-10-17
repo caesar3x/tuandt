@@ -1,5 +1,4 @@
 <?php echo $this->doctype(); ?>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -10,46 +9,39 @@
         ?>
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/chosen.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/colorbox.css')
-                        ->prependStylesheet($this->basePath() . '/css/jqplot/jquery.jqplot.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/jquery.ui.autocomplete.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/jquery-ui-1.10.3.custom.css')
-                        ->prependStylesheet($this->basePath() . '/css/demo_table.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
+                        ->prependStylesheet($this->getUrl('css/style.css'))
+                        ->prependStylesheet($this->getUrl('css/chosen.min.css'))
+                        ->prependStylesheet($this->getUrl('css/colorbox.css'))
+                        ->prependStylesheet($this->getUrl('css/jqplot/jquery.jqplot.min.css'))
+                        ->prependStylesheet($this->getUrl('css/jquery.ui.autocomplete.min.css'))
+                        ->prependStylesheet($this->getUrl('css/jquery-ui-1.10.3.custom.css'))
+                        ->prependStylesheet($this->getUrl('css/demo_table.css'))
+                        ->prependStylesheet($this->getUrl('css/bootstrap-theme.min.css'))
+                        ->prependStylesheet($this->getUrl('css/bootstrap.min.css')) ?>
         <!-- Scripts -->
         <script type="text/javascript">
-            var siteurl = '';
+            var siteurl = '<?php echo $this->getUrl();?>';
         </script>
         <?php echo $this->headScript()
-            ->prependFile($this->basePath() . '/js/pmas.js')
-            ->prependFile($this->basePath() . '/js/chosen.jquery.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.colorbox-min.js')
-            ->prependFile($this->basePath() . '/js/jqplot/plugins/jqplot.cursor.min.js')
-            ->prependFile($this->basePath() . '/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js')
-            ->prependFile($this->basePath() . '/js/jqplot/plugins/jqplot.highlighter.js')
-            ->prependFile($this->basePath() . '/js/jqplot/jquery.jqplot.min.js')
-            ->prependFile($this->basePath() . '/js/bootbox.js')
-            ->prependFile($this->basePath() . '/js/jquery.ui.autocomplete.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.ui.datepicker.js')
-            ->prependFile($this->basePath() . '/js/jquery-ui.custom.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.dataTables.min.js')
-            ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.min.js')
-            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->getUrl('js/pmas.js'))
+            ->prependFile($this->getUrl('js/chosen.jquery.min.js'))
+            ->prependFile($this->getUrl('/js/jquery.colorbox-min.js'))
+            ->prependFile($this->getUrl('/js/jqplot/plugins/jqplot.cursor.min.js'))
+            ->prependFile($this->getUrl('/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js'))
+            ->prependFile($this->getUrl('/js/jqplot/plugins/jqplot.highlighter.js'))
+            ->prependFile($this->getUrl('/js/jqplot/jquery.jqplot.min.js'))
+            ->prependFile($this->getUrl('/js/bootbox.js'))
+            ->prependFile($this->getUrl('/js/jquery.ui.autocomplete.min.js'))
+            ->prependFile($this->getUrl('/js/jquery.ui.datepicker.js'))
+            ->prependFile($this->getUrl('/js/jquery-ui.custom.min.js'))
+            ->prependFile($this->getUrl('/js/jquery.dataTables.min.js'))
+            ->prependFile($this->getUrl('/js/bootstrap.min.js'))
+            ->prependFile($this->getUrl('/js/jquery.min.js'))
+            ->prependFile($this->getUrl('/js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->getUrl('/js/html5shiv.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
         ; ?>
     </head>
     <body>
-
-    <?php
-    /*echo $this->navigation('navigation')
-        ->breadcrumbs()
-        ->setMinDepth(0)
-        ->setPartial('admin/breadcrumbs');*/
-    ?>
     <header>
         <div class="container">
             <div class="row">
@@ -63,7 +55,7 @@
                     <ul class="pull-right header-items">
                         <li><?php echo $this->translate('Logged in as')?> <a class="btn-link"><?php echo $this->username()?></a> |</li>
                         <li><?php echo date('l, F j, Y',time())?> |</li>
-                        <li><a href="/logout" class="btn-link"><?php echo $this->translate('Logout');?></a></li>
+                        <li><a href="<?php echo $this->getUrl('logout')?>" class="btn-link"><?php echo $this->translate('Logout');?></a></li>
                     </ul>
                 </div>
             </div>
