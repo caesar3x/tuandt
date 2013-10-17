@@ -243,7 +243,39 @@ class RecyclerProductTable extends AbstractModel
         }
         return $row;
     }
-
+    public function getProductsByCountry($country_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('r' => 'recycler'));
+        $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
+        $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
+        $select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
+    public function getProductsByCountryAndModelAndCondition($country_id,$model,$condition)
+    {
+        if(!$country_id || $country_id == null || !$model || $model==null || !$condition || $condition == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('r' => 'recycler'));
+        $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
+        $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
+        $select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * @param $ids
      * @return null|\Zend\Db\ResultSet\ResultSet

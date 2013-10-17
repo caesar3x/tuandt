@@ -23,7 +23,10 @@ class ProductHelper extends AbstractHelper
     {
         $this->serviceLocator = $serviceLocator;
     }
-
+    public function getCountryHelper()
+    {
+        return $this->serviceLocator->get('viewhelpermanager')->get('country');
+    }
     /**
      * @param $product_id
      * @return null
@@ -265,7 +268,7 @@ class ProductHelper extends AbstractHelper
     {
         return $this->serviceLocator->get('viewhelpermanager')->get('exchange');
     }
-    public function filterHigherProduct($recycler_product)
+    public function filterHigherProduct($recycler_product,$higher = 50)
     {
         if(!$recycler_product){
             return null;
@@ -281,12 +284,63 @@ class ProductHelper extends AbstractHelper
         $tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;
         if($tdmExchangePrice){
             $percentage = (($recyclerExchangePrice - $tdmExchangePrice)/$tdmExchangePrice)*100;
-            if($percentage > 50)
+            if($percentage > $higher)
             {
                 return array('percentage' => $percentage,'tdmExchangePrice' => $tdmExchangePrice);
             }
             return null;
         }
         return null;
+    }
+    public function filterCountryProduct($recycler_product)
+    {
+        if(!$recycler_product){
+            return null;
+        }
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $tdmProductsWithSameModel = $tdmProductTable->getRowByModel($recycler_product->model,$recycler_product->condition_id);
+        if(empty($tdmProductsWithSameModel)){
+            return array('percentage' => 'N/A','tdmExchangePrice' => 'N/A');
+        }
+        $tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());
+        $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
+        $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
+        $tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;
+        if($tdmExchangePrice){
+            $percentage = (($recyclerExchangePrice - $tdmExchangePrice)/$tdmExchangePrice)*100;
+            return array('percentage' => $percentage,'tdmExchangePrice' => $tdmExchangePrice);
+        }else{
+            return array('percentage' => 'N/A','tdmExchangePrice' => 'N/A');
+        }
+        return null;
+    }
+    /**
+     * @return mixed
+     */
+    public function getAvailableCountries()
+    {
+        return $this->getCountryHelper()->getAvailableCountries();
+    }
+
+    /**
+     * @param $country_id
+     * @return mixed
+     */
+    public function getProductsByCountry($country_id)
+    {
+        $countryTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $countryTable->getProductsByCountry($country_id);
+    }
+
+    /**
+     * @param $country_id
+     * @param $model
+     * @param $condition
+     * @return mixed
+     */
+    public function getProductsByCountryAndModelAndCondition($country_id,$model,$condition)
+    {
+        $countryTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $countryTable->getProductsByCountryAndModelAndCondition($country_id,$model,$condition);
     }
 }

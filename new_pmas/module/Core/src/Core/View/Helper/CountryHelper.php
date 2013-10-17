@@ -45,4 +45,14 @@ class CountryHelper extends AbstractHelper
         }
         return null;
     }
+
+    /**
+     * Get all available country record
+     * @return mixed
+     */
+    public function getAvailableCountries()
+    {
+        $countryTable = $this->serviceLocator->get('CountryTable');
+        return $countryTable->getAvaiableRows();
+    }
 }

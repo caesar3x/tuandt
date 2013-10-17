@@ -9,19 +9,12 @@
 
 namespace Application\Controller;
 
-use BasicExcel\Reader\Csv;
-use BasicExcel\Writer\Xlsx;
+use Core\Controller\AbstractController;
 use Core\Model\CacheSerializer;
-use Core\Model\SimpleXLSX;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Plugin\Serializer;
 use Zend\Debug\Debug;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Router\Console\Simple;
 use Zend\View\Model\ViewModel;
-use SimpleExcel\SimpleExcel;
 
-class IndexController extends AbstractActionController
+class IndexController extends AbstractController
 {
     public function auth()
     {
@@ -42,6 +35,14 @@ class IndexController extends AbstractActionController
     }
     public function indexAction()
     {
+        $rowset = $this->getViewHelperPlugin('product')->getProductsByCountry(5);
+        if(!empty($rowset)){
+            echo $rowset->count().'<br/>';
+            foreach($rowset as $row){
+                Debug::dump($row);
+            }
+        }
+        die('==============');
         $this->auth();
         $cache = CacheSerializer::init();
         $popular = $cache->getItem('popular');

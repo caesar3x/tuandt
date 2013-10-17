@@ -41,6 +41,20 @@ return array(
                     ),
                 ),
             ),
+            'filter-country' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/product/country[/:country][/]',
+                    'constraints' => array(
+                        'country'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Application\Controller\Product',
+                        'action'     => 'index'
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
