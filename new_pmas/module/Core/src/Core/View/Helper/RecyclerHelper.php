@@ -8,7 +8,7 @@ namespace Core\View\Helper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Recycler extends AbstractHelper
+class RecyclerHelper extends AbstractHelper
 {
     /**
      * @var $serviceLocator

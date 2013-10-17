@@ -8,7 +8,7 @@ namespace Core\View\Helper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class Menu extends AbstractHelper
+class MenuHelper extends AbstractHelper
 {
     protected $serviceLocator;
 

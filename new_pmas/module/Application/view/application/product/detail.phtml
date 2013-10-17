@@ -23,7 +23,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
     <div class="clearfix">&nbsp;</div>
 </div>
 <div class="row">
-<?php if($this->filter != 'higher'):?>
+<?php if(!is_numeric($this->filter)):?>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
             <li class="active"><a data-toggle="tab" href="#price-comparision"><?php echo $this->translate('Price Comparison')?></a></li>
@@ -38,6 +38,9 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                         <div>
                             <div class="pull-left">
                                 <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
+                                <div class="btn-group">
+                                    <?php echo $this->partial('partial/select-price.phtml')?>
+                                </div>
                                 <div class="btn btn-default" onclick="window.location.assign('/product/detail/id/<?php echo $this->id?>/filter/higher')">
                                     <?php echo $this->translate('Price higher than 50%(xx)')?>
                                 </div>
@@ -75,7 +78,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                             <th><?php echo $this->translate('Price')?></th>
                             <th><?php echo $this->translate('Price in HKD')?></th>
                             <th><?php echo $this->translate('Percentage')?></th>
-                            <th><?php echo $this->translate('TDM Price in HKD')?></th>
+                            <th><?php echo $this->translate('SSA Price')?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -226,7 +229,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                     <th><?php echo $this->translate('Condition')?></th>
                     <th><?php echo $this->translate('Product Type')?></th>
                     <th><?php echo $this->translate('Brand')?></th>
-                    <th><?php echo $this->translate('TDM Price in HKD')?></th>
+                    <th><?php echo $this->translate('SSA Price')?></th>
                     <th><?php echo $this->translate('Recycler Name')?></th>
                     <th><?php echo $this->translate('Recycler Price')?></th>
                     <th><?php echo $this->translate('Price in HKD')?></th>

@@ -7,7 +7,7 @@ namespace Core\View\Helper;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
-class ProductType extends AbstractHelper
+class ProductTypeHelper extends AbstractHelper
 {
     protected $serviceLocator;
 

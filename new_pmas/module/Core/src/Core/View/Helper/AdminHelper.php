@@ -6,7 +6,7 @@
 namespace Core\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceManager;
-class Admin extends AbstractHelper
+class AdminHelper extends AbstractHelper
 {
     protected $serviceLocator;
 
