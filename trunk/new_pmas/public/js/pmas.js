@@ -106,14 +106,19 @@ $(function() {
         if(typeof  product !== 'undefined'){
             window.location.assign(siteurl+'product/detail/id/'+product+'/filter/'+$(this).val());
         }else{
-            window.location.assign(siteurl +'product/filter');
+            window.location.assign(siteurl +'product/filter/higher/'+$(this).val());
+        }
+    });
+    $('#country-chosen').change(function(e){
+        e.preventDefault();
+        var product = $("#productid").val();
+        if(typeof  product !== 'undefined'){
+            window.location.assign(siteurl+'product/detail/id/'+product+'/country/'+$(this).val());
+        }else{
+            window.location.assign(siteurl +'product/filter/country/'+$(this).val());
         }
     });
 } );
-function goToModelDetail()
-{
-    window.location.assign("/model/detail?id=1");
-}
 function formSaveAndContinue(id)
 {
     var form = $("#"+id);

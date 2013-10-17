@@ -4,14 +4,17 @@
  * Date: 9/13/13
  */
 ?>
-<?php $higher = ($this->higher) ? $this->higher : 50;?>
+<?php $higher = $this->higher;?>
 <div class="page-header">
     <div class="pull-left">
-        <h3><?php echo $this->translate('Models Filtered')?></h3>
+        <h3><?php echo $this->translate('Models Filtered With Price Higher Than').' '.$higher.'%'?></h3>
+    </div>
+    <div class="pull-right">
+        <a href="<?php echo $this->getUrl('product')?>" class="btn btn-success btn-sm add-item"><i class="glyphicon glyphicon-arrow-left"><?php echo $this->translate('Back')?></i></a>
     </div>
     <div class="clearfix"></div>
 </div>
-<form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
+<form id="model" action="<?php echo $this->getUrl('/product/delete')?>" method="post" enctype="multipart/form-data">
     <div class="row">
         <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0">
             <thead>
@@ -31,26 +34,51 @@
             </thead>
             <tbody>
             <?php if(!empty($this->rowset)):?>
-                <?php foreach($this->rowset as $_product):?>
-                    <?php $data = $this->product()->filterHigherProduct($_product);?>
-                    <?php if(!empty($data)):?>
-                    <?php ?>
-                    <tr>
-                        <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
-                        <td><?php echo $_product->product_id?></td>
-                        <td><?php echo $_product->name;?></td>
-                        <td><?php echo $this->condition($_product->condition_id,false);?></td>
-                        <td><?php echo $this->productType($_product->type_id);?></td>
-                        <td><?php echo $this->productBrand($_product->brand_id);?></td>
-                        <!--process tdm exchange price here-->
-                        <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
-                        <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
-                        <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
-                        <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
-                        <td><?php echo $this->price()->format($data['percentage']).' %';?></td>
-                    </tr>
-                    <?php endif; ?>
-                <?php endforeach;?>
+                <?php if(is_numeric($higher)):?>
+                <?php ?>
+                    <?php foreach($this->rowset as $_product):?>
+                        <?php $data = $this->product()->filterHigherProduct($_product,$higher);?>
+                        <?php if(!empty($data)):?>
+                            <?php ?>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
+                                <td><?php echo $_product->product_id?></td>
+                                <td><?php echo $_product->name;?></td>
+                                <td><?php echo $this->condition($_product->condition_id,false);?></td>
+                                <td><?php echo $this->productType($_product->type_id);?></td>
+                                <td><?php echo $this->productBrand($_product->brand_id);?></td>
+                                <!--process tdm exchange price here-->
+                                <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
+                                <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
+                                <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
+                                <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
+                                <td><?php echo $this->price()->format($data['percentage']).' %';?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach;?>
+                <?php elseif(is_numeric($this->country)):?>
+                    <?php foreach($this->rowset as $_product):?>
+                        <?php $data = $this->product()->filterCountryProduct($_product);?>
+                        <?php if(!empty($data)):?>
+                            <?php ?>
+                            <tr>
+                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
+                                <td><?php echo $_product->product_id?></td>
+                                <td><?php echo $_product->name;?></td>
+                                <td><?php echo $this->condition($_product->condition_id,false);?></td>
+                                <td><?php echo $this->productType($_product->type_id);?></td>
+                                <td><?php echo $this->productBrand($_product->brand_id);?></td>
+                                <!--process tdm exchange price here-->
+                                <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
+                                <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
+                                <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
+                                <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
+                                <td><?php echo $this->price()->format($data['percentage']);?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach;?>
+                <?php endif;?>
+
             <?php endif;?>
         </table>
     </div>

@@ -11,20 +11,19 @@ use Application\Form\ProductTypeForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Controller\AbstractController;
 use Core\Model\Brand;
 use Core\Model\CacheSerializer;
-use Core\Model\Product;
 use Core\Model\ProductType;
 use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\Digits;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class ProductController extends AbstractActionController
+class ProductController extends AbstractController
 {
     protected $productTable;
 
@@ -53,18 +52,29 @@ class ProductController extends AbstractActionController
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
         $rowset = $tdmProductTable->getAvaiableRows();
         $view->setVariable('rowset',$rowset);
+        $country = $this->params('country',null);
+        $this->setViewVariable('country',$country);
         return $view;
     }
     public function filterAction()
     {
         $this->auth();
         $view = new ViewModel();
-        $higher = $this->params('higher',50);
+        $higher = $this->params('higher',null);
+        $country = $this->params('country',null);
         $view->setVariable('higher',$higher);
+        $view->setVariable('country',$country);
         $messages = $this->getMessages();
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-        $rowset = $recyclerProductTable->getAvaiableRows();
+        if($higher != null){
+            $rowset = $recyclerProductTable->getAvaiableRows();
+        }elseif($country != null){
+            $rowset = $recyclerProductTable->getProductsByCountry($country);
+            /*foreach($rowset as $row){
+                Debug::dump($row);
+            }*/
+        }
         $view->setVariable('rowset',$rowset);
         return $view;
     }
@@ -382,6 +392,7 @@ class ProductController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
         }
         $filter = $this->params('filter',null);
+        $country = $this->params('country',null);
 
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
         $entry = $tdmProductTable->getEntry($id);
@@ -393,15 +404,16 @@ class ProductController extends AbstractActionController
         $view->setVariable('id',$id);
         $view->setVariable('entry',$entry);
         $view->setVariable('filter',$filter);
+        $view->setVariable('country',$country);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $messages = $this->getMessages();
+        $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
+        $tdmCurrentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($entry->currency);
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
         if(is_numeric($filter)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
-            $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
             $price = (float) $entry->price;
-            $tdmCurrentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($entry->currency);
             $tdmPriceExchange = $price*$tdmCurrentExchange;
             /**
              * Filter higher than 50%
@@ -421,6 +433,11 @@ class ProductController extends AbstractActionController
                 $view->setVariable('products',$products);
                 return $view;
             }
+        }
+        if($country != null){
+            $rowset = $this->getViewHelperPlugin('product')->getProductsByCountryAndModelAndCondition($country,$entry->model,$entry->condition_id);
+            $view->setVariable('products',$rowset);
+            return $view;
         }
         $view->setVariable('products',$recyclerProductsWithSameModel);
         return $view;
