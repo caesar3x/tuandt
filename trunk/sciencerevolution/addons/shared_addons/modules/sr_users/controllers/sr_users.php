@@ -4,13 +4,13 @@
  * Date: 10/12/13
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Sr_users extends Public_Controller
+class Sr_users extends Standard_Controller
 {
     public function __construct()
     {
         parent::__construct();
         $this->load->model('sr_user_m');
-        $this->load->model('sr_private_profile');
+        $this->load->model('sr_private_profile_m');
         $this->load->model('sr_users/virgo_auth_model');
         $this->lang->load('users');
         $this->load->helper('virgo');
@@ -18,7 +18,6 @@ class Sr_users extends Public_Controller
         $this->load->library('form_validation');
         $this->load->helper('url');
         $this->load->library('session');
-        $this->template->current_sr_user = ci()->current_sr_user = $this->current_sr_user = $this->virgo_auth_model->get_current_sr_user();
     }
     public function index()
     {
@@ -94,6 +93,7 @@ class Sr_users extends Public_Controller
             $this->load->view('form/register');
         }else{
             if($this->virgo_auth_model->register($params['username'],$params['password'])){
+                $this->session->set_flashdata('flash_messages', array(lang('login_success')));
                 redirect('?success');
             }
         }
