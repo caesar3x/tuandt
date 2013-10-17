@@ -33,6 +33,7 @@ use Core\Model\TmpProduct;
 use Core\Model\TmpProductTable;
 use Core\Model\Usermeta;
 use Core\Model\UsermetaTable;
+use Core\Soap\MyClass;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -82,6 +83,13 @@ class Module
                     $storage = new Session('backend_auth');
                     $authService->setStorage($storage);
                     return $authService;
+                },
+                'SoapApi' =>  function($sm) {
+                    $request = $sm->get('Request');
+                    $api = new MyClass();
+                    /*$api->setServiceLocator($sm);
+                    $api->setHttpRequest($request);*/
+                    return $api;
                 },
                 'AdminUserTable' =>  function($sm) {
                     $tableGateway = $sm->get('AdminUserTableGateway');

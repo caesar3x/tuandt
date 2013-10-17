@@ -7,7 +7,11 @@
 <?php $higher = $this->higher;?>
 <div class="page-header">
     <div class="pull-left">
+        <?php if(is_numeric($higher)):?>
         <h3><?php echo $this->translate('Models Filtered With Price Higher Than').' '.$higher.'%'?></h3>
+        <?php elseif(is_numeric($this->country)):?>
+        <h3><?php echo $this->translate('Models Filtered With Country').' '.$this->country($this->country)?></h3>
+        <?php endif;?>
     </div>
     <div class="pull-right">
         <a href="<?php echo $this->getUrl('product')?>" class="btn btn-success btn-sm add-item"><i class="glyphicon glyphicon-arrow-left"><?php echo $this->translate('Back')?></i></a>
