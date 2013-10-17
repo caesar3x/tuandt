@@ -23,6 +23,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
     <div class="clearfix">&nbsp;</div>
 </div>
 <div class="row">
+<input type="hidden" name="product" id="productid" value="<?php echo $this->id?>">
 <?php if(!is_numeric($this->filter)):?>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
@@ -40,9 +41,6 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                 <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
                                 <div class="btn-group">
                                     <?php echo $this->partial('partial/select-price.phtml')?>
-                                </div>
-                                <div class="btn btn-default" onclick="window.location.assign('/product/detail/id/<?php echo $this->id?>/filter/higher')">
-                                    <?php echo $this->translate('Price higher than 50%(xx)')?>
                                 </div>
                             </div>
                             <div class="pull-right">

@@ -24,8 +24,8 @@
     <div class="row">
         <div class="pull-left">
             <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
-            <div class="btn btn-default" onclick="window.location.assign('/product/filter')">
-                <?php echo $this->translate('Price higher than 50%(xx)')?>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-price.phtml')?>
             </div>
         </div>
         <div class="pull-right">
