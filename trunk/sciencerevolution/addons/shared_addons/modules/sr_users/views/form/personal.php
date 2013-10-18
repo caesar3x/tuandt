@@ -7,16 +7,16 @@
 <div class="container">
     <h2 class="page-title"><span><?php echo lang('sign_up');?></span></h2>
     <div class="row-fluid">
-        <div class="col-main span9">
+        <div class="col-main span12">
             <div class="page-content">
                 <div class="row-fluid">
-                    <div class="span12">
-                        <?php echo form_open_multipart(current_url(),array('id' => 'signup-form','method' => 'post'));?>
+                    <?php echo form_open_multipart(current_url(),array('id' => 'signup-form','method' => 'post'));?>
+                    <div class="span6">
+
                         <div class="msg_error"><?php echo validation_errors(); ?></div>
                         <label><?php echo lang('label:first_name')?></label>
                         <?php echo form_input(array('name' => 'first_name','id' => 'first-name','class' => 'input-text'))?>
-                        <label><?php echo lang('label:last_name')?></label>
-                        <?php echo form_input(array('name' => 'last_name','id' => 'last-name','class' => 'input-text'))?>
+
                         <label><?php echo lang('label:username')?></label>
                         <?php echo form_input(array('name' => 'username','id' => 'username','class' => 'input-text'))?>
                         <label><?php echo lang('label:password')?></label>
@@ -50,11 +50,15 @@
                         <label><?php echo lang('label:country')?></label>
                         <?php echo form_input(array('name' => 'country','id' => 'country','class' => 'input-text'))?>
                         <button class="button large right" title="Search" type="submit"><span>SUBMIT</span></button>
-                        <?php echo form_close()?>
+
                     </div>
+                    <div class="span6">
+                        <label><?php echo lang('label:last_name')?></label>
+                        <?php echo form_input(array('name' => 'last_name','id' => 'last-name','class' => 'input-text'))?>
+                    </div>
+                    <?php echo form_close()?>
                 </div>
             </div>
         </div>
-        {{ theme:partial name="block-quicklinks" }}
     </div>
 </div>
