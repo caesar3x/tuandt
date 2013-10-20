@@ -11,8 +11,21 @@ class Sr_states_m extends MY_Model
         parent::__construct();
         $this->_table = 'sr_states';
     }
-    public function create($input)
+
+    /**
+     * Get by country code
+     * @param $country
+     * @return mixed
+     */
+    public function get_by_country($country)
     {
-        return $this->db->insert($this->_table, $input);
+        if(!$country){
+            return null;
+        }
+        $this->db->where('country_code',$country);
+        $this->db->order_by('country_code','ASC');
+        $query = $this->db->get('sr_states');
+        $rowset = $query->result();
+        return  $rowset;
     }
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang="en"> 		   <![endif]-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  	<!-- You can use .htaccess and remove these lines to avoid edge case issues. -->
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  	<title>{{ settings:site_name }} &raquo; {{ template:title }}</title>
+    <meta name="description" content="Science revolution, Contact us" />
+    <meta name="keywords" content="Science revolution, Contact us" />
+
+  	<!-- Mobile viewport optimized -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<!-- Set a base location for assets -->
+	<base href="{{ url:base }}"/>
+	<!-- End base -->
+
+    <!-- CSS. No need to specify the media attribute unless specifically targeting a media type, leaving blank implies media=all -->
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/ui.min.css">
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/style.css">
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/layout.css">
+    <link type="text/css" rel="stylesheet" href="{{ url:site }}skin/css/extend.css">
+    <!-- End CSS-->
+    <!--Load font-->
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:300,600,400' rel='stylesheet' type='text/css'>
+    <!--End load font-->
+    <!-- Load up some favicons -->
+    <script type="text/javascript">
+        var siteurl = '{{url:site}}';
+    </script>
+    <!-- All JavaScript at the bottom, except for Modernizr. -->
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/ui.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/validate/validate.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript" src="{{ url:site }}skin/js/science.js"></script>
+
+	
+	{{ template:metadata }}
+	
+	<!-- Google Analytics -->
+	{{ integration:analytics }}
+</head>
+
+<body class="{{sr_template:login_class}} {{sr_template:content_class}} page cusout">
+<section id="wrapper">
+    <header id="header">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="logo span3">
+                    <h1><a href="{{url:site}}" title="Science revolution">
+                        <img src="{{url:site}}media/logo.png" alt="Science revolution">
+                    </a></h1>
+                </div>
+                <div class="quick-access span9">
+                    {{ if { url:segments segment="1" } == 'login' }}
+                    <a href="{{url:site}}signup" class="button signup right">Sign up</a>
+                    {{ elseif {url:segments segment="1" } == 'signup' }}
+                    <a href="{{url:site}}login" class="button login right">Login</a>
+                    {{ else }}
+                    <a href="{{url:site}}login" class="button login right">Login</a>
+                    <a href="{{url:site}}signup" class="button signup right">Sign up</a>
+                    {{ endif }}
+                    <ul class="toplinks right">
+                        <li><a href="{{url:site}}" title="home">Home</a></li>
+                        <li><a href="{{url:site}}about-us" title="About us">About us</a></li>
+                        <li><a href="{{url:site}}contact" title="Contact us" >Contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- navbar -->
+    {{ theme:partial name="navbar1" }}
+    <!--banner-->
+    {{ theme:partial name="banner" }}

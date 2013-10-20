@@ -14,6 +14,7 @@ class Virgo_auth_model extends CI_Model
      **/
     public $table = 'sr_user';
 
+    public $private_profile_table = 'sr_private_profile';
     /**
      * activation code
      *
@@ -122,6 +123,7 @@ class Virgo_auth_model extends CI_Model
      * @var array
      */
     protected $users = array();
+
     public function __construct()
     {
         parent::__construct();
@@ -131,6 +133,10 @@ class Virgo_auth_model extends CI_Model
         /*$this->lang->load('virgo_auth');*/
         $this->lang->load('sr_users/virgo_auth');
         $this->load->model('sr_users/sr_user_m');
+        $this->load->model('sr_users/sr_private_profile_m');
+        $this->load->model('sr_users/sr_company_profile_m');
+        $this->load->model('sales/sr_private_billing_address_m');
+        $this->load->model('sales/sr_company_billing_address_m');
         $this->users = $this->sr_user_m->get_all_active_users();
         //initialize messages and error
         $this->messages    = array();
@@ -143,8 +149,16 @@ class Virgo_auth_model extends CI_Model
             return false;
         }
 
-        echo $this->db->where('username', $username)
-            ->count_all_results($this->table) > 0;
+        return $this->db->where('username', $username)->count_all_results($this->table) > 0;
+    }
+    public function email_check($email)
+    {
+        if (empty($email))
+        {
+            return false;
+        }
+
+        return $this->db->where('email', $email)->count_all_results($this->private_profile_table) > 0;
     }
     /**
      * Basic functionality
@@ -152,75 +166,242 @@ class Virgo_auth_model extends CI_Model
      * Register
      * Login
      *
-     * @author Mathew
+     * @author datnguyen.cntt@gmail.com
      */
 
     // --------------------------------------------------------------------------
-
+    public function register_company($input)
+    {
+        if(empty($input)){
+            return false;
+        }
+        if (version_compare(phpversion(), '5.3.0', '<')===true) {
+            $dob = DateTime::createFromFormat('m/d/Y',$input['representative_date_of_birth']);
+            if($dob){
+                $dobTime = $dob->getTimestamp();
+            }else{
+                $dobTime = time();
+            }
+        }else{
+            $dobTime = strtotime($input['representative_date_of_birth']);
+        }
+        $company_profile_data = array(
+            'representative_name' => $input['representative_name'],
+            'representative_surname' => $input['representative_surname'],
+            'representative_email' => $input['representative_email'],
+            'representative_phone_number' => $input['representative_phone_number'],
+            'representative_date_of_birth' => $dobTime,
+            'company_name' => $input['company_name'],
+            'company_tax_number' => $input['company_tax_number'],
+            'company_street_address' => $input['company_street_address'],
+            'company_postcode' => $input['company_postcode'],
+            'company_city' => $input['company_city'],
+            'company_state' => $input['company_state'],
+            'company_country' => $input['company_country'],
+            'created_on' => time(),
+            'updated_on' => time(),
+        );
+        try {
+            $id = $this->sr_company_profile_m->insert($company_profile_data);
+        } catch (Exception $e) {
+            log_message('error',$e->getMessage());
+        }
+        /**
+         * Billing address
+         */
+        if(isset($input['billing:country'])){
+            $billing_data = array(
+                'company_profile_id' => $id,
+                'street' => $input['billing:street'],
+                'city' => $input['billing:city'],
+                'state' => $input['billing:state'],
+                'country' => $input['billing:country'],
+                'postal_code' => $input['billing:postcode'],
+            );
+        }else{
+            $billing_data = array(
+                'company_profile_id' => $id,
+                'street' => $input['company_street_address'],
+                'postal_code' => $input['company_postcode'],
+                'city' => $input['company_city'],
+                'state' => $input['company_state'],
+                'country' => $input['company_country'],
+            );
+        }
+        if(!empty($billing_data)){
+            try {
+                $this->sr_company_billing_address_m->insert($billing_data);
+            } catch (Exception $e) {
+                log_message('error',$e->getMessage());
+            }
+        }
+        if($id){
+            // Users table.
+            $data = array(
+                'username'   => $input['username'],
+                'password'   => $input['password'],
+                'user_type'   => $input['user_type'],
+                'created_on' => time(),
+                'updated_on' => time(),
+                'status' => 'new',
+                'profile_id'     => $id,
+                'verification_code'     => md5($input['username']),
+            );
+            try {
+                $this->sr_user_m->insert($data);
+            } catch (Exception $e) {
+                log_message('error',$e->getMessage());
+            }
+            if($this->db->affected_rows()){
+                /**
+                 * Activate user
+                 */
+                $this->send_activate_email($id);
+            }
+            return $this->db->affected_rows() == 1;
+        }else{
+            return false;
+        }
+    }
     /**
      * register
      *
      * @return bool
-     * @author Mathew
+     * @author datnguyen.cntt@gmail.com
      **/
-    public function register($username, $password)
+    public function register($input)
     {
-        if($this->username_check($username)){
-            $this->set_error('account_creation_duplicate_username');
+        if(empty($input)){
             return false;
         }
-
-        // Users table.
-        $data = array(
-            'username'   => $username,
-            'password'   => $password,
-            'user_type'   => 'personal',
+        if (version_compare(phpversion(), '5.3.0', '<')===true) {
+            $dob = DateTime::createFromFormat('m/d/Y',$input['dob']);
+            if($dob){
+                $dobTime = $dob->getTimestamp();
+            }else{
+                $dobTime = time();
+            }
+        }else{
+            $dobTime = strtotime($input['dob']);
+        }
+        $private_profile_data = array(
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'tax_number' => $input['tax_number'],
+            'job_title' => $input['job_title'],
+            'date_of_birth' => $dobTime,
+            'email' => $input['email'],
+            'phone_number' => $input['phone'],
+            'street' => $input['street'],
+            'city' => $input['city'],
+            'state' => $input['state'],
+            'country' => $input['country'],
+            'postcode' => $input['postcode'],
             'created_on' => time(),
             'updated_on' => time(),
-            'status' => 'new',
-            'profile_id'     => 1,
-            'verification_code'     => md5($username),
-            'sr_private_profile_id'     => 2,
-            'sr_company_profile_id'     => 1,
         );
-
-        return $this->db->insert($this->table, $data);
-
-        // For the profiles tables.
-        if ($this->db->dbdriver == 'mysql')
-        {
-            $last = $this->db->query("SELECT LAST_INSERT_ID() as last_id")->row();
-            $id = $last->last_id;
+        try {
+            $id = $this->sr_private_profile_m->insert($private_profile_data);
+        } catch (Exception $e) {
+            log_message('error',$e->getMessage());
         }
-        else
-        {
-            $id = $this->db->insert_id();
+        /**
+         * Billing address
+         */
+        if(isset($input['billing:country'])){
+            $billing_data = array(
+                'profile_id' => $id,
+                'street' => $input['billing:street'],
+                'city' => $input['billing:city'],
+                'state' => $input['billing:state'],
+                'country' => $input['billing:country'],
+                'postal_code' => $input['billing:postcode'],
+            );
+        }else{
+            $billing_data = array(
+                'profile_id' => $id,
+                'street' => $input['street'],
+                'city' => $input['city'],
+                'state' => $input['state'],
+                'country' => $input['country'],
+                'postal_code' => $input['postcode'],
+            );
         }
-
-        // Use streams to add the profile data.
-        // Even if there is not data to add, we still want an entry
-        // for the profile data.
-        if ( ! class_exists('Streams'))
-        {
-            $this->load->driver('Streams');
+        if(!empty($billing_data)){
+            try {
+                $this->sr_private_billing_address_m->insert($billing_data);
+            } catch (Exception $e) {
+                log_message('error',$e->getMessage());
+            }
         }
-
-        // This is the profile data that we are not running through streams
-        $extra = array(
-            'user_id'			=> $id,
-            'display_name' 		=> $additional_data['display_name']
-        );
-
-        if ($this->streams->entries->insert_entry($additional_data, 'profiles', 'users', array(), $extra))
-        {
-            return $id;
-        }
-        else
-        {
+        if($id){
+            // Users table.
+            $data = array(
+                'username'   => $input['username'],
+                'password'   => $input['password'],
+                'user_type'   => $input['user_type'],
+                'created_on' => time(),
+                'updated_on' => time(),
+                'status' => 'new',
+                'profile_id'     => $id,
+                'verification_code'     => md5($input['username']),
+            );
+            try {
+                $this->sr_user_m->insert($data);
+            } catch (Exception $e) {
+                log_message('error',$e->getMessage());
+            }
+            if($this->db->affected_rows()){
+                /**
+                 * Activate user
+                 */
+                $this->send_activate_email($id);
+            }
+            return $this->db->affected_rows() == 1;
+        }else{
             return false;
         }
     }
 
+    // --------------------------------------------------------------------------
+    public function send_activate_email($id)
+    {
+        /**
+         * Send email
+         */
+        return true;
+    }
+    // --------------------------------------------------------------------------
+    /**
+     * Process activate
+     * @return bool
+     */
+    public function activate($user_id,$code)
+    {
+        if(!$user_id || !$code){
+            return false;
+        }
+
+        $user = $this->sr_user_m->get_user($user_id);
+        if(!empty($user)){
+            $verification_code = $user->verification_code;
+            if($verification_code == $code){
+                $update = $this->sr_user_m->update_status($user_id,'activated');
+                if($update){
+                    $this->send_activate_success_email($user_id);
+                }
+                return $update;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+    // --------------------------------------------------------------------------
+    public function send_activate_success_email($user_id)
+    {
+        return true;
+    }
     // --------------------------------------------------------------------------
     /**
      * set_error
@@ -228,7 +409,7 @@ class Virgo_auth_model extends CI_Model
      * Set an error message
      *
      * @return void
-     * @author Ben Edmunds
+     * @author datnguyen.cntt@gmail.com
      **/
     public function set_error($error)
     {
@@ -277,8 +458,6 @@ class Virgo_auth_model extends CI_Model
             'id'                   => $user->id, //kept for backwards compatibility
             'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
             'profile_id'           => $user->profile_id,
-            'sr_private_profile_id'           => $user->sr_private_profile_id,
-            'sr_company_profile_id'           => $user->sr_company_profile_id,
             'user_type'           => $user->user_type,
         )));
 
@@ -303,7 +482,7 @@ class Virgo_auth_model extends CI_Model
             return false;
         }
 
-        $user = $this->get_user_by_username($id)->row();
+        $user = $this->get_user_by_id($id);
 
         $salt = sha1($user->password);
 
@@ -312,13 +491,13 @@ class Virgo_auth_model extends CI_Model
             set_cookie(array(
                 'name'   => 'identity',
                 'value'  => $user->{$this->identity_column},
-                'expire' => 3600,
+                'expire' => 86400,
             ));
 
             set_cookie(array(
                 'name'   => 'remember_code',
                 'value'  => $salt,
-                'expire' => 3600,
+                'expire' => 86400,
             ));
 
             return true;
@@ -326,15 +505,19 @@ class Virgo_auth_model extends CI_Model
 
         return false;
     }
-
+    public function get_user_by_id($id)
+    {
+        $user = $this->sr_user_m->get_user($id);
+        return $user;
+    }
     /**
      * @param $username
      * @return mixed
      */
     public function get_user_by_username($username)
     {
-        $query = $this->db->where($this->table.'.username', $username)->limit(1)->get($this->table);
-        return $query;
+        $user = $this->sr_user_m->get_user_by_username($username);
+        return $user;
     }
 
     // --------------------------------------------------------------------------
@@ -360,4 +543,5 @@ class Virgo_auth_model extends CI_Model
         $this->session->sess_regenerate(true);
         return true;
     }
+
 }

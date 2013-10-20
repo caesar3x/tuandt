@@ -1,0 +1,19 @@
+{{ if sr_template:is_loggin == 'no'}}
+<section id="banner">
+    {{ if { url:segments segment="1" } == '' }}
+    <img src="{{url:site}}media/homebanner.jpg" />
+    {{ else }}
+    <div class="container">
+        <img src="{{url:site}}media/banner.jpg" alt="Science revolution">
+    </div>
+    {{ endif }}
+</section>
+{{ else}}
+{{ if { url:segments segment="1" } == '' }}
+<img src="{{url:site}}media/homebanner.jpg" />
+{{ else }}
+<section id="banner" class="bg1">
+    <img src="{{url:site}}media/bannerfull.jpg" />
+</section>
+{{ endif }}
+{{ endif}}

@@ -17,7 +17,7 @@ class Events_Sr_contact {
         $this->ci =& get_instance();
         
         //register the public_controller event
-        Events::register('public_controller', array($this, 'run'));
+        Events::register('standard_controller', array($this, 'run'));
 
 		//Events::register('soslaundry_event', array($this, 'run'));
     }

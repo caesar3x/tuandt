@@ -15,4 +15,9 @@ class Sr_private_profile_m extends MY_Model
     {
         return $this->db->insert($this->_table, $input);
     }
+    public function count_by_email($email)
+    {
+        $this->db->where('email', $email);
+        return $this->db->count_all_results($this->_table);
+    }
 }
