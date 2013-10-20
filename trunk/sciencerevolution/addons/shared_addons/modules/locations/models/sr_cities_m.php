@@ -11,8 +11,16 @@ class Sr_cities_m extends MY_Model
         parent::__construct();
         $this->_table = 'sr_cities';
     }
-    public function create($input)
+    public function get_by_state_and_country($country,$state)
     {
-        return $this->db->insert($this->_table, $input);
+        if(!$country || !$state){
+            return null;
+        }
+        $this->db->where('country_code',$country);
+        $this->db->where('state_code',$state);
+        $this->db->order_by('city_name','ASC');
+        $query = $this->db->get($this->_table);
+        $rowset = $query->result();
+        return $rowset;
     }
 }

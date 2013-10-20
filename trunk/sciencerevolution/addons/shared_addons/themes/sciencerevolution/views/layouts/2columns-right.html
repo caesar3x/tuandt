@@ -1,0 +1,13 @@
+{{ if sr_template:is_loggin == 'no'}}
+{{ theme:partial name="header1" }}
+{{ else}}
+{{ theme:partial name="header2" }}
+{{ endif}}
+<!-- content -->
+<section id="content" class="">
+    {{sr_template:flash_messages}}
+    {{ template:body }}
+</section>
+<!-- /content -->
+
+{{ theme:partial name="footer" }}

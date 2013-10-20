@@ -1,9 +1,73 @@
 <?php
 /**
+ * Virgo Helper
+ * All common function
  * Created by Nguyen Tien Dat.
  * Date: 10/9/13
  */
 defined('BASEPATH') OR exit('No direct script access allowed.');
+/**
+ * Get all defined contstant
+ */
+if(!function_exists('get_defined_constant')){
+    function get_defined_constant($key)
+    {
+        $defined = array(
+            'ENVIRONMENT' => 'development',
+            'CACHE_TIME' => 86400,
+            'URL_REWRITE_CACHE_KEY' => 'url-rewrite',
+        );
+        if(array_key_exists($key,$defined)){
+            return $defined[$key];
+        }
+        return null;
+    }
+}
+if(!function_exists('is_cache_file_support')){
+    function is_cache_file_support()
+    {
+        $ci = &get_instance();
+        if(get_defined_constant('ENVIRONMENT') == 'development'){
+            return false;
+        }
+        $ci->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+        return $ci->cache->file->is_supported();
+    }
+}
+if(!function_exists('_set_cache')){
+    function _set_cache($key,$value)
+    {
+        $ci = &get_instance();
+        $ci->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+        $time = get_defined_constant('CACHE_TIME');
+        if(is_cache_file_support()){
+            return $ci->cache->save($key,$value,$time);
+        }
+        return false;
+    }
+}
+if(!function_exists('_get_cache')){
+    function _get_cache($key)
+    {
+        $ci = &get_instance();
+        $ci->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+        if(is_cache_file_support()){
+            return $ci->cache->get($key);
+        }
+        return false;
+    }
+}
+if(!function_exists('_delete_cache')){
+    function _delete_cache($key)
+    {
+        $ci = &get_instance();
+        $ci->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+        if(is_cache_file_support()){
+            return $ci->cache->delete($key);
+        }
+        return false;
+    }
+}
 if(!function_exists('is_sr_user_loggin')){
     function is_sr_user_loggin()
     {
@@ -19,6 +83,7 @@ if(!function_exists('get_current_sr_user')){
         return get_instance()->virgo_auth_model->get_current_sr_user();
     }
 }
+
 if (!function_exists("vdebug")) {
     /**
      * vdebug()
@@ -31,8 +96,8 @@ if (!function_exists("vdebug")) {
      */
     function vdebug($data, $die = false, $add_var_dump = false, $add_last_query = true)
     {
-        $CI = &get_instance();
-        $CI->load->library('unit_test');
+        $ci = &get_instance();
+        $ci->load->library('unit_test');
 
         $bt = debug_backtrace();
         $src = file($bt[0]["file"]);
@@ -69,10 +134,10 @@ if (!function_exists("vdebug")) {
         $output .= '<code class="debugcode"><p class="debugp debugbold debutextR">:: Variable Type</p>' . $message . '</code>';
         if($add_last_query)
         {
-            if($CI->db->last_query())
+            if($ci->db->last_query())
             {
-                $output .= '<code class="debugcode"><p class="debugp debugbold debutextR">:: $CI->db->last_query()</p>';
-                $output .= $CI->db->last_query();
+                $output .= '<code class="debugcode"><p class="debugp debugbold debutextR">:: $ci->db->last_query()</p>';
+                $output .= $ci->db->last_query();
                 $output .= '</code>';
             }
         }
@@ -94,7 +159,7 @@ if (!function_exists("vdebug")) {
             $output .= '</pre></code>';
         }
 
-        $output .= '</div><p class="debugfooter">Vayes Debug Helper © Yahya A. Erturan</p></div></div>';
+        $output .= '</div><p class="debugfooter">Virgo Debug Helper © Dat Nguyen</p></div></div>';
         $output .= '<div style="clear:both;"></div>';
 
         if (PHP_SAPI == 'cli')

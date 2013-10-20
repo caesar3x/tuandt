@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller']                = 'sr_homepage/index';
+$route['default_controller']                = 'sr_science/index';
 $route['404_override']                      = 'pages';
 
 $route['admin/help/([a-zA-Z0-9_-]+)']       = 'admin/help/$1';
@@ -60,11 +60,24 @@ $route['sitemap.xml']                       = 'sitemap/xml';
 $route['contact']                           = 'sr_contact/index';
 
 $route['profile']                           = 'sr_users/profile';
+$route['me']                           = 'sr_users/profile';
 $route['dashboard']                           = 'sr_users/dashboard';
 $route['signup']                           = 'sr_users/register';
 $route['signup/personal']                           = 'sr_users/personal_register';
 $route['signup/company']                           = 'sr_users/company_register';
 $route['login']                           = 'sr_users/login';
 $route['logout']                           = 'sr_users/logout';
-
+$route['ajaxload']                           = 'sr_science/sr_ajax/load';
+$route['activate/(:num)/(:any)/(:any)']                           = 'sr_users/activate/$1/$2';
+$route['view-article']                  = 'catalog/article/index';
+$route['add-article']                  = 'catalog/article/add';
+/**
+ * Custom url from url rewrite table
+ * @author datnguyen.cntt@gmail.com
+ */
 /* End of file routes.php */
+/*$ci = &get_instance();
+$ci->load->helper('virgo');
+if(is_cache_file_support()){
+    die('=============');
+}*/

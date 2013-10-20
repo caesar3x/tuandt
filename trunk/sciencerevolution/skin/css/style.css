@@ -91,6 +91,10 @@ i.icon-download{background-image:url(./images/icon/download.png);width:20px; hei
 i.icon-open{background-image:url(./images/icon/open.png)}
 i.icon-downloads{background-image:url(./images/icon/downloads.png)}
 i.icon-close{background-image:url(./images/icon/close.png)}
+i.icon-setting{background-image:url(./images/icon/setting.png)}
+i.icon-cup{background-image:url(./images/icon/cup.png); }
+i.icon-bag{background-image:url(./images/icon/bag.png);}
+i.icon-science{background-image:url(./images/icon/science.png);}
 
 .date {font-size:14px;text-transform:none; display:inline-block}
 .date input{height:23px}
@@ -186,27 +190,27 @@ border-left: 4px solid transparent;	border-top: 6px solid #515151;	border-right:
 .block-quicklinks li a{color:#259ddb; font-size:18px;font-weight:300px}
 .block-quicklinks li a i{margin-right:8px}
 
+/*contact-us*/
+.notlogin #navbar {height:46px; line-height:46px;background:url(./images/bg_nav.png)}
+.notlogin #banner,
+.notlogin #content {background:url(./images/bg_contactus.png)}
+
+.notlogin .infor{padding-top:28px}
+.notlogin .block-quicklinks {margin-top:32px}
+.notlogin .block-quicklinks li {border:none}
+.notlogin .form-search {margin:8px 0 0}
+.notlogin .form-search input{width:235px}
+.notlogin .quick-access .button {background:#23a1e1; margin-left:2px; font-size:14px; margin-top:16px}
+.notlogin .toplinks li a {padding:0px 30px}
 
 /*home*/
-.home .form-search {margin:8px 0}
-.home .form-search input{width:235px}
-.home .quick-access .button {background:#23a1e1; margin-left:2px; font-size:14px; margin-top:16px}
-.home .toplinks li a {padding:0px 28px}
-.home #navbar {height:46px; line-height:46px;background:url(./images/home_nav.png);border:none; box-shadow:none; position:absolute; right:0; left:0}
-.home .breadcrumbs {border:none; height:39px;}
+.home.notlogin .form-search {margin:8px 0}
+.home.notlogin .form-search input{width:235px}
+.home.notlogin .quick-access .button {background:#23a1e1; margin-left:2px; font-size:14px; margin-top:16px}
+.home.notlogin .toplinks li a {padding:0px 28px}
+.home.notlogin #navbar {height:46px; line-height:46px;background:url(./images/home_nav.png);border:none; box-shadow:none; position:absolute; right:0; left:0}
+.home.notlogin .breadcrumbs {border:none; height:39px;}
 
-/*contact-us*/
-.contact-us #navbar {height:46px; line-height:46px;background:url(./images/bg_nav.png)}
-.contact-us #banner,
-.contact-us #content {background:url(./images/bg_contactus.png)}
-
-.contact-us .infor{padding-top:28px}
-.contact-us .block-quicklinks {margin-top:32px}
-.contact-us .block-quicklinks li {border:none}
-.contact-us .form-search {margin:8px 0 0}
-.contact-us .form-search input{width:235px}
-.contact-us .quick-access .button {background:#23a1e1; margin-left:2px; font-size:14px; margin-top:16px}
-.contact-us .toplinks li a {padding:0px 30px}
 
 #contact_us_form {}
 #contact_us_form label{width:100%;font-weight:bold;line-height:28px}
@@ -298,6 +302,7 @@ border-left: 9px solid transparent;	border-top: 6px solid #99c8e1;}*/
 
 .book-infor{padding:10px 0px; margin-left:140px;font-size:13px;}
 .bookname {padding-left:45px;background-position: left 5px; background-repeat:no-repeat}
+.bookname.undefine{padding:0;}
 .bookname h2{font-size:15px; line-height:20px;text-transform:none}
 .bookname h2 a{color:#259dda}
 .bookname p{height:20px;overflow:hidden; color:#a4a4a4;line-height:20px}
@@ -333,6 +338,8 @@ border-left: 9px solid transparent;	border-top: 6px solid #99c8e1;}*/
 .update-box .book-infor{margin-left:160px;}
 
 .orange  .update-title{background:#fc8108}
+.green  .update-title{background:#7ec455}
+.pink  .update-title{background:#ec2d68}
 
 /*book-detail*/
 .book-detail {padding-bottom:30px; border-bottom:1px solid #dedede; height:210px}
@@ -668,6 +675,48 @@ border-top: 6px solid #c3c3c3;	border-right: 6px solid transparent;}
 
 /*timeline*/
 .timeline{background:#f1f6f8; padding:20px; min-height:1800px; border-top:1px solid #dedede}
+.timeline .title{margin-top:25px; margin-left:220px;}
+.timeline .title h3{font-size:20px;color:#259dda;display: inline-block;}
+.timeline .filter {display: inline-block;line-height:30px; color:#909090}
+.timeline .filter span{margin:0 0 -2px 10px}
+
+.timeline  .time-year {position:relative; min-height:1000px; border-left:1px solid #d4d7d8; margin-left:150px;}
+.time-year .mark{ font-size:12px; color:#999; }
+.time-year .mark.active{color:#464646}
+.time-year .mark:after{}
+
+.time-year  .tyear{position:absolute; left:-40px;}
+.time-year  .tmonth:after,
+.time-year  .tyear:after{height:0px; width:10px; display:block;content:"."; text-indent:-9999em; 
+position:absolute; right:-12px; top:10px; border-top:1px solid #d4d7d8}
+
+.timeline  .time-month {position:relative; min-height:1000px; border-left:1px solid #d4d7d8; margin-left:70px;padding:42px 0 100px 36px}
+.time-year  .tmonth{position:absolute; left:-60px;display:block;width:40px; text-align:right; }
+.time-year  .tmonth:after{right:-19px;width:15px; text-indent:9999em}
+.timeline  .time-month .time-now {font-size:18px;font-weight:600; color:#fff; width:59px; height:62px;line-height:62px; text-align:center;
+background:url(./images/icon/time-now.png) center center no-repeat;position:absolute; top:-50px; left:-30px;}
+
+.timeline .update-box .book-item p.statistic,
+.timeline .update-box .book-item p.des{margin-top:5px}
+.timeline .update-box .book-item{background:#fff}
+.timeline .update-box  .update-title {position:relative}
+.timeline .update-box  .update-title:after {width:0; height:0; content:"."; text-indent:9999em;position:absolute;top:10px; left:-8px;display:block;
+border-right:8px solid #05b3ab; border-top:6px solid transparent; border-bottom:6px solid transparent; }
+
+.timeline .update-box .update-title p i{margin:0px}
+
+.timeline .update-box.orange  .update-title:after{border-right:8px solid #f8813a; border-top:6px solid transparent; border-bottom:6px solid transparent;}
+.timeline .update-box.green  .update-title:after{border-right:8px solid #7ec455; border-top:6px solid transparent; border-bottom:6px solid transparent;}
+.timeline .update-box.pink  .update-title:after{border-right:8px solid #ec2d68; border-top:6px solid transparent; border-bottom:6px solid transparent;}
+.timeline .update-box .book-infor{margin-left:140px}
+
+.timeline .update-box .markicon{width:33px;height:34px;text-align:center;line-height:34px;
+background:url(./images/icon/bgmark.png) center center no-repeat; position:absolute;top:-2px; left:-54px}
+.timeline .update-box .markicon i{width:33px; height:36px;}
+.timeline .update-box.orange .markicon {background:url(./images/icon/bgmark_orange.png) center center no-repeat;}
+.timeline .update-box.green .markicon {background:url(./images/icon/bgmark_green.png) center center no-repeat;}
+.timeline .update-box.pink .markicon {background:url(./images/icon/bgmark_pink.png) center center no-repeat;}
+
 
 /*dashboard*/
 .dashboard .page-title{border:none}

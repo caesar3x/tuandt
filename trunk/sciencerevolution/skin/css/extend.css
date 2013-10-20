@@ -1,32 +1,65 @@
 @charset "utf-8";
 /* css by Datnt */
-#signup-form label {
+.sc-form label {
     font-weight: bold;
     line-height: 28px;
     width: 100%;
 }
-#signup-form input {
+.sc-form input.input-text {
     margin-bottom: 10px;
     padding: 5px 2%;
     width: 95%;
 }
-#signup-form select {
+.sc-form select {
     margin-bottom: 10px;
     padding: 10px 2% 8px;
     width: 99%;
 }
-#signup-form textarea {
+.sc-form textarea {
     height: 140px;
     line-height: 28px;
     margin-bottom: 20px;
     padding: 5px 0 5px 2%;
     width: 97%;
 }
-#signup-form button {
+.sc-form button {
     font-weight: 600;
     padding: 0 38px;
 }
-#signup-form button span {
+.sc-form button span {
     background: url("./images/arrow-right.png") no-repeat scroll left 1px transparent;
     padding-left: 16px;
 }
+.btn_login{
+    margin-top: 28px;
+}
+#remember_me{height: auto;}
+.forgot-pass{text-decoration: underline;}
+label.required em {
+    color: #EB340A;
+    font-style: normal;
+}
+input.input-checkbox{
+    height: auto;
+}
+label.error{font-size: 13px;font-style: italic;color: #f00 !important;background: url("./images/error_up.gif") no-repeat scroll 2px 0 transparent;padding-left: 17px;min-height: 13px;line-height: 13px;}
+.messages p{margin: 0 auto;}
+div.success{
+    background: none repeat scroll 0 0 #D6FFC2;
+    border: 1px solid #35A000;
+    color: #35A000;
+    margin-bottom: 20px;
+    padding: 6px 12px;
+}
+div.error{
+    background: none repeat scroll 0 0 #FFBEBE;
+    border: 1px solid #BF0000;
+    color: #BF0000;
+    margin-bottom: 20px;
+    padding: 6px 12px;
+}
+select.ui-datepicker-month,select.ui-datepicker-year{padding: 3px 3px;}
+.arrow16{background: url("./images/icon/arrow-4-16.png") left no-repeat transparent;}
+.arrow strong{padding-left: 23px;}
+.title-16{font-size: 16px;}
+.datepicker{width: 100px !important;}

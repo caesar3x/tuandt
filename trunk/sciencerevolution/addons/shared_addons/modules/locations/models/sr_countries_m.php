@@ -11,8 +11,4 @@ class Sr_countries_m extends MY_Model
         parent::__construct();
         $this->_table = 'sr_countries';
     }
-    public function create($input)
-    {
-        return $this->db->insert($this->_table, $input);
-    }
 }
