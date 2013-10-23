@@ -26,7 +26,8 @@ class ResourceHelper extends AbstractHelper
         'recycler-condition' => 'Manage Recycler Conditions',
         'exchange' => 'Manage Exchanges',
         'product-type' => 'Manage Product Types',
-        'soap' => 'Manage Soap Users'
+        'soap' => 'Manage Soap Users',
+        'language' => 'Manage Languages'
     );
     public function setServiceLocator(ServiceManager $serviceLocator)
     {

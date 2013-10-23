@@ -11,6 +11,8 @@ use Core\Model\Brand;
 use Core\Model\BrandTable;
 use Core\Model\Country;
 use Core\Model\CountryTable;
+use Core\Model\Languages;
+use Core\Model\LanguagesTable;
 use Core\Model\ProductType;
 use Core\Model\ProductTypeTable;
 use Core\Model\Exchange;
@@ -267,6 +269,18 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new SoapUsers());
                     return new TableGateway('soap_users', $dbAdapter, null, $resultSetPrototype);
                 },
+                'LanguagesTable' => function($sm) {
+                        $tableGateway = $sm->get('LanguagesTableGateway');
+                        $table = new LanguagesTable($tableGateway);
+                        $table->setServiceLocator($sm);
+                        return $table;
+                    },
+                'LanguagesTableGateway' => function ($sm) {
+                        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                        $resultSetPrototype = new ResultSet();
+                        $resultSetPrototype->setArrayObjectPrototype(new Languages());
+                        return new TableGateway('languages', $dbAdapter, null, $resultSetPrototype);
+                    },
             ),
         );
     }
@@ -409,6 +423,18 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
+                'lang' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\LanguagesHelper();
+                        $viewHelper->setServiceLocator($serviceLocator);
+                        return $viewHelper;
+                    },
+                '__' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\VirgoTranslate();
+                        $viewHelper->setServiceLocator($serviceLocator);
+                        return $viewHelper;
+                    },
             ),
         );
     }

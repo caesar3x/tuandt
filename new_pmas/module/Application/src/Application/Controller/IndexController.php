@@ -9,7 +9,6 @@
 
 namespace Application\Controller;
 use Core\Controller\AbstractController;
-use Core\Model\CacheSerializer;
 use Zend\Debug\Debug;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Soap\AutoDiscover;
@@ -38,54 +37,19 @@ class IndexController extends AbstractController
     }
     public function indexAction()
     {
-
+        /*$translator = $this->getServiceLocator()->get('translator');
+        Debug::dump($translator->)*/
         $this->auth();
-        $cache = CacheSerializer::init();
+        $cache = \Core\Cache\CacheSerializer::init();
         $popular = $cache->getItem('popular');
         $view = new ViewModel();
         $view->setVariable('popular',$popular);
         return $view;
     }
-    public function soapAction()
-    {
-        /*$this->layout('layout/empty');*/
-        if (isset($_GET['wsdl'])) {
-            header ("Content-Type:text/xml");
-            $this->handleWSDL();
-            return $this->getResponse();
-        } else {
-            $this->handleSOAP();
-        }
-        return $this->getResponse();
-    }
-    private function handleWSDL() {
-        /*$api = $this->getServiceLocator()->get('SoapApi');*/
-        $autodiscover = new AutoDiscover();
-        $autodiscover->setClass('serviceApi')->setUri('http://pmas.local/index/soap');
-        $autodiscover->handle();
-    }
-    private function handleSOAP() {
-        $soap = new Server(null,array(
-            'uri' => 'http://pmas.local/index/soap?wsdl')
-        );
-        $api = $this->getServiceLocator()->get('SoapApi');
-        /*$soap->setClass('MyClass');*/
-        $soap->setClass('serviceApi');
-        $soap->handle();
-    }
     public function testAction()
     {
-        $client = new Client('http://pmas.local/index/soap?wsdl');
-        $result1 = $client->method(10);
-        Debug::dump($result1);die;
-    }
-    public function method1($inputParam) {
-        return 'Hello World :'.$inputParam;
-    }
-}
-class SoapApi
-{
-    public function method1($inputParam) {
-        return 'Hello World';
+        $cache = \Core\Cache\CacheSerializer::init();
+        $cache->addItem('translate',array('3434','4343','4343'));
+        die('-----------------');
     }
 }
