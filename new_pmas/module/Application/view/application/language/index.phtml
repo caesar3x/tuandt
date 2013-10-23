@@ -54,6 +54,10 @@
                                 <i class="glyphicon glyphicon-trash"></i>
                                 <?php echo $this->__('Delete') ?>
                             </a>
+                            <a onclick="window.location.assign('<?php echo $this->getUrl($row->file_path)?>')" class="btn btn-xs btn-success" >
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <?php echo $this->__('Download') ?>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach;?>

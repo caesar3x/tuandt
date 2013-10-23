@@ -141,10 +141,10 @@ class LanguagesHelper extends AbstractHelper
             $html .= '<select name="global_lang" id="global-lang">';
             $html .= '<option value="">'.'Choose a language'.'</option>';
             foreach($langs as $lang){
-                if($lang == $current_lang){
-                    $html .= '<option value="'.$lang->lang_code.'">';
-                }else{
+                if($lang->lang_code == $current_lang){
                     $html .= '<option selected value="'.$lang->lang_code.'">';
+                }else{
+                    $html .= '<option  value="'.$lang->lang_code.'">';
                 }
                 $html .= $lang->lang_country;
                 $html .= '</option>';

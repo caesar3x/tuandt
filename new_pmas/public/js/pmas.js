@@ -124,7 +124,9 @@ $(function() {
      */
     $("#global-lang").change(function(e){
         e.preventDefault();
-        window.location.assign(siteurl+'language/change/lang/'+$(this).val()+'?referer='+currenturl);
+        if($(this).val() != ''){
+            window.location.assign(siteurl+'language/change/lang/'+$(this).val()+'?referer='+currenturl);
+        }
     });
 } );
 function formSaveAndContinue(id)
