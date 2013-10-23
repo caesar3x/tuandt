@@ -1,0 +1,67 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 10/23/13
+ */
+?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2><?php echo $this->translate('Add Language')?></h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/language')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+            <?php echo $this->form()->openTag($form);?>
+            <?php echo $this->formRow($form->get('id'));?>
+            <?php echo $this->formRow($form->get('csrf'));?>
+            <?php echo $this->formRow($form->get('continue'));?>
+            <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('Country')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('lang_country'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('Code')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('lang_code'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('Sort Order')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('sort_order'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('File Upload')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('file_upload'));?>
+                </div>
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+
+    </div>
+</div>

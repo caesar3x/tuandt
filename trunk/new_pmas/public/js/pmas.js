@@ -4,6 +4,7 @@
  */
 var asInitVals = new Array();
 $(function() {
+    var currenturl  = $(location).attr('href');
     var currencySelect = $("#select-currency");
     if(currencySelect.length > 0){
         if(currencySelect.val() == 'none'){
@@ -117,6 +118,13 @@ $(function() {
         }else{
             window.location.assign(siteurl +'product/filter/country/'+$(this).val());
         }
+    });
+    /**
+     * Change language
+     */
+    $("#global-lang").change(function(e){
+        e.preventDefault();
+        window.location.assign(siteurl+'language/change/lang/'+$(this).val()+'?referer='+currenturl);
     });
 } );
 function formSaveAndContinue(id)

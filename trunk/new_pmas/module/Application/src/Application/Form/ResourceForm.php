@@ -69,7 +69,8 @@ class ResourceForm extends Form
             'recycler-condition' => 'Manage Recycler Conditions',
             'exchange' => 'Manage Exchanges',
             'product-type' => 'Manage Product Types',
-            'soap' => 'Manage Soap Users'
+            'soap' => 'Manage Soap Users',
+            'language' => 'Manage Languages'
         );
         return $groupArray;
     }

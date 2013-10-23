@@ -93,6 +93,7 @@ return array(
             'Application\Controller\Condition' => 'Application\Controller\ConditionController',
             'Application\Controller\Country' => 'Application\Controller\CountryController',
             'Application\Controller\Soap' => 'Application\Controller\SoapController',
+            'Application\Controller\Language' => 'Application\Controller\LanguageController',
         ),
     ),
     'view_manager' => array(

@@ -42,6 +42,7 @@
         ; ?>
     </head>
     <body>
+    <?php echo $this->lang()->getLanguageSession();?>
     <header>
         <div class="container">
             <div class="row">
@@ -78,7 +79,14 @@
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by PMAS <?php echo $this->translate('All rights reserved.') ?></p>
+                <div class="col-md-8">
+                    <p>&copy; 2005 - <?php echo date('Y') ?> by PMAS <?php echo $this->translate('All rights reserved.') ?></p>
+                </div>
+                <div class="col-md-4">
+                    <div class="pull-right">
+                        <?php echo $this->lang()->getLanguagesDropdown()?>
+                    </div>
+                </div>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
