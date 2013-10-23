@@ -83,7 +83,8 @@ class RoleForm extends Form
             'tdm-condition' => 'Manage TDM Conditions',
             'recycler-condition' => 'Manage Recycler Conditions',
             'exchange' => 'Manage Exchanges',
-            'product-type' => 'Manage Product Types'
+            'product-type' => 'Manage Product Types',
+            'soap' => 'Manage Soap Users'
         );
         return $groupArray;
     }

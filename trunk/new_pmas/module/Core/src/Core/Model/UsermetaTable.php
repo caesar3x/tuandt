@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Sql;
+
 class UsermetaTable extends AbstractModel
 {
     public function getEntry($id)
@@ -97,10 +99,17 @@ class UsermetaTable extends AbstractModel
      */
     public function getUserLog($user_id)
     {
-        $rowset = $this->tableGateway->select(array('user_id' => $user_id,'meta_key' => 'user_log','deleted' => 0));
-        if($rowset->count() <= 0){
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('user_id' => $user_id,'meta_key' => 'user_log','deleted' => 0));
+        $select->group('meta_id');
+        $select->order('time DESC');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
             return null;
         }
-        return $rowset;
+        return $result;
     }
 }

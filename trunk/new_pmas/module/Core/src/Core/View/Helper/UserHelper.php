@@ -90,4 +90,11 @@ class UserHelper extends AbstractHelper
         }
         return false;
     }
+    public function request_data($bar,$foo)
+    {
+        $b = new \stdClass();
+        $b->bar = $bar;
+        $b->foo = $foo;
+        return $b;
+    }
 }

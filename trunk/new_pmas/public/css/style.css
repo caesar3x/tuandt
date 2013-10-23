@@ -62,3 +62,7 @@ form .alert{max-width: 800px;margin: 0 auto;}
 #last-tdm tr,#last-recycler tr{cursor: pointer;}
 #last-tdm tr:hover,#last-recycler tr:hover{text-decoration: underline;color: #4685DF;}
 #multi-select-recyclers{margin-left: 15px;min-width: 100px;}
+.required em {
+    color: #EB340A;
+    font-style: normal;
+}
