@@ -23,22 +23,28 @@ class SoapController extends AbstractController
 {
     public function indexAction()
     {
+        echo $this->getViewHelperPlugin('files')->getUploadLanguageFolderPath();
         /*$server1 = new Server2();
         $server1->login('dat','123456');
         $result = $server1->update(25,array('product_name' => 'HTC Nexus 10','price' => 43243,'type_id'=>110,'model' => 'modeltes'));
         Debug::dump($result);
         die;*/
-        $wsdl = 'http://pmas.dev.gyhk.com/soap/tdm-product?wsdl';
-        $client = new \Zend\Soap\Client($wsdl);
-        $ret = $client->login("dat", "123456");
-        $ret = $client->get(array());
+
         /*$ret = $client->create(array('product_name' => 'HTC Nexus 10s','base_price' => 34,'type_id'=>100));*/
         /*$data = $client->setPrice(array('model' => 'Galaxy SI','price' => 44,'currency' => 'USD','datetime' => '30-10-2013'));*/
         /*$ret = $client->create(array('product_model' => 'Model Test','product_name' => 'Name Test','base_price' => 123));*/
         /*foreach($data as $row){
             Debug::dump($row);
         }*/
-        Debug::dump($ret);
+
+        /*$wsdl = 'http://pmas.dev.gyhk.com/soap/recycler-product?wsdl';
+
+
+        $client = new \Zend\Soap\Client($wsdl);
+        $client->login("dat", "123456");
+        $ret = $client->delete(1);
+        Debug::dump($ret);*/
+
         die;
     }
     public function recyclerProductAction()

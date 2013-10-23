@@ -27,7 +27,7 @@ class FilesHelper extends AbstractHelper
     public function getUploadLanguageFolderPath($path = null)
     {
         if($path == null){
-            $path = getcwd() . "/upload/language/";
+            $path = getcwd() . "/public/upload/language/";
             if (!is_dir($path)) {
                 if (!@mkdir($path, 0777, true)) {
                     throw new \Exception("Unable to create destination: " . $path);
@@ -35,7 +35,7 @@ class FilesHelper extends AbstractHelper
             }
             return $path;
         }else{
-            $pathfull = getcwd() . $path;
+            $pathfull = getcwd().'/public' . $path;
             return $pathfull;
         }
     }

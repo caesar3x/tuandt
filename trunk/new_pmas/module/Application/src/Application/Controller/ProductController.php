@@ -47,8 +47,6 @@ class ProductController extends AbstractController
 
     public function indexAction()
     {
-        $cache = \Core\Cache\CacheSerializer::init();
-        Debug::dump($cache->getItem('translate'));
         $this->auth();
         $view = new ViewModel();
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
