@@ -92,6 +92,7 @@ return array(
             'Application\Controller\Resource' => 'Application\Controller\ResourceController',
             'Application\Controller\Condition' => 'Application\Controller\ConditionController',
             'Application\Controller\Country' => 'Application\Controller\CountryController',
+            'Application\Controller\Soap' => 'Application\Controller\SoapController',
         ),
     ),
     'view_manager' => array(
@@ -104,6 +105,7 @@ return array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/login'            => __DIR__ . '/../view/layout/login.phtml',
             'layout/empty'            => __DIR__ . '/../view/layout/empty.phtml',
+            'layout/xml'            => __DIR__ . '/../view/layout/xml.phtml',
             'admin/breadcrumbs'       => __DIR__ . '/../view/partial/breadcrumbs.phtml',
             'admin/topmenu'           => __DIR__ . '/../view/partial/menu.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',

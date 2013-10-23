@@ -25,6 +25,8 @@ use Core\Model\Resources;
 use Core\Model\ResourcesTable;
 use Core\Model\Roles;
 use Core\Model\RolesTable;
+use Core\Model\SoapUsers;
+use Core\Model\SoapUsersTable;
 use Core\Model\TdmProduct;
 use Core\Model\TdmProductCondition;
 use Core\Model\TdmProductConditionTable;
@@ -34,6 +36,7 @@ use Core\Model\TmpProductTable;
 use Core\Model\Usermeta;
 use Core\Model\UsermetaTable;
 use Core\Soap\MyClass;
+use Core\Soap\Server1;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -83,13 +86,6 @@ class Module
                     $storage = new Session('backend_auth');
                     $authService->setStorage($storage);
                     return $authService;
-                },
-                'SoapApi' =>  function($sm) {
-                    $request = $sm->get('Request');
-                    $api = new MyClass();
-                    /*$api->setServiceLocator($sm);
-                    $api->setHttpRequest($request);*/
-                    return $api;
                 },
                 'AdminUserTable' =>  function($sm) {
                     $tableGateway = $sm->get('AdminUserTableGateway');
@@ -258,6 +254,18 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Usermeta());
                     return new TableGateway('usermeta', $dbAdapter, null, $resultSetPrototype);
+                },
+                'SoapUsersTable' => function($sm) {
+                    $tableGateway = $sm->get('SoapUsersTableGateway');
+                    $table = new SoapUsersTable($tableGateway);
+                    $table->setServiceLocator($sm);
+                    return $table;
+                },
+                'SoapUsersTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new SoapUsers());
+                    return new TableGateway('soap_users', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

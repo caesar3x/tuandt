@@ -1,0 +1,51 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 10/22/13
+ */
+?>
+<?php $form = $this->form;?>
+<?php $form->setAttribute('action', $this->currentUrl());?>
+<?php $form->prepare();?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2><?php echo $this->translate('Add Soap User')?></h2>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/soap/user')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+            <?php echo $this->form()->openTag($form);?>
+            <?php echo $this->formRow($form->get('id'));?>
+            <?php echo $this->formRow($form->get('csrf'));?>
+            <?php echo $this->formRow($form->get('continue'));?>
+            <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('Username')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('username'));?>
+                </div>
+            </div>
+            <div class="row form-row">
+                <div class="col-md-4">
+                    <div class="control-label required"><?php echo $this->translate('Password')?><em>*</em> </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo $this->formRow($form->get('password'));?>
+                </div>
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+
+    </div>
+</div>

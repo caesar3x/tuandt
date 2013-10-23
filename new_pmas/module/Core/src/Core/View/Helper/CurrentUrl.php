@@ -27,4 +27,16 @@ class CurrentUrl extends AbstractHelper
     {
         $this->serviceLocator = $serviceLocator;
     }
+    public function getUrlHelper()
+    {
+        return $this->serviceLocator->get('viewhelpermanager')->get('getUrl');
+    }
+    public function getUri()
+    {
+        return $this->request->getUri()->normalize();
+    }
+    public function getPath()
+    {
+        return $this->getUrlHelper()->getUrl($this->request->getUri()->getPath());
+    }
 }
