@@ -6,7 +6,7 @@
 ?>
 <?php $countries = $this->product()->getAvailableCountries()?>
 <?php if(!empty($countries)):?>
-    <select name="country_chosen" class="chosen-select form-control" id="country-chosen" data-placeholder="<?php echo $this->translate('Choose a country')?>">
+    <select name="country_chosen" class="chosen-select form-control" id="country-chosen" data-placeholder="<?php echo $this->__('Choose a country')?>">
         <option></option>
     <?php foreach($countries as $row):?>
         <option value="<?php echo $row->country_id?>"><?php echo $row->name;?></option>

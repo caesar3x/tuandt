@@ -15,13 +15,13 @@
 <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
     <div class="page-header">
         <div class="pull-left">
-            <h3><?php echo $this->translate('Edit Resource')?></h3>
+            <h3><?php echo $this->__('Edit Resource')?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/resource"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save and Continue')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/resource"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save and Continue')?></a>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -34,7 +34,7 @@
         <div class="panel-body">
             <div class="form-group row">
                 <div class="col-md-3">
-                    <div class="control-label"><span class="pull-right">Resource Name : </span></div>
+                    <div class="control-label"><span class="pull-right"><?php echo $this->__('Resource Name');?> : </span></div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('name'));?>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group form-row row">
                 <div class="col-md-3">
-                    <div class="control-label"><span class="pull-right">Resource Path : </span></div>
+                    <div class="control-label"><span class="pull-right"><?php echo $this->__('Resource Path');?> : </span></div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('path'));?>
@@ -50,7 +50,7 @@
             </div>
             <div class="form-group form-row row">
                 <div class="col-md-3">
-                    <div class="control-label"><span class="pull-right">Resource Group : </span></div>
+                    <div class="control-label"><span class="pull-right"><?php echo $this->__('Resource Group');?> : </span></div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('group'));?>

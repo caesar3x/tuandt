@@ -11,11 +11,11 @@
     <div class="pull-right">
         <a class="btn btn-default btn-sm add-item" href="/user/detail/id/<?php echo $this->id?>">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Back') ?>
+            <?php echo $this->__('Back') ?>
         </a>
         <a onclick="formConfirm('user-log');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -26,11 +26,11 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Resource Name')?></th>
-                <th><?php echo $this->translate('Time')?></th>
-                <th><?php echo $this->translate('Note')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Resource Name')?></th>
+                <th><?php echo $this->__('Time')?></th>
+                <th><?php echo $this->__('Note')?></th>
+                <th class="action"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
                         <td class="action">
                             <a class="btn btn-sm btn-danger" onclick="confirmDelete('/user/delete-log/user/<?php echo $this->id?>/id/<?php echo $row->meta_id?>')">
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->__('Delete') ?>
                             </a>
                         </td>
                     </tr>

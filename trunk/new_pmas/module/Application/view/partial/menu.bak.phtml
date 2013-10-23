@@ -17,13 +17,13 @@
                     <?php if( ! $hasChildren): ?>
                         <li class="<?php if($page->isActive()){echo 'active';}?>">
                             <a class="nav-header" href="<?php echo $page->getHref() ?>">
-                                <?php echo $this->translate($page->getLabel()) ?>
+                                <?php echo $this->__($page->getLabel()) ?>
                             </a>
                         </li>
                     <?php else: ?>
                         <li class="dropdown <?php if($page->isActive()){echo 'active';}?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span><?php echo $this->translate($page->getLabel()) ?></span>
+                                <span><?php echo $this->__($page->getLabel()) ?></span>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
@@ -32,7 +32,7 @@
                                     <?php if( ! $child->isVisible() || !$this->navigation()->accept($child)) continue; ?>
                                     <li>
                                         <a href="<?php echo $child->getHref() ?>">
-                                            <?php echo $this->translate($child->getLabel()) ?>
+                                            <?php echo $this->__($child->getLabel()) ?>
                                         </a>
                                     </li>
                                 <?php endforeach ?>

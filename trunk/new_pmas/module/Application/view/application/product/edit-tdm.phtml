@@ -12,10 +12,10 @@
             <h3><?php echo $this->model?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -32,42 +32,42 @@
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Product Name')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Product Name')?>*</span></div>
                 <div class="col-md-6">
                     <?php echo $this->formRow($form->get('name'));?>
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Brand')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Brand')?>*</span></div>
                 <div class="col-md-6">
                     <?php echo $this->formRow($form->get('brand'));?>
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Model')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Model')?>*</span></div>
                 <div class="col-md-6">
                     <?php echo $this->formRow($form->get('model'));?>
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Type')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Type')?>*</span></div>
                 <div class="col-md-3">
                     <?php echo $this->formRow($form->get('type_id'));?>
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Condition')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Condition')?>*</span></div>
                 <div class="col-md-3">
                     <?php echo $this->formRow($form->get('condition_id'));?>
                 </div>
             </div>
             <div class="row form-row">
-                <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('SSA Price')?>*</span></div>
+                <div class="col-md-3"><span class="pull-right"><?php echo $this->__('SSA Price')?>*</span></div>
                 <div class="col-md-3">
                     <?php echo $this->formRow($form->get('price'));?>
                 </div>
                 <div class="col-md-6">
-                    <div class="col-md-3"><span class="pull-right"><?php echo $this->translate('Currency')?>*</span></div>
+                    <div class="col-md-3"><span class="pull-right"><?php echo $this->__('Currency')?>*</span></div>
                     <div class="col-md-3">
                         <?php echo $this->formRow($form->get('currency'));?>
                     </div>

@@ -6,16 +6,16 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Manage Roles') ?></h2>
+        <h2><?php echo $this->__('Manage Roles') ?></h2>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('roles');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="/role/add">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new') ?>
+            <?php echo $this->__('Add new') ?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -26,10 +26,10 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Slug')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Slug')?></th>
+                <th><?php echo $this->__('Name')?></th>
+                <th class="action"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -45,11 +45,11 @@
                             <?php if((int)$row->role_id != 5 ):?>
                             <a class="btn btn-xs btn-primary btn-edit" href="/role/edit/id/<?php echo $row->role_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit') ?>
+                                <?php echo $this->__('Edit') ?>
                             </a>
                             <a class="btn btn-xs btn-danger btn-delete" onclick="confirmDelete('/role/delete/id/<?php echo $row->role_id?>');">
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->__('Delete') ?>
                             </a>
                             <?php endif;?>
                         </td>

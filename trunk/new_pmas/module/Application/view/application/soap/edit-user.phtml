@@ -10,13 +10,13 @@
 <?php $form->prepare();?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Edit Soap User')?></h2>
+        <h2><?php echo $this->__('Edit Soap User')?></h2>
     </div>
     <div class="pull-right">
-        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/soap/user')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/soap/user')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -30,7 +30,7 @@
             <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('Username')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('Username')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('username'));?>
@@ -38,7 +38,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('Password')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('Password')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('password'));?>

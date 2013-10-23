@@ -9,13 +9,13 @@
 <?php $form->prepare();?>
 <div class="page-header">
     <div class="pull-left">
-        <h3>New Exchange Rate</h3>
+        <h3><?php echo $this->__('New Exchange Rate')?></h3>
     </div>
     <div class="pull-right">
-        <a class="btn btn-sm btn-default add-item" href="/exchange"><i class="glyphicon glyphicon-arrow-left"></i>Back</a>
-        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i>Reset</a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i>Save</a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i>Save and Continue Edit</a>
+        <a class="btn btn-sm btn-default add-item" href="/exchange"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
     </div>
     <div class="clearfix">&nbsp;</div>
 </div>
@@ -26,14 +26,14 @@
             <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
         </div>
         <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Currency*</span></div>
+            <div class="col-md-3 required"><span class="pull-right"><?php echo $this->__('Currency')?><em>*</em></span></div>
             <div class="col-md-3">
                 <?php echo $this->formRow($form->get('currency'));?>
                 <?php echo $this->formRow($form->get('continue'));?>
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Date</span></div>
+            <div class="col-md-3 required"><span class="pull-right"><?php echo $this->__('Date')?></span></div>
             <div class="col-md-9">
                 <div class="input-group" style="width: 150px;float: left;">
                     <?php echo $this->formRow($form->get('time'));?>
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-md-3"><span class="pull-right">Exchange Rate*</span></div>
+            <div class="col-md-3 required"><span class="pull-right"><?php echo $this->__('Exchange Rate')?><em>*</em></span></div>
             <div class="col-md-3">
                 <?php echo $this->formRow($form->get('exchange_rate'));?>
                 <?php echo $this->formRow($form->get('csrf'));?>

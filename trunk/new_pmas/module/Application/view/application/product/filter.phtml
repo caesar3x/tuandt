@@ -8,13 +8,13 @@
 <div class="page-header">
     <div class="pull-left">
         <?php if(is_numeric($higher)):?>
-        <h3><?php echo $this->translate('Models Filtered With Price Higher Than').' '.$higher.'%'?></h3>
+        <h3><?php echo $this->__('Models Filtered With Price Higher Than').' '.$higher.'%'?></h3>
         <?php elseif(is_numeric($this->country)):?>
-        <h3><?php echo $this->translate('Models Filtered With Country').' '.$this->country($this->country)?></h3>
+        <h3><?php echo $this->__('Models Filtered With Country').' '.$this->country($this->country)?></h3>
         <?php endif;?>
     </div>
     <div class="pull-right">
-        <a href="<?php echo $this->getUrl('product')?>" class="btn btn-success btn-sm add-item"><i class="glyphicon glyphicon-arrow-left"><?php echo $this->translate('Back')?></i></a>
+        <a href="<?php echo $this->getUrl('product')?>" class="btn btn-success btn-sm add-item"><i class="glyphicon glyphicon-arrow-left"><?php echo $this->__('Back')?></i></a>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -24,16 +24,16 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('Product Id')?></th>
-                <th><?php echo $this->translate('Product Name')?></th>
-                <th><?php echo $this->translate('Condition')?></th>
-                <th><?php echo $this->translate('Product Type')?></th>
-                <th><?php echo $this->translate('Brand')?></th>
-                <th><?php echo $this->translate('SSA Price')?></th>
-                <th><?php echo $this->translate('Recycler Name')?></th>
-                <th><?php echo $this->translate('Recycler Price')?></th>
-                <th><?php echo $this->translate('Price in HKD')?></th>
-                <th><?php echo $this->translate('Percentage')?></th>
+                <th><?php echo $this->__('Product Id')?></th>
+                <th><?php echo $this->__('Product Name')?></th>
+                <th><?php echo $this->__('Condition')?></th>
+                <th><?php echo $this->__('Product Type')?></th>
+                <th><?php echo $this->__('Brand')?></th>
+                <th><?php echo $this->__('SSA Price')?></th>
+                <th><?php echo $this->__('Recycler Name')?></th>
+                <th><?php echo $this->__('Recycler Price')?></th>
+                <th><?php echo $this->__('Price in HKD')?></th>
+                <th><?php echo $this->__('Percentage')?></th>
             </tr>
             </thead>
             <tbody>

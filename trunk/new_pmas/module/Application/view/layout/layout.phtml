@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle()->setSeparator(' :: ')->setAutoEscape(false)->prepend($this->translate('PMAS')) ?>
+        <?php echo $this->headTitle()->setSeparator(' :: ')->setAutoEscape(false)->prepend($this->__('PMAS')) ?>
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=product-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
@@ -47,16 +47,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <h1><a href="/"><?php echo $this->translate('PMAS Admin');?></a></h1>
+                    <h1><a href="/"><?php echo $this->__('PMAS Admin');?></a></h1>
                 </div>
                 <div class="col-md-4" style="height: 60px;">
                     <img src="<?php echo $this->basePath('images/banner468x60.jpg')?>" width="468" height="60">
                 </div>
                 <div class="col-md-5">
                     <ul class="pull-right header-items">
-                        <li><?php echo $this->translate('Logged in as')?> <a class="btn-link"><?php echo $this->username()?></a> |</li>
+                        <li><?php echo $this->__('Logged in as')?> <a class="btn-link"><?php echo $this->username()?></a> |</li>
                         <li><?php echo date('l, F j, Y',time())?> |</li>
-                        <li><a href="<?php echo $this->getUrl('logout')?>" class="btn-link"><?php echo $this->translate('Logout');?></a></li>
+                        <li><a href="<?php echo $this->getUrl('logout')?>" class="btn-link"><?php echo $this->__('Logout');?></a></li>
                     </ul>
                 </div>
             </div>
@@ -80,7 +80,7 @@
             <hr>
             <footer>
                 <div class="col-md-8">
-                    <p>&copy; 2005 - <?php echo date('Y') ?> by PMAS <?php echo $this->translate('All rights reserved.') ?></p>
+                    <p>&copy; 2005 - <?php echo date('Y') ?> <?php echo $this->__('by')?> PMAS <?php echo $this->__('All rights reserved.') ?></p>
                 </div>
                 <div class="col-md-4">
                     <div class="pull-right">

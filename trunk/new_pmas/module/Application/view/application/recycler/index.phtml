@@ -7,16 +7,16 @@
 <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Recycler')?></h2>
+        <h2><?php echo $this->__('Recycler')?></h2>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('recycler');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="/recycler/add">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new recycler');?>
+            <?php echo $this->__('Add new recycler');?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -26,19 +26,19 @@
     <div class="row">
         <div class="pull-right">
             <a class="btn">
-                <?php echo $this->translate('Export to')?>
+                <?php echo $this->__('Export to')?>
             </a>
             <div class="btn-group">
                 <select class="form-control" id="export-format" name="export_format">
-                    <option value="none"><?php echo $this->translate('Select format')?></option>
-                    <option value="csv"><?php echo $this->translate('CSV')?></option>
-                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                    <option value="none"><?php echo $this->__('Select format')?></option>
+                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
                 </select>
             </div>
             <a class="btn btn-warning btn-sm" onclick="exportRecyclers()">
                 <i class="glyphicon glyphicon-export"></i>
-                <?php echo $this->translate('Export')?>
+                <?php echo $this->__('Export')?>
             </a>
         </div>
         <div class="row clearfix">&nbsp;</div>
@@ -46,14 +46,14 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th><?php echo $this->translate('Country')?></th>
-                <th><?php echo $this->translate('Email')?></th>
-                <th><?php echo $this->translate('Website')?></th>
-                <th><?php echo $this->translate('Telephone')?></th>
-                <th><?php echo $this->translate('Address')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Name')?></th>
+                <th><?php echo $this->__('Country')?></th>
+                <th><?php echo $this->__('Email')?></th>
+                <th><?php echo $this->__('Website')?></th>
+                <th><?php echo $this->__('Telephone')?></th>
+                <th><?php echo $this->__('Address')?></th>
+                <th class="action"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -71,11 +71,11 @@
                         <td class="action">
                             <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/id/<?php echo $row->recycler_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Detail')?>
+                                <?php echo $this->__('Detail')?>
                             </a>
                             <a onclick="confirmDelete('/recycler/delete/id/<?php echo $row->recycler_id?>')" class="btn btn-xs btn-danger btn-delete" >
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete')?>
+                                <?php echo $this->__('Delete')?>
                             </a>
                         </td>
                     </tr>

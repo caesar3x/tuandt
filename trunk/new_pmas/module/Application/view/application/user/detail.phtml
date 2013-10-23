@@ -9,12 +9,12 @@
 <?php $form->prepare();?>
 <div class="page-header">
     <div class="pull-left">
-        <h2>Edit User</h2>
+        <h2><?php echo $this->__('Edit User')?></h2>
     </div>
     <div class="pull-right">
-        <a class="btn btn-sm btn-default add-item" href="/user"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+        <a class="btn btn-sm btn-default add-item" href="/user"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -28,7 +28,7 @@
             <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Role')?> </div>
+                    <div class="control-label"><?php echo $this->__('Role')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('role'));?>
@@ -36,7 +36,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('First name')?> </div>
+                    <div class="control-label"><?php echo $this->__('First name')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('first_name'));?>
@@ -44,7 +44,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Last name')?> </div>
+                    <div class="control-label"><?php echo $this->__('Last name')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('last_name'));?>
@@ -52,7 +52,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Email')?> </div>
+                    <div class="control-label"><?php echo $this->__('Email')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('email'));?>
@@ -63,12 +63,12 @@
                     <div class="control-label">&nbsp;</div>
                 </div>
                 <div class="col-md-4">
-                    <a onclick="$('#password-row').toggle();" class="btn btn-sm btn-warning"><?php echo $this->translate('Change password')?></a>
+                    <a onclick="$('#password-row').toggle();" class="btn btn-sm btn-warning"><?php echo $this->__('Change password')?></a>
                 </div>
             </div>
             <div class="row form-row" style="display: none" id="password-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Password')?> </div>
+                    <div class="control-label"><?php echo $this->__('Password')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('password'));?>
@@ -76,7 +76,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Status')?> </div>
+                    <div class="control-label"><?php echo $this->__('Status')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('status'));?>
@@ -84,7 +84,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label"><?php echo $this->translate('Note')?> </div>
+                    <div class="control-label"><?php echo $this->__('Note')?> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('note'));?>

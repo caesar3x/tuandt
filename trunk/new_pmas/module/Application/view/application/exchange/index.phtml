@@ -6,7 +6,7 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h3>Exchange Rate</h3>
+        <h3><?php echo $this->__('Exchange Rate');?></h3>
     </div>
     <div class="clearfix">&nbsp;</div>
 </div>
@@ -14,11 +14,11 @@
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-body">
-                <span>Set time:</span>
+                <span><?php echo $this->__('Set time');?>:</span>
                 <div class="clearfix">&nbsp;</div>
                 <div>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-addon">Start time</span>
+                        <span class="input-group-addon"><?php echo $this->__('Start time');?></span>
                         <input class="form-control datepicker" name="start-time" id="start-time">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
@@ -26,13 +26,13 @@
                 <div class="clearfix">&nbsp;</div>
                 <div>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-addon">End time</span>
+                        <span class="input-group-addon"><?php echo $this->__('End time');?></span>
                         <input class="form-control datepicker" name="end-time" id="end-time">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
                 <br/>
-                <span>Select currency:</span>
+                <span><?php echo $this->__('Select currency');?>:</span>
                 <div class="clearfix">&nbsp;</div>
                 <div class="form-group">
                     <select id="select-currency" class="form-control" style="width: 50%;">
@@ -51,17 +51,17 @@
                         <li class="active" id="chart-li">
                             <a class="btn btn-sm" data-toggle="tab" href="#chart-view">
                                 <i class="glyphicon glyphicon-stats"></i>
-                                Chart
+                                <?php echo $this->__('Chart');?>
                             </a>
                         </li>
                         <li>
                             <a class="btn btn-sm" data-toggle="tab" href="#table-view">
                                 <i class="glyphicon glyphicon-th"></i>
-                                Table
+                                <?php echo $this->__('Table');?>
                             </a>
                         </li>
                     </ul>
-                    <button class="btn btn-success btn-sm btn-load-exchange" onclick="loadExchangeData()"><span>Submit</span></button>
+                    <button class="btn btn-success btn-sm btn-load-exchange" onclick="loadExchangeData()"><span><?php echo $this->__('Submit');?></span></button>
                 </div>
             </div>
         </div>

@@ -11,12 +11,12 @@
 <?php if($this->id && $this->id > 0):?>
     <div class="page-header">
         <div class="pull-left">
-            <h3><?php echo $this->translate('Edit Country')?></h3>
+            <h3><?php echo $this->__('Edit Country')?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/exchange/country"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/exchange/country"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -30,7 +30,7 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-md-3">
-                            <div class="control-label"><span>Country Name</span></div>
+                            <div class="control-label"><span><?php echo $this->__('Country Name')?></span></div>
                         </div>
                         <div class="col-md-9">
                             <?php echo $this->formRow($form->get('country_name'));?>
@@ -52,7 +52,7 @@
 <?php else:?>
     <div class="page-header">
         <div class="pull-left">
-            <h3><?php echo $this->translate('Manage Countries')?></h3>
+            <h3><?php echo $this->__('Manage Countries')?></h3>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -61,7 +61,7 @@
             <div class="pull-right">
                 <a onclick="formConfirm('countries');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
                     <i class="glyphicon glyphicon-trash"></i>
-                    <?php echo $this->translate('Delete Selected')?>
+                    <?php echo $this->__('Delete Selected')?>
                 </a>
             </div>
             <div class="row clearfix">&nbsp;</div>
@@ -69,10 +69,10 @@
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                    <th><?php echo $this->translate('ID')?></th>
-                    <th><?php echo $this->translate('Name')?></th>
-                    <th><?php echo $this->translate('Currency')?></th>
-                    <th class="action"><?php echo $this->translate('Action')?></th>
+                    <th><?php echo $this->__('ID')?></th>
+                    <th><?php echo $this->__('Name')?></th>
+                    <th><?php echo $this->__('Currency')?></th>
+                    <th class="action"><?php echo $this->__('Action')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -86,11 +86,11 @@
                             <td class="action">
                                 <a class="btn btn-xs btn-warning btn-edit" href="/exchange/country/id/<?php echo $row->country_id?>">
                                     <i class="glyphicon glyphicon-edit"></i>
-                                    <?php echo $this->translate('Edit')?>
+                                    <?php echo $this->__('Edit')?>
                                 </a>
                                 <a onclick="confirmDelete('/exchange/delete-country/id/<?php echo $row->country_id?>')" class="btn btn-xs btn-danger btn-delete">
                                     <i class="glyphicon glyphicon-trash"></i>
-                                    <?php echo $this->translate('Delete')?>
+                                    <?php echo $this->__('Delete')?>
                                 </a>
                             </td>
                         </tr>
@@ -106,12 +106,12 @@
             <?php echo $this->form()->openTag($form);?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add Country</h3>
+                    <h3 class="panel-title"><?php echo $this->__('Add Country');?></h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-md-3">
-                            <div class="control-label"><span>Country Name</span></div>
+                            <div class="control-label"><span><?php echo $this->__('Country Name');?></span></div>
                         </div>
                         <div class="col-md-9">
                             <?php echo $this->formRow($form->get('country_name'));?>
@@ -130,9 +130,9 @@
                         <div class="col-md-9">
                             <button class="btn btn-sm btn-success">
                                 <i class="glyphicon glyphicon-send"></i>
-                                Submit
+                                <?php echo $this->__('Submit');?>
                             </button>
-                            <a class="btn btn-sm btn-default" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
+                            <a class="btn btn-sm btn-default" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
                         </div>
                     </div>
                 </div>
