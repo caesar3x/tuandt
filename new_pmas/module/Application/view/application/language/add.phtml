@@ -10,13 +10,13 @@
 <?php $form->prepare();?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Add Language')?></h2>
+        <h2><?php echo $this->__('Add Language')?></h2>
     </div>
     <div class="pull-right">
-        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/language')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+        <a class="btn btn-sm btn-default add-item" href="<?php echo $this->getUrl('/language')?>"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+        <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -30,7 +30,7 @@
             <?php echo $this->partial('partial/form-messages.phtml',array('msg' => $this->msg))?>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('Country')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('Country')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('lang_country'));?>
@@ -38,7 +38,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('Code')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('Code')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('lang_code'));?>
@@ -46,7 +46,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('Sort Order')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('Sort Order')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('sort_order'));?>
@@ -54,7 +54,7 @@
             </div>
             <div class="row form-row">
                 <div class="col-md-4">
-                    <div class="control-label required"><?php echo $this->translate('File Upload')?><em>*</em> </div>
+                    <div class="control-label required"><?php echo $this->__('File Upload')?><em>*</em> </div>
                 </div>
                 <div class="col-md-4">
                     <?php echo $this->formRow($form->get('file_upload'));?>

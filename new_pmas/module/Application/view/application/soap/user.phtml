@@ -7,16 +7,16 @@
  ?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Manage Soap Users') ?></h2>
+        <h2><?php echo $this->__('Manage Soap Users') ?></h2>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('user');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="<?php echo $this->getUrl('soap/add-user')?>">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new user') ?>
+            <?php echo $this->__('Add new user') ?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -27,10 +27,10 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Username')?></th>
-                <th><?php echo $this->translate('Password')?></th>
-                <th class="action4"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Username')?></th>
+                <th><?php echo $this->__('Password')?></th>
+                <th class="action4"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -44,11 +44,11 @@
                         <td class="action4">
                             <a class="btn btn-xs btn-primary btn-edit" href="/soap/edit-user/id/<?php echo $row->id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit') ?>
+                                <?php echo $this->__('Edit') ?>
                             </a>
                             <a onclick="confirmDelete('/soap/delete-user/id/<?php echo $row->id?>')" class="btn btn-xs btn-danger btn-delete" >
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->__('Delete') ?>
                             </a>
                         </td>
                     </tr>

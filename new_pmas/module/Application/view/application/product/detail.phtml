@@ -17,7 +17,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
     <div class="pull-right">
         <a class="btn btn-default btn-sm back-top" id="back-button" href="<?php echo $this->getUrl('product')?>">
             <i class="glyphicon glyphicon-arrow-left"></i>
-            <?php echo $this->translate('Back')?>
+            <?php echo $this->__('Back')?>
         </a>
     </div>
     <div class="clearfix">&nbsp;</div>
@@ -31,16 +31,16 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                    <th><?php echo $this->translate('Product Id')?></th>
-                    <th><?php echo $this->translate('Product Name')?></th>
-                    <th><?php echo $this->translate('Condition')?></th>
-                    <th><?php echo $this->translate('Product Type')?></th>
-                    <th><?php echo $this->translate('Brand')?></th>
-                    <th><?php echo $this->translate('SSA Price')?></th>
-                    <th><?php echo $this->translate('Recycler Name')?></th>
-                    <th><?php echo $this->translate('Recycler Price')?></th>
-                    <th><?php echo $this->translate('Price in HKD')?></th>
-                    <th><?php echo $this->translate('Percentage')?></th>
+                    <th><?php echo $this->__('Product Id')?></th>
+                    <th><?php echo $this->__('Product Name')?></th>
+                    <th><?php echo $this->__('Condition')?></th>
+                    <th><?php echo $this->__('Product Type')?></th>
+                    <th><?php echo $this->__('Brand')?></th>
+                    <th><?php echo $this->__('SSA Price')?></th>
+                    <th><?php echo $this->__('Recycler Name')?></th>
+                    <th><?php echo $this->__('Recycler Price')?></th>
+                    <th><?php echo $this->__('Price in HKD')?></th>
+                    <th><?php echo $this->__('Percentage')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -76,16 +76,16 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                    <th><?php echo $this->translate('Product Id')?></th>
-                    <th><?php echo $this->translate('Product Name')?></th>
-                    <th><?php echo $this->translate('Condition')?></th>
-                    <th><?php echo $this->translate('Product Type')?></th>
-                    <th><?php echo $this->translate('Brand')?></th>
-                    <th><?php echo $this->translate('SSA Price')?></th>
-                    <th><?php echo $this->translate('Recycler Name')?></th>
-                    <th><?php echo $this->translate('Recycler Price')?></th>
-                    <th><?php echo $this->translate('Price in HKD')?></th>
-                    <th><?php echo $this->translate('Percentage')?></th>
+                    <th><?php echo $this->__('Product Id')?></th>
+                    <th><?php echo $this->__('Product Name')?></th>
+                    <th><?php echo $this->__('Condition')?></th>
+                    <th><?php echo $this->__('Product Type')?></th>
+                    <th><?php echo $this->__('Brand')?></th>
+                    <th><?php echo $this->__('SSA Price')?></th>
+                    <th><?php echo $this->__('Recycler Name')?></th>
+                    <th><?php echo $this->__('Recycler Price')?></th>
+                    <th><?php echo $this->__('Price in HKD')?></th>
+                    <th><?php echo $this->__('Percentage')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -117,8 +117,8 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
 <?php else:?>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#price-comparision"><?php echo $this->translate('Price Comparison')?></a></li>
-            <li><a data-toggle="tab" href="#historical-prices"><?php echo $this->translate('Historical Prices')?></a></li>
+            <li class="active"><a data-toggle="tab" href="#price-comparision"><?php echo $this->__('Price Comparison')?></a></li>
+            <li><a data-toggle="tab" href="#historical-prices"><?php echo $this->__('Historical Prices')?></a></li>
         </ul>
     </div>
     <div class="col-md-10">
@@ -128,30 +128,30 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                     <div class="panel-body">
                         <div>
                             <div class="pull-left">
-                                <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
+                                <a class="btn btn-outline"><?php echo $this->__('Notice')?></a>
                                 <div class="btn-group">
                                     <?php echo $this->partial('partial/select-price.phtml')?>
                                 </div>
-                                <a class="btn btn-outline"><?php echo $this->translate('Filter by country').':'?></a>
+                                <a class="btn btn-outline"><?php echo $this->__('Filter by country').':'?></a>
                                 <div class="btn-group">
                                     <?php echo $this->partial('partial/select-countries.phtml')?>
                                 </div>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-outline">
-                                    <?php echo $this->translate('Export to')?>
+                                    <?php echo $this->__('Export to')?>
                                 </a>
                                 <div class="btn-group">
                                     <select class="form-control" id="export-format" name="export_format">
-                                        <option value="none"><?php echo $this->translate('Select format')?></option>
-                                        <option value="csv"><?php echo $this->translate('CSV')?></option>
-                                        <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                                        <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                        <option value="none"><?php echo $this->__('Select format')?></option>
+                                        <option value="csv"><?php echo $this->__('CSV')?></option>
+                                        <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                                        <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
                                     </select>
                                 </div>
                                 <a class="btn btn-warning btn-sm" onclick="exportPriceCompare('<?php echo $product->product_id?>');">
                                     <i class="glyphicon glyphicon-export"></i>
-                                    <?php echo $this->translate('Export')?>
+                                    <?php echo $this->__('Export')?>
                                 </a>
                             </div>
                         </div>
@@ -161,16 +161,16 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                                <th><?php echo $this->translate('Recycler Id')?></th>
-                                <th><?php echo $this->translate('Recycler Name')?></th>
-                                <th><?php echo $this->translate('Country')?></th>
-                                <th><?php echo $this->translate('Product Name')?></th>
-                                <th><?php echo $this->translate('Condition')?></th>
-                                <th><?php echo $this->translate('Date')?></th>
-                                <th><?php echo $this->translate('Price')?></th>
-                                <th><?php echo $this->translate('Price in HKD')?></th>
-                                <th><?php echo $this->translate('Percentage')?></th>
-                                <th><?php echo $this->translate('SSA Price')?></th>
+                                <th><?php echo $this->__('Recycler Id')?></th>
+                                <th><?php echo $this->__('Recycler Name')?></th>
+                                <th><?php echo $this->__('Country')?></th>
+                                <th><?php echo $this->__('Product Name')?></th>
+                                <th><?php echo $this->__('Condition')?></th>
+                                <th><?php echo $this->__('Date')?></th>
+                                <th><?php echo $this->__('Price')?></th>
+                                <th><?php echo $this->__('Price in HKD')?></th>
+                                <th><?php echo $this->__('Percentage')?></th>
+                                <th><?php echo $this->__('SSA Price')?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -202,20 +202,20 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                             <div class="panel-body">
                                 <div class="row form-row">
                                     <div class="col-md-2">
-                                        <a class="btn btn-outline"><?php echo $this->translate('')?>Set time :</a>
+                                        <a class="btn btn-outline"><?php echo $this->__('Set time')?> :</a>
                                     </div>
                                     <div class="col-md-10">
                                         <div class="row">
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon"><?php echo $this->translate('Start time')?></span>
+                                                    <span class="input-group-addon"><?php echo $this->__('Start time')?></span>
                                                     <input class="form-control datepicker" name="start-time" id="start-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon"><?php echo $this->translate('End time')?></span>
+                                                    <span class="input-group-addon"><?php echo $this->__('End time')?></span>
                                                     <input class="form-control datepicker" name="end-time" id="end-time">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                                 </div>
@@ -225,16 +225,16 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                 </div>
                                 <div class="row form-row">
                                     <div class="col-md-2">
-                                        <a class="btn btn-outline">Search by :</a>
+                                        <a class="btn btn-outline"><?php echo $this->__('Search by')?> :</a>
                                     </div>
                                     <div class="col-md-10">
                                         <div class="row ">
                                             <input checked type="radio" name="search" id="highest-price" value="highest">
-                                            <span><?php echo $this->translate('Highest price')?></span>
+                                            <span><?php echo $this->__('Highest price')?></span>
                                         </div>
                                         <div class="row form-row">
                                             <input type="radio" name="search" value="country">
-                                            <span><?php echo $this->translate('Country')?></span>
+                                            <span><?php echo $this->__('Country')?></span>
                                             <select id="country-select" name="country-select" >
                                                 <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
                                                     <option value="<?php echo $id?>"><?php echo $country?></option>
@@ -243,7 +243,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                         </div>
                                         <div class="row form-row">
                                             <input type="radio" name="search" value="recycler">
-                                            <span><?php echo $this->translate('Recycler')?></span>
+                                            <span><?php echo $this->__('Recycler')?></span>
                                             <select id="recycler-country-select" name="recycler-country-select" onchange="loadRecyclers();">
                                                 <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
                                                     <option value="<?php echo $id?>"><?php echo $country?></option>
@@ -258,7 +258,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                         <div class="row form-row">
                                             <div class="pull-left">
                                                 <input type="radio" name="search" value="multi-recycler">
-                                                <span><?php echo $this->translate('Multi Recyclers')?></span>
+                                                <span><?php echo $this->__('Multi Recyclers')?></span>
                                             </div>
                                             <div class="pull-left" id="multi-select-recyclers">
                                                 <select size="10" multiple id="recycler-multi-select" name="recycler-select">
@@ -274,7 +274,7 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                 <div class="pull-left">
                                     <a onclick="submitHistoricalModelPrice('<?php echo $product->product_id?>');" class="btn btn-sm btn-success">
                                         <i class="glyphicon glyphicon-ok"></i>
-                                        <?php echo $this->translate('Submit');?>
+                                        <?php echo $this->__('Submit');?>
                                     </a>
                                 </div>
                                 <div class="pull-right">
@@ -282,13 +282,13 @@ $productExchangePrice = $this->price()->getExchange($product_price,$product->cur
                                         <li>
                                             <a class="btn btn-sm" data-toggle="tab" href="#chart-view">
                                                 <i class="glyphicon glyphicon-stats"></i>
-                                                <?php echo $this->translate('Chart')?>
+                                                <?php echo $this->__('Chart')?>
                                             </a>
                                         </li>
                                         <li class="active">
                                             <a class="btn btn-sm" data-toggle="tab" href="#table-view">
                                                 <i class="glyphicon glyphicon-th"></i>
-                                                <?php echo $this->translate('Table')?>
+                                                <?php echo $this->__('Table')?>
                                             </a>
                                         </li>
                                     </ul>

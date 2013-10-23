@@ -11,19 +11,19 @@
 <?php endif;?>
 <div class="pull-right" style="margin-bottom: 15px;">
     <a class="btn">
-        <?php echo $this->translate('Export to')?>
+        <?php echo $this->__('Export to')?>
     </a>
     <div class="btn-group">
         <select class="form-control" id="historical-export-format" name="historical_export_format">
-            <option value="none"><?php echo $this->translate('Select format')?></option>
-            <option value="csv"><?php echo $this->translate('CSV')?></option>
-            <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-            <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+            <option value="none"><?php echo $this->__('Select format')?></option>
+            <option value="csv"><?php echo $this->__('CSV')?></option>
+            <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+            <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
         </select>
     </div>
     <a class="btn btn-warning btn-sm" onclick="exportHistorical('<?php echo $this->id ?>')">
         <i class="glyphicon glyphicon-export"></i>
-        <?php echo $this->translate('Export')?>
+        <?php echo $this->__('Export')?>
     </a>
 </div>
 <?php if($this->search == 'highest'):?>
@@ -33,15 +33,15 @@
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
-                    <th><?php echo $this->translate('Date')?></th>
-                    <th><?php echo $this->translate('Model Name')?></th>
-                    <th><?php echo $this->translate('Condition')?></th>
-                    <th><?php echo $this->translate('Recycler Detail')?></th>
-                    <th><?php echo $this->translate('SSA Price')?></th>
-                    <th><?php echo $this->translate('Currency')?></th>
-                    <th><?php echo $this->translate('Exchange Rate')?></th>
-                    <th><?php echo $this->translate('Price in HKD')?></th>
-                    <th><?php echo $this->translate('Highest Recycler Price')?></th>
+                    <th><?php echo $this->__('Date')?></th>
+                    <th><?php echo $this->__('Model Name')?></th>
+                    <th><?php echo $this->__('Condition')?></th>
+                    <th><?php echo $this->__('Recycler Detail')?></th>
+                    <th><?php echo $this->__('SSA Price')?></th>
+                    <th><?php echo $this->__('Currency')?></th>
+                    <th><?php echo $this->__('Exchange Rate')?></th>
+                    <th><?php echo $this->__('Price in HKD')?></th>
+                    <th><?php echo $this->__('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -148,15 +148,15 @@
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
-                    <th><?php echo $this->translate('Date')?></th>
-                    <th><?php echo $this->translate('Model Name')?></th>
-                    <th><?php echo $this->translate('Condition')?></th>
-                    <th><?php echo $this->translate('Recycler Detail')?></th>
-                    <th><?php echo $this->translate('Price')?></th>
-                    <th><?php echo $this->translate('Currency')?></th>
-                    <th><?php echo $this->translate('Exchange Rate')?></th>
-                    <th><?php echo $this->translate('Price in HKD')?></th>
-                    <th><?php echo $this->translate('Highest Recycler Price')?></th>
+                    <th><?php echo $this->__('Date')?></th>
+                    <th><?php echo $this->__('Model Name')?></th>
+                    <th><?php echo $this->__('Condition')?></th>
+                    <th><?php echo $this->__('Recycler Detail')?></th>
+                    <th><?php echo $this->__('Price')?></th>
+                    <th><?php echo $this->__('Currency')?></th>
+                    <th><?php echo $this->__('Exchange Rate')?></th>
+                    <th><?php echo $this->__('Price in HKD')?></th>
+                    <th><?php echo $this->__('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -267,15 +267,15 @@
                 <thead>
                 <tr>
                     <th class="col-checkbox"><input type="checkbox" class="checkall" name="checkall"></th>
-                    <th><?php echo $this->translate('Date')?></th>
-                    <th><?php echo $this->translate('Model Name')?></th>
-                    <th><?php echo $this->translate('Condition')?></th>
-                    <th><?php echo $this->translate('Recycler Detail')?></th>
-                    <th><?php echo $this->translate('Price')?></th>
-                    <th><?php echo $this->translate('Currency')?></th>
-                    <th><?php echo $this->translate('Exchange Rate')?></th>
-                    <th><?php echo $this->translate('Price in HKD')?></th>
-                    <th><?php echo $this->translate('Highest Recycler Price')?></th>
+                    <th><?php echo $this->__('Date')?></th>
+                    <th><?php echo $this->__('Model Name')?></th>
+                    <th><?php echo $this->__('Condition')?></th>
+                    <th><?php echo $this->__('Recycler Detail')?></th>
+                    <th><?php echo $this->__('Price')?></th>
+                    <th><?php echo $this->__('Currency')?></th>
+                    <th><?php echo $this->__('Exchange Rate')?></th>
+                    <th><?php echo $this->__('Price in HKD')?></th>
+                    <th><?php echo $this->__('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>

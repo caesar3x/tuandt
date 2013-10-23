@@ -12,12 +12,12 @@
 <?php if($id != 0):?>
     <div class="page-header">
         <div class="pull-left">
-            <h3><?php echo $this->translate('Edit Condition')?></h3>
+            <h3><?php echo $this->__('Edit Condition')?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -48,7 +48,7 @@
     <?php if($this->do == null):?>
         <div class="page-header">
             <div class="pull-left">
-                <h3><?php echo $this->translate('Manage Conditions')?></h3>
+                <h3><?php echo $this->__('Manage Conditions')?></h3>
             </div>
             <div class="clearfix">&nbsp;</div>
         </div>
@@ -57,18 +57,18 @@
                 <div class="pull-right">
                     <a onclick="formConfirm('tdm-condition');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
                         <i class="glyphicon glyphicon-trash"></i>
-                        <?php echo $this->translate('Delete Selected')?>
+                        <?php echo $this->__('Delete Selected')?>
                     </a>
-                    <a class="btn btn-sm btn-success" style="margin-bottom: 15px;" href="/condition/tdm/do/add"><i class="glyphicon glyphicon-plus"></i><?php echo $this->translate('Add Condition')?> </a>
+                    <a class="btn btn-sm btn-success" style="margin-bottom: 15px;" href="/condition/tdm/do/add"><i class="glyphicon glyphicon-plus"></i><?php echo $this->__('Add Condition')?> </a>
                 </div>
                 <div class="row clearfix">&nbsp;</div>
                 <table class="display table table-striped table-condensed table-bordered example" id="country" cellpadding="0" cellspacing="0">
                     <thead>
                     <tr>
                         <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                        <th><?php echo $this->translate('ID')?></th>
-                        <th><?php echo $this->translate('Name')?></th>
-                        <th class="action"><?php echo $this->translate('Action')?></th>
+                        <th><?php echo $this->__('ID')?></th>
+                        <th><?php echo $this->__('Name')?></th>
+                        <th class="action"><?php echo $this->__('Action')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,11 +81,11 @@
                                 <td class="action">
                                     <a class="btn btn-xs btn-warning btn-edit" href="/condition/tdm/id/<?php echo $row->condition_id?>">
                                         <i class="glyphicon glyphicon-edit"></i>
-                                        <?php echo $this->translate('Edit')?>
+                                        <?php echo $this->__('Edit')?>
                                     </a>
                                     <a onclick="confirmDelete('/condition/delete-tdm/id/<?php echo $row->condition_id?>')" class="btn btn-xs btn-danger btn-delete">
                                         <i class="glyphicon glyphicon-trash"></i>
-                                        <?php echo $this->translate('Delete')?>
+                                        <?php echo $this->__('Delete')?>
                                     </a>
                                 </td>
                             </tr>
@@ -98,12 +98,12 @@
     <?php elseif($this->do == 'add'):?>
         <div class="page-header">
             <div class="pull-left">
-                <h3><?php echo $this->translate('Add Condition')?></h3>
+                <h3><?php echo $this->__('Add Condition')?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+                <a class="btn btn-sm btn-default add-item" href="/condition/tdm"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
             </div>
             <div class="clearfix">&nbsp;</div>
         </div>

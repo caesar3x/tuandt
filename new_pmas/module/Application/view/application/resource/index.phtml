@@ -6,16 +6,16 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Manage Resources') ?></h2>
+        <h2><?php echo $this->__('Manage Resources') ?></h2>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('resource');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="/resource/add">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new resource') ?>
+            <?php echo $this->__('Add new resource') ?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -26,12 +26,12 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th><?php echo $this->translate('Path')?></th>
-                <th><?php echo $this->translate('Define')?></th>
-                <th><?php echo $this->translate('Group')?></th>
-                <th class="action"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Name')?></th>
+                <th><?php echo $this->__('Path')?></th>
+                <th><?php echo $this->__('Define')?></th>
+                <th><?php echo $this->__('Group')?></th>
+                <th class="action"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -47,11 +47,11 @@
                         <td class="action">
                             <a class="btn btn-xs btn-primary btn-edit" href="/resource/edit/id/<?php echo $row->resource_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit') ?>
+                                <?php echo $this->__('Edit') ?>
                             </a>
                             <a class="btn btn-xs btn-danger btn-delete" onclick="confirmDelete('/resource/delete/id/<?php echo $row->resource_id?>');">
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->__('Delete') ?>
                             </a>
                         </td>
                     </tr>

@@ -19,12 +19,12 @@ else{
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h3><?php echo $this->translate('Set Popular Products')?></h3>
+        <h3><?php echo $this->__('Set Popular Products')?></h3>
     </div>
     <div class="pull-right">
         <a class="btn btn-success btn-sm add-item" onclick="formSave('popular-form');">
             <i class="glyphicon glyphicon-saved"></i>
-            <?php echo $this->translate('Save')?>
+            <?php echo $this->__('Save')?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -32,25 +32,25 @@ else{
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Select Products
+            <?php echo $this->__('Select Products');?>
         </h3>
     </div>
     <div class="panel-body">
         <form id="popular-form" action="<?php echo $this->currentUrl();?>" enctype="multipart/form-data" method="post">
             <div class="form-group row">
                 <div class="col-md-3">
-                    <div class="control-label pull-right">Set time : </div>
+                    <div class="control-label pull-right"><?php echo $this->__('Set time');?> : </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-addon">Start time</span>
+                        <span class="input-group-addon"><?php echo $this->__('Start time');?></span>
                         <input id="start-time" name="start" class="form-control datepicker" value="<?php echo $start?>">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-addon">End time</span>
+                        <span class="input-group-addon"><?php echo $this->__('End time');?></span>
                         <input id="end-time" name="end" class="form-control datepicker" value="<?php echo $end?>">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
@@ -58,7 +58,7 @@ else{
             </div>
             <div class="form-group row">
                 <div class="col-md-3">
-                    <div class="control-label pull-right">Select Products : </div>
+                    <div class="control-label pull-right"><?php echo $this->__('Select Products');?> : </div>
                 </div>
                 <div class="col-md-6">
                     <select multiple data-placeholder="Choose Products" class="chosen-select form-group" name="products[]">

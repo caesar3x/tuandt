@@ -12,12 +12,12 @@
 <?php if($id != 0):?>
     <div class="page-header">
         <div class="pull-left">
-            <h3><?php echo $this->translate('Edit Brand')?></h3>
+            <h3><?php echo $this->__('Edit Brand')?></h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default add-item" href="/product/brand"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+            <a class="btn btn-sm btn-default add-item" href="/product/brand"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+            <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
         </div>
         <div class="clearfix">&nbsp;</div>
     </div>
@@ -31,7 +31,7 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-md-3">
-                            <div class="control-label"><span>Brand*</span></div>
+                            <div class="control-label required"><span><?php echo $this->__('Brand')?><em>*</em></span></div>
                         </div>
                         <div class="col-md-9">
                             <?php echo $this->formRow($form->get('name'));?>
@@ -48,12 +48,12 @@
     <?php if($this->do == 'add'):?>
         <div class="page-header">
             <div class="pull-left">
-                <h3><?php echo $this->translate('Add Product Brand')?></h3>
+                <h3><?php echo $this->__('Add Product Brand')?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default add-item" href="/product/brand"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->translate('Reset')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
+                <a class="btn btn-sm btn-default add-item" href="/product/brand"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formReset('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-repeat"></i><?php echo $this->__('Reset')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
             </div>
             <div class="clearfix">&nbsp;</div>
         </div>
@@ -62,12 +62,12 @@
                 <?php echo $this->form()->openTag($form);?>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Brand</h3>
+                        <h3 class="panel-title"><?php echo $this->__('Add New Brand')?></h3>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="col-md-3">
-                                <div class="control-label"><span>Name</span></div>
+                                <div class="control-label"><span><?php echo $this->__('Name')?></span></div>
                             </div>
                             <div class="col-md-9">
                                 <?php echo $this->formRow($form->get('name'));?>
@@ -83,7 +83,7 @@
     <?php else:?>
         <div class="page-header">
             <div class="pull-left">
-                <h3><?php echo $this->translate('Manage Brands')?></h3>
+                <h3><?php echo $this->__('Manage Brands')?></h3>
             </div>
             <div class="clearfix">&nbsp;</div>
         </div>
@@ -92,18 +92,18 @@
                 <div class="pull-right">
                     <a onclick="formConfirm('product-brand');" class="btn btn-danger btn-sm" style="margin-bottom: 15px;">
                         <i class="glyphicon glyphicon-trash"></i>
-                        <?php echo $this->translate('Delete Selected')?>
+                        <?php echo $this->__('Delete Selected')?>
                     </a>
-                    <a class="btn btn-sm btn-success" style="margin-bottom: 15px;" href="/product/brand/do/add"><i class="glyphicon glyphicon-plus"></i><?php echo $this->translate('Add New')?> </a>
+                    <a class="btn btn-sm btn-success" style="margin-bottom: 15px;" href="/product/brand/do/add"><i class="glyphicon glyphicon-plus"></i><?php echo $this->__('Add New')?> </a>
                 </div>
                 <div class="row clearfix">&nbsp;</div>
                 <table class="display table table-striped table-condensed table-bordered example" id="brands" cellpadding="0" cellspacing="0">
                     <thead>
                     <tr>
                         <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                        <th><?php echo $this->translate('ID')?></th>
-                        <th><?php echo $this->translate('Brand')?></th>
-                        <th class="action"><?php echo $this->translate('Action')?></th>
+                        <th><?php echo $this->__('ID')?></th>
+                        <th><?php echo $this->__('Brand')?></th>
+                        <th class="action"><?php echo $this->__('Action')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -116,11 +116,11 @@
                                 <td class="action">
                                     <a class="btn btn-xs btn-warning btn-edit" href="/product/brand/id/<?php echo $row->brand_id?>">
                                         <i class="glyphicon glyphicon-edit"></i>
-                                        <?php echo $this->translate('Edit')?>
+                                        <?php echo $this->__('Edit')?>
                                     </a>
                                     <a onclick="confirmDelete('/product/delete-brand/id/<?php echo $row->brand_id?>')" class="btn btn-xs btn-danger btn-delete">
                                         <i class="glyphicon glyphicon-trash"></i>
-                                        <?php echo $this->translate('Delete')?>
+                                        <?php echo $this->__('Delete')?>
                                     </a>
                                 </td>
                             </tr>

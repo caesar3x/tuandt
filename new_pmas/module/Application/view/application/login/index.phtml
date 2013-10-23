@@ -11,22 +11,22 @@ $form->prepare();
 ?>
 <div class="container">
     <div class="login-form">
-        <h2><?php echo $this->translate('Login')?></h2>
+        <h2><?php echo $this->__('Login')?></h2>
         <?php echo $this->partial('partial/messages.phtml')?>
         <?php echo $this->form()->openTag($form);?>
         <div class="container">
             <div class="row row-form">
-                <span class="control-label"><?php echo $this->translate('Email')?></span>
+                <span class="control-label"><?php echo $this->__('Email')?></span>
                 <?php echo $this->formRow($form->get('email'));?>
             </div>
             <div class="row row-form">
-                <span class="control-label"><?php echo $this->translate('Password')?></span>
+                <span class="control-label"><?php echo $this->__('Password')?></span>
                 <?php echo $this->formRow($form->get('password'));?>
                 <?php echo $this->formRow($form->get('csrf'));?>
             </div>
             <div class="row row-last">
                 <button type="submit" class="btn btn-primary btn-lg">
-                    <span><?php echo $this->translate('Submit')?></span>
+                    <span><?php echo $this->__('Submit')?></span>
                 </button>
             </div>
         </div>

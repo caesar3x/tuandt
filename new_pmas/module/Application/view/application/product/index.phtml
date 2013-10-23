@@ -6,16 +6,16 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h3><?php echo $this->translate('Models')?></h3>
+        <h3><?php echo $this->__('Models')?></h3>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('model');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="/product/add">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new model')?>
+            <?php echo $this->__('Add new model')?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -23,30 +23,30 @@
 <form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="pull-left">
-            <a class="btn btn-outline"><?php echo $this->translate('Notice')?></a>
+            <a class="btn btn-outline"><?php echo $this->__('Notice')?></a>
             <div class="btn-group">
                 <?php echo $this->partial('partial/select-price.phtml')?>
             </div>
-            <a class="btn btn-outline"><?php echo $this->translate('Filter with Country').': '?></a>
+            <a class="btn btn-outline"><?php echo $this->__('Filter with Country').': '?></a>
             <div class="btn-group">
                 <?php echo $this->partial('partial/select-countries.phtml')?>
             </div>
         </div>
         <div class="pull-right">
             <a class="btn">
-                <?php echo $this->translate('Export to')?>
+                <?php echo $this->__('Export to')?>
             </a>
             <div class="btn-group">
                 <select class="form-control" id="export-format" name="export_format">
-                    <option value="none"><?php echo $this->translate('Select format')?></option>
-                    <option value="csv"><?php echo $this->translate('CSV')?></option>
-                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                    <option value="none"><?php echo $this->__('Select format')?></option>
+                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
                 </select>
             </div>
             <a class="btn btn-warning btn-sm" onclick="exportProducts()">
                 <i class="glyphicon glyphicon-export"></i>
-                <?php echo $this->translate('Export')?>
+                <?php echo $this->__('Export')?>
             </a>
         </div>
         <div class="row clearfix">&nbsp;</div>
@@ -54,22 +54,22 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('Name')?></th>
-                <th><?php echo $this->translate('Condition')?></th>
-                <th><?php echo $this->translate('Type')?></th>
-                <th><?php echo $this->translate('Brand')?></th>
-                <th><?php echo $this->translate('SSA Price')?></th>
-                <th><?php echo $this->translate('Recycler 1')?></th>
-                <th><?php echo $this->translate('Price in HKD 1')?></th>
-                <th><?php echo $this->translate('Percentage 1')?></th>
-                <th><?php echo $this->translate('Recycler 2')?></th>
-                <th><?php echo $this->translate('Price in HKD 2')?></th>
-                <th><?php echo $this->translate('Percentage 2')?></th>
-                <th><?php echo $this->translate('Recycler 3')?></th>
-                <th><?php echo $this->translate('Price in HKD 3')?></th>
-                <th><?php echo $this->translate('Percentage 3')?></th>
-                <th class="action3"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Name')?></th>
+                <th><?php echo $this->__('Condition')?></th>
+                <th><?php echo $this->__('Type')?></th>
+                <th><?php echo $this->__('Brand')?></th>
+                <th><?php echo $this->__('SSA Price')?></th>
+                <th><?php echo $this->__('Recycler 1')?></th>
+                <th><?php echo $this->__('Price in HKD 1')?></th>
+                <th><?php echo $this->__('Percentage 1')?></th>
+                <th><?php echo $this->__('Recycler 2')?></th>
+                <th><?php echo $this->__('Price in HKD 2')?></th>
+                <th><?php echo $this->__('Percentage 2')?></th>
+                <th><?php echo $this->__('Recycler 3')?></th>
+                <th><?php echo $this->__('Price in HKD 3')?></th>
+                <th><?php echo $this->__('Percentage 3')?></th>
+                <th class="action3"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -146,15 +146,15 @@
                         <td class="action3">
                             <a class="btn btn-xs btn-primary btn-edit" href="/product/detail/id/<?php echo $row->product_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Detail')?>
+                                <?php echo $this->__('Detail')?>
                             </a>
                             <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit')?>
+                                <?php echo $this->__('Edit')?>
                             </a>
                             <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete')?>
+                                <?php echo $this->__('Delete')?>
                             </a>
                         </td>
                     </tr>

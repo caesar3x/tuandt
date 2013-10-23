@@ -16,120 +16,120 @@ $groups = $this->menu()->getResourceGroups();
                 <ul class="nav navbar-nav nav-top">
                     <li class="">
                         <a href="/index/" class="nav-header">
-                            Dashboard </a>
+                            <?php echo $this->__('Dashboard')?> </a>
                     </li>
                     <li class="">
                         <a href="/recycler/" class="nav-header">
-                            Recycler </a>
+                            <?php echo $this->__('Recycler')?> </a>
                     </li>
                     <li class="">
                         <a href="/product/" class="nav-header">
-                            TDM Model </a>
+                            <?php echo $this->__('TDM Model')?> </a>
                     </li>
                     <li class="dropdown ">
                         <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                            <span>Exchange Rate</span>
+                            <span><?php echo $this->__('Exchange Rate')?></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="/exchange/">
-                                    Historical Exchange Date </a>
+                                    <?php echo $this->__('Historical Exchange Date')?> </a>
                             </li>
                             <li>
                                 <a href="/exchange/update/">
-                                    Update Exchange Rate </a>
+                                    <?php echo $this->__('Update Exchange Rate')?> </a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="dropdown ">
                         <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                            <span>System</span>
+                            <span><?php echo $this->__('System')?></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="<?php echo $this->getUrl('language')?>">
-                                    Manage Languages </a>
+                                    <?php echo $this->__('Manage Languages')?> </a>
                             </li>
                             <li>
                                 <a href="/soap/user/">
-                                    Manage Soap Users </a>
+                                    <?php echo $this->__('Manage Soap Users')?> </a>
                             </li>
                             <li>
                                 <a href="/user/">
-                                    Manage Users </a>
+                                    <?php echo $this->__('Manage Users')?> </a>
                             </li>
                             <li>
                                 <a href="/role/">
-                                    Manage Roles </a>
+                                    <?php echo $this->__('Manage Roles')?> </a>
                             </li>
                             <li>
                                 <a href="/resource/">
-                                    Manage Resources </a>
+                                    <?php echo $this->__('Manage Resources')?> </a>
                             </li>
                             <li>
                                 <a href="/exchange/country/">
-                                    Manage Countries </a>
+                                    <?php echo $this->__('Manage Countries')?> </a>
                             </li>
                             <li>
                                 <a href="/condition/tdm/">
-                                    Condition Management </a>
+                                    <?php echo $this->__('Condition Management')?> </a>
                             </li>
                             <li>
                                 <a href="/product/type/">
-                                    Product Type Management </a>
+                                    <?php echo $this->__('Product Type Management')?> </a>
                             </li>
                             <li>
                                 <a href="/product/brand/">
-                                    Brand Management </a>
+                                    <?php echo $this->__('Brand Management')?> </a>
                             </li>
                             <li>
                                 <a href="/product/popular/">
-                                    Popular Product </a>
+                                    <?php echo $this->__('Popular Product')?> </a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="">
                         <a href="/help/" class="nav-header">
-                            Help </a>
+                            <?php echo $this->__('Help')?> </a>
                     </li>
                 </ul>
             <?php else:?>
                 <ul class="nav navbar-nav nav-top">
                     <li class="">
                         <a href="/index/" class="nav-header">
-                            Dashboard </a>
+                            <?php echo $this->__('Dashboard')?> </a>
                     </li>
                     <?php if(!empty($groups)):?>
                     <?php if(in_array('recycler',$groups)):?>
                         <li class="">
                             <a href="/recycler/" class="nav-header">
-                                Recycler </a>
+                                <?php echo $this->__('Recycler')?> </a>
                         </li>
                     <?php endif;?>
                     <?php if(in_array('tdm-product',$groups)):?>
                         <li class="">
                             <a href="/product/" class="nav-header">
-                                TDM Model </a>
+                                <?php echo $this->__('TDM Model')?> </a>
                         </li>
                     <?php endif;?>
                     <?php if(in_array('exchange',$groups)):?>
                         <li class="dropdown ">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                <span>Exchange Rate</span>
+                                <span><?php echo $this->__('Exchange Rate')?></span>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="/exchange/">
-                                        Historical Exchange Date </a>
+                                        <?php echo $this->__('Historical Exchange Date')?> </a>
                                 </li>
                                 <li>
                                     <a href="/exchange/update/">
-                                        Update Exchange Rate </a>
+                                        <?php echo $this->__('Update Exchange Rate')?> </a>
                                 </li>
                             </ul>
                         </li>
@@ -140,69 +140,69 @@ $groups = $this->menu()->getResourceGroups();
                             || in_array('soap',$groups) || in_array('language',$groups)):?>
                         <li class="dropdown ">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                <span>System</span>
+                                <span><?php echo $this->__('System')?></span>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <?php if(in_array('soap',$groups)):?>
                                     <li>
                                         <a href="<?php echo $this->getUrl('language')?>">
-                                            Manage Languages </a>
+                                            <?php echo $this->__('Manage Languages')?> </a>
                                     </li>
                                 <?php endif;?>
 
                                 <?php if(in_array('soap',$groups)):?>
                                     <li>
                                         <a href="/soap/user/">
-                                            Manage Soap Users </a>
+                                            <?php echo $this->__('Manage Soap Users')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('user',$groups)):?>
                                     <li>
                                         <a href="/user/">
-                                            Manage Users </a>
+                                            <?php echo $this->__('Manage Users')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('role',$groups)):?>
                                     <li>
                                         <a href="/role/">
-                                            Manage Roles </a>
+                                            <?php echo $this->__('Manage Roles')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('resource',$groups)):?>
                                     <li>
                                         <a href="/resource/">
-                                            Manage Resources </a>
+                                            <?php echo $this->__('Manage Resources')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('country',$groups)):?>
                                     <li>
                                         <a href="/exchange/country/">
-                                            Manage Countries </a>
+                                            <?php echo $this->__('Manage Countries')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('tdm-condition',$groups)):?>
                                     <li>
                                         <a href="/condition/tdm/">
-                                            TDM Condition Management </a>
+                                            <?php echo $this->__('TDM Condition Management')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('product-type',$groups)):?>
                                     <li>
                                         <a href="/product/type/">
-                                            Product Type Management </a>
+                                            <?php echo $this->__('Product Type Management')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('brand',$groups)):?>
                                     <li>
                                         <a href="/product/brand/">
-                                            Brand Management </a>
+                                            <?php echo $this->__('Brand Management')?> </a>
                                     </li>
                                 <?php endif;?>
                                 <?php if(in_array('tdm-product',$groups)):?>
                                     <li>
                                         <a href="/product/popular/">
-                                            Popular Product </a>
+                                            <?php echo $this->__('Popular Product')?> </a>
                                     </li>
                                 <?php endif;?>
                             </ul>
@@ -212,7 +212,7 @@ $groups = $this->menu()->getResourceGroups();
 
                     <li class="">
                         <a href="/help/" class="nav-header">
-                            Help </a>
+                            <?php echo $this->__('Help')?> </a>
                     </li>
                 </ul>
             <?php endif;?>

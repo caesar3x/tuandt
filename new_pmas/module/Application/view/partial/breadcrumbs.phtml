@@ -3,7 +3,7 @@
 <?php $navigation = $container->getContainer() ?>
 <?php /* @var $navigation \Zend\Navigation\Navigation */ ?>
 <ul class="breadcrumb">
-    <li><a href="/admin"><?php echo $this->translate('Dashboard')?></a> <i class="icon-angle-right"></i></li>
+    <li><a href="/admin"><?php echo $this->__('Dashboard')?></a> <i class="icon-angle-right"></i></li>
     <?php $active = $container->findActive($navigation) ?>
     <?php if(count($this->pages)):?>
         <?php foreach($this->pages as $page): ?>

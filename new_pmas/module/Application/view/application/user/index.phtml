@@ -6,16 +6,16 @@
 ?>
 <div class="page-header">
     <div class="pull-left">
-        <h2><?php echo $this->translate('Manage Users') ?></h2>
+        <h2><?php echo $this->__('Manage Users') ?></h2>
     </div>
     <div class="pull-right">
         <a onclick="formConfirm('user');" class="btn btn-danger btn-sm add-item">
             <i class="glyphicon glyphicon-trash"></i>
-            <?php echo $this->translate('Delete selected') ?>
+            <?php echo $this->__('Delete selected') ?>
         </a>
         <a class="btn btn-success btn-sm add-item" href="/user/add">
             <i class="glyphicon glyphicon-plus"></i>
-            <?php echo $this->translate('Add new user') ?>
+            <?php echo $this->__('Add new user') ?>
         </a>
     </div>
     <div class="clearfix"></div>
@@ -26,14 +26,14 @@
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->translate('ID')?></th>
-                <th><?php echo $this->translate('First name')?></th>
-                <th><?php echo $this->translate('Last name')?></th>
-                <th><?php echo $this->translate('Username')?></th>
-                <th><?php echo $this->translate('Email')?></th>
-                <th><?php echo $this->translate('Created at')?></th>
-                <th><?php echo $this->translate('Status')?></th>
-                <th class="action4"><?php echo $this->translate('Action')?></th>
+                <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('First name')?></th>
+                <th><?php echo $this->__('Last name')?></th>
+                <th><?php echo $this->__('Username')?></th>
+                <th><?php echo $this->__('Email')?></th>
+                <th><?php echo $this->__('Created at')?></th>
+                <th><?php echo $this->__('Status')?></th>
+                <th class="action4"><?php echo $this->__('Action')?></th>
             </tr>
             </thead>
             <tbody>
@@ -51,15 +51,15 @@
                         <td class="action4">
                             <a class="btn btn-xs btn-primary btn-info" href="/user/view-log/id/<?php echo $row->id?>">
                                 <i class="glyphicon glyphicon-book"></i>
-                                <?php echo $this->translate('View log') ?>
+                                <?php echo $this->__('View log') ?>
                             </a>
                             <a class="btn btn-xs btn-primary btn-edit" href="/user/detail/id/<?php echo $row->id?>">
                                 <i class="glyphicon glyphicon-edit"></i>
-                                <?php echo $this->translate('Edit') ?>
+                                <?php echo $this->__('Edit') ?>
                             </a>
                             <a onclick="confirmDelete('/user/delete/id/<?php echo $row->id?>')" class="btn btn-xs btn-danger btn-delete" >
                                 <i class="glyphicon glyphicon-trash"></i>
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->__('Delete') ?>
                             </a>
                         </td>
                     </tr>

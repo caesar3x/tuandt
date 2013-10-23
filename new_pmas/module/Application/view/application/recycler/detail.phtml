@@ -28,9 +28,9 @@ $upload = $this->upload;
                 <h3><?php echo $this->recycler?></h3>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->translate('Back')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->translate('Save')?></a>
-                <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->translate('Save and Continue Edit')?></a>
+                <a class="btn btn-sm btn-default add-item" href="/recycler"><i class="glyphicon glyphicon-arrow-left"></i><?php echo $this->__('Back')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSave('<?php echo $form->getAttribute('name');?>')"><i class="glyphicon glyphicon-saved"></i><?php echo $this->__('Save')?></a>
+                <a class="btn btn-sm btn-default add-item" onclick="formSaveAndContinue('<?php echo $form->getAttribute('name');?>');"><i class="glyphicon glyphicon-save"></i><?php echo $this->__('Save and Continue Edit')?></a>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -44,8 +44,8 @@ $upload = $this->upload;
 <div class="row">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#recycler-view"><?php echo $this->translate('Recycler View')?></a></li>
-            <li><a data-toggle="tab" href="#product-model"><?php echo $this->translate('Product Models')?></a></li>
+            <li class="active"><a data-toggle="tab" href="#recycler-view"><?php echo $this->__('Recycler View')?></a></li>
+            <li><a data-toggle="tab" href="#product-model"><?php echo $this->__('Product Models')?></a></li>
         </ul>
 
     </div>
@@ -56,12 +56,12 @@ $upload = $this->upload;
             <div class="tab-pane active" id="recycler-view">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span><?php echo $this->translate('Individual Information')?></span>
+                        <span><?php echo $this->__('Individual Information')?></span>
                     </div>
                     <div class="panel-body">
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Recycler Name')?>* : </span>
+                                <span class="pull-right"><?php echo $this->__('Recycler Name')?>* : </span>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->formRow($form->get('name'));?>
@@ -69,7 +69,7 @@ $upload = $this->upload;
                         </div>
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Country')?>* : </span>
+                                <span class="pull-right"><?php echo $this->__('Country')?>* : </span>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->formRow($form->get('country_id'));?>
@@ -77,7 +77,7 @@ $upload = $this->upload;
                         </div>
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Email')?>* : </span>
+                                <span class="pull-right"><?php echo $this->__('Email')?>* : </span>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->formRow($form->get('email'));?>
@@ -85,7 +85,7 @@ $upload = $this->upload;
                         </div>
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Telephone')?> : </span>
+                                <span class="pull-right"><?php echo $this->__('Telephone')?> : </span>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->formRow($form->get('telephone'));?>
@@ -93,7 +93,7 @@ $upload = $this->upload;
                         </div>
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Website')?> : </span>
+                                <span class="pull-right"><?php echo $this->__('Website')?> : </span>
                             </div>
                             <div class="col-md-6">
                                 <?php echo $this->formRow($form->get('website'));?>
@@ -101,7 +101,7 @@ $upload = $this->upload;
                         </div>
                         <div class="row form-row">
                             <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->translate('Address')?> : </span>
+                                <span class="pull-right"><?php echo $this->__('Address')?> : </span>
                             </div>
                             <div class="col-md-6">
                                 <?php echo $this->formRow($form->get('address'));?>
@@ -113,41 +113,41 @@ $upload = $this->upload;
             <div class="tab-pane" id="product-model">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span><?php echo $this->translate('Product Model List')?></span>
+                        <span><?php echo $this->__('Product Model List')?></span>
                     </div>
                     <div class="panel-body">
                         <div class="pull-left" style="margin-bottom: 15px;">
                             <a class="btn btn-outline">
-                                <?php echo $this->translate('Export to')?>
+                                <?php echo $this->__('Export to')?>
                             </a>
                             <div class="btn-group">
                                 <select class="form-control" id="export-format" name="export_format">
-                                    <option value="none"><?php echo $this->translate('Select format')?></option>
-                                    <option value="csv"><?php echo $this->translate('CSV')?></option>
-                                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                    <option value="none"><?php echo $this->__('Select format')?></option>
+                                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
                                 </select>
                             </div>
                             <a class="btn btn-warning btn-sm" onclick="exportRecyclerProducts('<?php echo $this->id?>');">
                                 <i class="glyphicon glyphicon-export"></i>
-                                <?php echo $this->translate('Export')?>
+                                <?php echo $this->__('Export')?>
                             </a>
                         </div>
                         <div class="pull-right" style="margin-bottom: 15px;">
                             <a class="btn">
-                                <?php echo $this->translate('Import from')?>
+                                <?php echo $this->__('Import from')?>
                             </a>
                             <div class="btn-group">
                                 <select class="form-control" id="import-format" name="import_format">
-                                    <option><?php echo $this->translate('Select format')?></option>
-                                    <option value="csv"><?php echo $this->translate('CSV')?></option>
-                                    <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-                                    <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+                                    <option><?php echo $this->__('Select format')?></option>
+                                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
                                 </select>
                             </div>
                             <a class="btn btn-success btn-sm uploadform">
                                 <i class="glyphicon glyphicon-upload"></i>
-                                <?php echo $this->translate('Upload')?>
+                                <?php echo $this->__('Upload')?>
                             </a>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
@@ -155,17 +155,17 @@ $upload = $this->upload;
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                                <th><?php echo $this->translate('Product Name')?></th>
-                                <th><?php echo $this->translate('Condition')?></th>
-                                <th><?php echo $this->translate('Date time')?></th>
-                                <th><?php echo $this->translate('Base Price')?></th>
-                                <th><?php echo $this->translate('Currency')?></th>
-                                <th><?php echo $this->translate('Price in HKD')?></th>
-                                <th><?php echo $this->translate('TDM Product Name')?></th>
-                                <th><?php echo $this->translate('TDM Base Price')?></th>
-                                <th><?php echo $this->translate('TDM Currency')?></th>
-                                <th><?php echo $this->translate('TDM Price in HKD')?></th>
-                                <th><?php echo $this->translate('Action')?></th>
+                                <th><?php echo $this->__('Product Name')?></th>
+                                <th><?php echo $this->__('Condition')?></th>
+                                <th><?php echo $this->__('Date time')?></th>
+                                <th><?php echo $this->__('Base Price')?></th>
+                                <th><?php echo $this->__('Currency')?></th>
+                                <th><?php echo $this->__('Price in HKD')?></th>
+                                <th><?php echo $this->__('TDM Product Name')?></th>
+                                <th><?php echo $this->__('TDM Base Price')?></th>
+                                <th><?php echo $this->__('TDM Currency')?></th>
+                                <th><?php echo $this->__('TDM Price in HKD')?></th>
+                                <th><?php echo $this->__('Action')?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -194,7 +194,7 @@ $upload = $this->upload;
                                         <td>N/A</td>
                                     <?php endif;?>
                                     <td>
-                                        <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->translate('Edit')?></a>
+                                        <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->__('Edit')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>
@@ -226,9 +226,9 @@ $upload = $this->upload;
                                     <td>
                                         <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
                                             <i class="glyphicon glyphicon-save"></i>
-                                            <?php echo $this->translate('Save')?>
+                                            <?php echo $this->__('Save')?>
                                         </a>
-                                        <a class="btn btn-sm btn-default" href="/recycler/temp/id/<?php echo $row->id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->translate('Edit')?></a>
+                                        <a class="btn btn-sm btn-default" href="/recycler/temp/id/<?php echo $row->id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->__('Edit')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>
@@ -248,12 +248,12 @@ $upload = $this->upload;
             <?php echo $this->formRow($form->get('recycler_id'));?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><?php echo $this->translate('Import Recycler Models')?></h3>
+                    <h3 class="panel-title"><?php echo $this->__('Import Recycler Models')?></h3>
                 </div>
                 <div class="panel-body">
                     <div class="row form-row">
                         <div class="col-md-3">
-                            <div class="control-label"><span><?php echo $this->translate('File')?> : </span></div>
+                            <div class="control-label"><span><?php echo $this->__('File')?> : </span></div>
                         </div>
                         <div class="col-md-9">
                             <div class="form-control">
@@ -266,7 +266,7 @@ $upload = $this->upload;
                         <div class="col-md-9" id="upload-action">
                             <button type="submit" class="btn btn-success btn-sm" id="upload-button">
                                 <i class="glyphicon glyphicon-upload"></i>
-                                <span><?php echo $this->translate('Upload')?></span>
+                                <span><?php echo $this->__('Upload')?></span>
                             </button>
                         </div>
                     </div>

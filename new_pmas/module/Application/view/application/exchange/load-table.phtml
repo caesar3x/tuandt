@@ -6,28 +6,28 @@
 ?>
 <div class="pull-right" style="margin-bottom: 15px;">
     <a class="btn">
-        Export to
+        <?php echo $this->__('Export to')?>
     </a>
     <div class="btn-group">
         <select class="form-control" id="export-format" name="export_format">
-            <option value="none"><?php echo $this->translate('Select format')?></option>
-            <option value="csv"><?php echo $this->translate('CSV')?></option>
-            <option value="xls"><?php echo $this->translate('Excel 2003')?></option>
-            <option value="xlsx"><?php echo $this->translate('Excel 2007')?></option>
+            <option value="none"><?php echo $this->__('Select format')?></option>
+            <option value="csv"><?php echo $this->__('CSV')?></option>
+            <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+            <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
         </select>
     </div>
     <a class="btn btn-warning btn-sm" onclick="exportExchange('<?php echo $this->currency?>','<?php echo $this->start?>','<?php echo $this->end?>')">
         <i class="glyphicon glyphicon-export"></i>
-        Export
+        <?php echo $this->__('Export')?>
     </a>
 </div>
 <div class="clearfix">&nbsp;</div>
 <table class="display table table-striped table-condensed table-bordered" id="list-exchange" cellpadding="0" cellspacing="0">
     <thead>
     <tr>
-        <th><?php echo $this->translate('Date')?></th>
-        <th><?php echo $this->translate('Country')?></th>
-        <th><?php echo $this->translate('Exchange Rate')?></th>
+        <th><?php echo $this->__('Date')?></th>
+        <th><?php echo $this->__('Country')?></th>
+        <th><?php echo $this->__('Exchange Rate')?></th>
     </tr>
     </thead>
     <tbody>
