@@ -1,33 +1,27 @@
-<?php
-/**
- * Created by Nguyen Tien Dat.
- * Date: 8/3/13
- */
-?>
 <?php defined('BASEPATH') or exit('No direct script access allowed');
-class Module_Languages extends Module {
-
-    public $version = '1.0.1';
+class Module_Contact_Reasons extends Module
+{
+    public $version = '1.0.0';
 
     public function info()
     {
         return array(
             'name' => array(
-                'en' => 'Languages'
+                'en' => 'Contact Reasons'
             ),
             'description' => array(
-                'en' => 'Module for Languages'
+                'en' => 'Module for Contact Reasons'
             ),
             'frontend' => TRUE,
             'backend' => TRUE,
             'sections' => array(
-                'languages' => array(
-                    'name' => 'languages:list',
-                    'uri' => 'admin/languages',
+                'contact_reasons' => array(
+                    'name' => 'contact:list',
+                    'uri' => 'admin/contact_reasons',
                     'shortcuts' => array(
                         'create' => array(
-                            'name' => 'languages:create',
-                            'uri' => 'admin/languages/create',
+                            'name' => 'contact:create',
+                            'uri' => 'admin/contact_reasons/create',
                             'class' => 'add'
                         )
                     )
@@ -36,11 +30,12 @@ class Module_Languages extends Module {
         );
     }
 
-    public function install()
-    {
-    	$languages_setting = array(
-            'slug' => 'languages_setting',
-            'title' => 'Languages Setting',
+    public function install(){
+        $this->db->delete('settings', array('module' => 'sr_contact_reasons'));
+
+        $contact_setting = array(
+            'slug' => 'contact_setting',
+            'title' => 'Contact Reasons Setting',
             'description' => 'A Yes or No option for the Contact module',
             '`default`' => '1',
             '`value`' => '1',
@@ -48,11 +43,11 @@ class Module_Languages extends Module {
             '`options`' => '1=Yes|0=No',
             'is_required' => 1,
             'is_gui' => 1,
-            'module' => 'languages'
+            'module' => 'contact_reasons'
         );
 
-        if($this->db->insert('settings', $languages_setting) AND
-            is_dir($this->upload_path.'languages') OR @mkdir($this->upload_path.'languages',0777,TRUE))
+        if($this->db->insert('settings', $contact_setting) AND
+            is_dir($this->upload_path.'contact_reasons') OR @mkdir($this->upload_path.'contact_reasons',0777,TRUE))
         {
             return true;
         }
@@ -60,24 +55,24 @@ class Module_Languages extends Module {
 
     public function uninstall()
     {
-    	$this->db->delete('settings', array('module' => 'languages'));
-        return TRUE;
+        $this->db->delete('settings', array('module' => 'contact_reasons'));
+        {
+            return TRUE;
+        }
     }
 
- 	public function admin_menu(&$menu)
+    public function admin_menu(&$menu)
     {
-        $menu['General Settings']['Languages'] = 'admin/languages';
+        $menu['General Settings']['Contact Reasons'] = 'admin/contact_reasons';
     }
+
     public function upgrade($old_version)
     {
-        // Your Upgrade Logic
         return TRUE;
     }
 
     public function help()
     {
-        // Return a string containing help info
-        // You could include a file and return it here.
         return "No documentation has been added for this module.<br />Contact the module developer for assistance.";
     }
 }
