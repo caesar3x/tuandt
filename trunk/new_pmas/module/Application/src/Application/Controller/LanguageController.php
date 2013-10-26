@@ -246,8 +246,9 @@ class LanguageController extends AbstractController
         $file_url = $this->getViewHelperPlugin('Files')->getUploadLanguageFolderUrl();
         $dataFinal = $data;
         if($data['file_upload']['name'] != '' && trim($data['file_upload']['name']) != ''){
-            move_uploaded_file($data['file_upload']['tmp_name'], $path . $data['file_upload']['name']);
-            $dataFinal['file_path'] = '/upload/language/' .$data['file_upload']['name'];
+            $filename = $this->getViewHelperPlugin('files')->getFilenameUnique($data['file_upload']['name'],$path);
+            move_uploaded_file($data['file_upload']['tmp_name'], $path . $filename);
+            $dataFinal['file_path'] = '/upload/language/' .$filename;
         }
         $languages = new Languages();
         $languages->exchangeArray($dataFinal);
