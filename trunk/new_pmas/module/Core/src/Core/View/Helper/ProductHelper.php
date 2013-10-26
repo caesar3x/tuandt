@@ -278,11 +278,12 @@ class ProductHelper extends AbstractHelper
         if(empty($tdmProductsWithSameModel)){
             return null;
         }
-        $tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());
+        /*$tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());*/
         $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
         $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
-        $tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;
-        if($tdmExchangePrice){
+        /*$tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;*/
+        $tdmExchangePrice = $this->getSSAPrice($tdmProductsWithSameModel->model,$tdmProductsWithSameModel->condition_id);
+        if(!empty($tdmExchangePrice)){
             $percentage = (($recyclerExchangePrice - $tdmExchangePrice)/$tdmExchangePrice)*100;
             if($percentage > $higher)
             {
@@ -302,11 +303,12 @@ class ProductHelper extends AbstractHelper
         if(empty($tdmProductsWithSameModel)){
             return array('percentage' => 'N/A','tdmExchangePrice' => 'N/A');
         }
-        $tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());
+        /*$tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());*/
         $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
         $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
-        $tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;
-        if($tdmExchangePrice){
+        /*$tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;*/
+        $tdmExchangePrice = $this->getSSAPrice($tdmProductsWithSameModel->model,$tdmProductsWithSameModel->condition_id);
+        if(!empty($tdmExchangePrice)){
             $percentage = (($recyclerExchangePrice - $tdmExchangePrice)/$tdmExchangePrice)*100;
             return array('percentage' => $percentage,'tdmExchangePrice' => $tdmExchangePrice);
         }else{
@@ -342,5 +344,10 @@ class ProductHelper extends AbstractHelper
     {
         $countryTable = $this->serviceLocator->get('RecyclerProductTable');
         return $countryTable->getProductsByCountryAndModelAndCondition($country_id,$model,$condition);
+    }
+    public function getSSAPrice($model,$condition = null)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $recyclerProductTable->getSSAPrice($model,$condition);
     }
 }

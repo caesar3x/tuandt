@@ -6,6 +6,8 @@
 namespace Core\Model;
 
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
+use Zend\Debug\Debug;
 
 class RecyclerProductTable extends AbstractModel
 {
@@ -177,12 +179,29 @@ class RecyclerProductTable extends AbstractModel
         if($model == null){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => $model));
-        if($rowset->count() <= 0){
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        $select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
             return null;
         }
-        return $rowset;
+        return $result;
     }
+
+    /**
+     * @param $model
+     * @param $condition
+     * @param $limit
+     * @return Resultset
+     */
     public function getProductsByModel($model,$condition,$limit)
     {
         if(!$model || $model == null || !$condition || $condition == null){
@@ -190,8 +209,13 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-        $select->where(array('m.deleted' => 0,'m.condition_id' => (int)$condition,'m.model' => trim($model)));
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        $select->where($where);
         $select->limit($limit);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -200,6 +224,29 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
+
+    /**
+     * @param $model
+     * @param $condition
+     * @return float
+     */
+    public function getSSAPrice($model,$condition)
+    {
+        if(!$model || !$condition){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('deleted' => 0,'condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        $row = $result->current();
+        if(!$row){
+            return null;
+        }
+        return $row->price;
+    }
     public function getTopPriceProductsByModel($model,$condition,$limit = 3)
     {
         if(!$model || $model == null || !$condition || $condition == null){
@@ -207,9 +254,14 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-        $select->where(array('m.deleted' => 0,'m.condition_id' => (int)$condition,'m.model' => trim($model)));
-        $select->order('m.price DESC');
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        $select->where($where);
+        $select->order('price DESC');
         $select->limit($limit);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -229,9 +281,12 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
-        $select->where(array('m.deleted' => 0,'m.model' => $model));
-        $select->order('m.price DESC')->limit(1);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('model',$model);
+        $select->where($where);
+        $select->order('price DESC')->limit(1);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
@@ -250,7 +305,14 @@ class RecyclerProductTable extends AbstractModel
         $select = $sql->select()->from(array('r' => 'recycler'));
         $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
         $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
-        $select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));
+        $where = new Where();
+        $where->equalTo('r.country_id',$country_id);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('c.deleted',0);
+        $where->equalTo('r.deleted',0);
+        $where->greaterThan('r.recycler_id',1);
+        /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
+        $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
@@ -268,7 +330,16 @@ class RecyclerProductTable extends AbstractModel
         $select = $sql->select()->from(array('r' => 'recycler'));
         $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
         $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
-        $select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));
+        $where = new Where();
+        $where->equalTo('r.country_id',$country_id);
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('c.deleted',0);
+        $where->equalTo('r.deleted',0);
+        $where->greaterThan('r.recycler_id',1);
+        /*$select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
+        $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
