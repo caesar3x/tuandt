@@ -403,7 +403,6 @@ class ProductController extends AbstractController
         $view->setVariable('name',$entry->name);
         $view->setVariable('id',$id);
         $view->setVariable('entry',$entry);
-        $view->setVariable('filter',$filter);
         $view->setVariable('country',$country);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
@@ -413,26 +412,30 @@ class ProductController extends AbstractController
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
         if(is_numeric($filter)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
-            $price = (float) $entry->price;
-            $tdmPriceExchange = $price*$tdmCurrentExchange;
-            /**
-             * Filter higher than 50%
-             */
-            if(!empty($recyclerProductsWithSameModel)){
-                $products = array();
-                foreach($recyclerProductsWithSameModel as $product){
-                    $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
-                    $priceExchange = (float) $product->price * $currentExchange;
-                    if($tdmPriceExchange != 0){
-                        $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
-                        if($percentage > $filter){
-                            $products[] = $product;
+            $price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
+            if(!empty($price)){
+                $tdmPriceExchange = $price*$tdmCurrentExchange;
+                /**
+                 * Filter higher than 50%
+                 */
+                if(!empty($recyclerProductsWithSameModel)){
+                    $products = array();
+                    foreach($recyclerProductsWithSameModel as $product){
+                        $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
+                        $priceExchange = (float) $product->price * $currentExchange;
+                        if($tdmPriceExchange != 0){
+                            $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
+                            if($percentage > $filter){
+                                $products[] = $product;
+                            }
                         }
                     }
+                    $view->setVariable('filter',$filter);
+                    $view->setVariable('products',$products);
+                    return $view;
                 }
-                $view->setVariable('products',$products);
-                return $view;
             }
+
         }
         if($country != null){
             $rowset = $this->getViewHelperPlugin('product')->getProductsByCountryAndModelAndCondition($country,$entry->model,$entry->condition_id);
@@ -482,12 +485,14 @@ class ProductController extends AbstractController
         $request = $this->getRequest();
         $ids = $request->getQuery('id');
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
+        $sm = $this->getServiceLocator();
         if (!$this->productTable) {
-            $sm = $this->getServiceLocator();
+
             $this->productTable = $sm->get('TdmProductTable');
         }
+        $reyclerProductTable = $sm->get('RecyclerProductTable');
         $rowset = $this->productTable->getProductsFilter($ids);
-        $header = array('Product ID','Brand','Model','Product type','Country','Price','Currency','Name','Condition');
+        $header = array('Product ID','Brand','Model','Product type','Country','SSA Price','Currency','Name','Condition');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
@@ -497,7 +502,7 @@ class ProductController extends AbstractController
                 $rowParse[] = $row->model;
                 $rowParse[] = $viewhelperManager->get('ProductType')->implement($row->type_id);
                 $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
-                $rowParse[] = $row->price;
+                $rowParse[] = $reyclerProductTable->getSSAPrice($row->model,$row->condition_id);
                 $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
                 $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
@@ -839,7 +844,10 @@ class ProductController extends AbstractController
         $rowset = $recyclerProductTable->getAvailabeRecyclerProducts($ids);
         $tdmEntry = $tdmProductTable->getEntry($tdm);
         if(!empty($tdmEntry)){
-            $tdmExchangePrice = $priceHelper->getExchange($tdmEntry->price,$tdmEntry->currency);
+            $tdmExchangePrice = $recyclerProductTable->getSSAPrice($tdmEntry->model,$tdmEntry->condition_id);
+            if(empty($tdmEntry)){
+                exit();
+            }
         }else{
             exit();
         }

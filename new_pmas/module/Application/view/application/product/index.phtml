@@ -83,14 +83,15 @@
                         <td><?php echo $this->productType($row->type_id)?></td>
                         <td><?php echo $this->productBrand($row->brand_id)?></td>
                         <?php
-                        $price = (float) $row->price;
+                        $data = array();
+                        $price = (float) $this->product()->getSSAPrice($row->model,$row->condition_id);
+                        if(!empty($price)):
                         $tdmCurrentExchange = $this->exchange()->getCurrentExchangeOfCurrency($row->currency);
                         $tdmPriceExchange = $price*$tdmCurrentExchange;
                         ?>
                         <td><?php echo $this->price()->formatCurrency($tdmPriceExchange,'HKD')?></td>
                         <?php
                         $model = $row->model;
-                        $data = array();
                         if($model != null && $model != ''){
                             $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($model,$row->condition_id);
                             if(!empty($recyclerProducts)){
@@ -110,6 +111,7 @@
                                 }
                             }
                         }
+                        endif;
                         ?>
                         <?php if(!empty($data)):?>
                         <?php $i=0;foreach($data as $item):?>
@@ -132,6 +134,7 @@
                         <?php endif;?>
                         <?php ?>
                         <?php else:?>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

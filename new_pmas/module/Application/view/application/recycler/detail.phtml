@@ -185,8 +185,8 @@ $upload = $this->upload;
                                         <td><?php echo $tdmProduct->name?></td>
                                         <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
                                         <td><?php echo $tdmProduct->currency?></td>
-                                        <?php $tdmExchange = $this->exchange()->getCurrentExchangeOfCurrency($tdmProduct->currency,time());?>
-                                        <td><?php echo $this->price()->formatCurrency((float)$tdmProduct->price * $tdmExchange,'HKD');?></td>
+                                        <?php $tdmPrice = $this->product()->getSSAPrice($tdmProduct->model,$tdmProduct->condition_id);?>
+                                        <td><?php echo $this->price()->formatCurrency((float)$tdmPrice,'HKD');?></td>
                                     <?php else:?>
                                         <td>N/A</td>
                                         <td>N/A</td>
@@ -215,8 +215,8 @@ $upload = $this->upload;
                                         <td><?php echo $tdmProduct->name?></td>
                                         <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
                                         <td><?php echo $tdmProduct->currency?></td>
-                                        <?php $tdmExchange2 = $this->exchange()->getCurrentExchangeOfCurrency($tdmProduct->currency,time());?>
-                                        <td><?php echo $this->price()->formatCurrency((float)$tdmProduct->price * $tdmExchange2,'HKD');?></td>
+                                        <?php $tdmPrice = $this->product()->getSSAPrice($tdmProduct->model,$tdmProduct->condition_id);?>
+                                        <td><?php echo $this->price()->formatCurrency((float)$tdmPrice,'HKD');?></td>
                                     <?php else:?>
                                         <td>N/A</td>
                                         <td>N/A</td>
