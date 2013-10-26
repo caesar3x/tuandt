@@ -162,9 +162,7 @@ $upload = $this->upload;
                                 <th><?php echo $this->__('Currency')?></th>
                                 <th><?php echo $this->__('Price in HKD')?></th>
                                 <th><?php echo $this->__('TDM Product Name')?></th>
-                                <th><?php echo $this->__('TDM Base Price')?></th>
-                                <th><?php echo $this->__('TDM Currency')?></th>
-                                <th><?php echo $this->__('TDM Price in HKD')?></th>
+                                <th><?php echo $this->__('SSA Price')?></th>
                                 <th><?php echo $this->__('Action')?></th>
                             </tr>
                             </thead>
@@ -183,8 +181,6 @@ $upload = $this->upload;
                                     <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($product->model,$product->condition_id);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
-                                        <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
-                                        <td><?php echo $tdmProduct->currency?></td>
                                         <?php $tdmPrice = $this->product()->getSSAPrice($tdmProduct->model,$tdmProduct->condition_id);?>
                                         <td><?php echo $this->price()->formatCurrency((float)$tdmPrice,'HKD');?></td>
                                     <?php else:?>
@@ -213,8 +209,6 @@ $upload = $this->upload;
                                     <?php $tdmProduct = $this->recyclerImported()->getTdmProductWithSameModel($row->model,$row->condition_id);?>
                                     <?php if(!empty($tdmProduct)):?>
                                         <td><?php echo $tdmProduct->name?></td>
-                                        <td><?php echo $this->price()->formatCurrency($tdmProduct->price,$tdmProduct->currency)?></td>
-                                        <td><?php echo $tdmProduct->currency?></td>
                                         <?php $tdmPrice = $this->product()->getSSAPrice($tdmProduct->model,$tdmProduct->condition_id);?>
                                         <td><?php echo $this->price()->formatCurrency((float)$tdmPrice,'HKD');?></td>
                                     <?php else:?>
