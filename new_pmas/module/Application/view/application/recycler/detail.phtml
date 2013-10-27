@@ -201,6 +201,7 @@ $upload = $this->upload;
                                 <tr>
                                     <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(!empty($temp_ids) && in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
                                     <td><?php echo $row->name?></td>
+                                    <td><?php echo $this->condition($row->condition_id,false)?></td>
                                     <td><?php echo $row->date?></td>
                                     <td><?php echo $this->price()->formatCurrency($row->price,$row->currency)?></td>
                                     <td><?php echo $row->currency?></td>
