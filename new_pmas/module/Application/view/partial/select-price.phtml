@@ -4,25 +4,26 @@
  * Date: 10/17/13
  */
 ?>
+<?php $filter = $this->filter;?>
 <select class="chosen-select form-control" id="price_percentage" data-placeholder="<?php echo $this->__('Choose a percentage')?>">
     <option value=""></option>
-    <option value="5"><?php echo $this->__('Price higher than')?> 5%</option>
-    <option value="10"><?php echo $this->__('Price higher than')?> 10%</option>
-    <option value="15"><?php echo $this->__('Price higher than')?> 15%</option>
-    <option value="20"><?php echo $this->__('Price higher than')?> 20%</option>
-    <option value="25"><?php echo $this->__('Price higher than')?> 25%</option>
-    <option value="30"><?php echo $this->__('Price higher than')?> 30%</option>
-    <option value="35"><?php echo $this->__('Price higher than')?> 35%</option>
-    <option value="40"><?php echo $this->__('Price higher than')?> 40%</option>
-    <option value="45"><?php echo $this->__('Price higher than')?> 45%</option>
-    <option value="50"><?php echo $this->__('Price higher than')?> 50%</option>
-    <option value="55"><?php echo $this->__('Price higher than')?> 55%</option>
-    <option value="60"><?php echo $this->__('Price higher than')?> 60%</option>
-    <option value="65"><?php echo $this->__('Price higher than')?> 65%</option>
-    <option value="70"><?php echo $this->__('Price higher than')?> 70%</option>
-    <option value="75"><?php echo $this->__('Price higher than')?> 75%</option>
-    <option value="80"><?php echo $this->__('Price higher than')?> 80%</option>
-    <option value="85"><?php echo $this->__('Price higher than')?> 85%</option>
-    <option value="90"><?php echo $this->__('Price higher than')?> 90%</option>
-    <option value="95"><?php echo $this->__('Price higher than')?> 95%</option>
+    <option <?php if($filter && ($filter) == 5){echo 'selected';}?> value="5"><?php echo $this->__('Price higher than')?> 5%</option>
+    <option <?php if($filter && ($filter) == 10){echo 'selected';}?> value="10"><?php echo $this->__('Price higher than')?> 10%</option>
+    <option <?php if($filter && ($filter) == 15){echo 'selected';}?> value="15"><?php echo $this->__('Price higher than')?> 15%</option>
+    <option <?php if($filter && ($filter) == 20){echo 'selected';}?> value="20"><?php echo $this->__('Price higher than')?> 20%</option>
+    <option <?php if($filter && ($filter) == 25){echo 'selected';}?> value="25"><?php echo $this->__('Price higher than')?> 25%</option>
+    <option <?php if($filter && ($filter) == 30){echo 'selected';}?> value="30"><?php echo $this->__('Price higher than')?> 30%</option>
+    <option <?php if($filter && ($filter) == 35){echo 'selected';}?> value="35"><?php echo $this->__('Price higher than')?> 35%</option>
+    <option <?php if($filter && ($filter) == 40){echo 'selected';}?> value="40"><?php echo $this->__('Price higher than')?> 40%</option>
+    <option <?php if($filter && ($filter) == 45){echo 'selected';}?> value="45"><?php echo $this->__('Price higher than')?> 45%</option>
+    <option <?php if($filter && ($filter) == 50){echo 'selected';}?> value="50"><?php echo $this->__('Price higher than')?> 50%</option>
+    <option <?php if($filter && ($filter) == 55){echo 'selected';}?> value="55"><?php echo $this->__('Price higher than')?> 55%</option>
+    <option <?php if($filter && ($filter) == 60){echo 'selected';}?> value="60"><?php echo $this->__('Price higher than')?> 60%</option>
+    <option <?php if($filter && ($filter) == 65){echo 'selected';}?> value="65"><?php echo $this->__('Price higher than')?> 65%</option>
+    <option <?php if($filter && ($filter) == 70){echo 'selected';}?> value="70"><?php echo $this->__('Price higher than')?> 70%</option>
+    <option <?php if($filter && ($filter) == 75){echo 'selected';}?> value="75"><?php echo $this->__('Price higher than')?> 75%</option>
+    <option <?php if($filter && ($filter) == 80){echo 'selected';}?> value="80"><?php echo $this->__('Price higher than')?> 80%</option>
+    <option <?php if($filter && ($filter) == 85){echo 'selected';}?> value="85"><?php echo $this->__('Price higher than')?> 85%</option>
+    <option <?php if($filter && ($filter) == 90){echo 'selected';}?> value="90"><?php echo $this->__('Price higher than')?> 90%</option>
+    <option <?php if($filter && ($filter) == 95){echo 'selected';}?> value="95"><?php echo $this->__('Price higher than')?> 95%</option>
 </select>

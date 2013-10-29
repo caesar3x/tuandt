@@ -4,12 +4,13 @@
  * Date: 10/17/13
  */
 ?>
+<?php $country = (int) $this->country;?>
 <?php $countries = $this->product()->getAvailableCountries()?>
 <?php if(!empty($countries)):?>
     <select name="country_chosen" class="chosen-select form-control" id="country-chosen" data-placeholder="<?php echo $this->__('Choose a country')?>">
         <option></option>
     <?php foreach($countries as $row):?>
-        <option value="<?php echo $row->country_id?>"><?php echo $row->name;?></option>
+        <option <?php if($country == (int)$row->country_id){echo 'selected';}?> value="<?php echo $row->country_id?>"><?php echo $row->name;?></option>
     <?php endforeach;?>
     </select>
 <?php endif;?>
