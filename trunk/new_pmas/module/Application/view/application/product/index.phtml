@@ -22,16 +22,6 @@
 </div>
 <form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="pull-left">
-            <a class="btn btn-outline"><?php echo $this->__('Notice')?></a>
-            <div class="btn-group">
-                <?php echo $this->partial('partial/select-price.phtml')?>
-            </div>
-            <a class="btn btn-outline"><?php echo $this->__('Filter with Country').': '?></a>
-            <div class="btn-group">
-                <?php echo $this->partial('partial/select-countries.phtml')?>
-            </div>
-        </div>
         <div class="pull-right">
             <a class="btn">
                 <?php echo $this->__('Export to')?>

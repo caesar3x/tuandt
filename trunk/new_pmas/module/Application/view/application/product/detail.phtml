@@ -34,54 +34,49 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <?php if(is_numeric($this->filter) ){?>
-                            <a class="btn btn-outline btn-sm"><?php echo $this->__('Notice')?></a>
-                            <a class="btn btn-default btn-sm"><?php echo $this->__('Price higher than').' : '.$this->filter.'%';?></a>
                             <script type="text/javascript">
                                 $(function(){
                                     $("#back-button").attr("href","/product/detail/id/<?php echo $this->id?>");
                                 });
                             </script>
-                        <?php }elseif(!empty($this->country)){?>
-                            <a class="btn btn-outline btn-sm"><?php echo $this->__('Notice')?></a>
-                            <a class="btn btn-default btn-sm"><?php echo $this->__('Products in country').' : '.$this->country($this->country);?></a>
+                        <?php }if(!empty($this->country)){?>
                             <script type="text/javascript">
                                 $(function(){
                                     $("#back-button").attr("href","/product/detail/id/<?php echo $this->id?>");
                                 });
                             </script>
-                        <?php }else{?>
-                            <div>
-                                <div class="pull-left">
-                                    <?php if(!empty($product_price)):?>
-                                        <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
-                                        <div class="btn-group">
-                                            <?php echo $this->partial('partial/select-price.phtml')?>
-                                        </div>
-                                    <?php endif;?>
-                                    <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+                        <?php }?>
+                        <div>
+                            <div class="pull-left">
+                                <?php if(!empty($product_price)):?>
+                                    <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
                                     <div class="btn-group">
-                                        <?php echo $this->partial('partial/select-countries.phtml')?>
+                                        <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->filter))?>
                                     </div>
-                                </div>
-                                <div class="pull-right">
-                                    <a class="btn btn-outline">
-                                        <?php echo $this->__('Export to')?>
-                                    </a>
-                                    <div class="btn-group">
-                                        <select class="form-control" id="export-format" name="export_format">
-                                            <option value="none"><?php echo $this->__('Select format')?></option>
-                                            <option value="csv"><?php echo $this->__('CSV')?></option>
-                                            <option value="xls"><?php echo $this->__('Excel 2003')?></option>
-                                            <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
-                                        </select>
-                                    </div>
-                                    <a class="btn btn-warning btn-sm" onclick="exportPriceCompare('<?php echo $product->product_id?>');">
-                                        <i class="glyphicon glyphicon-export"></i>
-                                        <?php echo $this->__('Export')?>
-                                    </a>
+                                <?php endif;?>
+                                <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+                                <div class="btn-group">
+                                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
                                 </div>
                             </div>
-                        <?php }?>
+                            <div class="pull-right">
+                                <a class="btn btn-outline">
+                                    <?php echo $this->__('Export to')?>
+                                </a>
+                                <div class="btn-group">
+                                    <select class="form-control" id="export-format" name="export_format">
+                                        <option value="none"><?php echo $this->__('Select format')?></option>
+                                        <option value="csv"><?php echo $this->__('CSV')?></option>
+                                        <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                                        <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
+                                    </select>
+                                </div>
+                                <a class="btn btn-warning btn-sm" onclick="exportPriceCompare('<?php echo $product->product_id?>');">
+                                    <i class="glyphicon glyphicon-export"></i>
+                                    <?php echo $this->__('Export')?>
+                                </a>
+                            </div>
+                        </div>
                         <div class="row clearfix">&nbsp;</div>
 
                         <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0">
