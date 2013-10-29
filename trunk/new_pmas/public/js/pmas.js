@@ -232,11 +232,11 @@ function importRecyclerModels()
 {
     $.colorbox.close();
 }
-function saveImportRecord(url){
+function saveImportRecord(url,id){
     $.get( url, function( data ) {
         $("#show-msg").html('<div class="alert alert-success"><span>'+data+'</span></div>');
     });
-
+    $("#"+id).remove();
     return true;
 }
 function loadExchangeData()

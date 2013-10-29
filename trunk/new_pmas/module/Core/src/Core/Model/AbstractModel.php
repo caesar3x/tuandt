@@ -66,6 +66,9 @@ class AbstractModel
     public function getTotalRows()
     {
         $availableRows = $this->getAvaiableRows();
-        return $availableRows->count();
+        if(!empty($availableRows)){
+            return $availableRows->count();
+        }
+        return 0;
     }
 }
