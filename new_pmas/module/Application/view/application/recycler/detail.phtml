@@ -186,8 +186,6 @@ $upload = $this->upload;
                                     <?php else:?>
                                         <td>N/A</td>
                                         <td>N/A</td>
-                                        <td>N/A</td>
-                                        <td>N/A</td>
                                     <?php endif;?>
                                     <td>
                                         <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->__('Edit')?></a>
@@ -215,11 +213,9 @@ $upload = $this->upload;
                                     <?php else:?>
                                         <td>N/A</td>
                                         <td>N/A</td>
-                                        <td>N/A</td>
-                                        <td>N/A</td>
                                     <?php endif;?>
                                     <td>
-                                        <a class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>')">
+                                        <a id="btn-<?php echo $row->id?>" class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>',this.id)">
                                             <i class="glyphicon glyphicon-save"></i>
                                             <?php echo $this->__('Save')?>
                                         </a>
