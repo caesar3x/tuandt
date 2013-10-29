@@ -135,13 +135,10 @@ class TdmProductTable extends AbstractModel
      */
     public function getRowByModel($model,$condition)
     {
-        if($model == null || !$condition){
+        if(!$model || !$condition){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => $model));
-        if($rowset->count() <= 0){
-            return null;
-        }
+        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => trim($model)));
         $row = $rowset->current();
         if(!$row){
             return null;

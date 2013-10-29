@@ -426,3 +426,12 @@ function loadRecyclers()
     }
     $("#recycler-select").load('/product/select-recycler/country/'+countryId);
 }
+function saveallimported(recycler)
+{
+    var url = siteurl + 'recycler/save-import-all/recycler/'+recycler;
+    $.get( url, function( data ) {
+        $("#show-msg").html('<div class="alert alert-success"><span>'+data+'</span></div>');
+    });
+    $(".btn-save-import").remove();
+    return true;
+}
