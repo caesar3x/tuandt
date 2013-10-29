@@ -13,9 +13,7 @@ use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
 use Core\Controller\AbstractController;
-use Core\Model\CacheSerializer;
 use Core\Model\CreatePath;
-use Core\Model\Product;
 use Core\Model\Recycler;
 use Core\Model\RecyclerProduct;
 use Core\Model\RecyclerProductTable;
@@ -27,7 +25,7 @@ use SimpleExcel\SimpleExcel;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer;
 use Zend\Debug\Debug;
-use Zend\Mvc\Controller\AbstractActionController;
+
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\EmailAddress;
 use Zend\Validator\NotEmpty;
@@ -225,12 +223,14 @@ class RecyclerController extends AbstractController
             if(!$upload){
                 $tmpProductTable->deleteByRecyclerId($id);
             }
+            $from = $request->getQuery('from');
             $tmpProducts = $tmpProductTable->getRowsByRecyclerId($id);
             $reyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
             $productsInRecycler = $reyclerProductTable->getProductsByRecycler($id);
             $view->setVariable('tmpProducts',$tmpProducts);
             $view->setVariable('products',$productsInRecycler);
             $view->setVariable('upload',$upload);
+            $view->setVariable('from',$from);
         }
         $view->setVariable('form',$form);
         return $view;
@@ -773,5 +773,22 @@ class RecyclerController extends AbstractController
             return $this->redirect()->toUrl('/recycler/detail/id/'.$recycler_id);
         }
         exit();
+    }
+    public function deleteProductAction()
+    {
+        parent::initAction();
+        $messages = $this->getMessages();
+        $id = $this->params('id',0);
+        $recycler = $this->params('recycler',0);
+        if(!$id || $id == 0 || !$recycler || $recycler == 0){
+            $this->getResponse()->setStatusCode(404);
+        }
+        $recyclerProductTable = $this->sm->get('RecyclerProductTable');
+        if($recyclerProductTable->delete($id)){
+            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_SUCCESS']);
+        }else{
+            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_FAIL']);
+        }
+        $this->redirectUrl('/recycler/detail/id/'.$recycler.'?from=delete');
     }
 }

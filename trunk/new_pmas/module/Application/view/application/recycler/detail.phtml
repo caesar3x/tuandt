@@ -7,8 +7,9 @@
 <?php
 $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
 $upload = $this->upload;
+$from = $this->from;
 ?>
-<?php if($upload == 'success'):?>
+<?php if($upload == 'success' || $from == 'delete'):?>
     <script type="text/javascript">
         $(function(){
             $('a[href=#product-model]').tab('show');
@@ -194,7 +195,8 @@ $upload = $this->upload;
                                         <td>N/A</td>
                                     <?php endif;?>
                                     <td>
-                                        <a class="btn btn-sm btn-default" href="/recycler/product/id/<?php echo $product->product_id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->__('Edit')?></a>
+                                        <a class="btn btn-xs btn-primary btn-edit" href="/recycler/product/id/<?php echo $product->product_id?>"><?php echo $this->__('Edit')?></a>
+                                        <a class="btn btn-xs btn-danger btn-edit" href="/recycler/delete-product/recycler/<?php echo $this->id?>/id/<?php echo $product->product_id?>"><?php echo $this->__('Delete')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>
@@ -221,11 +223,10 @@ $upload = $this->upload;
                                         <td>N/A</td>
                                     <?php endif;?>
                                     <td>
-                                        <a id="btn-<?php echo $row->id?>" class="btn btn-sm btn-default btn-save-import" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>',this.id)">
-                                            <i class="glyphicon glyphicon-save"></i>
+                                        <a id="btn-<?php echo $row->id?>" class="btn btn-xs btn-primary btn-save-import" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>',this.id)">
                                             <?php echo $this->__('Save')?>
                                         </a>
-                                        <a class="btn btn-sm btn-default" href="/recycler/temp/id/<?php echo $row->id?>"><i class="glyphicon glyphicon-edit"></i><?php echo $this->__('Edit')?></a>
+                                        <a class="btn btn-xs btn-primary" href="/recycler/temp/id/<?php echo $row->id?>"><?php echo $this->__('Edit')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>

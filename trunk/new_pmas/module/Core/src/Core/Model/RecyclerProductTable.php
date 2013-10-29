@@ -378,4 +378,8 @@ class RecyclerProductTable extends AbstractModel
         }
         return true;
     }
+    public function delete($id)
+    {
+        return $this->tableGateway->delete(array('product_id' => $id));
+    }
 }
