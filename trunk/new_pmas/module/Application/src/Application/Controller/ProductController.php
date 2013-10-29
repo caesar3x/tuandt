@@ -192,11 +192,11 @@ class ProductController extends AbstractController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!$empty->isValid($post['price'])){
+            /*if(!$empty->isValid($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
-            }
+            }*/
             $select_empty = new NotEmpty(array('integer','zero'));
             if(!$select_empty->isValid($post['brand_id'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
@@ -213,11 +213,11 @@ class ProductController extends AbstractController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!is_numeric($post['price'])){
+            /*if(!is_numeric($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
                 $view->setVariable('form',$form);
                 return $view;
-            }
+            }*/
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
@@ -324,11 +324,11 @@ class ProductController extends AbstractController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!$empty->isValid($post['price'])){
+            /*if(!$empty->isValid($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_EMPTY']));
                 $view->setVariable('form',$form);
                 return $view;
-            }
+            }*/
             $select_empty = new NotEmpty(array('integer','zero'));
             if(!$select_empty->isValid($post['brand_id'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_BRAND_NOT_SELECTED']));
@@ -345,11 +345,11 @@ class ProductController extends AbstractController
                 $view->setVariable('form',$form);
                 return $view;
             }
-            if(!is_numeric($post['price'])){
+            /*if(!is_numeric($post['price'])){
                 $view->setVariable('msg',array('danger' => $messages['PRODUCT_PRICE_NOT_VALID']));
                 $view->setVariable('form',$form);
                 return $view;
-            }
+            }*/
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
