@@ -79,7 +79,7 @@ class ProductForm extends Form
             'USD' => 'USD'
         ));
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)
             ->add($continue)
             ->add($name)

@@ -21,7 +21,7 @@ class LoginForm extends Form
             'class' => 'form-control',
         ));
         $csrf = new Element\Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($email)
             ->add($password)
             ->add($csrf);

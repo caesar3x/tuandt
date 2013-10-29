@@ -79,7 +79,7 @@ class RecyclerProductForm extends Form
             'class' => 'form-control datepicker2'
         ));
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)
             ->add($recycler)
             ->add($continue)

@@ -46,7 +46,7 @@ class UpdateRateForm extends Form
         ));
         $currency->setValueOptions($this->getCurrencies());
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($continue)->add($exchange_rate)->add($currency)->add($time)->add($csrf);
     }
 
