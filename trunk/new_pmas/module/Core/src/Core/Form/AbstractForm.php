@@ -33,7 +33,7 @@ class AbstractForm extends Form
         $continue->setValue('no');
         $continue->setAttribute('id','continue');
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)->add($continue)->add($csrf);
     }
 }

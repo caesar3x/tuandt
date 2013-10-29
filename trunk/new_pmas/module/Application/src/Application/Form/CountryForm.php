@@ -52,7 +52,7 @@ class CountryForm extends Form
             'after' => 'After'
         ));
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)->add($name)->add($symbol)->add($position)->add($currency)->add($csrf);
     }
 }

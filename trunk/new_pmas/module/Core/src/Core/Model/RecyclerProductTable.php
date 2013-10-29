@@ -242,7 +242,6 @@ class RecyclerProductTable extends AbstractModel
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         $row = $result->current();
-        Debug::dump($row);
         if(!$row){
             return null;
         }

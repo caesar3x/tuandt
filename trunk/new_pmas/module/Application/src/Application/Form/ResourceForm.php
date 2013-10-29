@@ -49,7 +49,7 @@ class ResourceForm extends Form
         $user_define = new Hidden('user_define');
         $user_define->setValue(1);
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)->add($name)->add($path)->add($continue)->add($user_define)->add($group)->add($csrf);
     }
     protected function getGroups()

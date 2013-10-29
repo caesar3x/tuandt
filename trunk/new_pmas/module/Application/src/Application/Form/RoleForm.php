@@ -49,7 +49,7 @@ class RoleForm extends Form
         ));
         $resources->setValueOptions($this->getGroups());
         $csrf = new Csrf('csrf');
-        $csrf->setCsrfValidatorOptions(array('timeout' => 600));
+        $csrf->setCsrfValidatorOptions(array('timeout' => 3000));
         $this->add($id)->add($name)->add($role)->add($resources)->add($continue)->add($csrf);
     }
 
