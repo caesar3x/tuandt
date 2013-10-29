@@ -12,6 +12,7 @@ use BasicExcel\Reader;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Controller\AbstractController;
 use Core\Model\CacheSerializer;
 use Core\Model\CreatePath;
 use Core\Model\Product;
@@ -32,7 +33,7 @@ use Zend\Validator\EmailAddress;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class RecyclerController extends AbstractActionController
+class RecyclerController extends AbstractController
 {
     protected $recyclerTable;
 
@@ -447,24 +448,59 @@ class RecyclerController extends AbstractActionController
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
         $tmpProductEntry = $tmpProductTable->getEntry($id);
         if(!empty($tmpProductEntry)){
-            $tmpEntryParse = (array) $tmpProductEntry;
-            $tmpEntryParse['temp_id'] = $id;
-            $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$tmpProductEntry->date.' 00:00:00');
-            if($pDate){
-                $tmpEntryParse['date'] = $pDate->getTimestamp();
+            if(!$recyclerProductTable->hasTempId($id)){
+                $tmpEntryParse = (array) $tmpProductEntry;
+                $tmpEntryParse['temp_id'] = $id;
+                $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$tmpProductEntry->date.' 00:00:00');
+                if($pDate){
+                    $tmpEntryParse['date'] = $pDate->getTimestamp();
+                }else{
+                    $tmpEntryParse['date'] = 0;
+                }
+                $recyclerProduct = new RecyclerProduct();
+                $recyclerProduct->exchangeArray($tmpEntryParse);
+                if($recyclerProductTable->save($recyclerProduct)){
+                    echo 'Save record success.';
+                }else{
+                    echo 'Save record not success.';
+                }
             }else{
-                $tmpEntryParse['date'] = 0;
-            }
-            $recyclerProduct = new RecyclerProduct();
-            $recyclerProduct->exchangeArray($tmpEntryParse);
-            if($recyclerProductTable->save($recyclerProduct)){
-                echo 'Save record success.';
-            }else{
-                echo 'Save record not success.';
+                echo 'This product has already saved.';
             }
         }else{
             echo 'No data existed.';
         }
+        die;
+    }
+    public function saveImportAllAction()
+    {
+        parent::initAction();
+        $recycler = $this->params('recycler',0);
+        if(!$recycler || $recycler == 0){
+            echo 'Record does not exist.';
+            return false;
+        }
+        $tmpProductTable = $this->sm->get('TmpProductTable');
+        $recyclerProductTable = $this->sm->get('RecyclerProductTable');
+        $rowset = $tmpProductTable->getRowsByRecyclerId($recycler);
+        $recyclerProduct = new RecyclerProduct();
+        if(!empty($rowset)){
+            foreach($rowset as $row){
+                if(!$recyclerProductTable->hasTempId($row->id)){
+                    $tmpEntryParse = (array) $row;
+                    $tmpEntryParse['temp_id'] = $row->id;
+                    $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$row->date.' 00:00:00');
+                    if($pDate){
+                        $tmpEntryParse['date'] = $pDate->getTimestamp();
+                    }else{
+                        $tmpEntryParse['date'] = 0;
+                    }
+                    $recyclerProduct->exchangeArray($tmpEntryParse);
+                    $recyclerProductTable->save($recyclerProduct);
+                }
+            }
+        }
+        echo 'Save record success.';
         die;
     }
     public function productAction()

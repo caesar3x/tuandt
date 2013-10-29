@@ -242,6 +242,7 @@ class RecyclerProductTable extends AbstractModel
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         $row = $result->current();
+        Debug::dump($row);
         if(!$row){
             return null;
         }
@@ -362,5 +363,20 @@ class RecyclerProductTable extends AbstractModel
             return null;
         }
         return $rowset;
+    }
+
+    /**
+     * Check temp id saved
+     * @param $temp_id
+     * @return bool
+     */
+    public function hasTempId($temp_id)
+    {
+        $rowset = $this->tableGateway->select(array('temp_id' => $temp_id));
+        $row = $rowset->current();
+        if(!$row){
+            return false;
+        }
+        return true;
     }
 }

@@ -149,6 +149,12 @@ $upload = $this->upload;
                                 <i class="glyphicon glyphicon-upload"></i>
                                 <?php echo $this->__('Upload')?>
                             </a>
+                            <?php if($this->upload == 'success'):?>
+                            <a class="btn btn-sm btn-success" onclick="saveallimported('<?php echo $this->id?>')">
+                                <i class="glyphicon glyphicon-save"></i>
+                                <?php echo $this->__('Save all')?>
+                            </a>
+                            <?php endif;?>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
                         <table class="display table table-striped table-condensed table-bordered example" id="model-table" cellpadding="0" cellspacing="0">
@@ -215,7 +221,7 @@ $upload = $this->upload;
                                         <td>N/A</td>
                                     <?php endif;?>
                                     <td>
-                                        <a id="btn-<?php echo $row->id?>" class="btn btn-sm btn-default" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>',this.id)">
+                                        <a id="btn-<?php echo $row->id?>" class="btn btn-sm btn-default btn-save-import" onclick="saveImportRecord('/recycler/save-import/id/<?php echo $row->id?>',this.id)">
                                             <i class="glyphicon glyphicon-save"></i>
                                             <?php echo $this->__('Save')?>
                                         </a>

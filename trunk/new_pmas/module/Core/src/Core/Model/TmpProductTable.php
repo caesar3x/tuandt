@@ -58,4 +58,5 @@ class TmpProductTable extends AbstractModel
     {
         return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $recycler_id));
     }
+
 }
