@@ -777,18 +777,40 @@ class RecyclerController extends AbstractController
     public function deleteProductAction()
     {
         parent::initAction();
-        $messages = $this->getMessages();
         $id = $this->params('id',0);
         $recycler = $this->params('recycler',0);
+        $request = $this->getRequest();
+        $ids = $request->getQuery('id');
         if(!$id || $id == 0 || !$recycler || $recycler == 0){
             $this->getResponse()->setStatusCode(404);
         }
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
-        if($recyclerProductTable->delete($id)){
-            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_SUCCESS']);
-        }else{
-            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_FAIL']);
+        if($id != 0){
+            $this->delete_product($id,$recyclerProductTable);
         }
-        $this->redirectUrl('/recycler/detail/id/'.$recycler.'?from=delete');
+        if(!empty($ids) && is_array($ids)){
+            foreach($ids as $id){
+                $this->delete_product($id,$recyclerProductTable);
+            }
+        }
+        return $this->redirectUrl('/recycler/detail/id/'.$recycler.'?from=delete');
+    }
+
+    /**
+     * @param $id
+     * @param $table
+     * @return bool
+     */
+    protected function delete_product($id,$table)
+    {
+        $messages = $this->getMessages();
+        if($table->delete($id)){
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete-product',$messages['LOG_DELETE_RECYCLER_PRODUCT_SUCCESS'].$id);
+            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_SUCCESS'].$id);
+        }else{
+            $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete-product',$messages['LOG_DELETE_RECYCLER_PRODUCT_FAIL'].$id);
+            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_FAIL'].$id);
+        }
+        return true;
     }
 }

@@ -135,6 +135,10 @@ $from = $this->from;
                             </a>
                         </div>
                         <div class="pull-right" style="margin-bottom: 15px;">
+                            <a class="btn btn-danger btn-sm delete-selected" onclick="delete_recycler_products();">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <?php echo $this->__('Delete Selected')?>
+                            </a>
                             <a class="btn">
                                 <?php echo $this->__('Import from')?>
                             </a>
@@ -162,6 +166,7 @@ $from = $this->from;
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+                                <th><?php echo $this->__('ID')?></th>
                                 <th><?php echo $this->__('Product Name')?></th>
                                 <th><?php echo $this->__('Condition')?></th>
                                 <th><?php echo $this->__('Date time')?></th>
@@ -177,7 +182,8 @@ $from = $this->from;
                             <?php if(!empty($this->products)):?>
                             <?php foreach($this->products as $product):?>
                                 <tr>
-                                    <td class="col-checkbox"><input checked value="<?php echo $product->product_id?>" type="checkbox" disabled class="recycler-product"></td>
+                                    <td class="col-checkbox"><input value="<?php echo $product->product_id?>" type="checkbox" name="recycler_products[]" class="recycler-product check-item"></td>
+                                    <td><?php echo $product->product_id?></td>
                                     <td><?php echo $product->name?></td>
                                     <td><?php echo $this->condition($product->condition_id,false)?></td>
                                     <td><?php echo (!empty($product->date)) ? date('d-m-Y',$product->date) : 'N/A'?></td>
@@ -196,7 +202,7 @@ $from = $this->from;
                                     <?php endif;?>
                                     <td>
                                         <a class="btn btn-xs btn-primary btn-edit" href="/recycler/product/id/<?php echo $product->product_id?>"><?php echo $this->__('Edit')?></a>
-                                        <a class="btn btn-xs btn-danger btn-edit" href="/recycler/delete-product/recycler/<?php echo $this->id?>/id/<?php echo $product->product_id?>"><?php echo $this->__('Delete')?></a>
+                                        <a class="btn btn-xs btn-danger btn-edit" onclick="confirmDelete('<?php echo $this->getUrl('/recycler/delete-product/recycler/'.$this->id.'/id/'.$product->product_id)?>');" ><?php echo $this->__('Delete')?></a>
                                     </td>
                                 </tr>
                             <?php endforeach;?>

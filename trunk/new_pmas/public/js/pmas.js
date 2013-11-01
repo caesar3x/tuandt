@@ -435,3 +435,24 @@ function saveallimported(recycler)
     $(".btn-save-import").remove();
     return true;
 }
+function delete_recycler_products()
+{
+    var recycler_id = $("#recycler_id").val();
+    var products = new Array();
+    $(".recycler-product").each(function(){
+        if($(this).is(":checked")){
+            products.push($(this).val());
+        }
+    });
+    if(products.length <= 0){
+        bootbox.alert("You must select product");
+        return true;
+    }
+    var params = new Object();
+    params.id = products;
+    var urlParams = $.param(params);
+    var url = siteurl + 'recycler/delete-product/recycler/'+recycler_id;
+    url = url + '?' + urlParams;
+    confirmDelete(url);
+    return false;
+}

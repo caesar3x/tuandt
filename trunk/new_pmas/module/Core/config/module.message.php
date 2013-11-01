@@ -157,6 +157,9 @@ return array(
     'LANG_FILE_NOT_UPLOAD' => 'Please upload language file',
     'LANGUAGE_CODE_EXISTED' => 'Language code existed',
 
-    'DELETE_RECYCLER_PRODUCT_SUCCESS' => 'Deleted recycler product success',
-    'DELETE_RECYCLER_PRODUCT_FAIL' => 'Deleting recycler product fail',
+    'DELETE_RECYCLER_PRODUCT_SUCCESS' => 'Deleted recycler product success, ID#',
+    'DELETE_RECYCLER_PRODUCT_FAIL' => 'Deleting recycler product fail, ID#',
+
+    'LOG_DELETE_RECYCLER_PRODUCT_SUCCESS' => 'Deleted recycler product success, ID#',
+    'LOG_DELETE_RECYCLER_PRODUCT_FAIL' => 'Deleting recycler product fail, ID#',
 );
