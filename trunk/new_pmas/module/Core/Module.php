@@ -37,8 +37,6 @@ use Core\Model\TmpProduct;
 use Core\Model\TmpProductTable;
 use Core\Model\Usermeta;
 use Core\Model\UsermetaTable;
-use Core\Soap\MyClass;
-use Core\Soap\Server1;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session;
 use Zend\Db\ResultSet\ResultSet;
@@ -291,6 +289,11 @@ class Module
                 'tokenString' => 'Backend\View\Helper\TokenString'
             ),
             'factories' => array(
+                'core' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\CoreHelper($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'admin' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\AdminHelper();
@@ -370,11 +373,10 @@ class Module
                     return $viewHelper;
                 },
                 'exchange' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ExchangeHelper();
-                    $viewHelper->setServiceLocator($serviceLocator);
-                    return $viewHelper;
-                },
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\ExchangeHelper($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'recycler' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\RecyclerHelper();
@@ -382,17 +384,15 @@ class Module
                     return $viewHelper;
                 },
                 'price' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\PriceHelper();
-                    $viewHelper->setServiceLocator($serviceLocator);
-                    return $viewHelper;
-                },
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\PriceHelper($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'product' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ProductHelper();
-                    $viewHelper->setServiceLocator($serviceLocator);
-                    return $viewHelper;
-                },
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\ProductHelper($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'menu' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\MenuHelper();

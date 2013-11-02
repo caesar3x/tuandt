@@ -5,29 +5,22 @@
  */
 namespace Core\View\Helper;
 
+use Zend\Http\Request;
 use Zend\ServiceManager\ServiceManager;
-use Zend\View\Helper\AbstractHelper;
 
-class PriceHelper extends AbstractHelper
+class PriceHelper extends CoreHelper
 {
-    /**
-     * @var $serviceLocator
-     */
-    protected $serviceLocator;
-
-    /**
-     * @param ServiceManager $serviceLocator
-     */
-    public function setServiceLocator(ServiceManager $serviceLocator)
+    public function __construct(ServiceManager $serviceLocator,Request $request)
     {
-        $this->serviceLocator = $serviceLocator;
+        parent::__construct($serviceLocator,$request);
     }
     public function format($price)
     {
         if(!is_numeric($price)){
             return $price;
         }
-        return number_format($price,2);
+        return round($price,2,PHP_ROUND_HALF_UP);
+        /*return number_format($price,2);*/
     }
 
     /**
@@ -61,13 +54,14 @@ class PriceHelper extends AbstractHelper
      */
     public function getExchange($price,$currency)
     {
-        $exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
+        $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($currency);
+        /*$exchangeTable = $this->serviceLocator->get('ExchangeRateTable');
         $lastExchange = $exchangeTable->getLastCurrencyExchange($currency);
         if(empty($lastExchange)){
             return $price;
         }
-        $rate = $lastExchange->exchange_rate;
-        $exchangePrice = $price*$rate;
+        $rate = $lastExchange->exchange_rate;*/
+        $exchangePrice = $price/$current_exchange;
         return $exchangePrice;
     }
     public function getPercent($price1,$price2)
@@ -77,6 +71,8 @@ class PriceHelper extends AbstractHelper
         }
         $percent = ($price1-$price2)/$price2;
         $percent2 = $percent*100;
-        return number_format($percent2,2);
+        return $this->format($percent2);
+        /*return round($percent2,2,PHP_ROUND_HALF_UP);*/
+        /*return number_format($percent2,2);*/
     }
 }

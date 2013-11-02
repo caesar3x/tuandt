@@ -6,22 +6,21 @@
 namespace Core\View\Helper;
 
 use Zend\Debug\Debug;
+use Zend\Http\Request;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class ProductHelper extends AbstractHelper
+class ProductHelper extends CoreHelper
 {
-    /**
-     * @var $serviceLocator
-     */
-    protected $serviceLocator;
+    protected $_tdmProductTable;
 
-    /**
-     * @param ServiceManager $serviceLocator
-     */
-    public function setServiceLocator(ServiceManager $serviceLocator)
+    protected $_recyclerProductTable;
+
+    public function __construct(ServiceManager $serviceLocator,Request $request)
     {
-        $this->serviceLocator = $serviceLocator;
+        parent::__construct($serviceLocator,$request);
+        $this->_tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        $this->_recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
     }
     public function getCountryHelper()
     {
@@ -172,13 +171,13 @@ class ProductHelper extends AbstractHelper
                  */
                 $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$start,$end);
                 if(!empty($rowset)){
-                    $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                    $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$rowset->exchange_rate);
                     $productsExchangeDate[$product_id] = $rowset->time;
                     $productsExchangeRate[$product_id] = $rowset->exchange_rate;
                 }else{
                     $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$start);
                     if(!empty($currentExchange)){
-                        $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                        $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                         $productsExchangeDate[$product_id] = $currentExchange->time;
                         $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
                     }else{
@@ -280,7 +279,7 @@ class ProductHelper extends AbstractHelper
         }
         /*$tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());*/
         $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
-        $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
+        $recyclerExchangePrice = (float) $recycler_product->price/$recyclerCurrentExchange;
         /*$tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;*/
         $tdmExchangePrice = $this->getSSAPrice($tdmProductsWithSameModel->model,$tdmProductsWithSameModel->condition_id);
         if(!empty($tdmExchangePrice)){
@@ -305,7 +304,7 @@ class ProductHelper extends AbstractHelper
         }
         /*$tdmCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($tdmProductsWithSameModel->currency,time());*/
         $recyclerCurrentExchange = $this->getExchangeHelper()->getCurrentExchangeOfCurrency($recycler_product->currency,time());
-        $recyclerExchangePrice = (float) $recycler_product->price*$recyclerCurrentExchange;
+        $recyclerExchangePrice = (float) $recycler_product->price/$recyclerCurrentExchange;
         /*$tdmExchangePrice = (float) $tdmProductsWithSameModel->price*$tdmCurrentExchange;*/
         $tdmExchangePrice = $this->getSSAPrice($tdmProductsWithSameModel->model,$tdmProductsWithSameModel->condition_id);
         if(!empty($tdmExchangePrice)){
@@ -345,9 +344,64 @@ class ProductHelper extends AbstractHelper
         $countryTable = $this->serviceLocator->get('RecyclerProductTable');
         return $countryTable->getProductsByCountryAndModelAndCondition($country_id,$model,$condition);
     }
+
+    /**
+     * @param $model
+     * @param null $condition
+     * @return mixed
+     */
     public function getSSAPrice($model,$condition = null)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         return $recyclerProductTable->getSSAPrice($model,$condition);
+    }
+
+    /**
+     * @param null $id
+     * @return mixed
+     */
+    public function getCurrency($id = null)
+    {
+        if($id == null){
+            if($this->hasData('product')){
+                $product = $this->getData('product');
+                return $product->currency;
+            }
+        }else{
+            $entry = $this->_recyclerProductTable->getEntry($id);
+            if(!empty($entry)){
+                return $entry->currency;
+            }
+        }
+    }
+    public function getBasePrice($id = null)
+    {
+        if($id == null){
+            if($this->hasData('product')){
+                $product = $this->getData('product');
+                return (float) $product->price;
+            }
+        }else{
+            $entry = $this->_recyclerProductTable->getEntry($id);
+            if(!empty($entry)){
+                return (float) $entry->price;
+            }
+        }
+    }
+
+    /**
+     * @param null $id
+     * @return float|int
+     */
+    public function getPrice($id = null)
+    {
+        $currency = $this->getCurrency($id);
+        $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($currency);
+        if(!empty($current_exchange)){
+            $price = $this->getBasePrice($id);
+            $exchange = $price/$current_exchange;
+            return round($exchange,2,PHP_ROUND_HALF_UP);
+        }
+        return 0;
     }
 }

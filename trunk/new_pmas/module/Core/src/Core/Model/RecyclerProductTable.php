@@ -245,7 +245,11 @@ class RecyclerProductTable extends AbstractModel
         if(!$row){
             return null;
         }
-        return $row->price;
+        $exchange = $this->serviceLocator->get('viewhelpermanager')->get('exchange')->getCurrentExchangeOfCurrency($row->currency);
+        $price = (float) $row->price;
+        $ssa = $price/$exchange;
+        return (float) $ssa;
+        /*return (float)round($ssa,2,PHP_ROUND_HALF_UP);*/
     }
     public function getTopPriceProductsByModel($model,$condition,$limit = 3)
     {
