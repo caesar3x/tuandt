@@ -20,10 +20,19 @@ class VirgoTranslate extends AbstractHelper
     {
         $this->serviceLocator = $serviceLocator;
     }
+
+    /**
+     * @return mixed
+     */
     public function getLangHelper()
     {
         return $this->serviceLocator->get('viewhelpermanager')->get('lang');
     }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
     public function __invoke($string)
     {
         $current_lang = $this->getLangHelper()->getLanguageSession();
