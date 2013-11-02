@@ -162,4 +162,7 @@ return array(
 
     'LOG_DELETE_RECYCLER_PRODUCT_SUCCESS' => 'Deleted recycler product success, ID#',
     'LOG_DELETE_RECYCLER_PRODUCT_FAIL' => 'Deleting recycler product fail, ID#',
+
+    'LOG_TDM_PRODUCT_IMPORT_SUCCESS' => 'Imported tdm models success',
+    'LOG_TDM_PRODUCT_IMPORT_FAIL' => 'Importing tdm models fail',
 );
