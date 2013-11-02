@@ -342,12 +342,11 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
-                'productType' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ProductTypeHelper();
-                    $viewHelper->setServiceLocator($serviceLocator);
-                    return $viewHelper;
-                },
+                'product_type' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\Product\Type($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'createPath' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\CreatePath();
@@ -360,12 +359,11 @@ class Module
                     $viewHelper->setServiceLocator($serviceLocator);
                     return $viewHelper;
                 },
-                'productBrand' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\ProductBrand();
-                    $viewHelper->setServiceLocator($serviceLocator);
-                    return $viewHelper;
-                },
+                'product_brand' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\Product\Brand($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'recyclerImported' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\RecyclerImportedHelper();

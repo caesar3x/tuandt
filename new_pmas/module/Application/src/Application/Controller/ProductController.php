@@ -13,7 +13,7 @@ use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
 use Core\Controller\AbstractController;
 use Core\Model\Brand;
-use Core\Model\CacheSerializer;
+use Core\Model\CreatePath;
 use Core\Model\ProductType;
 use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
@@ -474,7 +474,7 @@ class ProductController extends AbstractController
     }
     public function exportAction()
     {
-        $this->auth();
+        parent::initAction();
         $messages = $this->getMessages();
         $format = $this->params('format');
         if(!$format){
@@ -490,18 +490,16 @@ class ProductController extends AbstractController
         }
         $reyclerProductTable = $sm->get('RecyclerProductTable');
         $rowset = $this->productTable->getProductsFilter($ids);
-        $header = array('Product ID','Brand','Model','Product type','Country','SSA Price','Currency','Name','Condition');
+        $header = array('Product ID','Brand','Model','Product type','Country','Name','Condition');
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
                 $rowParse = array();
                 $rowParse[] = $row->product_id;
-                $rowParse[] = $viewhelperManager->get('ProductBrand')->implement($row->brand_id);
+                $rowParse[] = $viewhelperManager->get('product_brand')->getName($row->brand_id);
                 $rowParse[] = $row->model;
-                $rowParse[] = $viewhelperManager->get('ProductType')->implement($row->type_id);
+                $rowParse[] = $viewhelperManager->get('product_type')->getName($row->type_id);
                 $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
-                $rowParse[] = $reyclerProductTable->getSSAPrice($row->model,$row->condition_id);
-                $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
                 $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
                 $data[] = $rowParse;
@@ -529,6 +527,89 @@ class ProductController extends AbstractController
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_EXPORT_TDM_PRODUCTS_FAIL']);
             $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
             return $this->redirect()->toUrl('/product');
+        }
+        exit();
+    }
+    public function importAction()
+    {
+        parent::initAction();
+        $request = $this->getRequest();
+        $messages = $this->getMessages();
+        if($request->isPost()){
+            $post = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+            $path = getcwd() . "/upload/import";
+            CreatePath::createPath($path);
+            if(empty($post)){
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                return $this->redirect()->toUrl('/recycler');
+            }
+            if($post['upload_file']['name'] && trim($post['upload_file']['name']) != ''){
+                $ext = pathinfo($post['upload_file']['name'], PATHINFO_EXTENSION);
+                if (!file_exists($path .DIRECTORY_SEPARATOR . $post['upload_file']['name'])) {
+                    move_uploaded_file($post['upload_file']['tmp_name'], $path .DIRECTORY_SEPARATOR .$post['upload_file']['name'] );
+                }
+                $dataImport = array();
+                if(strtolower($ext) == 'xlsx'){
+                    $file = new \BasicExcel\Reader\Xlsx();
+                    $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
+                }elseif(strtolower($ext) == 'xls'){
+                    $file = new \BasicExcel\Reader\Xls();
+                    $file->read($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
+                }else{
+                    $file = new \BasicExcel\Reader\Csv();
+                    $file->load($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                    $dataImport = $file->toArray();
+                }
+                $dataParse = array();
+                $tdmProduct = new TdmProduct();
+                $tdmProductTable = $this->sm->get('TdmProductTable');
+                if(empty($dataImport)){
+                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    return $this->redirectUrl('/product/index');
+                }
+                $header = array();
+                $first = $dataImport[0];
+                foreach($first as $index=>$value){
+                    $header[$index] = $this->getViewHelperPlugin('core')->slugify($value);
+                }
+                /**
+                 * If header null, return
+                 */
+                if(empty($header)){
+                    exit();
+                }
+                foreach($dataImport as $i=>$row){
+                    if($i>0){
+                        $rowParse = array();
+                        $rowParse['brand'] = ($this->getViewHelperPlugin('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $this->getViewHelperPlugin('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
+                        $rowParse['model'] = $row[array_search('model',$header)];
+                        $rowParse['type_id'] = ($this->getViewHelperPlugin('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $this->getViewHelperPlugin('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
+                        $rowParse['country_id'] = ($this->getViewHelperPlugin('country')->getCountryNameById(trim($row[array_search('country',$header)])) != null) ? $this->getViewHelperPlugin('country')->getCountryNameById(trim($row[array_search('country',$header)])) : 0;
+                        $rowParse['name'] = $row[array_search('name',$header)];
+                        $rowParse['condition_id'] = ($this->getViewHelperPlugin('condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) != null) ? $this->getViewHelperPlugin('condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) : 0;
+                        $tdmProduct->exchangeArray($rowParse);
+                        $tdmProductTable->save($tdmProduct);
+                    }
+                }
+                /**
+                 * Delete upload file
+                 */
+                @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
+                $this->getViewHelperPlugin('user')->log('application\\product\\import',$messages['LOG_TDM_PRODUCT_IMPORT_SUCCESS']);
+                $this->addSuccessFlashMessenger($messages['UPLOAD_SUCCESS']);
+            }else{
+                $this->getViewHelperPlugin('user')->log('application\\product\\import',$messages['LOG_TDM_PRODUCT_IMPORT_FAIL']);
+                $this->addErrorFlashMessenger($messages['NO_DATA']);
+                return $this->redirectUrl('/product/index');
+            }
+            return $this->redirectUrl('/product/index');
+        }else{
+            return $this->redirectUrl('/product/index');
         }
         exit();
     }

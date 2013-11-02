@@ -11,16 +11,14 @@ $(function() {
             $("#chart-view").html('<div class="alert alert-info">Please choose currency</div>');
         }
     }
-    $(".uploadform").click(function(e){
-        e.stopPropagation();
-        if($("#import-format").length > 0){
-            var fileType = $("#import-format").val();
-            if(fileType == '' || fileType == null || fileType == 'Select format'){
-                bootbox.alert("You must select format type");
-                return true;
-            }else{
-                $.colorbox({inline:true,href:"#upload-form",width:"60%"});
-            }
+    $(document).on('click','.uploadform',function(e){
+        e.preventDefault();
+        var fileType = $("#import-format").val();
+        if(fileType == '' || fileType == null || fileType == 'Select format' || fileType == 'none'){
+            bootbox.alert("You must select format type");
+            return true;
+        }else{
+            $.colorbox({inline:true,href:"#upload-form",width:"60%"});
         }
     });
     /*$("#import-format").colorbox({inline:true, width:"60%"});*/

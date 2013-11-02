@@ -39,8 +39,8 @@
                                 <?php foreach($lastTdmProducts as $product):?>
                                     <tr onclick="window.location.assign('/product/detail/id/<?php echo $product->product_id?>')">
                                         <td><?php echo $product->name;?></td>
-                                        <td><?php echo $this->productBrand($product->brand_id)?></td>
-                                        <td><?php echo $this->productType($product->type_id)?></td>
+                                        <td><?php echo $this->product_brand()->getName($product->brand_id)?></td>
+                                        <td><?php echo $this->product_type()->getName($product->type_id)?></td>
                                     </tr>
                                 <?php endforeach;?>
                             <?php endif;?>

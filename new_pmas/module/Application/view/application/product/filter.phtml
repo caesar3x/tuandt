@@ -49,8 +49,8 @@
                                 <td><?php echo $_product->product_id?></td>
                                 <td><?php echo $_product->name;?></td>
                                 <td><?php echo $this->condition($_product->condition_id,false);?></td>
-                                <td><?php echo $this->productType($_product->type_id);?></td>
-                                <td><?php echo $this->productBrand($_product->brand_id);?></td>
+                                <td><?php echo $this->product_type()->getName($_product->type_id);?></td>
+                                <td><?php echo $this->product_brand()->getName($_product->brand_id);?></td>
                                 <!--process tdm exchange price here-->
                                 <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
                                 <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
@@ -70,8 +70,8 @@
                                 <td><?php echo $_product->product_id?></td>
                                 <td><?php echo $_product->name;?></td>
                                 <td><?php echo $this->condition($_product->condition_id,false);?></td>
-                                <td><?php echo $this->productType($_product->type_id);?></td>
-                                <td><?php echo $this->productBrand($_product->brand_id);?></td>
+                                <td><?php echo $this->product_type()->getName($_product->type_id);?></td>
+                                <td><?php echo $this->product_brand()->getName($_product->brand_id);?></td>
                                 <!--process tdm exchange price here-->
                                 <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
                                 <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>

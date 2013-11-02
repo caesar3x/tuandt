@@ -1,21 +1,20 @@
 <?php
 /**
  * Created by Nguyen Tien Dat.
- * Date: 9/18/13
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 11/2/13
  */
-namespace Core\View\Helper;
+namespace Core\View\Helper\Product;
 
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\Helper\AbstractHelper;
-class ProductTypeHelper extends AbstractHelper
+use Core\View\Helper\CoreHelper;
+
+class Type extends CoreHelper
 {
-    protected $serviceLocator;
-
-    public function setServiceLocator(ServiceManager $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-    public function __invoke($id = null)
+    /**
+     * @param null $id
+     * @return null
+     */
+    public function getName($id = null)
     {
         if(null == $id || $id == 0){
             return null;
@@ -23,11 +22,6 @@ class ProductTypeHelper extends AbstractHelper
         $typeTable = $this->serviceLocator->get('ProductTypeTable');
         return $typeTable->getTypeNameById($id);
     }
-    public function implement($id = null)
-    {
-        return $this->__invoke($id);
-    }
-
     /**
      * Get type name by id
      * @param $type_name

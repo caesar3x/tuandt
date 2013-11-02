@@ -408,9 +408,9 @@ class RecyclerController extends AbstractController
                     if($i>0){
                         $rowParse = array();
                         $rowParse['recycler_id'] = $recycler_id;
-                        $rowParse['brand_id'] = ($viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $viewhelperManager->get('ProductBrand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
+                        $rowParse['brand_id'] = ($viewhelperManager->get('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $viewhelperManager->get('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
                         $rowParse['model'] = $row[array_search('model',$header)];
-                        $rowParse['type_id'] = ($viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $viewhelperManager->get('ProductType')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
+                        $rowParse['type_id'] = ($viewhelperManager->get('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $viewhelperManager->get('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
                         $rowParse['date'] = $row[array_search('date',$header)];
                         $rowParse['price'] = $row[array_search('price',$header)];
                         $rowParse['currency'] = $row[array_search('currency',$header)];
@@ -737,9 +737,9 @@ class RecyclerController extends AbstractController
             foreach($recyclerProducts as $row){
                 $rowParse = array();
                 $rowParse[] = $row->recycler_id;
-                $rowParse[] = $viewhelperManager->get('ProductBrand')->implement($row->brand_id);
+                $rowParse[] = $viewhelperManager->get('product_brand')->getName($row->brand_id);
                 $rowParse[] = $row->model;
-                $rowParse[] = $viewhelperManager->get('ProductType')->implement($row->type_id);
+                $rowParse[] = $viewhelperManager->get('product_type')->getName($row->type_id);
                 $rowParse[] = $priceHelper->format($row->price);
                 $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
