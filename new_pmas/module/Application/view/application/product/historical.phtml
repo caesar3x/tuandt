@@ -76,18 +76,18 @@
                     $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
                     $data = array();
                     $data[] = array(
-                        'price' => $price*$exchangeAtStart,
+                        'price' => $price/$exchangeAtStart,
                         'time' => date('Y-m-d',$startTime)
                     );
                     $data[] = array(
-                        'price' => $price*$exchangeAtEnd,
+                        'price' => $price/$exchangeAtEnd,
                         'time' => date('Y-m-d',$endTime)
                     );
                     if(!empty($exchangeRates)){
                         foreach($exchangeRates as $exchange){
                             $rate = (float) $exchange->exchange_rate;
                             $data[] = array(
-                                'price' => $price*$rate,
+                                'price' => $price/$rate,
                                 'time' => date('Y-m-d',$exchange->time)
                             );
                         }
@@ -196,18 +196,18 @@
                     $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
                     $data = array();
                     $data[] = array(
-                        'price' => $price*$exchangeAtStart,
+                        'price' => $price/$exchangeAtStart,
                         'time' => date('Y-m-d',$startTime)
                     );
                     $data[] = array(
-                        'price' => $price*$exchangeAtEnd,
+                        'price' => $price/$exchangeAtEnd,
                         'time' => date('Y-m-d',$endTime)
                     );
                     if(!empty($exchangeRates)){
                         foreach($exchangeRates as $exchange){
                             $rate = (float) $exchange->exchange_rate;
                             $data[] = array(
-                                'price' => $price*$rate,
+                                'price' => $price/$rate,
                                 'time' => date('Y-m-d',$exchange->time)
                             );
                         }
@@ -317,11 +317,11 @@
                         $price = $this->product()->getRecyclerProductPrice($product_id);
                         $data[$product_id][] = array(
                             'time' => date('Y-m-d',$startTime),
-                            'price' => $exchangeAtStart*$price
+                            'price' => $exchangeAtStart/$price
                         );
                         $data[$product_id][] = array(
                             'time' => date('Y-m-d',$endTime),
-                            'price' => $exchangeAtEnd*$price
+                            'price' => $exchangeAtEnd/$price
                         );
                         foreach($rateArray as $key=>$price){
                             $item = array(

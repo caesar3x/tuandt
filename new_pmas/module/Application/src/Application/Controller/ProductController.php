@@ -408,13 +408,11 @@ class ProductController extends AbstractController
         $recyclerProductsWithSameModel = $recyclerProductTable->getRowsByModel($entry->model,$entry->condition_id);
         $messages = $this->getMessages();
         $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
-        $tdmCurrentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($entry->currency);
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
         if(is_numeric($filter)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
-            $price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
-            if(!empty($price)){
-                $tdmPriceExchange = $price*$tdmCurrentExchange;
+            $ssa_price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
+            if(!empty($ssa_price)){
                 /**
                  * Filter higher than 50%
                  */
@@ -422,9 +420,9 @@ class ProductController extends AbstractController
                     $products = array();
                     foreach($recyclerProductsWithSameModel as $product){
                         $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
-                        $priceExchange = (float) $product->price * $currentExchange;
-                        if($tdmPriceExchange != 0){
-                            $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
+                        $priceExchange = ((float) $product->price) / $currentExchange;
+                        if($ssa_price != 0){
+                            $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
                             if($percentage > $filter){
                                 $products[] = $product;
                             }
@@ -956,13 +954,13 @@ class ProductController extends AbstractController
                     if((int)$val['country_id'] == (int) $country){
                         $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime,$endTime);
                         if(!empty($rowset)){
-                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$rowset->exchange_rate);
                             $productsExchangeDate[$product_id] = $rowset->time;
                             $productsExchangeRate[$product_id] = $rowset->exchange_rate;
                         }else{
                             $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                             if(!empty($currentExchange)){
-                                $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                 $productsExchangeDate[$product_id] = $currentExchange->time;
                                 $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
                             }else{
@@ -1007,14 +1005,14 @@ class ProductController extends AbstractController
                         $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
                         if(!empty($rowset)){
                             foreach($rowset as $row){
-                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$row->exchange_rate);
                                 $productsExchangeRate[$product_id][] = $row->exchange_rate;
                                 $productsExchangeDate[$product_id][] = $row->time;
                             }
                         }else{
                             $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                             if(!empty($currentExchange)){
-                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                 $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
                                 $productsExchangeDate[$product_id][] = $currentExchange->time;
                             }else{
@@ -1072,14 +1070,14 @@ class ProductController extends AbstractController
                             $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
                             if(!empty($rowset)){
                                 foreach($rowset as $row){
-                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$row->exchange_rate);
                                     $productsExchangeRate[$product_id][] = $row->exchange_rate;
                                     $productsExchangeDate[$product_id][] = $row->time;
                                 }
                             }else{
                                 $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                                 if(!empty($currentExchange)){
-                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                     $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
                                     $productsExchangeDate[$product_id][] = $currentExchange->time;
                                 }else{
@@ -1217,13 +1215,13 @@ class ProductController extends AbstractController
                     if((int)$val['country_id'] == (int) $country){
                         $rowset = $exchangeTable->getHighestExchangeByCurrency($val['currency'],$startTime,$endTime);
                         if(!empty($rowset)){
-                            $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$rowset->exchange_rate);
+                            $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$rowset->exchange_rate);
                             $productsExchangeDate[$product_id] = $rowset->time;
                             $productsExchangeRate[$product_id] = $rowset->exchange_rate;
                         }else{
                             $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                             if(!empty($currentExchange)){
-                                $productsExchangePrice[$product_id] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangePrice[$product_id] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                 $productsExchangeDate[$product_id] = $currentExchange->time;
                                 $productsExchangeRate[$product_id] = $currentExchange->exchange_rate;
                             }else{
@@ -1308,14 +1306,14 @@ class ProductController extends AbstractController
                         $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
                         if(!empty($rowset)){
                             foreach($rowset as $row){
-                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$row->exchange_rate);
                                 $productsExchangeRate[$product_id][] = $row->exchange_rate;
                                 $productsExchangeDate[$product_id][] = $row->time;
                             }
                         }else{
                             $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                             if(!empty($currentExchange)){
-                                $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                 $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
                                 $productsExchangeDate[$product_id][] = $currentExchange->time;
                             }else{
@@ -1413,14 +1411,14 @@ class ProductController extends AbstractController
                             $rowset = $exchangeTable->getExchangeByCurrency($val['currency'],$startTime,$endTime);
                             if(!empty($rowset)){
                                 foreach($rowset as $row){
-                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$row->exchange_rate);
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$row->exchange_rate);
                                     $productsExchangeRate[$product_id][] = $row->exchange_rate;
                                     $productsExchangeDate[$product_id][] = $row->time;
                                 }
                             }else{
                                 $currentExchange = $exchangeTable->getCurrentExchangeOfCurrency($val['currency'],$startTime);
                                 if(!empty($currentExchange)){
-                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])*((float)$currentExchange->exchange_rate);
+                                    $productsExchangePrice[$product_id][] = ((float)$val['price'])/((float)$currentExchange->exchange_rate);
                                     $productsExchangeRate[$product_id][] = $currentExchange->exchange_rate;
                                     $productsExchangeDate[$product_id][] = $currentExchange->time;
                                 }else{

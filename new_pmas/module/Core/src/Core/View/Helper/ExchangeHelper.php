@@ -6,16 +6,15 @@
 namespace Core\View\Helper;
 
 use Zend\Debug\Debug;
+use Zend\Http\Request;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 
-class ExchangeHelper extends AbstractHelper
+class ExchangeHelper extends CoreHelper
 {
-    protected $serviceLocator;
-
-    public function setServiceLocator(ServiceManager $serviceLocator)
+    public function __construct(ServiceManager $serviceLocator,Request $request)
     {
-        $this->serviceLocator = $serviceLocator;
+        parent::__construct($serviceLocator,$request);
     }
 
     /**

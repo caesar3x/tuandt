@@ -74,31 +74,26 @@
                         <td><?php echo $this->productBrand($row->brand_id)?></td>
                         <?php
                         $data = array();
-                        $price = (float) $this->product()->getSSAPrice($row->model,$row->condition_id);
-                        if(!empty($price)):
-                        $tdmCurrentExchange = $this->exchange()->getCurrentExchangeOfCurrency($row->currency);
-                        $tdmPriceExchange = $price*$tdmCurrentExchange;
+                        $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
+                        if(!empty($ssa_price)):
                         ?>
-                        <td><?php echo $this->price()->formatCurrency($tdmPriceExchange,'HKD')?></td>
+                        <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
                         <?php
-                        $model = $row->model;
-                        if($model != null && $model != ''){
-                            $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($model,$row->condition_id);
-                            if(!empty($recyclerProducts)){
-                                foreach($recyclerProducts as $rp){
-                                    $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
-                                    $priceExchange = (float) $rp->price * $currentExchange;
-                                    if($tdmPriceExchange != 0){
-                                        $percentage = (($priceExchange-$tdmPriceExchange)/$tdmPriceExchange)*100;
-                                    }else{
-                                        $percentage = 'N/A';
-                                    }
-                                    $data[] = array(
-                                        'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                        'price' => $priceExchange,
-                                        'percentag' => $percentage,
-                                    );
+                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
+                        if(!empty($recyclerProducts)){
+                            foreach($recyclerProducts as $rp){
+                                $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
+                                $priceExchange = ((float) $rp->price )/ $currentExchange;
+                                if($ssa_price != 0){
+                                    $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                                }else{
+                                    $percentage = 'N/A';
                                 }
+                                $data[] = array(
+                                    'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                    'price' => $priceExchange,
+                                    'percentag' => $percentage,
+                                );
                             }
                         }
                         endif;
@@ -137,7 +132,7 @@
                         <?php endif;?>
                         <?php ?>
                         <td class="action3">
-                            <a class="btn btn-xs btn-primary btn-edit" href="/product/detail/id/<?php echo $row->product_id?>">
+                            <a class="btn btn-xs btn-primary btn-edit" href="<?php echo $this->getUrl('product/detail/id/'.$row->product_id)?>">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 <?php echo $this->__('Detail')?>
                             </a>
