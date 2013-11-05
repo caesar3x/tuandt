@@ -5,8 +5,15 @@
  * Date: 11/5/13
  */
 ?>
+<?php echo  $this->pageCount.'--';?>
+<?php echo  $this->lastPageInRange.'--';?>
 <?php if ($this->pageCount): ?>
+    <?php $totalItemCount = $this->totalItemCount;?>
+    <?php $currentItemCount = $this->currentItemCount;?>
     <div class="pull-right">
+        <div class="pull-left showing_label">
+            <span class="control-label"><?php echo $this->__('Showing '.$currentItemCount.' of '.$totalItemCount.' records')?></span>
+        </div>
         <div class="item_per_page btn-group pull-left">
             <select class="form-control" id="item-per-page">
                 <?php $options = $this->core()->getPaginationOptions()?>
@@ -35,7 +42,7 @@
             <?php endforeach; ?>
             <?php if($this->pageCount > 9):?>
                 <li class=""><span>-</span></li>
-                <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->lastPageInRange)); ?>"><span><?php echo $this->lastPageInRange?></span></a></li>
+                <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->last)); ?>"><span><?php echo $this->last?></span></a></li>
             <?php endif;?>
             <?php if (isset($this->next)): ?>
                 <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->next)); ?>"><span>&raquo;</span></a></li>
@@ -43,5 +50,5 @@
                 <li class="disabled"><span>&raquo;</span></li>
             <?php endif; ?>
         </ul>
-    </div>
 <?php endif; ?>
+    </div>
