@@ -33,7 +33,22 @@ $(function() {
         },
         "sPaginationType": "full_numbers"
     } );
-    $(".example").each(function(){
+    var oTable2 = $('.withphp').dataTable( {
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ 0 ] }
+        ],
+        "aaSorting": [[1, 'asc']],
+        "oLanguage": {
+            "sSearch": "Search all columns:"
+        },
+        "sPaginationType": "full_numbers",
+        "aLengthMenu": [[30, 50, 100, 200, 1000 , -1], [30, 50, 100, 200, 1000 , "All"]],
+        "iDisplayLength": 30,
+        "bLengthChange" : false,
+        "bPaginate" : false,
+        "bInfo" : false
+    } );
+    $(".example,.withphp").each(function(){
         var thead = $(this).find('thead');
         var trLeng = thead.find("tr:first > th").length;
         if(trLeng > 0){
@@ -53,6 +68,7 @@ $(function() {
     $(".tr-search input").keyup( function () {
         /* Filter on the column (the index) of this element */
         oTable.fnFilter( this.value, $(".tr-search input").index(this) );
+        oTable2.fnFilter( this.value, $(".tr-search input").index(this) );
     } );
 
     /*
