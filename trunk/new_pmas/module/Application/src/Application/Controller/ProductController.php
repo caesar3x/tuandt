@@ -18,6 +18,8 @@ use Core\Model\ProductType;
 use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\Digits;
 use Zend\Validator\NotEmpty;
@@ -47,14 +49,24 @@ class ProductController extends AbstractController
 
     public function indexAction()
     {
-        $this->auth();
-        $view = new ViewModel();
-        $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
-        $rowset = $tdmProductTable->getAvaiableRows();
-        $view->setVariable('rowset',$rowset);
+        parent::initAction();
+        $request = $this->getRequest();
+        $ppp = $request->getQuery('ppp');
+        if(!empty($ppp)){
+            $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
+        }
+        $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
+        $page = trim($this->params('page',1),'/');
+        $tdmProductTable = $this->sm->get('TdmProductTable');
+        $select = $tdmProductTable->getTdmProductQuery();
+        $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+        $paginator = new Paginator(new DbSelect($select,$dbAdapter));
+        $paginator->setItemCountPerPage($item_per_page);
+        $paginator->setCurrentPageNumber($page);
+        $this->setViewVariable('paginator', $paginator);
         $country = $this->params('country',null);
         $this->setViewVariable('country',$country);
-        return $view;
+        return $this->view;
     }
     public function filterAction()
     {

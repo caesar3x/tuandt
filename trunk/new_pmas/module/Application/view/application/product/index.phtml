@@ -57,7 +57,7 @@
             </a>
         </div>
         <div class="row clearfix">&nbsp;</div>
-        <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0">
+        <table class="display table table-striped table-condensed table-bordered" cellpadding="0" cellspacing="0">
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
@@ -80,8 +80,8 @@
             </tr>
             </thead>
             <tbody>
-            <?php if(!empty($this->rowset)):?>
-                <?php foreach($this->rowset as $row):?>
+            <?php if(count($this->paginator)):?>
+                <?php foreach($this->paginator as $row):?>
                     <tr>
                         <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
                         <td><?php echo $row->product_id?></td>
@@ -167,6 +167,9 @@
             <?php endif;?>
             </tbody>
         </table>
+        <?php echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'paginator_style_1', array('route' => 'product-index')); ?>
     </div>
 </form>
 <div style="display: none">

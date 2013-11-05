@@ -6,6 +6,7 @@
 namespace Core\Model;
 
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 use Zend\Debug\Debug;
 
 class TdmProductTable extends AbstractModel
@@ -35,6 +36,18 @@ class TdmProductTable extends AbstractModel
         }
     }
 
+    /**
+     * @return Select
+     */
+    public function getTdmProductQuery()
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('deleted' => 0));
+        $select->order('product_id DESC');
+        return $select;
+    }
     /**
      * @param $id
      * @return int
