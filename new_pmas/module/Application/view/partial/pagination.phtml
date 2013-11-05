@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 11/5/13
+ */
+?>
+<?php if ($this->pageCount): ?>
+    <div class="pull-right">
+        <div class="item_per_page btn-group pull-left">
+            <select class="form-control" id="item-per-page">
+                <?php $options = $this->core()->getPaginationOptions()?>
+                <?php $ppp = $this->core()->getItemPerPage()?>
+                <?php if(!empty($options)):?>
+                <?php foreach($options as $option):?>
+                    <option <?php if($ppp == $option){echo 'selected';}?> value="<?php echo $option?>"><?php echo $option?></option>
+                <?php endforeach;?>
+                <?php endif;?>
+            </select>
+        </div>
+        <ul class="pagination">
+            <?php if (isset($this->previous)): ?>
+                <li class=""><span><a href="<?php echo $this->url($this->route, array('page' => $this->previous)); ?>">&laquo;</a></span></li>
+            <?php else: ?>
+                <li class="disabled"><span>&laquo;</span></li>
+            <?php endif; ?>
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <li class=""><a href="<?php echo $this->url($this->route, array('page' => $page)); ?>"><span><?php echo $page; ?></span></a></li>
+                <?php else: ?>
+                    <li class="active"><a href="#"><?php echo $page; ?> <span class="sr-only">(current)</span></a></li>
+                <?php endif; ?>
+                <?php if($page > 9){break;}?>
+            <?php endforeach; ?>
+            <?php if($this->pageCount > 9):?>
+                <li class=""><span>-</span></li>
+                <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->lastPageInRange)); ?>"><span><?php echo $this->lastPageInRange?></span></a></li>
+            <?php endif;?>
+            <?php if (isset($this->next)): ?>
+                <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->next)); ?>"><span>&raquo;</span></a></li>
+            <?php else: ?>
+                <li class="disabled"><span>&raquo;</span></li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>

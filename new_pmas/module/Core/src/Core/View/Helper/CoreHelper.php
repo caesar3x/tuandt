@@ -6,11 +6,14 @@
  */
 namespace Core\View\Helper;
 
+use Zend\Db\Adapter\ParameterContainer;
 use Zend\Http\Request;
 use Zend\Json\Json;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Session\Container;
+use Zend\Session\SessionManager;
 use Zend\View\Helper\AbstractHelper;
 
 class CoreHelper extends AbstractHelper
@@ -1036,5 +1039,25 @@ class CoreHelper extends AbstractHelper
         $logger = new Logger();
         $logger->addWriter($writer);
         $logger->debug($message);
+    }
+    public function setItemPerPage($ppp)
+    {
+        $ppp = (int) $ppp;
+        $session = new Container('post');
+        $session->item_per_page = $ppp;
+        return false;
+    }
+    public function getItemPerPage()
+    {
+        $session = new Container('post');
+        if(!empty($session->item_per_page)){
+            return $session->item_per_page;
+        }else{
+            return 30;
+        }
+    }
+    public function getPaginationOptions()
+    {
+        return array(30,50,100,200,1000);
     }
 }

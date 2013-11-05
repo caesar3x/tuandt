@@ -21,6 +21,9 @@
         <!-- Scripts -->
         <script type="text/javascript">
             var siteurl = '<?php echo $this->getUrl();?>';
+            var currentroute = '<?php echo $this->getUrl($this->url())?>';
+            var currenturl = '<?php echo $this->core()->getCurrentUrl()?>';
+            var currentpath = '<?php echo $this->core()->getCurrentPath()?>';
         </script>
         <?php echo $this->headScript()
             ->prependFile($this->getUrl('js/pmas.js'))

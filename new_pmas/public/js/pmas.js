@@ -126,6 +126,13 @@ $(function() {
             window.location.assign(siteurl+'language/change/lang/'+$(this).val()+'?referer='+currenturl);
         }
     });
+    /**
+     * save session item per page
+     */
+    $(document).on('change','#item-per-page',function(e){
+        e.preventDefault();
+        window.location.assign(currentpath+'?ppp='+$(this).val());
+    });
 } );
 function formSaveAndContinue(id)
 {
