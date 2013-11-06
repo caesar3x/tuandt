@@ -560,9 +560,8 @@ class ProductController extends AbstractController
             }
             if($post['upload_file']['name'] && trim($post['upload_file']['name']) != ''){
                 $ext = pathinfo($post['upload_file']['name'], PATHINFO_EXTENSION);
-                if (!file_exists($path .DIRECTORY_SEPARATOR . $post['upload_file']['name'])) {
-                    move_uploaded_file($post['upload_file']['tmp_name'], $path .DIRECTORY_SEPARATOR .$post['upload_file']['name'] );
-                }
+                $filename = $this->getViewHelperPlugin('Files')->getFilenameUnique($post['upload_file']['name'],$path);
+                move_uploaded_file($post['upload_file']['tmp_name'], $path .DIRECTORY_SEPARATOR .$filename);
                 $dataImport = array();
                 if(strtolower($ext) == 'xlsx'){
                     $file = new \BasicExcel\Reader\Xlsx();
@@ -595,15 +594,17 @@ class ProductController extends AbstractController
                 if(empty($header)){
                     exit();
                 }
+                $data = array();
                 foreach($dataImport as $i=>$row){
                     if($i>0){
                         $rowParse = array();
-                        $rowParse['brand'] = ($this->getViewHelperPlugin('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $this->getViewHelperPlugin('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
-                        $rowParse['model'] = $row[array_search('model',$header)];
-                        $rowParse['type_id'] = ($this->getViewHelperPlugin('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $this->getViewHelperPlugin('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
-                        $rowParse['country_id'] = ($this->getViewHelperPlugin('country')->getCountryNameById(trim($row[array_search('country',$header)])) != null) ? $this->getViewHelperPlugin('country')->getCountryNameById(trim($row[array_search('country',$header)])) : 0;
-                        $rowParse['name'] = $row[array_search('name',$header)];
-                        $rowParse['condition_id'] = ($this->getViewHelperPlugin('condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) != null) ? $this->getViewHelperPlugin('condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) : 0;
+                        $rowParse['brand'] = (array_search('brand',$header) != null) ? (int) $this->getViewHelperPlugin('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
+                        $rowParse['model'] = (array_search('model',$header)!= null)  ? $row[array_search('model',$header)] : null;
+                        $rowParse['type_id'] = (array_search('product-type',$header) != null) ? (int) $this->getViewHelperPlugin('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
+                        $rowParse['country_id'] = (array_search('country',$header) != null) ? (int)$this->getViewHelperPlugin('country')->getCountryNameById(trim($row[array_search('country',$header)])) : 0;
+                        $rowParse['name'] = (array_search('name',$header) != null) ? $row[array_search('name',$header)] : null;
+                        $rowParse['condition_id'] = (array_search('condition',$header) != null) ? (int)$this->getViewHelperPlugin('condition')->getRecyclerConditionIdByName(trim($row[array_search('condition',$header)])) : 0;
+                        $data[] = $rowParse;
                         $tdmProduct->exchangeArray($rowParse);
                         $tdmProductTable->save($tdmProduct);
                     }
