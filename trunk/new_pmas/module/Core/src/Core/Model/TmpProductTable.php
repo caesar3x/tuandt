@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Sql;
+
 class TmpProductTable extends AbstractModel
 {
     public function getEntry($id)
@@ -49,7 +51,15 @@ class TmpProductTable extends AbstractModel
         }
         return $rowset;
     }
-
+    public function getRowsByRecyclerIdQuery($recycler_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('recycler_id' => $recycler_id,'deleted' => 0));
+        $select->order('id DESC');
+        return $select;
+    }
     /**
      * @param $recycler_id
      * @return int

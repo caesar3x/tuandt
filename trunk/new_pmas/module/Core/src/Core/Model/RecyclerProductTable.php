@@ -170,6 +170,23 @@ class RecyclerProductTable extends AbstractModel
         }
         return $rowset;
     }
+
+    /**
+     * Get select products by recycler id query
+     * @param $recycler_id
+     * @return \Zend\Db\Sql\Select
+     */
+    public function getProductsByRecyclerQuery($recycler_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('recycler_id',$recycler_id);
+        $select->where($where);
+        return $select;
+    }
     /**
      * @param $model
      * @return null|\Zend\Db\ResultSet\ResultSet
