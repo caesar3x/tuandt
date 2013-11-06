@@ -212,7 +212,22 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
-
+    public function getRowsByModelQuery($model,$condition)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        $select->where($where);
+        return $select;
+    }
     /**
      * @param $model
      * @param $condition
@@ -367,6 +382,28 @@ class RecyclerProductTable extends AbstractModel
             return null;
         }
         return $result;
+    }
+    public function getProductsByCountryAndModelAndConditionQuery($country_id,$model,$condition)
+    {
+        if(!$country_id || $country_id == null || !$model || $model==null || !$condition || $condition == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('r' => 'recycler'));
+        $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
+        $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
+        $where = new Where();
+        $where->equalTo('r.country_id',$country_id);
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('c.deleted',0);
+        $where->equalTo('r.deleted',0);
+        $where->greaterThan('r.recycler_id',1);
+        /*$select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
+        $select->where($where);
+        return $select;
     }
     /**
      * @param $ids
