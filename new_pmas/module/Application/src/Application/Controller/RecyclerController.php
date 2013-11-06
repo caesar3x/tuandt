@@ -26,6 +26,8 @@ use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer;
 use Zend\Debug\Debug;
 
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\EmailAddress;
 use Zend\Validator\NotEmpty;
@@ -143,7 +145,7 @@ class RecyclerController extends AbstractController
     }
     public function detailAction()
     {
-        $this->auth();
+        parent::initAction();
         $messages = $this->getMessages();
         $request = $this->getRequest();
         $sm = $this->getServiceLocator();
@@ -216,21 +218,38 @@ class RecyclerController extends AbstractController
                 return $view;
             }
         }else{
+            $ppp = $request->getQuery('ppp');
+            if(!empty($ppp)){
+                $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
+            }
+            $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
+            $page = trim($this->params('page',null),'/');
+            $currentPage = ($page != null) ? $page : 1;
+            $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
             $entryArray = (array) $entry;
             $form->setData($entryArray);
             $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
+            $reyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+            $productsInRecyclerQuery = $reyclerProductTable->getProductsByRecyclerQuery($id);
             $upload = $this->params('upload');
             if(!$upload){
                 $tmpProductTable->deleteByRecyclerId($id);
+                $productsInRecycler = new Paginator(new DbSelect($productsInRecyclerQuery,$dbAdapter));
+                $productsInRecycler->setItemCountPerPage($item_per_page);
+                $productsInRecycler->setCurrentPageNumber($currentPage);
+                $view->setVariable('products',$productsInRecycler);
+            }else{
+                $productsInRecyclerQuery = $tmpProductTable->getRowsByRecyclerIdQuery($id);
+                $productsInRecycler = new Paginator(new DbSelect($productsInRecyclerQuery,$dbAdapter));
+                $productsInRecycler->setItemCountPerPage($item_per_page);
+                $productsInRecycler->setCurrentPageNumber($currentPage);
+                $view->setVariable('tmpProducts',$productsInRecycler);
             }
             $from = $request->getQuery('from');
-            $tmpProducts = $tmpProductTable->getRowsByRecyclerId($id);
-            $reyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-            $productsInRecycler = $reyclerProductTable->getProductsByRecycler($id);
-            $view->setVariable('tmpProducts',$tmpProducts);
-            $view->setVariable('products',$productsInRecycler);
             $view->setVariable('upload',$upload);
             $view->setVariable('from',$from);
+            $view->setVariable('page',$page);
+            $view->setVariable('ppp',$ppp);
         }
         $view->setVariable('form',$form);
         return $view;

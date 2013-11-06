@@ -69,6 +69,38 @@ return array(
                     ),
                 ),
             ),
+            'recycler-detail' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/recycler/detail[/id/:id/page/:page[/]]',
+                    'constraints' => array(
+                        'id'      => '(.*)',
+                        'params'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Application\Controller\Recycler',
+                        'action'     => 'detail'
+                    ),
+                ),
+            ),
+            'recycler-detail-upload' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/recycler/detail[/id/:id/upload/success/page/:page[/]]',
+                    'constraints' => array(
+                        'id'      => '(.*)',
+                        'upload'      => 'success',
+                        'page'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Application\Controller\Recycler',
+                        'action'     => 'detail',
+                        'upload'    => 'success'
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -124,6 +156,7 @@ return array(
             'admin/breadcrumbs'       => __DIR__ . '/../view/partial/breadcrumbs.phtml',
             'admin/topmenu'           => __DIR__ . '/../view/partial/menu.phtml',
             'paginator_style_1'           => __DIR__ . '/../view/partial/pagination.phtml',
+            'paginator_style_2'           => __DIR__ . '/../view/partial/pagination2.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'application/admin/index' => __DIR__ . '/../view/application/admin/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',

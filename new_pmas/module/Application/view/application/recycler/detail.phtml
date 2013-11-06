@@ -9,7 +9,7 @@ $temp_ids = $this->recyclerImported()->getAllTempProductInRecycler($this->id);
 $upload = $this->upload;
 $from = $this->from;
 ?>
-<?php if($upload == 'success' || $from == 'delete'):?>
+<?php if($upload == 'success' || $from == 'delete' || !empty($this->ppp) || !empty($this->page)):?>
     <script type="text/javascript">
         $(function(){
             $('a[href=#product-model]').tab('show');
@@ -162,7 +162,7 @@ $from = $this->from;
                             <?php endif;?>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
-                        <table class="display table table-striped table-condensed table-bordered example" id="model-table" cellpadding="0" cellspacing="0">
+                        <table class="display table table-striped table-condensed table-bordered withphp" id="model-table" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
@@ -179,7 +179,7 @@ $from = $this->from;
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if(!empty($this->products)):?>
+                            <?php if(count($this->products)):?>
                             <?php foreach($this->products as $product):?>
                                 <tr>
                                     <td class="col-checkbox"><input value="<?php echo $product->product_id?>" type="checkbox" name="recycler_products[]" class="recycler-product check-item"></td>
@@ -207,11 +207,12 @@ $from = $this->from;
                                 </tr>
                             <?php endforeach;?>
                             <?php endif;?>
-                            <?php if(!empty($this->tmpProducts)):?>
+                            <?php if(count($this->tmpProducts)):?>
                             <?php $i =1;?>
                             <?php foreach($this->tmpProducts as $row):?>
                                 <tr>
                                     <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" <?php if(!empty($temp_ids) && in_array($row->id,$temp_ids)){echo 'checked';}?> value="<?php echo $row->id?>"></td>
+                                    <td><?php echo $i++?></td>
                                     <td><?php echo $row->name?></td>
                                     <td><?php echo $this->condition($row->condition_id,false)?></td>
                                     <td><?php echo $row->date?></td>
@@ -239,6 +240,15 @@ $from = $this->from;
                             <?php endif;?>
                             </tbody>
                         </table>
+                        <?php if(count($this->tmpProducts)):?>
+                            <?php echo $this->paginationControl($this->tmpProducts,
+                                'Sliding',
+                                'paginator_style_2', array('route' => 'recycler-detail-upload','id' => $this->id)); ?>
+                        <?php elseif(count($this->products)):?>
+                            <?php echo $this->paginationControl($this->products,
+                                'Sliding',
+                                'paginator_style_2', array('route' => 'recycler-detail','id' => $this->id)); ?>
+                        <?php endif?>
                     </div>
                 </div>
             </div>
