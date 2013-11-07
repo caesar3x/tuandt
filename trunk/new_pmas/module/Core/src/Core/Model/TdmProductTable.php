@@ -54,7 +54,8 @@ class TdmProductTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
+        /*return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));*/
+        return $this->tableGateway->delete(array('product_id' => $id));
     }
     /**
      * Delete by country id
