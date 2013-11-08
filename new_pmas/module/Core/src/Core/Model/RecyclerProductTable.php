@@ -356,6 +356,23 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
+    public function getProductsByCountryQuery($country_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('r' => 'recycler'))->columns(array('rid' => 'recycler_id'));
+        $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
+        $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
+        $where = new Where();
+        $where->equalTo('r.country_id',$country_id);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('c.deleted',0);
+        $where->equalTo('r.deleted',0);
+        $where->greaterThan('r.recycler_id',1);
+        /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
+        $select->where($where);
+        return $select;
+    }
     public function getProductsByCountryAndModelAndCondition($country_id,$model,$condition)
     {
         if(!$country_id || $country_id == null || !$model || $model==null || !$condition || $condition == null){

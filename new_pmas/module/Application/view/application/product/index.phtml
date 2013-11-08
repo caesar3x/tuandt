@@ -38,6 +38,10 @@
                 <i class="glyphicon glyphicon-upload"></i>
                 <?php echo $this->__('Import')?>
             </a>
+            <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+            </div>
         </div>
         <div class="pull-right">
             <a class="btn">

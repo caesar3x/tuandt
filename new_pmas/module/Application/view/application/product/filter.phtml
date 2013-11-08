@@ -4,86 +4,136 @@
  * Date: 9/13/13
  */
 ?>
-<?php $higher = $this->higher;?>
 <div class="page-header">
     <div class="pull-left">
-        <?php if(is_numeric($higher)):?>
-        <h3><?php echo $this->__('Models Filtered With Price Higher Than').' '.$higher.'%'?></h3>
-        <?php elseif(is_numeric($this->country)):?>
-        <h3><?php echo $this->__('Models Filtered With Country').' '.$this->country($this->country)?></h3>
-        <?php endif;?>
-    </div>
-    <div class="pull-right">
-        <a href="<?php echo $this->getUrl('product')?>" class="btn btn-success btn-sm add-item"><i class="glyphicon glyphicon-arrow-left"><?php echo $this->__('Back')?></i></a>
+        <h3><?php echo $this->__('Models')?></h3>
     </div>
     <div class="clearfix"></div>
 </div>
-<form id="model" action="<?php echo $this->getUrl('/product/delete')?>" method="post" enctype="multipart/form-data">
-    <div class="row">
-        <table class="display table table-striped table-condensed table-bordered example" id="example" cellpadding="0" cellspacing="0">
-            <thead>
-            <tr>
-                <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->__('Product Id')?></th>
-                <th><?php echo $this->__('Product Name')?></th>
-                <th><?php echo $this->__('Condition')?></th>
-                <th><?php echo $this->__('Product Type')?></th>
-                <th><?php echo $this->__('Brand')?></th>
-                <th><?php echo $this->__('SSA Price')?></th>
-                <th><?php echo $this->__('Recycler Name')?></th>
-                <th><?php echo $this->__('Recycler Price')?></th>
-                <th><?php echo $this->__('Price in HKD')?></th>
-                <th><?php echo $this->__('Percentage')?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php if(!empty($this->rowset)):?>
-                <?php if(is_numeric($higher)):?>
-                <?php ?>
-                    <?php foreach($this->rowset as $_product):?>
-                        <?php $data = $this->product()->filterHigherProduct($_product,$higher);?>
-                        <?php if(!empty($data)):?>
-                            <?php ?>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
-                                <td><?php echo $_product->product_id?></td>
-                                <td><?php echo $_product->name;?></td>
-                                <td><?php echo $this->condition($_product->condition_id,false);?></td>
-                                <td><?php echo $this->product_type()->getName($_product->type_id);?></td>
-                                <td><?php echo $this->product_brand()->getName($_product->brand_id);?></td>
-                                <!--process tdm exchange price here-->
-                                <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
-                                <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
-                                <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
-                                <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
-                                <td><?php echo $this->price()->format($data['percentage']).' %';?></td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach;?>
-                <?php elseif(is_numeric($this->country)):?>
-                    <?php foreach($this->rowset as $_product):?>
-                        <?php $data = $this->product()->filterCountryProduct($_product);?>
-                        <?php if(!empty($data)):?>
-                            <?php ?>
-                            <tr>
-                                <td class="col-checkbox"><input type="checkbox" class="check-item" value="<?php echo $_product->product_id?>"></td>
-                                <td><?php echo $_product->product_id?></td>
-                                <td><?php echo $_product->name;?></td>
-                                <td><?php echo $this->condition($_product->condition_id,false);?></td>
-                                <td><?php echo $this->product_type()->getName($_product->type_id);?></td>
-                                <td><?php echo $this->product_brand()->getName($_product->brand_id);?></td>
-                                <!--process tdm exchange price here-->
-                                <td><?php echo  $this->price()->formatCurrency($data['tdmExchangePrice'],'HKD')?></td>
-                                <td><?php echo $this->recycler()->getName($_product->recycler_id)?></td>
-                                <td><?php echo $this->price()->formatCurrency($_product->price,$_product->currency);?></td>
-                                <td><?php echo $this->price()->formatCurrency($this->price()->getExchange($_product->price,$_product->currency),'HKD')?></td>
-                                <td><?php echo $this->price()->format($data['percentage']);?></td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach;?>
-                <?php endif;?>
-
-            <?php endif;?>
-        </table>
+<div class="row">
+    <div class="pull-left">
+        <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+        <div class="btn-group">
+            <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+        </div>
     </div>
-</form>
+    <div class="pull-right">
+        <a class="btn btn-success btn-sm" href="<?php echo $this->getUrl('product')?>"><span><?php echo $this->__('Back')?></span></a>
+    </div>
+    <div class="row clearfix">&nbsp;</div>
+    <table class="display table table-striped table-condensed table-bordered withphp" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+            <th><?php echo $this->__('ID')?></th>
+            <th><?php echo $this->__('Name')?></th>
+            <th><?php echo $this->__('Condition')?></th>
+            <th><?php echo $this->__('Type')?></th>
+            <th><?php echo $this->__('Brand')?></th>
+            <th><?php echo $this->__('Country')?></th>
+            <th><?php echo $this->__('SSA Price')?></th>
+            <th><?php echo $this->__('Recycler 1')?></th>
+            <th><?php echo $this->__('Price in HKD 1')?></th>
+            <th><?php echo $this->__('Percentage 1')?></th>
+            <th><?php echo $this->__('Recycler 2')?></th>
+            <th><?php echo $this->__('Price in HKD 2')?></th>
+            <th><?php echo $this->__('Percentage 2')?></th>
+            <th><?php echo $this->__('Recycler 3')?></th>
+            <th><?php echo $this->__('Price in HKD 3')?></th>
+            <th><?php echo $this->__('Percentage 3')?></th>
+            <th class="action3"><?php echo $this->__('Action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(count($this->paginator)):?>
+            <?php foreach($this->paginator as $row):?>
+                <tr>
+                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
+                    <td><?php echo $row->product_id?></td>
+                    <td><?php echo $row->name?></td>
+                    <td><?php echo $this->condition($row->condition_id)?></td>
+                    <td><?php echo $this->product_type()->getName($row->type_id)?></td>
+                    <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
+                    <td><?php echo $this->country($row->country_id)?></td>
+                    <?php
+                    $data = array();
+                    $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
+                    if(!empty($ssa_price)):
+                        ?>
+                        <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
+                        <?php
+                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
+                        if(!empty($recyclerProducts)){
+                            foreach($recyclerProducts as $rp){
+                                $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
+                                $priceExchange = ((float) $rp->price )/ $currentExchange;
+                                if($ssa_price != 0){
+                                    $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                                }else{
+                                    $percentage = 'N/A';
+                                }
+                                $data[] = array(
+                                    'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                    'price' => $priceExchange,
+                                    'percentag' => $percentage,
+                                );
+                            }
+                        }
+                    endif;
+                    ?>
+                    <?php if(!empty($data)):?>
+                        <?php $i=0;foreach($data as $item):?>
+                            <td><?php echo $item['recycler']?></td>
+                            <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
+                            <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
+                            <?php $i++;?>
+                        <?php endforeach;?>
+                        <?php if($i==1):?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php elseif($i==2):?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php endif;?>
+                        <?php ?>
+                    <?php else:?>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    <?php endif;?>
+                    <?php ?>
+                    <td class="action3">
+                        <a class="btn btn-xs btn-primary btn-edit" href="<?php echo $this->getUrl('product/detail/id/'.$row->product_id)?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->__('Detail')?>
+                        </a>
+                        <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->__('Edit')?>
+                        </a>
+                        <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <?php echo $this->__('Delete')?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        <?php endif;?>
+        </tbody>
+    </table>
+    <?php echo $this->paginationControl($this->paginator,
+        'Sliding',
+        'paginator_style_3', array('route' => 'product-filter-country','country' => $this->country)); ?>
+</div>

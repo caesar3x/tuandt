@@ -69,6 +69,22 @@ return array(
                     ),
                 ),
             ),
+            'product-filter-country' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/product/filter[/country/:country/page/:page[/]]',
+                    'constraints' => array(
+                        'page'      => '(.*)',
+                        'country'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Application\Controller\Product',
+                        'action'     => 'filter',
+                        'country'   => ':country'
+                    ),
+                ),
+            ),
             'recycler-detail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -157,6 +173,7 @@ return array(
             'admin/topmenu'           => __DIR__ . '/../view/partial/menu.phtml',
             'paginator_style_1'           => __DIR__ . '/../view/partial/pagination.phtml',
             'paginator_style_2'           => __DIR__ . '/../view/partial/pagination2.phtml',
+            'paginator_style_3'           => __DIR__ . '/../view/partial/pagination3.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'application/admin/index' => __DIR__ . '/../view/application/admin/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
