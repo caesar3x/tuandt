@@ -71,25 +71,35 @@ class ProductController extends AbstractController
     }
     public function filterAction()
     {
-        $this->auth();
-        $view = new ViewModel();
+        parent::initAction();
         $higher = $this->params('higher',null);
         $country = $this->params('country',null);
-        $view->setVariable('higher',$higher);
-        $view->setVariable('country',$country);
+        $this->setViewVariable('higher',$higher);
+        $this->setViewVariable('country',$country);
         $messages = $this->getMessages();
-        $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
-        $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
+        $this->getViewHelperPlugin('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
+        $recyclerProductTable = $this->sm->get('RecyclerProductTable');
         if($higher != null){
-            $rowset = $recyclerProductTable->getAvaiableRows();
+            $select = $recyclerProductTable->getAvaiableRows();
         }elseif($country != null){
-            $rowset = $recyclerProductTable->getProductsByCountry($country);
+            $select = $recyclerProductTable->getProductsByCountryQuery($country);
             /*foreach($rowset as $row){
                 Debug::dump($row);
             }*/
         }
-        $view->setVariable('rowset',$rowset);
-        return $view;
+        $request = $this->getRequest();
+        $ppp = $request->getQuery('ppp');
+        if(!empty($ppp)){
+            $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
+        }
+        $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
+        $page = trim($this->params('page',1),'/');
+        $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+        $paginator = new Paginator(new DbSelect($select,$dbAdapter));
+        $paginator->setItemCountPerPage($item_per_page);
+        $paginator->setCurrentPageNumber($page);
+        $this->setViewVariable('paginator', $paginator);
+        return $this->view;
     }
 
     public function tdmAction()
