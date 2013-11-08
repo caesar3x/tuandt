@@ -371,6 +371,7 @@ class RecyclerProductTable extends AbstractModel
         $where->greaterThan('r.recycler_id',1);
         /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
+        $select->group('m.product_id');
         return $select;
     }
     public function getProductsByCountryAndModelAndCondition($country_id,$model,$condition)

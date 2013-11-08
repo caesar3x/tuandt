@@ -82,7 +82,8 @@ class ProductController extends AbstractController
         if($higher != null){
             $select = $recyclerProductTable->getAvaiableRows();
         }elseif($country != null){
-            $select = $recyclerProductTable->getProductsByCountryQuery($country);
+            $tdmProductTable = $this->sm->get('TdmProductTable');
+            $select = $tdmProductTable->getProductsByCountryQuery($country);
             /*foreach($rowset as $row){
                 Debug::dump($row);
             }*/
