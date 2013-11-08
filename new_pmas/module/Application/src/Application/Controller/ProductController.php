@@ -477,17 +477,26 @@ class ProductController extends AbstractController
     public function deleteAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $id = $this->params('id',0);
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         if($id != 0){
-            $this->delete($id,$tdmProductTable);
+            if($this->delete($id,$tdmProductTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
-                $this->delete($id,$tdmProductTable);
+                if($this->delete($id,$tdmProductTable)){
+                    $i++;
+                }
             }
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_PRODUCTS_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/product');
     }
@@ -496,12 +505,11 @@ class ProductController extends AbstractController
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_DELETE_TDM_PRODUCT_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            return true;
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_DELETE_TDM_PRODUCT_FAILT'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            return false;
         }
-        return ;
     }
     public function exportAction()
     {
@@ -781,17 +789,26 @@ class ProductController extends AbstractController
     public function deleteTypeAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $id = $this->params('id',0);
         $productTypeTable = $this->getServiceLocator()->get('ProductTypeTable');
         if($id != 0){
-            $this->deleteType($id,$productTypeTable);
+            if($this->deleteType($id,$productTypeTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
-                $this->deleteType($id,$productTypeTable);
+                if($this->deleteType($id,$productTypeTable)){
+                    $i++;
+                }
             }
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_PRODUCT_TYPES_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/product/type');
     }
@@ -807,12 +824,10 @@ class ProductController extends AbstractController
         $result = $table->clearProductType($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-type',$messages['LOG_DELETE_PRODUCT_TYPE_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-type',$messages['LOG_DELETE_PRODUCT_TYPE_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return true;
+        return $result;
     }
     public function brandAction()
     {
@@ -926,17 +941,26 @@ class ProductController extends AbstractController
     public function deleteBrandAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $id = $this->params('id',0);
         $brandTable = $this->getServiceLocator()->get('BrandTable');
         if($id != 0){
-            $this->deleteBrand($id,$brandTable);
+            if($this->deleteBrand($id,$brandTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i =0 ;
             foreach($ids as $id){
-                $this->deleteBrand($id,$brandTable);
+                if($this->deleteBrand($id,$brandTable)){
+                    $i++;
+                }
             }
+            $this->flashMessenger()->setNamespace('error')->addMessage($i.$messages['QTY_BRANDS_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/product/brand');
     }
@@ -952,12 +976,10 @@ class ProductController extends AbstractController
         $result = $table->clearBrand($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-brand',$messages['LOG_DELETE_BRAND_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete-brand',$messages['LOG_DELETE_BRAND_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return true;
+        return $result;
     }
     public function exportPriceCompareAction()
     {

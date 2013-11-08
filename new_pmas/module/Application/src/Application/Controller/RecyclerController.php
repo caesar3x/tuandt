@@ -282,6 +282,7 @@ class RecyclerController extends AbstractController
     public function deleteAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $id = $this->params('id',0);
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
@@ -289,12 +290,20 @@ class RecyclerController extends AbstractController
             $this->recyclerTable = $this->serviceLocator->get('RecyclerTable');
         }
         if($id != 0){
-            $this->delete($id,$this->recyclerTable);
+            if($this->delete($id,$this->recyclerTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }else{
             if(!empty($ids) && is_array($ids)){
+                $i= 0 ;
                 foreach($ids as $id){
-                    $this->delete($id,$this->recyclerTable);
+                    if($this->delete($id,$this->recyclerTable)){
+                        $i++;
+                    }
                 }
+                $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_RECYCLERS_DELETE_SUCCESS']);
             }
         }
         return $this->redirect()->toUrl('/recycler');
@@ -304,12 +313,11 @@ class RecyclerController extends AbstractController
         $messages = $this->getMessages();
         if($table->clearRecycler($id)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete',$messages['LOG_DELETE_RECYCLER_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            return true;
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete',$messages['LOG_DELETE_RECYCLER_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            return false;
         }
-        return true;
     }
     public function exportAction()
     {
@@ -796,6 +804,7 @@ class RecyclerController extends AbstractController
     public function deleteProductAction()
     {
         parent::initAction();
+        $messages = $this->getMessages();
         $id = $this->params('id',0);
         $recycler = $this->params('recycler',0);
         $request = $this->getRequest();
@@ -805,12 +814,20 @@ class RecyclerController extends AbstractController
         }
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
         if($id != 0){
-            $this->delete_product($id,$recyclerProductTable);
+            if($this->delete_product($id,$recyclerProductTable)){
+                $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_SUCCESS'].$id);
+            }else{
+                $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_FAIL'].$id);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
-                $this->delete_product($id,$recyclerProductTable);
+                if($this->delete_product($id,$recyclerProductTable)){
+                    $i++;
+                }
             }
+            $this->addSuccessFlashMessenger($i.$messages['QTY_RECYCLER_PRODUCTS_DELETE_SUCCESS']);
         }
         return $this->redirectUrl('/recycler/detail/id/'.$recycler.'?from=delete');
     }
@@ -825,11 +842,10 @@ class RecyclerController extends AbstractController
         $messages = $this->getMessages();
         if($table->delete($id)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete-product',$messages['LOG_DELETE_RECYCLER_PRODUCT_SUCCESS'].$id);
-            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_SUCCESS'].$id);
+            return true;
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\recycler\\delete-product',$messages['LOG_DELETE_RECYCLER_PRODUCT_FAIL'].$id);
-            $this->addSuccessFlashMessenger($messages['DELETE_RECYCLER_PRODUCT_FAIL'].$id);
+            return false;
         }
-        return true;
     }
 }
