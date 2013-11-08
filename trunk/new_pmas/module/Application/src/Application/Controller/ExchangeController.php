@@ -10,15 +10,15 @@ use Application\Form\UpdateRateForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Controller\AbstractController;
 use Core\Model\Country;
 use Core\Model\Exchange;
 use Zend\Debug\Debug;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class ExchangeController extends AbstractActionController
+class ExchangeController extends AbstractController
 {
     protected $exchangeTable;
 
@@ -245,17 +245,26 @@ class ExchangeController extends AbstractActionController
     public function deleteCountryAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $id = $this->params('id',0);
         $countryTable = $this->getServiceLocator()->get('CountryTable');
         if($id != 0){
-            $this->deleteCountry($id,$countryTable);
+            if($this->deleteCountry($id,$countryTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
-                $this->deleteCountry($id,$countryTable);
+                if($this->deleteCountry($id,$countryTable)){
+                    $i++;
+                }
             }
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_COUNTRIES_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/exchange/country');
     }
@@ -271,10 +280,8 @@ class ExchangeController extends AbstractActionController
         $result = $table->clearCountry($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\delete-country',$messages['LOG_DELETE_COUNTRY_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\delete-country',$messages['LOG_DELETE_COUNTRY_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
         return $result;
     }

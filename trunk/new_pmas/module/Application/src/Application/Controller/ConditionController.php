@@ -173,34 +173,51 @@ class ConditionController extends AbstractActionController
     public function deleteTdmAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $id = $this->params('id',0);
         $conditionTable = $this->getServiceLocator()->get('TdmProductConditionTable');
         if($id != 0){
-            $this->deleteTdm($id,$conditionTable);
+            if($this->deleteTdm($id,$conditionTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
+                $i++;
                 $this->deleteTdm($id,$conditionTable);
             }
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_CONDITIONS_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/condition/tdm');
     }
     public function deleteRecyclerAction()
     {
         $this->auth();
+        $messages = $this->getMessages();
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $id = $this->params('id',0);
         $conditionTable = $this->getServiceLocator()->get('RecyclerProductConditionTable');
         if($id != 0){
-            $this->deleteRecycler($id,$conditionTable);
+            if($this->deleteRecycler($id,$conditionTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }
         if(!empty($ids) && is_array($ids)){
+            $i = 0;
             foreach($ids as $id){
-                $this->deleteRecycler($id,$conditionTable);
+                if($this->deleteRecycler($id,$conditionTable)){
+                    $i++;
+                }
             }
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_CONDITIONS_DELETE_SUCCESS']);
         }
         return $this->redirect()->toUrl('/condition/recycler');
     }
@@ -216,12 +233,10 @@ class ConditionController extends AbstractActionController
         $result = $table->clearTdmCondition($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-tdm',$messages['LOG_DELETE_CONDITION_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-tdm',$messages['LOG_DELETE_CONDITION_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return true;
+        return $result;
     }
     protected function deleteRecycler($id,$table)
     {
@@ -229,12 +244,10 @@ class ConditionController extends AbstractActionController
         $result = $table->clearRecyclerCondition($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-recycler',$messages['LOG_DELETE_RECYCLER_CONDITION_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\condition\\delete-recycler',$messages['LOG_DELETE_RECYCLER_CONDITION_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
         }
-        return true;
+        return $result;
     }
     public function recyclerAction()
     {

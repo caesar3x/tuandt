@@ -211,17 +211,26 @@ class LanguageController extends AbstractController
     public function deleteAction()
     {
         parent::initAction();
+        $messages = $this->getMessages();
         $id = $this->params('id',0);
         $request = $this->getRequest();
         $ids = $request->getPost('ids');
         $languagesTable = $this->sm->get('LanguagesTable');
         if($id != 0){
-            $this->deleteLang($id,$languagesTable);
+            if($this->deleteLang($id,$languagesTable)){
+                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            }else{
+                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            }
         }else{
             if(!empty($ids) && is_array($ids)){
+                $i =0;
                 foreach($ids as $id){
-                    $this->deleteUser($id,$languagesTable);
+                    if($this->deleteLang($id,$languagesTable)){
+                        $i++;
+                    }
                 }
+                $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_LANGUAGES_DELETE_SUCCESS']);
             }
         }
         return $this->redirect()->toUrl('/lang');
@@ -231,10 +240,10 @@ class LanguageController extends AbstractController
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\language\\delete',$messages['LOG_DELETE_LANGUAGE_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            return true;
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\language\\delete',$messages['LOG_DELETE_LANGUAGE_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            return false;
         }
         return true;
     }
