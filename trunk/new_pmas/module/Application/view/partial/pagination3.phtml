@@ -9,6 +9,17 @@
 <?php $totalItemCount = $this->totalItemCount;?>
 <?php $currentItemCount = $this->currentItemCount;?>
 <?php $country = $this->country;?>
+<?php $recycler_country = $this->recycler_country;?>
+<?php $country_vars = array();?>
+<?php if(!empty($country) && !empty($recycler_country)):?>
+    <?php $country_vars = array('country' => $country,'rc' => $recycler_country);?>
+<?php elseif(!empty($country) && empty($recycler_country)):?>
+    <?php $country_vars = array('country' => $country);?>
+<?php elseif(empty($country) && !empty($recycler_country)):?>
+    <?php $country_vars = array('rc' => $recycler_country);?>
+<?php endif;?>
+<?php $this->core()->log_debug($recycler_country)?>
+<?php $this->core()->log_debug(print_r($country_vars,1))?>
 <div class="pull-right">
     <div class="pull-left showing_label">
         <span class="control-label"><?php echo $this->__('Showing '.$currentItemCount.' of '.$totalItemCount.' records')?></span>
@@ -26,14 +37,14 @@
     </div>
     <ul class="pagination">
         <?php if (isset($this->previous)): ?>
-            <li class=""><span><a href="<?php echo $this->url($this->route, array('country' => $country,'page' => $this->previous)); ?>">&laquo;</a></span></li>
+            <li class=""><span><a href="<?php echo $this->url($this->route, array_merge($country_vars,array('page' => $this->previous))); ?>">&laquo;</a></span></li>
         <?php else: ?>
             <li class="disabled"><span>&laquo;</span></li>
         <?php endif; ?>
         <!-- Numbered page links -->
         <?php foreach ($this->pagesInRange as $page): ?>
             <?php if ($page != $this->current): ?>
-                <li class=""><a href="<?php echo $this->url($this->route, array('country' => $country,'page' => $page)); ?>"><span><?php echo $page; ?></span></a></li>
+                <li class=""><a href="<?php echo $this->url($this->route, array_merge($country_vars,array('page' => $page))); ?>"><span><?php echo $page; ?></span></a></li>
             <?php else: ?>
                 <li class="active"><a href="#"><?php echo $page; ?> <span class="sr-only">(current)</span></a></li>
             <?php endif; ?>
@@ -41,10 +52,10 @@
         <?php endforeach; ?>
         <?php if($this->pageCount > 9):?>
             <li class=""><span>-</span></li>
-            <li class=""><a href="<?php echo $this->url($this->route, array('country' => $country,'page' => $this->last)); ?>"><span><?php echo $this->last?></span></a></li>
+            <li class=""><a href="<?php echo $this->url($this->route,array_merge($country_vars,array('page' => $this->last)) ); ?>"><span><?php echo $this->last?></span></a></li>
         <?php endif;?>
         <?php if (isset($this->next)): ?>
-            <li class=""><a href="<?php echo $this->url($this->route, array('country' => $country,'page' => $this->next)); ?>"><span>&raquo;</span></a></li>
+            <li class=""><a href="<?php echo $this->url($this->route,array_merge($country_vars,array('page' => $this->next)) ); ?>"><span>&raquo;</span></a></li>
         <?php else: ?>
             <li class="disabled"><span>&raquo;</span></li>
         <?php endif; ?>

@@ -294,6 +294,11 @@ class Module
                         $viewHelper = new View\Helper\CoreHelper($serviceLocator,$serviceLocator->get('Request'));
                         return $viewHelper;
                     },
+                'log' => function ($helperPluginManager) {
+                        $serviceLocator = $helperPluginManager->getServiceLocator();
+                        $viewHelper = new View\Helper\LogHelper($serviceLocator,$serviceLocator->get('Request'));
+                        return $viewHelper;
+                    },
                 'admin' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
                     $viewHelper = new View\Helper\AdminHelper();

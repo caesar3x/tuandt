@@ -74,16 +74,22 @@ class ProductController extends AbstractController
         parent::initAction();
         $higher = $this->params('higher',null);
         $country = $this->params('country',null);
+        $recycler_country = $this->params('recycler-country',null);
         $this->setViewVariable('higher',$higher);
         $this->setViewVariable('country',$country);
+        $this->setViewVariable('recycler_country',$recycler_country);
         $messages = $this->getMessages();
         $this->getViewHelperPlugin('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
         if($higher != null){
             $select = $recyclerProductTable->getAvaiableRows();
-        }elseif($country != null){
+        }else{
             $tdmProductTable = $this->sm->get('TdmProductTable');
-            $select = $tdmProductTable->getProductsByCountryQuery($country);
+            if($country != null){
+                $select = $tdmProductTable->getProductsByCountryQuery($country);
+            }else{
+                $select = $tdmProductTable->getTdmProductQuery();
+            }
             /*foreach($rowset as $row){
                 Debug::dump($row);
             }*/
@@ -95,9 +101,10 @@ class ProductController extends AbstractController
         }
         $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
         $page = trim($this->params('page',1),'/');
+        /*Debug::dump($recycler_country);die;*/
         $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $paginator = new Paginator(new DbSelect($select,$dbAdapter));
-        $paginator->setItemCountPerPage($item_per_page);
+        $paginator->setItemCountPerPage(7);
         $paginator->setCurrentPageNumber($page);
         $this->setViewVariable('paginator', $paginator);
         return $this->view;

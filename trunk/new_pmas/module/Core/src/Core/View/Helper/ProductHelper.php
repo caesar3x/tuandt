@@ -235,10 +235,10 @@ class ProductHelper extends CoreHelper
      * @param int $limit
      * @return mixed
      */
-    public function getTopPriceRecyclerProductByModel($model,$condition_id,$limit = 3)
+    public function getTopPriceRecyclerProductByModel($model,$condition_id,$limit = 3,$country = null)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
-        $rowset = $recyclerProductTable->getTopPriceProductsByModel($model,$condition_id,$limit);
+        $rowset = $recyclerProductTable->getTopPriceProductsByModel($model,$condition_id,$limit,$country);
         return $rowset;
     }
     /**

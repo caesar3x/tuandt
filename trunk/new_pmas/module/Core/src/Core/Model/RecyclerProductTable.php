@@ -283,15 +283,21 @@ class RecyclerProductTable extends AbstractModel
         return (float) $ssa;
         /*return (float)round($ssa,2,PHP_ROUND_HALF_UP);*/
     }
-    public function getTopPriceProductsByModel($model,$condition,$limit = 3)
+    public function getTopPriceProductsByModel($model,$condition,$limit = 3,$country = null)
     {
         if(!$model || $model == null || !$condition || $condition == null){
             return null;
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
+        if(!empty($country)){
+            $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+            $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
+            $where->equalTo('r.country_id',$country);
+        }else{
+            $select = $sql->select()->from($this->tableGateway->table);
+        }
         $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
