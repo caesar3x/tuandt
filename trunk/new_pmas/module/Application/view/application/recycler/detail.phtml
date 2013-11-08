@@ -45,8 +45,9 @@ $from = $this->from;
 <div class="row">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
-            <li class="active"><a data-toggle="tab" href="#recycler-view"><?php echo $this->__('Recycler View')?></a></li>
-            <li><a data-toggle="tab" href="#product-model"><?php echo $this->__('Product Models')?></a></li>
+
+            <li class="active"><a data-toggle="tab" href="#product-model"><?php echo $this->__('Product Models')?></a></li>
+            <li><a data-toggle="tab" href="#recycler-view"><?php echo $this->__('Recycler View')?></a></li>
         </ul>
 
     </div>
@@ -54,64 +55,8 @@ $from = $this->from;
         <div id="show-msg"></div>
         <div class="row clearfix">&nbsp;</div>
         <div class="tab-content">
-            <div class="tab-pane active" id="recycler-view">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <span><?php echo $this->__('Individual Information')?></span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Recycler Name')?>* : </span>
-                            </div>
-                            <div class="col-md-4">
-                                <?php echo $this->formRow($form->get('name'));?>
-                            </div>
-                        </div>
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Country')?>* : </span>
-                            </div>
-                            <div class="col-md-4">
-                                <?php echo $this->formRow($form->get('country_id'));?>
-                            </div>
-                        </div>
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Email')?>* : </span>
-                            </div>
-                            <div class="col-md-4">
-                                <?php echo $this->formRow($form->get('email'));?>
-                            </div>
-                        </div>
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Telephone')?> : </span>
-                            </div>
-                            <div class="col-md-4">
-                                <?php echo $this->formRow($form->get('telephone'));?>
-                            </div>
-                        </div>
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Website')?> : </span>
-                            </div>
-                            <div class="col-md-6">
-                                <?php echo $this->formRow($form->get('website'));?>
-                            </div>
-                        </div>
-                        <div class="row form-row">
-                            <div class="col-md-4">
-                                <span class="pull-right"><?php echo $this->__('Address')?> : </span>
-                            </div>
-                            <div class="col-md-6">
-                                <?php echo $this->formRow($form->get('address'));?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="product-model">
+
+            <div class="tab-pane active" id="product-model">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <span><?php echo $this->__('Product Model List')?></span>
@@ -259,6 +204,63 @@ $from = $this->from;
                                 'Sliding',
                                 'paginator_style_2', array('route' => 'recycler-detail','id' => $this->id)); ?>
                         <?php endif?>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="recycler-view">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span><?php echo $this->__('Individual Information')?></span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Recycler Name')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('name'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Country')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('country_id'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Email')?>* : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('email'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Telephone')?> : </span>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->formRow($form->get('telephone'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Website')?> : </span>
+                            </div>
+                            <div class="col-md-6">
+                                <?php echo $this->formRow($form->get('website'));?>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-md-4">
+                                <span class="pull-right"><?php echo $this->__('Address')?> : </span>
+                            </div>
+                            <div class="col-md-6">
+                                <?php echo $this->formRow($form->get('address'));?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
