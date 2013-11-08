@@ -188,15 +188,12 @@ class TdmProductTable extends AbstractModel
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => $this->tableGateway->table))->columns(array('cid' => 'country_id'));
-        $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_id','country_name' => 'name'));
+        $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('m.country_id',$country_id);
-        $where->equalTo('m.deleted',0);
-        $where->equalTo('c.deleted',0);
+        $where->equalTo('country_id',$country_id);
+        $where->equalTo('deleted',0);
         /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
-        $select->group('m.product_id');
         return $select;
     }
 }
