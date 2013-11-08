@@ -64,7 +64,7 @@
                     <?php
                     $data = array();
                     $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
-                    if(!empty($ssa_price)):
+                    if(!empty($ssa_price)){
                         ?>
                         <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
                         <?php
@@ -85,8 +85,10 @@
                                 );
                             }
                         }
-                    endif;
+                    }else{
                     ?>
+                        <td><?php echo $this->__('N/A')?></td>
+                    <?php }?>
                     <?php if(!empty($data)):?>
                         <?php $i=0;foreach($data as $item):?>
                             <td><?php echo $item['recycler']?></td>
@@ -108,7 +110,6 @@
                         <?php endif;?>
                         <?php ?>
                     <?php else:?>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

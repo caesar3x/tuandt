@@ -291,12 +291,11 @@ class RecyclerProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $where = new Where();
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
         if(!empty($country)){
-            $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+
             $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
             $where->equalTo('r.country_id',$country);
-        }else{
-            $select = $sql->select()->from($this->tableGateway->table);
         }
         $where->equalTo('m.deleted',0);
         $where->equalTo('m.condition_id',$condition);

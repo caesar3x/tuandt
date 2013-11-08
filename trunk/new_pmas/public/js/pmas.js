@@ -142,7 +142,11 @@ $(function() {
                     window.location.assign(siteurl +'product');
                 }
             }else{
-                window.location.assign(siteurl +'product/filter/country/'+$(this).val());
+                if(typeof recyclercountry !== 'undefined' && recyclercountry !== ''){
+                    window.location.assign(siteurl +'product/filter/country/'+$(this).val()+'/recycler-country/'+recyclercountry);
+                }else{
+                    window.location.assign(siteurl +'product/filter/country/'+$(this).val());
+                }
             }
         }
     });
