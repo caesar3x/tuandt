@@ -1022,7 +1022,7 @@ class CoreHelper extends AbstractHelper
     /**
      * @param $message
      */
-    protected function log($message)
+    public function log($message)
     {
         $writer = new Stream($this->getViewHelper('log')->systemLogPath());
         $logger = new Logger();
@@ -1033,7 +1033,7 @@ class CoreHelper extends AbstractHelper
     /**
      * @param $message
      */
-    protected function log_debug($message)
+    public function log_debug($message)
     {
         $writer = new Stream($this->getViewHelper('log')->systemDebugPath());
         $logger = new Logger();

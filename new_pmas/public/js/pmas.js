@@ -115,7 +115,7 @@ $(function() {
     /**
      * Onchange price filter
      */
-    $('#price_percentage').change(function(e){
+    $(document).on("change","#price_percentage",function(e){
         e.preventDefault();
         var product = $("#productid").val();
         if(typeof  product !== 'undefined'){
@@ -124,13 +124,43 @@ $(function() {
             window.location.assign(siteurl +'product/filter/higher/'+$(this).val());
         }
     });
-    $('#country-chosen').change(function(e){
+    $(document).on("change","#country-chosen",function(e){
         e.preventDefault();
         var product = $("#productid").val();
+        var recyclercountry = $("#recycler-country").val();
         if(typeof  product !== 'undefined'){
-            window.location.assign(siteurl+'product/detail/id/'+product+'/country/'+$(this).val());
+            if($(this).val() == 'reset'){
+                window.location.assign(siteurl+'product/detail/id/'+product);
+            }else{
+                window.location.assign(siteurl+'product/detail/id/'+product+'/country/'+$(this).val());
+            }
         }else{
-            window.location.assign(siteurl +'product/filter/country/'+$(this).val());
+            if($(this).val() == 'reset'){
+                if(typeof recyclercountry !== 'undefined' && recyclercountry !== ''){
+                    window.location.assign(siteurl +'product/filter/recycler-country/'+recyclercountry);
+                }else{
+                    window.location.assign(siteurl +'product');
+                }
+            }else{
+                window.location.assign(siteurl +'product/filter/country/'+$(this).val());
+            }
+        }
+    });
+    $(document).on("change","#recycler-country-chosen",function(e){
+        e.preventDefault();
+        var tdmcountry = $("#tdm-country").val();
+        if($(this).val() == 'reset'){
+            if(typeof tdmcountry !== 'undefined' && tdmcountry !== ''){
+                window.location.assign(siteurl + 'product/filter/country/'+tdmcountry);
+            }else{
+                window.location.assign(siteurl + 'product');
+            }
+        }else{
+            if(typeof tdmcountry !== 'undefined' && tdmcountry !== ''){
+                window.location.assign(siteurl + 'product/filter/country/'+tdmcountry+'/recycler-country/'+$(this).val());
+            }else{
+                window.location.assign(siteurl + 'product/filter/recycler-country/'+$(this).val());
+            }
         }
     });
     /**

@@ -38,9 +38,13 @@
                 <i class="glyphicon glyphicon-upload"></i>
                 <?php echo $this->__('Import')?>
             </a>
-            <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+            <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
             <div class="btn-group">
                 <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+            </div>
+            <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
             </div>
         </div>
         <div class="pull-right">

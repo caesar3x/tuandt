@@ -16,11 +16,17 @@
         <div class="btn-group">
             <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
         </div>
+        <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
+        <div class="btn-group">
+            <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+        </div>
     </div>
     <div class="pull-right">
         <a class="btn btn-success btn-sm" href="<?php echo $this->getUrl('product')?>"><span><?php echo $this->__('Back')?></span></a>
     </div>
     <div class="row clearfix">&nbsp;</div>
+    <input type="hidden" value="<?php echo $this->country?>" name="tdm_country" id="tdm-country">
+    <input type="hidden" value="<?php echo $this->recycler_country?>" name="recycler_country" id="recycler-country">
     <table class="display table table-striped table-condensed table-bordered withphp" cellpadding="0" cellspacing="0">
         <thead>
         <tr>
@@ -62,7 +68,7 @@
                         ?>
                         <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
                         <?php
-                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
+                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id,3,$this->recycler_country);
                         if(!empty($recyclerProducts)){
                             foreach($recyclerProducts as $rp){
                                 $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
@@ -135,5 +141,5 @@
     </table>
     <?php echo $this->paginationControl($this->paginator,
         'Sliding',
-        'paginator_style_3', array('route' => 'product-filter-country','country' => $this->country)); ?>
+        'paginator_style_3', array('route' => 'product-filter-country','country' => $this->country,'recycler_country' => $this->recycler_country)); ?>
 </div>
