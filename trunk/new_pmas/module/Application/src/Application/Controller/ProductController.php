@@ -104,7 +104,7 @@ class ProductController extends AbstractController
         /*Debug::dump($recycler_country);die;*/
         $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $paginator = new Paginator(new DbSelect($select,$dbAdapter));
-        $paginator->setItemCountPerPage(7);
+        $paginator->setItemCountPerPage($item_per_page);
         $paginator->setCurrentPageNumber($page);
         $this->setViewVariable('paginator', $paginator);
         return $this->view;
