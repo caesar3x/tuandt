@@ -72,11 +72,11 @@ return array(
             'product-filter-country' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/product/filter/country/:country/[recycler-country/:rc[/]][page/:page[/]]',
+                    'route'    => '/product/filter/[country/:country[/]][recycler-country/:recycler-country[/]][page/:page[/]]',
                     'constraints' => array(
                         'country'      => ':country',
                         'page'      => ':page',
-                        'recycler-country'      => ':rc',
+                        'recycler-country'      => ':recycler-country',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',

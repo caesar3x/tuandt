@@ -298,12 +298,12 @@ class RecyclerProductTable extends AbstractModel
         }else{
             $select = $sql->select()->from($this->tableGateway->table);
         }
-        $where->equalTo('deleted',0);
-        $where->equalTo('condition_id',$condition);
-        $where->equalTo('model',$model);
-        $where->greaterThan('recycler_id',1);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->greaterThan('m.recycler_id',1);
         $select->where($where);
-        $select->order('price DESC');
+        $select->order('m.price DESC');
         $select->limit($limit);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);

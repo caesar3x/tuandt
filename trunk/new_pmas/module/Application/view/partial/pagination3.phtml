@@ -12,14 +12,12 @@
 <?php $recycler_country = $this->recycler_country;?>
 <?php $country_vars = array();?>
 <?php if(!empty($country) && !empty($recycler_country)):?>
-    <?php $country_vars = array('country' => $country,'rc' => $recycler_country);?>
+    <?php $country_vars = array('country' => $country,'recycler-country' => $recycler_country);?>
 <?php elseif(!empty($country) && empty($recycler_country)):?>
     <?php $country_vars = array('country' => $country);?>
 <?php elseif(empty($country) && !empty($recycler_country)):?>
-    <?php $country_vars = array('rc' => $recycler_country);?>
+    <?php $country_vars = array('recycler-country' => $recycler_country);?>
 <?php endif;?>
-<?php $this->core()->log_debug($recycler_country)?>
-<?php $this->core()->log_debug(print_r($country_vars,1))?>
 <div class="pull-right">
     <div class="pull-left showing_label">
         <span class="control-label"><?php echo $this->__('Showing '.$currentItemCount.' of '.$totalItemCount.' records')?></span>
