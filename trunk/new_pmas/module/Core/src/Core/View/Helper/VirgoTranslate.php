@@ -46,4 +46,13 @@ class VirgoTranslate extends AbstractHelper
         }
         return $string;
     }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    public function trans($string)
+    {
+        return $this->__invoke($string);
+    }
 }

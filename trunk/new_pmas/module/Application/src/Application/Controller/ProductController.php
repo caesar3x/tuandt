@@ -529,18 +529,89 @@ class ProductController extends AbstractController
         }
         $reyclerProductTable = $sm->get('RecyclerProductTable');
         $rowset = $this->productTable->getProductsFilter($ids);
-        $header = array('Product ID','Brand','Model','Product type','Country','Name','Condition');
+        $header = array(
+            $this->__('Product ID'),
+            $this->__('Brand'),
+            $this->__('Name'),
+            $this->__('Condition'),
+            $this->__('Product type'),
+            $this->__('Country'),
+            $this->__('SSA Price'),
+            $this->__('Recycler 1'),
+            $this->__('Price in HKD 1'),
+            $this->__('Percentage 1'),
+            $this->__('Recycler 2'),
+            $this->__('Price in HKD 2'),
+            $this->__('Percentage 2'),
+            $this->__('Recycler 3'),
+            $this->__('Price in HKD 3'),
+            $this->__('Percentage 3')
+        );
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
                 $rowParse = array();
                 $rowParse[] = $row->product_id;
                 $rowParse[] = $viewhelperManager->get('product_brand')->getName($row->brand_id);
-                $rowParse[] = $row->model;
-                $rowParse[] = $viewhelperManager->get('product_type')->getName($row->type_id);
-                $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
                 $rowParse[] = $row->name;
                 $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id);
+                $rowParse[] = $viewhelperManager->get('product_type')->getName($row->type_id);
+                $rowParse[] = $viewhelperManager->get('Country')->implement($row->country_id);
+                $price_data = array();
+                $ssa_price = $this->getViewHelperPlugin('product')->getSSAPrice($row->model,$row->condition_id);
+                if(!empty($ssa_price)){
+                    $rowParse[] = $this->getViewHelperPlugin('price')->formatCurrency($ssa_price,'HKD');
+                    $recyclerProducts = $this->getViewHelperPlugin('product')->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
+                    if(!empty($recyclerProducts)){
+                        foreach($recyclerProducts as $rp){
+                            $currentExchange = $this->getViewHelperPlugin('exchange')->getCurrentExchangeOfCurrency($rp->currency);
+                            $priceExchange = ((float) $rp->price )/ $currentExchange;
+                            if($ssa_price != 0){
+                                $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                            }else{
+                                $percentage = 'N/A';
+                            }
+                            $price_data[] = array(
+                                'recycler' => $this->getViewHelperPlugin('recycler')->getName($rp->recycler_id),
+                                'price' => $priceExchange,
+                                'percentag' => $percentage,
+                            );
+                        }
+                    }
+                }else{
+                    $rowParse[] = '';
+                }
+                if(!empty($price_data)){
+                    $i = 0;
+                    foreach($price_data as $item){
+                        $rowParse[] = $item['recycler'];
+                        $rowParse[] = $this->getViewHelperPlugin('price')->formatCurrency($item['price'],'HKD');
+                        $rowParse[] = (is_numeric($item['percentag'])) ? $this->getViewHelperPlugin('price')->format($item['percentag']).' %' : $item['percentag'];
+                        $i++;
+                    }
+                    if($i==1){
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                    }elseif($i == 2){
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                        $rowParse[] = '';
+                    }
+                }else{
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                    $rowParse[] = '';
+                }
                 $data[] = $rowParse;
             }
         }

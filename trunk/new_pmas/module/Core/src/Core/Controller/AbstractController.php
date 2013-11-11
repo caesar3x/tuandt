@@ -203,4 +203,14 @@ class AbstractController extends AbstractActionController
     {
         $this->layout()->setVariable($key,$value);
     }
+
+    /**
+     * Translate string
+     * @param $string
+     * @return mixed
+     */
+    public function __($string)
+    {
+        return $this->getViewHelperPlugin('__')->trans($string);
+    }
 }
