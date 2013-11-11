@@ -70,10 +70,10 @@
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
                 <th><?php echo $this->__('ID')?></th>
+                <th><?php echo $this->__('Brand')?></th>
                 <th><?php echo $this->__('Name')?></th>
                 <th><?php echo $this->__('Condition')?></th>
                 <th><?php echo $this->__('Type')?></th>
-                <th><?php echo $this->__('Brand')?></th>
                 <th><?php echo $this->__('Country')?></th>
                 <th><?php echo $this->__('SSA Price')?></th>
                 <th><?php echo $this->__('Recycler 1')?></th>
@@ -94,10 +94,10 @@
                     <tr>
                         <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
                         <td><?php echo $row->product_id?></td>
+                        <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
                         <td><?php echo $row->name?></td>
                         <td><?php echo $this->condition($row->condition_id)?></td>
                         <td><?php echo $this->product_type()->getName($row->type_id)?></td>
-                        <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
                         <td><?php echo $this->country($row->country_id)?></td>
                         <?php
                         $data = array();

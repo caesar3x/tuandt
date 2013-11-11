@@ -65,11 +65,18 @@ $(function() {
             thead.append(htmlAppend);
         }
     });
-    $(".tr-search input").keyup( function () {
-        /* Filter on the column (the index) of this element */
-        oTable.fnFilter( this.value, $(".tr-search input").index(this) );
-        oTable2.fnFilter( this.value, $(".tr-search input").index(this) );
-    } );
+    if($(".withphp").length > 0){
+        $(".tr-search input").keyup( function () {
+            /* Filter on the column (the index) of this element */
+            oTable2.fnFilter( this.value, $(".tr-search input").index(this) );
+        } );
+    }else{
+        $(".tr-search input").keyup( function () {
+            /* Filter on the column (the index) of this element */
+            oTable.fnFilter( this.value, $(".tr-search input").index(this) );
+        } );
+    }
+
 
     /*
      * Support functions to provide a little bit of 'user friendlyness' to the textboxes in
@@ -182,6 +189,15 @@ $(function() {
     $(document).on('change','#item-per-page',function(e){
         e.preventDefault();
         window.location.assign(currentpath+'?ppp='+$(this).val());
+    });
+    /**
+     * Add event for btn_save
+     */
+    $(document).on("click",".btn_save",function(e){
+        e.preventDefault();
+        var formtarget = $(this).closest("form");
+        formtarget.submit();
+        e.preventDefault();
     });
 } );
 function formSaveAndContinue(id)
