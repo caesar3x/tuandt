@@ -145,6 +145,29 @@ class TdmProductTable extends AbstractModel
     }
 
     /**
+     * @param $ids
+     * @return null
+     */
+    public function getProductsFilterExport($ids)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        if(!empty($ids)){
+            $where->equalTo('product_id',$ids);
+        }
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where($where);
+        $select->order('product_id DESC');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($result->count() <= 0) {
+            return null;
+        }
+        return $result;
+    }
+    /**
      * @param $model
      * @return null|\Zend\Db\ResultSet\ResultSet
      */
