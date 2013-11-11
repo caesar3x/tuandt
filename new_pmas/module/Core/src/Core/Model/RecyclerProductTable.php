@@ -187,6 +187,29 @@ class RecyclerProductTable extends AbstractModel
         $select->where($where);
         return $select;
     }
+    public function getRowsMatching($model,$condition)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        $select->where($where);
+        $select->order("product_id DESC");
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * @param $model
      * @return null|\Zend\Db\ResultSet\ResultSet
@@ -386,7 +409,7 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('r' => 'recycler'));
+        $select = $sql->select()->from(array('r' => 'recycler'))->columns(array('rid' => 'recycler_id'));
         $select->join(array('m' => $this->tableGateway->table),'m.recycler_id = r.recycler_id');
         $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
         $where = new Where();
@@ -399,8 +422,10 @@ class RecyclerProductTable extends AbstractModel
         $where->greaterThan('r.recycler_id',1);
         /*$select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
+        $select->order('product_id DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);
-        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
             return null;
         }
