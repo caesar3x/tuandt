@@ -67,6 +67,8 @@ class ProductController extends AbstractController
         $this->setViewVariable('paginator', $paginator);
         $country = $this->params('country',null);
         $this->setViewVariable('country',$country);
+        $this->setViewVariable('current_page',$page);
+        $this->setViewVariable('item_per_page',$item_per_page);
         return $this->view;
     }
     public function filterAction()
@@ -528,7 +530,7 @@ class ProductController extends AbstractController
             $this->productTable = $sm->get('TdmProductTable');
         }
         $reyclerProductTable = $sm->get('RecyclerProductTable');
-        $rowset = $this->productTable->getProductsFilter($ids);
+        $rowset = $this->productTable->getProductsFilterExport($ids);
         $header = array(
             $this->__('Product ID'),
             $this->__('Brand'),
