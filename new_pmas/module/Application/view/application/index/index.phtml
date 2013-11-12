@@ -142,6 +142,7 @@ if(!empty($popular['products'])){
             }
         }
     }
+    \Zend\Debug\Debug::dump($data);
     ?>
     <script type="text/javascript">
         $(function(){
@@ -165,7 +166,7 @@ if(!empty($popular['products'])){
             var seriesLabels = [
                 <?php if(!empty($data)):?>
                 <?php foreach($data as $line=>$val):?>
-                {'label': '<?php echo $this->product()->getRecyclerProductName($line)?>' },
+                {'label': '<?php echo $this->product()->getTdmProductName($line)?>' },
                 <?php endforeach;?>
                 <?php endif;?>
             ];
