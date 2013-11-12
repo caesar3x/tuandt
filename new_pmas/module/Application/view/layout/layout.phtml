@@ -1,7 +1,8 @@
 <?php echo $this->doctype(); ?>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <!--<meta charset="utf-8">-->
+        <?php header('Content-Type: text/html; charset=utf-8');?>
         <?php echo $this->headTitle()->setSeparator(' :: ')->setAutoEscape(false)->prepend($this->__('PMAS')) ?>
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=product-width, initial-scale=1.0')
