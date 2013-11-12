@@ -11,6 +11,7 @@ use Application\Form\ProductTypeForm;
 use BasicExcel\Writer\Csv;
 use BasicExcel\Writer\Xls;
 use BasicExcel\Writer\Xlsx;
+use Core\Cache\CacheSerializer;
 use Core\Controller\AbstractController;
 use Core\Model\Brand;
 use Core\Model\CreatePath;
