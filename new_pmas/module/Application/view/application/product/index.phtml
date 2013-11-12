@@ -111,7 +111,7 @@
                          <td><?php echo $this->__('N/A')?></td>
                         <?php }?>
                         <?php
-                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
+                        $recyclerProducts = $this->product()->getRowsMatching($row->model,$row->condition_id);
                         if(!empty($recyclerProducts)){
                             foreach($recyclerProducts as $rp){
                                 $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
