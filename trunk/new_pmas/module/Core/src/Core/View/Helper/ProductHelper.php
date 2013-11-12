@@ -42,6 +42,18 @@ class ProductHelper extends CoreHelper
         }
         return $entry->name;
     }
+    public function getTdmProductName($product_id)
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        if(!$product_id || $product_id == 0){
+            return null;
+        }
+        $entry = $tdmProductTable->getEntry($product_id);
+        if(empty($entry)){
+            return null;
+        }
+        return $entry->name;
+    }
     public function getRecyclerProductDate($product_id)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
@@ -96,7 +108,7 @@ class ProductHelper extends CoreHelper
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         $entry = $tdmProductTable->getEntry($product_id);
         if(!empty($entry)){
-            return $entry->currency;
+            return $this->getSSACurrency($entry->model,$entry->condition_id);
         }
         return null;
     }
@@ -125,7 +137,7 @@ class ProductHelper extends CoreHelper
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         $entry = $tdmProductTable->getEntry($product_id);
         if(!empty($entry)){
-            return  (float) $entry->price;
+            return  $this->getSSAPrice($entry->model,$entry->condition_id);
         }
         return null;
     }
@@ -345,6 +357,16 @@ class ProductHelper extends CoreHelper
         return $countryTable->getProductsByCountryAndModelAndCondition($country_id,$model,$condition);
     }
 
+    /**
+     * @param $model
+     * @param null $condition
+     * @return mixed
+     */
+    public function getSSACurrency($model,$condition = null)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $recyclerProductTable->getSSACurrency($model,$condition);
+    }
     /**
      * @param $model
      * @param null $condition

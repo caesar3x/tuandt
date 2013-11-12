@@ -283,6 +283,28 @@ class RecyclerProductTable extends AbstractModel
     /**
      * @param $model
      * @param $condition
+     * @return null|string
+     */
+    public function getSSACurrency($model,$condition)
+    {
+        if(!$model || !$condition){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('deleted' => 0,'condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        $row = $result->current();
+        if(!$row){
+            return null;
+        }
+        return (!empty($row->currency)) ? $row->currency : 'HKD';
+    }
+    /**
+     * @param $model
+     * @param $condition
      * @return float
      */
     public function getSSAPrice($model,$condition)

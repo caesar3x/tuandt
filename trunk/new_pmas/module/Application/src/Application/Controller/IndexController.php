@@ -8,6 +8,7 @@
  */
 
 namespace Application\Controller;
+use Core\Cache\CacheSerializer;
 use Core\Controller\AbstractController;
 use Zend\Debug\Debug;
 use Zend\ServiceManager\ServiceManager;
@@ -40,7 +41,7 @@ class IndexController extends AbstractController
         /*$translator = $this->getServiceLocator()->get('translator');
         Debug::dump($translator->)*/
         $this->auth();
-        $cache = \Core\Cache\CacheSerializer::init();
+        $cache = CacheSerializer::init();
         $popular = $cache->getItem('popular');
         $view = new ViewModel();
         $view->setVariable('popular',$popular);
