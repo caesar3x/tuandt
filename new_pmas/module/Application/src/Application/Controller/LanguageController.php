@@ -85,7 +85,7 @@ class LanguageController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirectUrl('/language');
                 }
                 if($this->saveLanguage($data)){
@@ -94,7 +94,7 @@ class LanguageController extends AbstractController
                      */
                     $id = $languagesTable->getLastInsertValue();
                     $this->getViewHelperPlugin('user')->log('application\\language\\add',$messages['LOG_INSERT_LANGUAGE_SUCCESS'].$id);
-                    $this->addSuccessFlashMessenger($messages['INSERT_SUCCESS']);
+                    $this->addSuccessFlashMessenger($this->__($messages['INSERT_SUCCESS']));
                     if($continue == 'yes'){
 
                         return $this->redirectUrl('/language/edit/id/'.$id);
@@ -174,7 +174,7 @@ class LanguageController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirectUrl('/language');
                 }
                 if($this->saveLanguage($data)){
@@ -183,7 +183,7 @@ class LanguageController extends AbstractController
                      */
                     $this->getViewHelperPlugin('lang')->updateLanguageSession($id,$code_before);
                     $this->getViewHelperPlugin('user')->log('application\\language\\edit',$messages['LOG_UPDATE_LANGUAGE_SUCCESS'].$id);
-                    $this->addSuccessFlashMessenger($messages['UPDATE_SUCCESS']);
+                    $this->addSuccessFlashMessenger($this->__($messages['UPDATE_SUCCESS']));
                     if($continue == 'yes'){
                         return $this->redirectUrl('/language/edit/id/'.$id);
                     }else{
@@ -218,9 +218,9 @@ class LanguageController extends AbstractController
         $languagesTable = $this->sm->get('LanguagesTable');
         if($id != 0){
             if($this->deleteLang($id,$languagesTable)){
-                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
             }else{
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
             }
         }else{
             if(!empty($ids) && is_array($ids)){
@@ -230,7 +230,7 @@ class LanguageController extends AbstractController
                         $i++;
                     }
                 }
-                $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_LANGUAGES_DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($i.$this->__($messages['QTY_LANGUAGES_DELETE_SUCCESS']));
             }
         }
         return $this->redirect()->toUrl('/lang');

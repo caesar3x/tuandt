@@ -97,10 +97,10 @@ class ExchangeController extends AbstractController
                 $exchangeRate->exchangeArray($dataFinal);
                 if($exchangeRateTable->save($exchangeRate)){
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\update',$messages['LOG_UPDATE_EXCHANGE_SUCCESS'].$data['currency']);
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                 }else{
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\update',$messages['LOG_UPDATE_EXCHANGE_FAIL'].$data['currency']);
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['UPDATE_FAIL']));
                 }
                 if($continue == 'yes'){
                     return $this->redirect()->toUrl('/exchange/update');
@@ -136,7 +136,7 @@ class ExchangeController extends AbstractController
         if($id != 0){
             $countryEntry = $coutryTable->getEntry($id);
             if(empty($countryEntry)){
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                 return $this->redirect()->toUrl('/exchange/country');
             }
             $entryParse = (array) $countryEntry;
@@ -189,21 +189,21 @@ class ExchangeController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/exchange/country');
                 }
                 if($this->saveCountry($data)){
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_SUCCESS'].$id);
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_SUCCESS'].$countryTable->getLastInsertValue());
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     }
                 }else{
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_UPDATE_COUNTRY_FAIL'].$id);
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                        $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['UPDATE_FAIL']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\exchange\\country',$messages['LOG_INSERT_COUNTRY_FAIL']);
                         $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -252,9 +252,9 @@ class ExchangeController extends AbstractController
         $countryTable = $this->getServiceLocator()->get('CountryTable');
         if($id != 0){
             if($this->deleteCountry($id,$countryTable)){
-                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
             }else{
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
             }
         }
         if(!empty($ids) && is_array($ids)){
@@ -264,7 +264,7 @@ class ExchangeController extends AbstractController
                     $i++;
                 }
             }
-            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_COUNTRIES_DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($i. $this->__($messages['QTY_COUNTRIES_DELETE_SUCCESS']));
         }
         return $this->redirect()->toUrl('/exchange/country');
     }
@@ -327,7 +327,7 @@ class ExchangeController extends AbstractController
         $startTime = (string) $this->params('start',null);
         $endTime = (string) $this->params('end',null);
         if($currency == null){
-            die($messages['NO_DATA']);
+            die($this->__($messages['NO_DATA']));
         }
         $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
         $rowset = $exchangeTable->getRowsetByCurrency($currency);
@@ -363,7 +363,7 @@ class ExchangeController extends AbstractController
             return true;
         }
         $exchangeTable = $this->getServiceLocator()->get('ExchangeRateTable');
-        $header = array('Date','Currency','Exchange Rate');
+        $header = array($this->__('Date'),$this->__('Currency'),$this->__('Exchange Rate'));
         $data = array($header);
         $rowset = $exchangeTable->getRowsetByCurrency($currency);
         if($startTime != null && $endTime == null){

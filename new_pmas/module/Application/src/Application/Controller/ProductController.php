@@ -158,11 +158,11 @@ class ProductController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/product');
                 }
                 if($this->save($data)){
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     if($continue == 'yes'){
                         $lastInsertId = $this->productTable->getLastInsertValue();
                         if($lastInsertId){
@@ -176,7 +176,7 @@ class ProductController extends AbstractController
                         $view->setVariable('form',$form);
                         return $view;
                     }else{
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                        $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['INSERT_FAIL']));
                         return $this->redirect()->toUrl('/product');
                     }
                 }
@@ -255,7 +255,7 @@ class ProductController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/product');
                 }
                 if($this->saveTdmProduct($data)){
@@ -269,7 +269,7 @@ class ProductController extends AbstractController
                         $view->setVariable('form',$form);
                         return $view;
                     }else{
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                         return $this->redirect()->toUrl('/product');
                     }
                 }else{
@@ -387,12 +387,12 @@ class ProductController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/product');
                 }
                 if($this->saveTdmProduct($data)){
                     $lastInsertId = $tdmProductTable->getLastInsertValue();
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\add',$messages['LOG_INSERT_TDM_PRODUCT_SUCCESS'].$lastInsertId);
                     if($continue == 'yes'){
                         if($lastInsertId){
@@ -487,9 +487,9 @@ class ProductController extends AbstractController
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         if($id != 0){
             if($this->delete($id,$tdmProductTable)){
-                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
             }else{
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
             }
         }
         if(!empty($ids) && is_array($ids)){
@@ -499,7 +499,7 @@ class ProductController extends AbstractController
                     $i++;
                 }
             }
-            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_PRODUCTS_DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$this->__($messages['QTY_PRODUCTS_DELETE_SUCCESS']));
         }
         return $this->redirect()->toUrl('/product');
     }
@@ -638,7 +638,7 @@ class ProductController extends AbstractController
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_EXPORT_TDM_PRODUCTS_SUCCESS']);
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\delete',$messages['LOG_EXPORT_TDM_PRODUCTS_FAIL']);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['EXPORT_FAIL']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['EXPORT_FAIL']));
             return $this->redirect()->toUrl('/product');
         }
         exit();
@@ -656,7 +656,7 @@ class ProductController extends AbstractController
             $path = getcwd() . "/upload/import";
             CreatePath::createPath($path);
             if(empty($post)){
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                 return $this->redirect()->toUrl('/recycler');
             }
             if($post['upload_file']['name'] && trim($post['upload_file']['name']) != ''){
@@ -681,7 +681,7 @@ class ProductController extends AbstractController
                 $tdmProduct = new TdmProduct();
                 $tdmProductTable = $this->sm->get('TdmProductTable');
                 if(empty($dataImport)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirectUrl('/product/index');
                 }
                 $header = array();
@@ -739,10 +739,10 @@ class ProductController extends AbstractController
                  */
                 @unlink($path .DIRECTORY_SEPARATOR .$post['upload_file']['name']);
                 $this->getViewHelperPlugin('user')->log('application\\product\\import',$messages['LOG_TDM_PRODUCT_IMPORT_SUCCESS']);
-                $this->addSuccessFlashMessenger($messages['UPLOAD_SUCCESS']);
+                $this->addSuccessFlashMessenger($this->__($messages['UPLOAD_SUCCESS']));
             }else{
                 $this->getViewHelperPlugin('user')->log('application\\product\\import',$messages['LOG_TDM_PRODUCT_IMPORT_FAIL']);
-                $this->addErrorFlashMessenger($messages['NO_DATA']);
+                $this->addErrorFlashMessenger($this->__($messages['NO_DATA']));
                 return $this->redirectUrl('/product/index');
             }
             return $this->redirectUrl('/product/index');
@@ -766,7 +766,7 @@ class ProductController extends AbstractController
         if($id != 0){
             $typeEntry = $productTypeTable->getEntry($id);
             if(empty($typeEntry)){
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                 return $this->redirect()->toUrl('/product/type');
             }
             $view->setVariable('name',$typeEntry->name);
@@ -808,21 +808,21 @@ class ProductController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/product/type');
                 }
                 if($this->saveProductType($data)){
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_UPDATE_PRODUCT_TYPE_SUCCESS'].$id);
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_INSERT_PRODUCT_TYPE_SUCCESS'].$productTypeTable->getLastInsertValue());
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     }
                 }else{
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_UPDATE_PRODUCT_TYPE_FAIL'].$id);
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                        $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['UPDATE_FAIL']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\type',$messages['LOG_INSERT_PRODUCT_TYPE_FAIL'].$id);
                         $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -870,9 +870,9 @@ class ProductController extends AbstractController
         $productTypeTable = $this->getServiceLocator()->get('ProductTypeTable');
         if($id != 0){
             if($this->deleteType($id,$productTypeTable)){
-                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
             }else{
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
             }
         }
         if(!empty($ids) && is_array($ids)){
@@ -882,7 +882,7 @@ class ProductController extends AbstractController
                     $i++;
                 }
             }
-            $this->flashMessenger()->setNamespace('success')->addMessage($i.$messages['QTY_PRODUCT_TYPES_DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($i.$this->__($messages['QTY_PRODUCT_TYPES_DELETE_SUCCESS']));
         }
         return $this->redirect()->toUrl('/product/type');
     }
@@ -918,7 +918,7 @@ class ProductController extends AbstractController
         if($id != 0){
             $brandEntry = $brandTable->getEntry($id);
             if(empty($brandEntry)){
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                 return $this->redirect()->toUrl('/product/brand');
             }
             $view->setVariable('name',$brandEntry->name);
@@ -960,21 +960,21 @@ class ProductController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/product/brand');
                 }
                 if($this->saveProductBrand($data)){
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_UPDATE_BRAND_SUCCESS'].$id);
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_INSERT_BRAND_SUCCESS'].$brandTable->getLastInsertValue());
-                        $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                        $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     }
                 }else{
                     if($id != 0){
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_UPDATE_BRAND_FAIL'].$id);
-                        $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                        $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['UPDATE_FAIL']));
                     }else{
                         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\brand',$messages['LOG_INSERT_BRAND_FAIL']);
                         $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -1022,9 +1022,9 @@ class ProductController extends AbstractController
         $brandTable = $this->getServiceLocator()->get('BrandTable');
         if($id != 0){
             if($this->deleteBrand($id,$brandTable)){
-                $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+                $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
             }else{
-                $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
             }
         }
         if(!empty($ids) && is_array($ids)){
@@ -1034,7 +1034,7 @@ class ProductController extends AbstractController
                     $i++;
                 }
             }
-            $this->flashMessenger()->setNamespace('error')->addMessage($i.$messages['QTY_BRANDS_DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($i.$this->__($messages['QTY_BRANDS_DELETE_SUCCESS']));
         }
         return $this->redirect()->toUrl('/product/brand');
     }
@@ -1082,7 +1082,18 @@ class ProductController extends AbstractController
         }else{
             exit();
         }
-        $header = array('Recycler Id','Recycler Name','Country','Product Name','Condition','Date','Price','Price in HKD','%','SSA Price');
+        $header = array(
+            $this->__('Recycler Id'),
+            $this->__('Recycler Name'),
+            $this->__('Country'),
+            $this->__('Product Name'),
+            $this->__('Condition'),
+            $this->__('Date'),
+            $this->__('Price'),
+            $this->__('Price in HKD'),
+            '%',
+            $this->__('SSA Price')
+        );
         $data = array($header);
         if(!empty($rowset)){
             foreach($rowset as $row){
@@ -1400,7 +1411,15 @@ class ProductController extends AbstractController
             /**
              * Export highest one
              */
-            $header = array('Date','Model Name','Condition','Recycler Detail','Price','Currency','Exchange Rate','Price in HKD','Highest Recycler Price');
+            $header = array($this->__('Date'),
+                $this->__('Model Name'),
+                $this->__('Condition'),
+                $this->__('Recycler Detail'),
+                $this->__('Price'),
+                $this->__('Currency'),
+                $this->__('Exchange Rate'),
+                $this->__('Price in HKD'),
+                $this->__('Highest Recycler Price'));
             $data = array($header);
             if(!empty($highest)){
                 $rowParse = array();
@@ -1485,7 +1504,14 @@ class ProductController extends AbstractController
                 /**
                  * Export highest one
                  */
-                $header = array('Date','Model Name','Condition','Recycler Detail','Price','Currency','Exchange Rate','Price in HKD','Highest Recycler Price');
+                $header = array($this->__('Date'),
+                    $this->__('Model Name'),
+                    $this->__('Condition'),
+                    $this->__('Recycler Detail'),
+                    $this->__('Price'),
+                    $this->__('Currency'),
+                    $this->__('Exchange Rate'),
+                    $this->__('Price in HKD'),$this->__('Highest Recycler Price'));
                 $data = array($header);
                 if(!empty($highestInCountry)){
                     $rowParse = array();
@@ -1587,7 +1613,15 @@ class ProductController extends AbstractController
                 /**
                  * Export highest one
                  */
-                $header = array('Date','Model Name','Condition','Recycler Detail','Price','Currency','Exchange Rate','Price in HKD','Highest Recycler Price');
+                $header = array($this->__('Date'),
+                    $this->__('Model Name'),
+                    $this->__('Condition'),
+                    $this->__('Recycler Detail'),
+                    $this->__('Price'),
+                    $this->__('Currency'),
+                    $this->__('Exchange Rate'),
+                    $this->__('Price in HKD'),
+                    $this->__('Highest Recycler Price'));
                 $data = array($header);
                 if(!empty($highestInRecycler)){
                     foreach($highestInRecycler as $h){
@@ -1682,7 +1716,15 @@ class ProductController extends AbstractController
                     /**
                      * Export highest one
                      */
-                    $header = array('Date','Model Name','Condition','Recycler Detail','Price','Currency','Exchange Rate','Price in HKD','Highest Recycler Price');
+                    $header = array($this->__('Date'),
+                        $this->__('Model Name'),
+                        $this->__('Condition'),
+                        $this->__('Recycler Detail'),
+                        $this->__('Price'),
+                        $this->__('Currency'),
+                        $this->__('Exchange Rate'),
+                        $this->__('Price in HKD'),
+                        $this->__('Highest Recycler Price'));
                     $data = array($header);
                     if(!empty($highestInRecycler)){
                         foreach($highestInRecycler as $h){
@@ -1733,12 +1775,12 @@ class ProductController extends AbstractController
         $this->auth();
         $country = $this->params('country',0);
         if($country == 0){
-            echo '<option value="0">Select Country</option>';
+            echo '<option value="0">'.$this->__('Select Country').'</option>';
             exit();
         }
         $reyclerTable = $this->getServiceLocator()->get('RecyclerTable');
         $rowset = $reyclerTable->getRecyclersByCountry($country);
-        $html = '<option value="0">Select Country</option>';
+        $html = '<option value="0">'.$this->__('Select Country').'</option>';
         if(!empty($rowset)){
             foreach($rowset as $row){
                 $html .= '<option value="'.$row->recycler_id.'">'.$row->name.'</option>';
@@ -1756,17 +1798,17 @@ class ProductController extends AbstractController
         {
             $post = $request->getPost()->toArray();
             if(empty($post['start']) || $post['start'] == ''){
-                $this->flashMessenger()->setNamespace('error')->addMessage('Please set start time');
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__('Please set start time'));
                 return $this->redirect()->toUrl('/product/popular');
             }
             if(empty($post['products']) || $post['products'] == ''){
-                $this->flashMessenger()->setNamespace('error')->addMessage('Please select products');
+                $this->flashMessenger()->setNamespace('error')->addMessage($this->__('Please select products'));
                 return $this->redirect()->toUrl('/product/popular');
             }
             $data = $post;
             $cache->removeItem('popular');
             $cache->addItem('popular',$data);
-            $this->flashMessenger()->setNamespace('success')->addMessage('Update popular products success');
+            $this->flashMessenger()->setNamespace('success')->addMessage($this->__('Update popular products success'));
             return $this->redirect()->toUrl('/product/popular');
         }
         $view = new ViewModel();
