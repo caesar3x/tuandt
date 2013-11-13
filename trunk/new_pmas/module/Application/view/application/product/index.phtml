@@ -22,49 +22,51 @@
 </div>
 <form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="pull-left">
-            <a class="btn">
-                <?php echo $this->__('Import from')?>
-            </a>
-            <div class="btn-group">
-                <select class="form-control" id="import-format" name="import_format">
-                    <option value="none"><?php echo $this->__('Select format')?></option>
-                    <option value="csv"><?php echo $this->__('CSV')?></option>
-                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
-                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
-                </select>
+        <div class="row">
+            <div class="pull-left">
+                <a class="btn">
+                    <?php echo $this->__('Import from')?>
+                </a>
+                <div class="btn-group">
+                    <select class="form-control" id="import-format" name="import_format">
+                        <option value="none"><?php echo $this->__('Select format')?></option>
+                        <option value="csv"><?php echo $this->__('CSV')?></option>
+                        <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                        <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
+                    </select>
+                </div>
+                <a class="btn btn-success btn-sm uploadform">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <?php echo $this->__('Import')?>
+                </a>
+                <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
+                <div class="btn-group">
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+                </div>
+                <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
+                <div class="btn-group">
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+                </div>
             </div>
-            <a class="btn btn-success btn-sm uploadform">
-                <i class="glyphicon glyphicon-upload"></i>
-                <?php echo $this->__('Import')?>
-            </a>
-            <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
-            <div class="btn-group">
-                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
-            </div>
-            <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
-            <div class="btn-group">
-                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+            <div class="pull-right">
+                <a class="btn">
+                    <?php echo $this->__('Export to')?>
+                </a>
+                <div class="btn-group">
+                    <select class="form-control" id="export-format" name="export_format">
+                        <option value="none"><?php echo $this->__('Select format')?></option>
+                        <option value="csv"><?php echo $this->__('CSV')?></option>
+                        <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                        <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
+                    </select>
+                </div>
+                <a class="btn btn-warning btn-sm" onclick="exportProducts()">
+                    <i class="glyphicon glyphicon-export"></i>
+                    <?php echo $this->__('Export')?>
+                </a>
             </div>
         </div>
-        <div class="pull-right">
-            <a class="btn">
-                <?php echo $this->__('Export to')?>
-            </a>
-            <div class="btn-group">
-                <select class="form-control" id="export-format" name="export_format">
-                    <option value="none"><?php echo $this->__('Select format')?></option>
-                    <option value="csv"><?php echo $this->__('CSV')?></option>
-                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
-                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
-                </select>
-            </div>
-            <a class="btn btn-warning btn-sm" onclick="exportProducts()">
-                <i class="glyphicon glyphicon-export"></i>
-                <?php echo $this->__('Export')?>
-            </a>
-        </div>
-        <div class="row clearfix">&nbsp;</div>
+        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
         <table class="display table table-striped table-condensed table-bordered withphp" cellpadding="0" cellspacing="0">
             <thead>
             <tr>

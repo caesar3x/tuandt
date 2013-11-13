@@ -11,18 +11,50 @@
     <div class="clearfix"></div>
 </div>
 <div class="row">
-    <div class="pull-left">
-        <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
-        <div class="btn-group">
-            <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+    <div class="row">
+        <div class="pull-left">
+            <a class="btn">
+                <?php echo $this->__('Import from')?>
+            </a>
+            <div class="btn-group">
+                <select class="form-control" id="import-format" name="import_format">
+                    <option value="none"><?php echo $this->__('Select format')?></option>
+                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
+                </select>
+            </div>
+            <a class="btn btn-success btn-sm uploadform">
+                <i class="glyphicon glyphicon-upload"></i>
+                <?php echo $this->__('Import')?>
+            </a>
+            <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+            </div>
+            <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+            </div>
         </div>
-        <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
-        <div class="btn-group">
-            <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+        <div class="pull-right">
+            <a class="btn">
+                <?php echo $this->__('Export to')?>
+            </a>
+            <div class="btn-group">
+                <select class="form-control" id="export-format" name="export_format">
+                    <option value="none"><?php echo $this->__('Select format')?></option>
+                    <option value="csv"><?php echo $this->__('CSV')?></option>
+                    <option value="xls"><?php echo $this->__('Excel 2003')?></option>
+                    <option value="xlsx"><?php echo $this->__('Excel 2007')?></option>
+                </select>
+            </div>
+            <a class="btn btn-warning btn-sm" onclick="exportFilteredProducts()">
+                <i class="glyphicon glyphicon-export"></i>
+                <?php echo $this->__('Export')?>
+            </a>
+            <a class="btn btn-success btn-sm" href="<?php echo $this->getUrl('product')?>"><span><?php echo $this->__('Back')?></span></a>
         </div>
-    </div>
-    <div class="pull-right">
-        <a class="btn btn-success btn-sm" href="<?php echo $this->getUrl('product')?>"><span><?php echo $this->__('Back')?></span></a>
     </div>
     <div class="row clearfix">&nbsp;</div>
     <input type="hidden" value="<?php echo $this->country?>" name="tdm_country" id="tdm-country">
@@ -56,10 +88,10 @@
                 <tr>
                     <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
                     <td><?php echo $row->product_id?></td>
+                    <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
                     <td><?php echo $row->name?></td>
                     <td><?php echo $this->condition($row->condition_id)?></td>
                     <td><?php echo $this->product_type()->getName($row->type_id)?></td>
-                    <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
                     <td><?php echo $this->country($row->country_id)?></td>
                     <?php
                     $data = array();
@@ -67,28 +99,30 @@
                     if(!empty($ssa_price)){
                         ?>
                         <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
-                        <?php
-                        $recyclerProducts = $this->product()->getTopPriceRecyclerProductByModel($row->model,$row->condition_id,3,$this->recycler_country);
-                        if(!empty($recyclerProducts)){
-                            foreach($recyclerProducts as $rp){
-                                $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
-                                $priceExchange = ((float) $rp->price )/ $currentExchange;
-                                if($ssa_price != 0){
-                                    $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
-                                }else{
-                                    $percentage = 'N/A';
-                                }
-                                $data[] = array(
-                                    'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                    'price' => $priceExchange,
-                                    'percentag' => $percentage,
-                                );
-                            }
-                        }
+                    <?php
                     }else{
-                    ?>
+                        ?>
                         <td><?php echo $this->__('N/A')?></td>
                     <?php }?>
+                    <?php
+                    $recyclerProducts = $this->product()->getRowsMatching($row->model,$row->condition_id,3,$this->recycler_country);
+                    if(!empty($recyclerProducts)){
+                        foreach($recyclerProducts as $rp){
+                            $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
+                            $priceExchange = ((float) $rp->price )/ $currentExchange;
+                            if($ssa_price != 0){
+                                $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                            }else{
+                                $percentage = 'N/A';
+                            }
+                            $data[] = array(
+                                'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                'price' => $priceExchange,
+                                'percentag' => $percentage,
+                            );
+                        }
+                    }
+                    ?>
                     <?php if(!empty($data)):?>
                         <?php $i=0;foreach($data as $item):?>
                             <td><?php echo $item['recycler']?></td>

@@ -5,6 +5,8 @@
  */
 namespace Core\Controller;
 
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -212,5 +214,26 @@ class AbstractController extends AbstractActionController
     public function __($string)
     {
         return $this->getViewHelperPlugin('__')->trans($string);
+    }
+    /**
+     * @param $message
+     */
+    protected function log($message)
+    {
+        $writer = new Stream($this->getViewHelperPlugin('log')->systemLogPath());
+        $logger = new Logger();
+        $logger->addWriter($writer);
+        $logger->info($message);
+    }
+
+    /**
+     * @param $message
+     */
+    protected function log_debug($message)
+    {
+        $writer = new Stream($this->getViewHelperPlugin('log')->systemDebugPath());
+        $logger = new Logger();
+        $logger->addWriter($writer);
+        $logger->debug($message);
     }
 }

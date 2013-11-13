@@ -268,6 +268,40 @@ function exportProducts()
     window.location.assign(url);
     return true;
 }
+function isPositiveInteger(n) {
+    return 0 === n % (!isNaN(parseFloat(n)) && 0 <= ~~n);
+}
+function exportFilteredProducts()
+{
+    var format = $("#export-format").val();
+    var tdmcountry = $("#tdm-country").val();
+    var recyclercountry = $("#recycler-country").val();
+    if(format == 'none'){
+        bootbox.alert("You must select format data");
+        return false;
+    }
+    var ids = new Array();
+    $(".check-item").each(function(){
+        if($(this).is(":checked")){
+            ids.push($(this).val());
+        }
+    });
+    var params = new Object();
+    params.id = ids;
+    var urlParams = $.param(params);
+    var url = '/product/export/format/'+format;
+    if(typeof tdmcountry !== 'undefined' && isPositiveInteger(tdmcountry) )
+    {
+        url = url + '/country/'+tdmcountry;
+    }
+    if(typeof recyclercountry !== 'undefined' && isPositiveInteger(recyclercountry) )
+    {
+        url = url + '/recycler-country/'+recyclercountry;
+    }
+    url = url + '?'+urlParams;
+    window.location.assign(url);
+    return true;
+}
 function exportRecyclers()
 {
     var format = $("#export-format").val();

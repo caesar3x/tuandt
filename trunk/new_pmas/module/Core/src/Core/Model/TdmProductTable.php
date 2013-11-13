@@ -146,9 +146,10 @@ class TdmProductTable extends AbstractModel
 
     /**
      * @param $ids
+     * @param null $tdm_country
      * @return null
      */
-    public function getProductsFilterExport($ids)
+    public function getProductsFilterExport($ids,$tdm_country = null)
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
@@ -156,6 +157,9 @@ class TdmProductTable extends AbstractModel
         $where->equalTo('deleted',0);
         if(!empty($ids)){
             $where->equalTo('product_id',$ids);
+        }
+        if(!empty($tdm_country)){
+            $where->equalTo('country_id',$tdm_country);
         }
         $select = $sql->select()->from($this->tableGateway->table);
         $select->where($where);
@@ -167,9 +171,11 @@ class TdmProductTable extends AbstractModel
         }
         return $result;
     }
+
     /**
      * @param $model
-     * @return null|\Zend\Db\ResultSet\ResultSet
+     * @param $condition
+     * @return array|\ArrayObject|null
      */
     public function getRowByModel($model,$condition)
     {
@@ -207,6 +213,11 @@ class TdmProductTable extends AbstractModel
         }
         return true;
     }
+
+    /**
+     * @param $country_id
+     * @return Select
+     */
     public function getProductsByCountryQuery($country_id)
     {
         $adapter = $this->tableGateway->adapter;
@@ -218,5 +229,27 @@ class TdmProductTable extends AbstractModel
         /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         return $select;
+    }
+
+    /**
+     * @param $country_id
+     * @return mixed
+     */
+    public function getProductsByCountry($country_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('country_id',$country_id);
+        $where->equalTo('deleted',0);
+        /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
+        $select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($result->count() <= 0) {
+            return null;
+        }
+        return $result;
     }
 }

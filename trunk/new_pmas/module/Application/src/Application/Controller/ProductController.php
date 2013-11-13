@@ -519,6 +519,8 @@ class ProductController extends AbstractController
         parent::initAction();
         $messages = $this->getMessages();
         $format = $this->params('format');
+        $country = $this->params('country');
+        $recycler_country = $this->params('recycler-country');
         if(!$format){
             return true;
         }
@@ -527,11 +529,9 @@ class ProductController extends AbstractController
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $sm = $this->getServiceLocator();
         if (!$this->productTable) {
-
             $this->productTable = $sm->get('TdmProductTable');
         }
-        $reyclerProductTable = $sm->get('RecyclerProductTable');
-        $rowset = $this->productTable->getProductsFilterExport($ids);
+        $rowset = $this->productTable->getProductsFilterExport($ids,$country);
         $header = array(
             $this->__('Product ID'),
             $this->__('Brand'),
@@ -564,25 +564,25 @@ class ProductController extends AbstractController
                 $ssa_price = $this->getViewHelperPlugin('product')->getSSAPrice($row->model,$row->condition_id);
                 if(!empty($ssa_price)){
                     $rowParse[] = $this->getViewHelperPlugin('price')->formatCurrency($ssa_price,'HKD');
-                    $recyclerProducts = $this->getViewHelperPlugin('product')->getTopPriceRecyclerProductByModel($row->model,$row->condition_id);
-                    if(!empty($recyclerProducts)){
-                        foreach($recyclerProducts as $rp){
-                            $currentExchange = $this->getViewHelperPlugin('exchange')->getCurrentExchangeOfCurrency($rp->currency);
-                            $priceExchange = ((float) $rp->price )/ $currentExchange;
-                            if($ssa_price != 0){
-                                $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
-                            }else{
-                                $percentage = 'N/A';
-                            }
-                            $price_data[] = array(
-                                'recycler' => $this->getViewHelperPlugin('recycler')->getName($rp->recycler_id),
-                                'price' => $priceExchange,
-                                'percentag' => $percentage,
-                            );
-                        }
-                    }
                 }else{
                     $rowParse[] = '';
+                }
+                $recyclerProducts = $this->getViewHelperPlugin('product')->getRowsMatching($row->model,$row->condition_id,3,$recycler_country);
+                if(!empty($recyclerProducts)){
+                    foreach($recyclerProducts as $rp){
+                        $currentExchange = $this->getViewHelperPlugin('exchange')->getCurrentExchangeOfCurrency($rp->currency);
+                        $priceExchange = ((float) $rp->price )/ $currentExchange;
+                        if($ssa_price != 0){
+                            $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                        }else{
+                            $percentage = 'N/A';
+                        }
+                        $price_data[] = array(
+                            'recycler' => $this->getViewHelperPlugin('recycler')->getName($rp->recycler_id),
+                            'price' => $priceExchange,
+                            'percentag' => $percentage,
+                        );
+                    }
                 }
                 if(!empty($price_data)){
                     $i = 0;
