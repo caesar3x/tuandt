@@ -5,10 +5,10 @@
  */
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Core\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 
-class AdminController extends AbstractActionController
+class AdminController extends AbstractController
 {
     public function indexAction()
     {
@@ -28,7 +28,7 @@ class AdminController extends AbstractActionController
         $view = new ViewModel();
         $pluginManager = $this->getServiceLocator()->get('viewHelperManager');
         $helper        = $pluginManager->get('HeadTitle');
-        $helper->append('Manage Users');
+        $helper->append($this->__('Manage Users'));
         return $view;
     }
 }

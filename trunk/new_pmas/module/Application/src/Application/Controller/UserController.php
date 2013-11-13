@@ -6,6 +6,7 @@
 namespace Application\Controller;
 
 use Application\Form\UserForm;
+use Core\Controller\AbstractController;
 use Core\Model\AdminUser;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Debug\Debug;
@@ -14,7 +15,7 @@ use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController
+class UserController extends AbstractController
 {
     protected $adminTable;
 
@@ -81,12 +82,12 @@ class UserController extends AbstractActionController
                 $data = $form->getData();
                 if(empty($data)){
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_FAIL'].' : '.$messages['NO_DATA']);
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/user');
                 }
                 if($this->save($data)){
                     $lastInsertId = $this->adminTable->getLastInsertValue();
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\add',$messages['LOG_USER_INSERT_SUCCESS'].$lastInsertId);
                 }else{
                     $view->setVariable('msg',array('danger' => $messages['INSERT_FAIL']));
@@ -156,11 +157,11 @@ class UserController extends AbstractActionController
             if($form->isValid()) {
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/user');
                 }
                 if($this->save($data)){
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                     /**
                      * Log user
                      */
@@ -258,13 +259,13 @@ class UserController extends AbstractActionController
              * Log user
              */
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete',$messages['LOG_USER_DELETE_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
         }else{
             /**
              * Log user
              */
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete',$messages['LOG_USER_DELETE_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
         }
         /*return $this->redirect()->toUrl('/user');*/
     }
@@ -318,13 +319,13 @@ class UserController extends AbstractActionController
              * Log user
              */
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete-log',$messages['LOG_USER_DELETE_LOG_SUCCESS'].$user);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
         }else{
             /**
              * Log user
              */
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\user\\delete-log',$messages['LOG_USER_DELETE_LOG_FAIL'].$user);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
         }
     }
 }

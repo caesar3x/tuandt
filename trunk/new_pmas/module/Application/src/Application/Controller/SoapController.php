@@ -127,13 +127,13 @@ class SoapController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirectUrl('/soap/user');
                 }
                 if($this->saveUser($data)){
                     $id = $soapUsersTable->getLastInsertValue();
                     $this->getViewHelperPlugin('user')->log('application\\soap\\add-user',$messages['LOG_INSERT_SOAP_USER_SUCCESS'].$id);
-                    $this->addSuccessFlashMessenger($messages['INSERT_SUCCESS']);
+                    $this->addSuccessFlashMessenger($this->__($messages['INSERT_SUCCESS']));
                     if($continue == 'yes'){
 
                         return $this->redirectUrl('/soap/edit-user/id/'.$id);
@@ -215,12 +215,12 @@ class SoapController extends AbstractController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirectUrl('/soap/user');
                 }
                 if($this->saveUser($data)){
                     $this->getViewHelperPlugin('user')->log('application\\soap\\edit-user',$messages['LOG_UPDATE_SOAP_USER_SUCCESS'].$id);
-                    $this->addSuccessFlashMessenger($messages['UPDATE_SUCCESS']);
+                    $this->addSuccessFlashMessenger($this->__($messages['UPDATE_SUCCESS']));
                     if($continue == 'yes'){
                         $this->setViewVariable('msg',array('success' => $messages['UPDATE_SUCCESS']));
                         $this->setViewVariable('form',$form);
@@ -270,10 +270,10 @@ class SoapController extends AbstractController
         $messages = $this->getMessages();
         if($table->deleteEntry($id)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\soap\\delete-user',$messages['LOG_DELETE_SOAP_USER_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\soap\\delete-user',$messages['LOG_DELETE_SOAP_USER_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
         }
         return true;
     }

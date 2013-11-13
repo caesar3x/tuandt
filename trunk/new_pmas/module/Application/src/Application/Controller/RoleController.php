@@ -6,6 +6,7 @@
 namespace Application\Controller;
 
 use Application\Form\RoleForm;
+use Core\Controller\AbstractController;
 use Core\Model\Roles;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -13,7 +14,7 @@ use Zend\Validator\Db\NoRecordExists;
 use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
-class RoleController extends AbstractActionController
+class RoleController extends AbstractController
 {
     public function auth()
     {
@@ -73,13 +74,13 @@ class RoleController extends AbstractActionController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/role');
                 }
                 if($this->saveRole($data)){
                     $lastInsertId = $rolesTable->getLastInsertValue();
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\add',$messages['LOG_INSERT_ROLE_SUCCESS'].$lastInsertId);
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['INSERT_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['INSERT_SUCCESS']));
                     if($continue == 'yes'){
                         if($lastInsertId){
                             return $this->redirect()->toUrl('/role/edit/id/'.$lastInsertId);
@@ -88,7 +89,7 @@ class RoleController extends AbstractActionController
                     return $this->redirect()->toUrl('/role');
                 }else{
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\add',$messages['LOG_INSERT_ROLE_FAIL']);
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['INSERT_FAIL']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['INSERT_FAIL']));
                     return $this->redirect()->toUrl('/role/add');
                 }
             }else{
@@ -147,12 +148,12 @@ class RoleController extends AbstractActionController
             if($form->isValid()){
                 $data = $form->getData();
                 if(empty($data)){
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['NO_DATA']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['NO_DATA']));
                     return $this->redirect()->toUrl('/role');
                 }
                 if($this->saveRole($data)){
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\edit',$messages['LOG_UPDATE_ROLE_SUCCESS'].$id);
-                    $this->flashMessenger()->setNamespace('success')->addMessage($messages['UPDATE_SUCCESS']);
+                    $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['UPDATE_SUCCESS']));
                     if($continue == 'yes'){
                         if($id){
                             return $this->redirect()->toUrl('/role/edit/id/'.$id);
@@ -161,7 +162,7 @@ class RoleController extends AbstractActionController
                     return $this->redirect()->toUrl('/role');
                 }else{
                     $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\edit',$messages['LOG_UPDATE_ROLE_FAIL'].$id);
-                    $this->flashMessenger()->setNamespace('error')->addMessage($messages['UPDATE_FAIL']);
+                    $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['UPDATE_FAIL']));
                     return $this->redirect()->toUrl('/role/edit/id/'.$id);
                 }
             }else{
@@ -221,10 +222,10 @@ class RoleController extends AbstractActionController
         $result = $table->deleteEntry($id);
         if($result){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\delete',$messages['LOG_DELETE_ROLE_SUCCESS'].$id);
-            $this->flashMessenger()->setNamespace('success')->addMessage($messages['DELETE_SUCCESS']);
+            $this->flashMessenger()->setNamespace('success')->addMessage($this->__($messages['DELETE_SUCCESS']));
         }else{
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\role\\delete',$messages['LOG_DELETE_ROLE_FAIL'].$id);
-            $this->flashMessenger()->setNamespace('error')->addMessage($messages['DELETE_FAIL']);
+            $this->flashMessenger()->setNamespace('error')->addMessage($this->__($messages['DELETE_FAIL']));
         }
         return true;
     }
