@@ -426,9 +426,9 @@ class ProductHelper extends CoreHelper
         }
         return 0;
     }
-    public function getRowsMatching($model,$condition)
+    public function getRowsMatching($model,$condition,$limit = 3,$country = null)
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
-        return $recyclerProductTable->getRowsMatching($model,$condition);
+        return $recyclerProductTable->getRowsMatching($model,$condition,$limit,$country);
     }
 }

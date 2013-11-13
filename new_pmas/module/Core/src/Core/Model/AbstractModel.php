@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\ServiceManager;
 
 class AbstractModel
@@ -70,5 +72,30 @@ class AbstractModel
             return $availableRows->count();
         }
         return 0;
+    }
+    protected function getViewHelper($name)
+    {
+        return $this->serviceLocator->get('viewhelpermanager')->get($name);
+    }
+    /**
+     * @param $message
+     */
+    protected function log($message)
+    {
+        $writer = new Stream($this->getViewHelper('log')->systemLogPath());
+        $logger = new Logger();
+        $logger->addWriter($writer);
+        $logger->info($message);
+    }
+
+    /**
+     * @param $message
+     */
+    protected function log_debug($message)
+    {
+        $writer = new Stream($this->getViewHelper('log')->systemDebugPath());
+        $logger = new Logger();
+        $logger->addWriter($writer);
+        $logger->debug($message);
     }
 }

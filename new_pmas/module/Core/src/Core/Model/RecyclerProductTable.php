@@ -187,23 +187,28 @@ class RecyclerProductTable extends AbstractModel
         $select->where($where);
         return $select;
     }
-    public function getRowsMatching($model,$condition)
+    public function getRowsMatching($model,$condition,$limit = 3,$country = null)
     {
         if($model == null){
             return null;
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select  = $sql->select()->from($this->tableGateway->table);
+        $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
         $where = new Where();
-        $where->equalTo('deleted',0);
-        $where->equalTo('condition_id',$condition);
-        $where->equalTo('model',$model);
-        $where->greaterThan('recycler_id',1);
+        if(!empty($country)){
+
+            $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
+            $where->equalTo('r.country_id',$country);
+        }
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->greaterThan('m.recycler_id',1);
         $select->where($where);
-        $select->order("product_id DESC");
+        $select->order("m.product_id DESC");
         $selectString = $sql->getSqlStringForSqlObject($select);
-        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id LIMIT $limit";
         $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
             return null;
