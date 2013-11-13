@@ -160,8 +160,8 @@ return array(
     'LOG_UPDATE_LANGUAGE_FAIL'     => 'Updating language fail, ID#',
     'LOG_DELETE_LANGUAGE_FAIL'     => 'Deleting language fail, ID#',
     'LOG_DELETE_LANGUAGE_SUCCESS'     => 'Deleted language success, ID#',
-    'LANGUAGE_CODE_NOT_EMPTY' => 'Language code can\'t not be empty',
-    'SORT_ORDER_NOT_EMPTY' => 'Sort order can\'t not be empty',
+    'LANGUAGE_CODE_NOT_EMPTY' => 'Language code can not be empty',
+    'SORT_ORDER_NOT_EMPTY' => 'Sort order can not be empty',
     'LANG_FILE_NOT_UPLOAD' => 'Please upload language file',
     'LANGUAGE_CODE_EXISTED' => 'Language code existed',
 
