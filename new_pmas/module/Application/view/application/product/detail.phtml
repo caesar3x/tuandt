@@ -48,12 +48,10 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                         <?php }?>
                         <div>
                             <div class="pull-left">
-                                <?php if(!empty($product_price)):?>
-                                    <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
-                                    <div class="btn-group">
-                                        <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->filter))?>
-                                    </div>
-                                <?php endif;?>
+                                <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
+                                <div class="btn-group">
+                                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->filter))?>
+                                </div>
                                 <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
                                 <div class="btn-group">
                                     <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
