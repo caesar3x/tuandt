@@ -28,6 +28,10 @@
                 <i class="glyphicon glyphicon-upload"></i>
                 <?php echo $this->__('Import')?>
             </a>
+            <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
+            <div class="btn-group">
+                <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->higher))?>
+            </div>
             <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
             <div class="btn-group">
                 <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
@@ -84,27 +88,99 @@
         </thead>
         <tbody>
         <?php if(count($this->paginator)):?>
-            <?php foreach($this->paginator as $row):?>
-                <tr>
-                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
-                    <td><?php echo $row->product_id?></td>
-                    <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
-                    <td><?php echo $row->name?></td>
-                    <td><?php echo $this->condition($row->condition_id)?></td>
-                    <td><?php echo $this->product_type()->getName($row->type_id)?></td>
-                    <td><?php echo $this->country($row->country_id)?></td>
+            <?php if(empty($this->higher)):?>
+                <?php foreach($this->paginator as $row):?>
+                    <tr>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
+                        <td><?php echo $row->product_id?></td>
+                        <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
+                        <td><?php echo $row->name?></td>
+                        <td><?php echo $this->condition($row->condition_id)?></td>
+                        <td><?php echo $this->product_type()->getName($row->type_id)?></td>
+                        <td><?php echo $this->country($row->country_id)?></td>
+                        <?php
+                        $data = array();
+                        $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
+                        if(!empty($ssa_price)){
+                            ?>
+                            <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
+                        <?php
+                        }else{
+                            ?>
+                            <td><?php echo $this->__('N/A')?></td>
+                        <?php }?>
+                        <?php
+                        $recyclerProducts = $this->product()->getRowsMatching($row->model,$row->condition_id,3,$this->recycler_country);
+                        if(!empty($recyclerProducts)){
+                            foreach($recyclerProducts as $rp){
+                                $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
+                                $priceExchange = ((float) $rp->price )/ $currentExchange;
+                                if($ssa_price != 0){
+                                    $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                                }else{
+                                    $percentage = 'N/A';
+                                }
+                                $data[] = array(
+                                    'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                    'price' => $priceExchange,
+                                    'percentag' => $percentage,
+                                );
+                            }
+                        }
+                        ?>
+                        <?php if(!empty($data)):?>
+                            <?php $i=0;foreach($data as $item):?>
+                                <td><?php echo $item['recycler']?></td>
+                                <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
+                                <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
+                                <?php $i++;?>
+                            <?php endforeach;?>
+                            <?php if($i==1):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php elseif($i==2):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php endif;?>
+                            <?php ?>
+                        <?php else:?>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        <?php endif;?>
+                        <?php ?>
+                        <td class="action3">
+                            <a class="btn btn-xs btn-primary btn-edit" href="<?php echo $this->getUrl('product/detail/id/'.$row->product_id)?>">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <?php echo $this->__('Detail')?>
+                            </a>
+                            <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <?php echo $this->__('Edit')?>
+                            </a>
+                            <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <?php echo $this->__('Delete')?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            <?php else:?>
+                <?php foreach($this->paginator as $row):?>
                     <?php
                     $data = array();
                     $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
-                    if(!empty($ssa_price)){
-                        ?>
-                        <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
-                    <?php
-                    }else{
-                        ?>
-                        <td><?php echo $this->__('N/A')?></td>
-                    <?php }?>
-                    <?php
                     $recyclerProducts = $this->product()->getRowsMatching($row->model,$row->condition_id,3,$this->recycler_country);
                     if(!empty($recyclerProducts)){
                         foreach($recyclerProducts as $rp){
@@ -112,65 +188,75 @@
                             $priceExchange = ((float) $rp->price )/ $currentExchange;
                             if($ssa_price != 0){
                                 $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
-                            }else{
-                                $percentage = 'N/A';
+                                if($percentage >= (int) $this->higher){
+                                    $data[] = array(
+                                        'recycler' => $this->recycler()->getName($rp->recycler_id),
+                                        'price' => $priceExchange,
+                                        'percentag' => $percentage,
+                                    );
+                                }
                             }
-                            $data[] = array(
-                                'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                'price' => $priceExchange,
-                                'percentag' => $percentage,
-                            );
                         }
                     }
                     ?>
                     <?php if(!empty($data)):?>
-                        <?php $i=0;foreach($data as $item):?>
-                            <td><?php echo $item['recycler']?></td>
-                            <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
-                            <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
-                            <?php $i++;?>
-                        <?php endforeach;?>
-                        <?php if($i==1):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php elseif($i==2):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php endif;?>
+                    <tr>
+                        <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
+                        <td><?php echo $row->product_id?></td>
+                        <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
+                        <td><?php echo $row->name?></td>
+                        <td><?php echo $this->condition($row->condition_id)?></td>
+                        <td><?php echo $this->product_type()->getName($row->type_id)?></td>
+                        <td><?php echo $this->country($row->country_id)?></td>
+                        <?php
+                        if(!empty($ssa_price)){
+                            ?>
+                            <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
+                        <?php
+                        }else{
+                            ?>
+                            <td><?php echo $this->__('N/A')?></td>
+                        <?php }?>
+
+
+                            <?php $i=0;foreach($data as $item):?>
+                                <td><?php echo $item['recycler']?></td>
+                                <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
+                                <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
+                                <?php $i++;?>
+                            <?php endforeach;?>
+                            <?php if($i==1):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php elseif($i==2):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php endif;?>
+                            <?php ?>
                         <?php ?>
-                    <?php else:?>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="action3">
+                            <a class="btn btn-xs btn-primary btn-edit" href="<?php echo $this->getUrl('product/detail/id/'.$row->product_id)?>">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <?php echo $this->__('Detail')?>
+                            </a>
+                            <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
+                                <i class="glyphicon glyphicon-edit"></i>
+                                <?php echo $this->__('Edit')?>
+                            </a>
+                            <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
+                                <i class="glyphicon glyphicon-trash"></i>
+                                <?php echo $this->__('Delete')?>
+                            </a>
+                        </td>
+                    </tr>
                     <?php endif;?>
-                    <?php ?>
-                    <td class="action3">
-                        <a class="btn btn-xs btn-primary btn-edit" href="<?php echo $this->getUrl('product/detail/id/'.$row->product_id)?>">
-                            <i class="glyphicon glyphicon-edit"></i>
-                            <?php echo $this->__('Detail')?>
-                        </a>
-                        <a class="btn btn-xs btn-warning btn-edit" href="/product/edit/id/<?php echo $row->product_id?>">
-                            <i class="glyphicon glyphicon-edit"></i>
-                            <?php echo $this->__('Edit')?>
-                        </a>
-                        <a onclick="confirmDelete('/product/delete/id/<?php echo $row->product_id?>')" class="btn btn-xs btn-danger btn-delete">
-                            <i class="glyphicon glyphicon-trash"></i>
-                            <?php echo $this->__('Delete')?>
-                        </a>
-                    </td>
-                </tr>
-            <?php endforeach;?>
+                <?php endforeach;?>
+            <?php endif;?>
         <?php endif;?>
         </tbody>
     </table>

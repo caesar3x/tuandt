@@ -7,6 +7,7 @@
 <?php $filter = $this->filter;?>
 <select class="chosen-select form-control" id="price_percentage" data-placeholder="<?php echo $this->__('Choose a percentage')?>">
     <option value=""></option>
+    <option value="reset"><?php echo $this->__('Reset filter')?></option>
     <option <?php if($filter && ($filter) == 5){echo 'selected';}?> value="5"><?php echo $this->__('Price higher than')?> 5%</option>
     <option <?php if($filter && ($filter) == 10){echo 'selected';}?> value="10"><?php echo $this->__('Price higher than')?> 10%</option>
     <option <?php if($filter && ($filter) == 15){echo 'selected';}?> value="15"><?php echo $this->__('Price higher than')?> 15%</option>
