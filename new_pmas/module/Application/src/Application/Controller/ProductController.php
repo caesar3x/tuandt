@@ -79,6 +79,9 @@ class ProductController extends AbstractController
         $higher = $this->params('higher',null);
         $country = $this->params('country',null);
         $recycler_country = $this->params('recycler-country',null);
+        if(empty($higher) && empty($country) && empty($recycler_country)){
+            $this->redirectUrl('/product');
+        }
         $this->setViewVariable('higher',$higher);
         $this->setViewVariable('country',$country);
         $this->setViewVariable('recycler_country',$recycler_country);
@@ -98,7 +101,11 @@ class ProductController extends AbstractController
             $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
             $paginator = new Paginator(new DbSelect($select,$dbAdapter));*/
             $finalRow = array();
-            $rowset = $tdmProductTable->getAvaiableRows();
+            if(empty($country)){
+                $rowset = $tdmProductTable->getAvaiableRows();
+            }else{
+                $rowset = $tdmProductTable->getProductsByCountry($country);
+            }
             foreach($rowset as $row){
                 $data = array();
                 $ssa_price = $this->getViewHelperPlugin('product')->getSSAPrice($row->model,$row->condition_id);
@@ -452,7 +459,7 @@ class ProductController extends AbstractController
         if($id == 0){
             $this->getResponse()->setStatusCode(404);
         }
-        $filter = $this->params('filter',null);
+        $filter = $this->params('higher',null);
         $country = $this->params('country',null);
 
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
@@ -470,6 +477,9 @@ class ProductController extends AbstractController
         $messages = $this->getMessages();
         $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
+        if($country != null){
+            $recyclerProductsWithSameModel = $this->getViewHelperPlugin('product')->getProductsByCountryAndModelAndCondition($country,$entry->model,$entry->condition_id);
+        }
         if(is_numeric($filter)){
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
             $ssa_price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
@@ -489,17 +499,12 @@ class ProductController extends AbstractController
                             }
                         }
                     }
-                    $view->setVariable('filter',$filter);
+                    $view->setVariable('higher',$filter);
                     $view->setVariable('products',$products);
                     return $view;
                 }
             }
 
-        }
-        if($country != null){
-            $rowset = $this->getViewHelperPlugin('product')->getProductsByCountryAndModelAndCondition($country,$entry->model,$entry->condition_id);
-            $view->setVariable('products',$rowset);
-            return $view;
         }
         $view->setVariable('products',$recyclerProductsWithSameModel);
         return $view;

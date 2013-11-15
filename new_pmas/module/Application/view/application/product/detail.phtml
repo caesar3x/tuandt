@@ -22,6 +22,9 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
 </div>
 <div class="row">
 <input type="hidden" name="product" id="productid" value="<?php echo $this->id?>">
+<input type="hidden" value="<?php echo $this->country?>" name="tdm_country" id="tdm-country">
+<input type="hidden" value="<?php echo $this->recycler_country?>" name="recycler_country" id="recycler-country">
+<input type="hidden" value="<?php echo $this->higher?>" name="filter_higher" id="filter-higher">
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked nav-tabs" data-tabs="tabs">
             <li class="active"><a data-toggle="tab" href="#price-comparision"><?php echo $this->__('Price Comparison')?></a></li>

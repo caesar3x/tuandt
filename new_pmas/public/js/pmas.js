@@ -122,64 +122,60 @@ $(function() {
     /**
      * Onchange price filter
      */
+    var product = $("#productid").val();
+    var recyclercountry = $("#recycler-country").val();
+    var tdmcountry = $("#tdm-country").val();
+    var filterhigher = $("#filter-higher").val();
+    var urlparams = '';
     $(document).on("change","#price_percentage",function(e){
         e.preventDefault();
-        var product = $("#productid").val();
+        if(typeof tdmcountry !== 'undefined' && tdmcountry !== '' && tdmcountry !== 'reset'){
+            urlparams = urlparams + '/country/'+tdmcountry;
+        }
+        if(typeof recyclercountry !== 'undefined' && recyclercountry !== '' && recyclercountry !== 'reset'){
+            urlparams = urlparams + '/recycler-country/'+recyclercountry;
+        }
+        if($(this).val() !== 'reset' ){
+            urlparams = urlparams + '/higher/'+$(this).val();
+        }
         if(typeof  product !== 'undefined'){
-            if($(this).val() == 'reset'){
-                window.location.assign(siteurl+'product/detail/id/'+product+'');
-            }else{
-                window.location.assign(siteurl+'product/detail/id/'+product+'/filter/'+$(this).val());
-            }
+            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
         }else{
-            if($(this).val() == 'reset'){
-                window.location.assign(siteurl +'product');
-            }else{
-                window.location.assign(siteurl +'product/filter/higher/'+$(this).val());
-            }
+            window.location.assign(siteurl +'product/filter'+urlparams);
         }
     });
     $(document).on("change","#country-chosen",function(e){
         e.preventDefault();
-        var product = $("#productid").val();
-        var recyclercountry = $("#recycler-country").val();
+        if(typeof filterhigher !== 'undefined' && filterhigher !== '' && filterhigher !== 'reset'){
+            urlparams = urlparams + '/higher/'+filterhigher;
+        }
+        if(typeof recyclercountry !== 'undefined' && recyclercountry !== '' && recyclercountry !== 'reset'){
+            urlparams = urlparams + '/recycler-country/'+recyclercountry;
+        }
+        if($(this).val() !== 'reset' ){
+            urlparams = urlparams + '/country/'+$(this).val();
+        }
         if(typeof  product !== 'undefined'){
-            if($(this).val() == 'reset'){
-                window.location.assign(siteurl+'product/detail/id/'+product);
-            }else{
-                window.location.assign(siteurl+'product/detail/id/'+product+'/country/'+$(this).val());
-            }
+            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
         }else{
-            if($(this).val() == 'reset'){
-                if(typeof recyclercountry !== 'undefined' && recyclercountry !== ''){
-                    window.location.assign(siteurl +'product/filter/recycler-country/'+recyclercountry);
-                }else{
-                    window.location.assign(siteurl +'product');
-                }
-            }else{
-                if(typeof recyclercountry !== 'undefined' && recyclercountry !== ''){
-                    window.location.assign(siteurl +'product/filter/country/'+$(this).val()+'/recycler-country/'+recyclercountry);
-                }else{
-                    window.location.assign(siteurl +'product/filter/country/'+$(this).val());
-                }
-            }
+            window.location.assign(siteurl +'product/filter'+urlparams);
         }
     });
     $(document).on("change","#recycler-country-chosen",function(e){
         e.preventDefault();
-        var tdmcountry = $("#tdm-country").val();
-        if($(this).val() == 'reset'){
-            if(typeof tdmcountry !== 'undefined' && tdmcountry !== ''){
-                window.location.assign(siteurl + 'product/filter/country/'+tdmcountry);
-            }else{
-                window.location.assign(siteurl + 'product');
-            }
+        if(typeof filterhigher !== 'undefined' && filterhigher !== '' && filterhigher !== 'reset'){
+            urlparams = urlparams + '/higher/'+filterhigher;
+        }
+        if(typeof tdmcountry !== 'undefined' && tdmcountry !== '' && tdmcountry !== 'reset'){
+            urlparams = urlparams + '/country/'+tdmcountry;
+        }
+        if($(this).val() !== 'reset' ){
+            urlparams = urlparams + '/recycler-country/'+$(this).val();
+        }
+        if(typeof  product !== 'undefined'){
+            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
         }else{
-            if(typeof tdmcountry !== 'undefined' && tdmcountry !== ''){
-                window.location.assign(siteurl + 'product/filter/country/'+tdmcountry+'/recycler-country/'+$(this).val());
-            }else{
-                window.location.assign(siteurl + 'product/filter/recycler-country/'+$(this).val());
-            }
+            window.location.assign(siteurl +'product/filter'+urlparams);
         }
     });
     /**
