@@ -19,6 +19,7 @@ use Core\Model\ProductType;
 use Core\Model\SlugFile;
 use Core\Model\TdmProduct;
 use Zend\Debug\Debug;
+use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 use Zend\Validator\Db\NoRecordExists;
@@ -84,29 +85,55 @@ class ProductController extends AbstractController
         $messages = $this->getMessages();
         $this->getViewHelperPlugin('user')->log('application\\product\\filter',$messages['LOG_VIEW_PRODUCT_FILTER']);
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
-        if($higher != null){
-            $select = $recyclerProductTable->getAvaiableRows();
-        }else{
-            $tdmProductTable = $this->sm->get('TdmProductTable');
-            if($country != null){
-                $select = $tdmProductTable->getProductsByCountryQuery($country);
-            }else{
-                $select = $tdmProductTable->getTdmProductQuery();
-            }
-            /*foreach($rowset as $row){
-                Debug::dump($row);
-            }*/
-        }
         $request = $this->getRequest();
         $ppp = $request->getQuery('ppp');
         if(!empty($ppp)){
             $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
         }
+        $tdmProductTable = $this->sm->get('TdmProductTable');
         $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
         $page = trim($this->params('page',1),'/');
+        if($higher != null){
+            /*$select = $tdmProductTable->getTdmProductQuery();
+            $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+            $paginator = new Paginator(new DbSelect($select,$dbAdapter));*/
+            $finalRow = array();
+            $rowset = $tdmProductTable->getAvaiableRows();
+            foreach($rowset as $row){
+                $data = array();
+                $ssa_price = $this->getViewHelperPlugin('product')->getSSAPrice($row->model,$row->condition_id);
+                $recyclerProducts = $this->getViewHelperPlugin('product')->getRowsMatching($row->model,$row->condition_id,3,$recycler_country);
+                if(!empty($recyclerProducts)){
+                    foreach($recyclerProducts as $rp){
+                        $currentExchange = $this->getViewHelperPlugin('exchange')->getCurrentExchangeOfCurrency($rp->currency);
+                        $priceExchange = ((float) $rp->price )/ $currentExchange;
+                        if($ssa_price != 0){
+                            $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                            if($percentage >= (int) $higher){
+                                $data[] = array(
+                                    'recycler' => $this->getViewHelperPlugin('recycler')->getName($rp->recycler_id),
+                                    'price' => $priceExchange,
+                                    'percentag' => $percentage,
+                                );
+                            }
+                        }
+                    }
+                }
+                if(!empty($data)){
+                    $finalRow[] = $row;
+                }
+            }
+            $paginator = new Paginator(new ArrayAdapter($finalRow));
+        }else{
+            if($country != null){
+                $select = $tdmProductTable->getProductsByCountryQuery($country);
+            }else{
+                $select = $tdmProductTable->getTdmProductQuery();
+            }
+            $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+            $paginator = new Paginator(new DbSelect($select,$dbAdapter));
+        }
         /*Debug::dump($recycler_country);die;*/
-        $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
-        $paginator = new Paginator(new DbSelect($select,$dbAdapter));
         $paginator->setItemCountPerPage($item_per_page);
         $paginator->setCurrentPageNumber($page);
         $this->setViewVariable('paginator', $paginator);

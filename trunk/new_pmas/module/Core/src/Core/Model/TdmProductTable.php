@@ -36,7 +36,20 @@ class TdmProductTable extends AbstractModel
             }
         }
     }
-
+    public function getTdmProduct()
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $select->where(array('deleted' => 0));
+        $select->order('product_id DESC');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($result->count() <= 0) {
+            return null;
+        }
+        return $result;
+    }
     /**
      * @return Select
      */

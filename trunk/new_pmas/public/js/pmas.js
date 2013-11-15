@@ -126,9 +126,17 @@ $(function() {
         e.preventDefault();
         var product = $("#productid").val();
         if(typeof  product !== 'undefined'){
-            window.location.assign(siteurl+'product/detail/id/'+product+'/filter/'+$(this).val());
+            if($(this).val() == 'reset'){
+                window.location.assign(siteurl+'product/detail/id/'+product+'');
+            }else{
+                window.location.assign(siteurl+'product/detail/id/'+product+'/filter/'+$(this).val());
+            }
         }else{
-            window.location.assign(siteurl +'product/filter/higher/'+$(this).val());
+            if($(this).val() == 'reset'){
+                window.location.assign(siteurl +'product');
+            }else{
+                window.location.assign(siteurl +'product/filter/higher/'+$(this).val());
+            }
         }
     });
     $(document).on("change","#country-chosen",function(e){
