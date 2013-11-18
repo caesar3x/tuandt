@@ -131,7 +131,7 @@ $from = $this->from;
                                     <td><?php echo $product->product_id?></td>
                                     <td><?php echo $product->name?></td>
                                     <td><?php echo $this->condition($product->condition_id,false)?></td>
-                                    <td><?php echo (!empty($product->date)) ? date('d-m-Y',$product->date) : 'N/A'?></td>
+                                    <td><?php echo (!empty($product->date)) ? date('d-m-Y H:i:s',$product->date) : 'N/A'?></td>
                                     <td><?php echo $this->price()->formatCurrency($product->price,$product->currency)?></td>
                                     <td><?php echo $product->currency?></td>
                                     <?php $rExchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency,time());?>
