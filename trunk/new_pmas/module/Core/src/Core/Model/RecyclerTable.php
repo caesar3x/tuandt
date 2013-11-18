@@ -6,10 +6,35 @@
 namespace Core\Model;
 
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Debug\Debug;
 
 class RecyclerTable extends AbstractModel
 {
+    public function getIdByName($name)
+    {
+        $rowset = $this->tableGateway->select(array('name' => $name,'deleted' => 0));
+        $row = $rowset->current();
+        if(!$row){
+            return null;
+        }
+        return $row->recycler_id;
+    }
+    /**
+     * @return Select
+     */
+    public function getRecyclerQuery()
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $select->where($where);
+        $select->order('recycler_id ACS');
+        return $select;
+    }
     public function getAvaiableRows()
     {
         $rowset = $this->tableGateway->select(array('deleted' => 0));

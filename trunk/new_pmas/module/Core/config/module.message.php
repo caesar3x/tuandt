@@ -173,4 +173,6 @@ return array(
 
     'LOG_TDM_PRODUCT_IMPORT_SUCCESS' => 'Imported tdm models success',
     'LOG_TDM_PRODUCT_IMPORT_FAIL' => 'Importing tdm models fail',
+
+    'IMPORT_FROM_SELLYMOBILE_SUCCESS' => 'Import product from sellymobile.com successfully.'
 );

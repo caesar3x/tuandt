@@ -53,15 +53,25 @@ class RecyclerController extends AbstractController
 
     public function indexAction()
     {
-        $this->auth();
-        $view = new ViewModel();
+        parent::initAction();
+        $request = $this->getRequest();
+        $ppp = $request->getQuery('ppp');
+        if(!empty($ppp)){
+            $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
+        }
+        $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
+        $page = trim($this->params('page',1),'/');
         if (!$this->recyclerTable) {
             $sm = $this->getServiceLocator();
             $this->recyclerTable = $sm->get('RecyclerTable');
-            $rowset = $this->recyclerTable->getAvaiableRows();
-            $view->setVariable('rowset',$rowset);
+            $select = $this->recyclerTable->getRecyclerQuery();
+            $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+            $paginator = new Paginator(new DbSelect($select,$dbAdapter));
+            $paginator->setItemCountPerPage($item_per_page);
+            $paginator->setCurrentPageNumber($page);
+            $this->setViewVariable('paginator', $paginator);
         }
-        return $view;
+        return $this->view;
     }
     public function addAction()
     {

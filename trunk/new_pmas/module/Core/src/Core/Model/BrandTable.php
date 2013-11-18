@@ -29,6 +29,23 @@ class BrandTable extends AbstractModel
         }
         return $row;
     }
+    public function getBrandIdByName($name,$insert_new = true)
+    {
+        $rowset = $this->tableGateway->select(array('name' => $name,'deleted' => 0));
+        $row = $rowset->current();
+        if(!$row){
+            /**
+             * Insert new
+             */
+            if($insert_new !== false){
+                if($this->tableGateway->insert(array('name' => $name))){
+                    return $this->getLastInsertValue();
+                }
+            }
+            return false;
+        }
+        return $row->brand_id;
+    }
     public function save(Brand $entry)
     {
         $data = (array) $entry;
