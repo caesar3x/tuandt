@@ -238,9 +238,127 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
+
     /**
      * @param $model
-     * @return null|\Zend\Db\ResultSet\ResultSet
+     * @param $condition
+     * @param $start
+     * @param $end
+     * @return null
+     */
+    public function getRowsByModelInTimeRange($model,$condition,$start,$end)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->equalTo('lastest',1);
+        $where->greaterThan('recycler_id',1);
+        if(!empty($start)){
+            $where->greaterThanOrEqualTo('date',$start);
+        }
+        if(!empty($end)){
+            $where->lessThanOrEqualTo('date',$end);
+        }else{
+            $where->lessThanOrEqualTo('date',time());
+        }
+        $select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
+
+    /**
+     * @param $recycler_id
+     * @param $model
+     * @param $condition
+     * @param $start
+     * @param $end
+     * @return null
+     */
+    public function getAllProductsHistoricalByRecycler($recycler_id,$model,$condition,$start,$end)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table);
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->equalTo('recycler_id',$recycler_id);
+        if(!empty($start)){
+            $where->greaterThanOrEqualTo('date',$start);
+        }
+        if(!empty($end)){
+            $where->lessThanOrEqualTo('date',$end);
+        }else{
+            $where->lessThanOrEqualTo('date',time());
+        }
+        $select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
+    /**
+     * @param $model
+     * @param $condition
+     * @param $start
+     * @param $end
+     * @return array|null
+     */
+    public function getAllRecyclersOfModel($model,$condition,$start,$end)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from($this->tableGateway->table)->columns(array('recycler_id'));
+        $where = new Where();
+        $where->equalTo('deleted',0);
+        $where->equalTo('condition_id',$condition);
+        $where->equalTo('model',$model);
+        $where->greaterThan('recycler_id',1);
+        if(!empty($start)){
+            $where->greaterThanOrEqualTo('date',$start);
+        }
+        if(!empty($end)){
+            $where->lessThanOrEqualTo('date',$end);
+        }else{
+            $where->lessThanOrEqualTo('date',time());
+        }
+        $select->where($where);
+        $select->group('recycler_id');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        $data = array();
+        foreach($result as $row){
+            $data[] = $row->recycler_id;
+        }
+        return $data;
+    }
+    /**
+     * @param $model
+     * @param $condition
+     * @return null
      */
     public function getRowsByModel($model,$condition)
     {
@@ -263,6 +381,12 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
+
+    /**
+     * @param $model
+     * @param $condition
+     * @return null|\Zend\Db\Sql\Select
+     */
     public function getRowsByModelQuery($model,$condition)
     {
         if($model == null){

@@ -164,6 +164,134 @@ class ProductHelper extends CoreHelper
     }
 
     /**
+     * @param $recycler_id
+     * @param $model
+     * @param $condition
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public function getAllProductsHistoricalByRecycler($recycler_id,$model,$condition,$start,$end)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $recyclerProductTable->getAllProductsHistoricalByRecycler($recycler_id,$model,$condition,$start,$end);
+    }
+    public function getHistoricalPriceByRecycler($productsCurrency,$end,$recycler_id,$get_highest = false)
+    {
+        $highest = array();
+        $productsExchangePrice = array();
+        $productsExchangeRate = array();
+        if(!is_array($recycler_id)){
+            $recycler_ids = array($recycler_id);
+        }elseif(is_array($recycler_id)){
+            $recycler_ids = $recycler_id;
+        }
+        if(!empty($productsCurrency)){
+            foreach($productsCurrency as $product_id=>$val){
+                if(in_array((int)$val['recycler_id'],$recycler_ids)){
+                    $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
+                    $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
+                    $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
+                    $productsExchangeRate[$product_id] = $current_exchange;
+                }
+            }
+        }
+        if(!empty($productsExchangePrice)){
+            arsort($productsExchangePrice);
+            foreach($productsExchangePrice as $product_id=>$price){
+                $highest = array(
+                    'product_id' => $product_id,
+                    'exchange_price' => $price,
+                    'price' => $productsCurrency[$product_id]['price'],
+                    'currency' => $productsCurrency[$product_id]['currency'],
+                    'time' => $productsCurrency[$product_id]['date'],
+                    'exchange_rate' => $productsExchangeRate[$product_id],
+                    'recycler_id' => $productsCurrency[$product_id]['recycler_id']
+                );
+                if($get_highest !== false){
+                    break;
+                }
+            }
+        }
+        return $highest;
+    }
+    /**
+     * @param $productsCurrency
+     * @param $end
+     * @param $country
+     * @param bool $get_highest
+     * @return array
+     */
+    public function getHistoricalPriceByCountry($productsCurrency,$end,$country,$get_highest = false)
+    {
+        $highest = array();
+        $productsExchangePrice = array();
+        $productsExchangeRate = array();
+        if(!empty($productsCurrency)){
+            foreach($productsCurrency as $product_id=>$val){
+                if((int)$val['country_id'] == $country){
+                    $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
+                    $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
+                    $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
+                    $productsExchangeRate[$product_id] = $current_exchange;
+                }
+            }
+        }
+        if(!empty($productsExchangePrice)){
+            arsort($productsExchangePrice);
+            foreach($productsExchangePrice as $product_id=>$price){
+                $highest = array(
+                    'product_id' => $product_id,
+                    'exchange_price' => $price,
+                    'price' => $productsCurrency[$product_id]['price'],
+                    'currency' => $productsCurrency[$product_id]['currency'],
+                    'time' => $productsCurrency[$product_id]['date'],
+                    'exchange_rate' => $productsExchangeRate[$product_id],
+                    'recycler_id' => $productsCurrency[$product_id]['recycler_id']
+                );
+                if($get_highest !== false){
+                    break;
+                }
+            }
+        }
+        return $highest;
+    }
+    /**
+     * @param $productsCurrency
+     * @param $end
+     * @return array
+     */
+    public function getHighestPrice_v2($productsCurrency,$end)
+    {
+        $highest = array();
+        $productsExchangePrice = array();
+        $productsExchangeRate = array();
+        if(!empty($productsCurrency)){
+            foreach($productsCurrency as $product_id=>$val){
+                $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
+                $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
+                $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
+                $productsExchangeRate[$product_id] = $current_exchange;
+            }
+        }
+        if(!empty($productsExchangePrice)){
+            arsort($productsExchangePrice);
+            foreach($productsExchangePrice as $product_id=>$price){
+                $highest = array(
+                    'product_id' => $product_id,
+                    'exchange_price' => $price,
+                    'price' => $productsCurrency[$product_id]['price'],
+                    'currency' => $productsCurrency[$product_id]['currency'],
+                    'time' => $productsCurrency[$product_id]['date'],
+                    'exchange_rate' => $productsExchangeRate[$product_id],
+                    'recycler_id' => $productsCurrency[$product_id]['recycler_id']
+                );
+                break;
+            }
+        }
+        return $highest;
+    }
+    /**
      * @param $productsCurrency
      * @param $start
      * @param $end
@@ -430,5 +558,15 @@ class ProductHelper extends CoreHelper
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         return $recyclerProductTable->getRowsMatching($model,$condition,$limit,$country);
+    }
+    public function getTdmEntry($id)
+    {
+        $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
+        return $tdmProductTable->getEntry($id);
+    }
+    public function getAllRecyclersOfModel($model,$condition,$start,$end)
+    {
+        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+        return $recyclerProductTable->getAllRecyclersOfModel($model,$condition,$start,$end);
     }
 }

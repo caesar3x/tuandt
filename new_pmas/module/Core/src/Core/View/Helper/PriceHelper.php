@@ -14,12 +14,12 @@ class PriceHelper extends CoreHelper
     {
         parent::__construct($serviceLocator,$request);
     }
-    public function format($price)
+    public function format($price,$decimal = 2)
     {
         if(!is_numeric($price)){
             return $price;
         }
-        return round($price,2,PHP_ROUND_HALF_UP);
+        return round($price,$decimal,PHP_ROUND_HALF_UP);
         /*return number_format($price,2);*/
     }
 

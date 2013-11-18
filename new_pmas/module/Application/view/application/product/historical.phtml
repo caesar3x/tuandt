@@ -6,6 +6,8 @@
 ?>
 <?php $startTime = $this->start;?>
 <?php $endTime = $this->end?>
+<?php $recyclers = $this->recyclers;?>
+<?php $entry = $this->entry;?>
 <?php if(!$endTime || empty($endTime)):?>
 <?php $endTime = time()?>
 <?php endif;?>
@@ -49,13 +51,13 @@
                     <?php $highest = $this->highest;?>
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
-                        <td><?php echo ($highest['time'] != null) ? date('d-m-Y',(int)$highest['time']) : 'N/A'?></td>
+                        <td><?php echo ($highest['time'] != null) ? date('d-m-Y H:i:s',(int)$highest['time']) : 'N/A'?></td>
                         <td><?php echo $this->product()->getRecyclerProductName($highest['product_id'])?></td>
                         <td><?php echo $this->product()->getRecyclerProductCondition($highest['product_id'])?></td>
                         <td><?php echo $this->recycler()->getRecyclerDetail($highest['recycler_id'])?></td>
                         <td><?php echo $this->price()->formatCurrency($highest['price'],$highest['currency'])?></td>
                         <td><?php echo $highest['currency']?></td>
-                        <td><?php echo $this->price()->format($highest['exchange_rate'])?></td>
+                        <td><?php echo $this->price()->format($highest['exchange_rate'],4)?></td>
                         <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                         <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                     </tr>
@@ -69,30 +71,26 @@
                 <?php if(!empty($this->highest)):?>
                 <?php $highest = $this->highest;?>
                     <?php
-                    $price = (float) $highest['price'];
                     $currency = $highest['currency'];
-                    $exchangeRates = $this->exchange()->getExchangeByCurrency($currency,$startTime,$endTime);
-                    $exchangeAtStart = $this->exchange()->getCurrentExchangeOfCurrency($currency,$startTime);
-                    $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
+                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
                     $data = array();
-                    $data[] = array(
-                        'price' => $price/$exchangeAtStart,
-                        'time' => date('Y-m-d',$startTime)
-                    );
-                    $data[] = array(
-                        'price' => $price/$exchangeAtEnd,
-                        'time' => date('Y-m-d',$endTime)
-                    );
-                    if(!empty($exchangeRates)){
-                        foreach($exchangeRates as $exchange){
-                            $rate = (float) $exchange->exchange_rate;
-                            $data[] = array(
-                                'price' => $price/$rate,
-                                'time' => date('Y-m-d',$exchange->time)
-                            );
+                    if(!empty($recyclers)){
+                        foreach($recyclers as $recycler_id){
+                            /**
+                             * Get products by recycler, model,recycler id
+                             */
+                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
+                            if(!empty($products)){
+                                foreach($products as $product){
+                                    $data[$recycler_id][] = array(
+                                        'price' => ((float)$product->price)/$current_exchange,
+                                        'time' => date('Y-m-d',$product->date)
+                                    );
+                                }
+                            }
+
                         }
                     }
-
                     ?>
                 <?php endif;?>
             </div>
@@ -104,15 +102,27 @@
              * Exchange Rate chart
              */
             <?php if(!empty($data)):?>
-            var line1 = new Array();
-
-            <?php foreach($data as $index=>$row):?>
+            var lines = new Array();
+            <?php foreach($data as $line=>$val):?>
+            var line<?php echo $line?> = new Array();
+            <?php if(!empty($val)):?>
+            <?php foreach($val as $index=>$row):?>
             var item<?php echo $index?> = new Array();
             item<?php echo $index?>.push('<?php echo $row['time']?>');
             item<?php echo $index?>.push(<?php echo $row['price']?>);
-            line1.push(item<?php echo $index?>);
+            line<?php echo $line?>.push(item<?php echo $index?>);
             <?php endforeach;?>
-            var plot100 = $.jqplot('chart-highest', [line1], {
+            <?php endif;?>
+            lines.push(line<?php echo $line?>);
+            <?php endforeach;?>
+            var seriesLabels = [
+                <?php if(!empty($data)):?>
+                <?php $i=0;foreach($data as $line=>$val):?>
+                {'label': '<?php echo $this->recycler()->getName($line)?>' },
+                <?php endforeach;?>
+                <?php endif;?>
+            ];
+            var plot100 = $.jqplot('chart-highest', lines, {
                 title:'Historical Price Chart',
                 axes:{
                     xaxis:{
@@ -124,9 +134,18 @@
                         }
                     }
                 },
+                series:seriesLabels,
+                legend: {
+                    show: true,
+                    location:'se'
+                },
                 highlighter: {
                     show: true,
-                    sizeAdjust: 7.5
+                    sizeAdjust: 10,
+                    tooltipContentEditor: function(str, seriesIndex, pointIndex, plot){
+                        return seriesLabels[seriesIndex].label + ': ' + str;
+                    },
+                    tooltipAxes: 'y'
                 },
                 cursor: {
                     show: false
@@ -164,7 +183,7 @@
                     <?php $highestInCountry = $this->highestInCountry;?>
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highestInCountry['product_id']?>"></td>
-                        <td><?php echo ($highestInCountry['time'] != null) ? date('d-m-Y',(int)$highestInCountry['time']) : 'N/A'?></td>
+                        <td><?php echo ($highestInCountry['time'] != null) ? date('d-m-Y H:i:s',(int)$highestInCountry['time']) : 'N/A'?></td>
                         <td><?php echo $this->product()->getRecyclerProductName($highestInCountry['product_id'])?></td>
                         <td><?php echo $this->product()->getRecyclerProductCondition($highestInCountry['product_id'])?></td>
                         <td><?php echo $this->recycler()->getRecyclerDetail($highestInCountry['recycler_id'])?></td>
@@ -189,30 +208,26 @@
                 <?php if(!empty($this->highestInCountry)):?>
                     <?php $highest = $this->highestInCountry;?>
                     <?php
-                    $price = (float) $highest['price'];
                     $currency = $highest['currency'];
-                    $exchangeRates = $this->exchange()->getExchangeByCurrency($currency,$startTime,$endTime);
-                    $exchangeAtStart = $this->exchange()->getCurrentExchangeOfCurrency($currency,$startTime);
-                    $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
+                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
                     $data = array();
-                    $data[] = array(
-                        'price' => $price/$exchangeAtStart,
-                        'time' => date('Y-m-d',$startTime)
-                    );
-                    $data[] = array(
-                        'price' => $price/$exchangeAtEnd,
-                        'time' => date('Y-m-d',$endTime)
-                    );
-                    if(!empty($exchangeRates)){
-                        foreach($exchangeRates as $exchange){
-                            $rate = (float) $exchange->exchange_rate;
-                            $data[] = array(
-                                'price' => $price/$rate,
-                                'time' => date('Y-m-d',$exchange->time)
-                            );
+                    if(!empty($recyclers)){
+                        foreach($recyclers as $recycler_id){
+                            /**
+                             * Get products by recycler, model,recycler id
+                             */
+                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
+                            if(!empty($products)){
+                                foreach($products as $product){
+                                    $data[$recycler_id][] = array(
+                                        'price' => ((float)$product->price)/$current_exchange,
+                                        'time' => date('Y-m-d',$product->date)
+                                    );
+                                }
+                            }
+
                         }
                     }
-
                     ?>
                 <?php endif;?>
             </div>
@@ -223,15 +238,28 @@
             /**
              * Exchange Rate chart
              */
-            <?php if(!empty($data)):?>
-            var line1 = new Array();
-            <?php foreach($data as $index=>$row):?>
+                <?php if(!empty($data)):?>
+            var lines = new Array();
+            <?php foreach($data as $line=>$val):?>
+            var line<?php echo $line?> = new Array();
+            <?php if(!empty($val)):?>
+            <?php foreach($val as $index=>$row):?>
             var item<?php echo $index?> = new Array();
             item<?php echo $index?>.push('<?php echo $row['time']?>');
             item<?php echo $index?>.push(<?php echo $row['price']?>);
-            line1.push(item<?php echo $index?>);
+            line<?php echo $line?>.push(item<?php echo $index?>);
             <?php endforeach;?>
-            var plot100 = $.jqplot('chart-highest', [line1], {
+            <?php endif;?>
+            lines.push(line<?php echo $line?>);
+            <?php endforeach;?>
+            var seriesLabels = [
+                <?php if(!empty($data)):?>
+                <?php $i=0;foreach($data as $line=>$val):?>
+                {'label': '<?php echo $this->recycler()->getName($line)?>' },
+                <?php endforeach;?>
+                <?php endif;?>
+            ];
+            var plot100 = $.jqplot('chart-highest', lines, {
                 title:'Historical Price Chart',
                 axes:{
                     xaxis:{
@@ -243,9 +271,18 @@
                         }
                     }
                 },
+                series:seriesLabels,
+                legend: {
+                    show: true,
+                    location:'se'
+                },
                 highlighter: {
                     show: true,
-                    sizeAdjust: 7.5
+                    sizeAdjust: 10,
+                    tooltipContentEditor: function(str, seriesIndex, pointIndex, plot){
+                        return seriesLabels[seriesIndex].label + ': ' + str;
+                    },
+                    tooltipAxes: 'y'
                 },
                 cursor: {
                     show: false
@@ -280,7 +317,7 @@
                 </thead>
                 <tbody>
                 <?php if(!empty($this->highestInRecycler)):?>
-                    <?php foreach($this->highestInRecycler as $h):?>
+                    <?php $h = $this->highestInRecycler;?>
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $h['product_id']?>"></td>
                         <td><?php echo ($h['time'] != null) ? date('d-m-Y',(int)$h['time']) : 'N/A'?></td>
@@ -298,7 +335,6 @@
                             <td></td>
                         <?php endif;?>
                     </tr>
-                    <?php endforeach;?>
                 <?php endif;?>
                 </tbody>
             </table>
@@ -307,31 +343,30 @@
             <div class="row clearfix">&nbsp;</div>
             <div id="chart-highest" class="chart-demo" style="min-height: 600px; width:90%;">
                 <?php if(!empty($this->highestInRecycler)):?>
-                <?php
+                    <?php $highest = $this->highestInRecycler;?>
+                    <?php
+                    $currency = $highest['currency'];
+                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
                     $data = array();
-                    $productsExchangeDate = $this->productsExchangeDate;
-                    foreach($this->productsExchangePrice as $product_id=>$rateArray){
-                        $currency = $this->product()->getRecyclerProductCurrency($product_id);
-                        $exchangeAtStart = $this->exchange()->getCurrentExchangeOfCurrency($currency,$startTime);
-                        $exchangeAtEnd = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
-                        $price = $this->product()->getRecyclerProductPrice($product_id);
-                        $data[$product_id][] = array(
-                            'time' => date('Y-m-d',$startTime),
-                            'price' => $exchangeAtStart/$price
-                        );
-                        $data[$product_id][] = array(
-                            'time' => date('Y-m-d',$endTime),
-                            'price' => $exchangeAtEnd/$price
-                        );
-                        foreach($rateArray as $key=>$price){
-                            $item = array(
-                                'time' => date('Y-m-d',$productsExchangeDate[$product_id][$key]),
-                                'price' => $price
-                            );
-                            $data[$product_id][] = $item;
+                    if(!empty($recyclers)){
+                        foreach($recyclers as $recycler_id){
+                            /**
+                             * Get products by recycler, model,recycler id
+                             */
+                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
+                            if(!empty($products)){
+                                foreach($products as $product){
+                                    $data[$recycler_id][] = array(
+                                        'price' => ((float)$product->price)/$current_exchange,
+                                        'time' => date('Y-m-d',$product->date)
+                                    );
+                                }
+                            }
+
                         }
                     }
-                endif;
+                    ?>
+                <?php endif;
                 ?>
             </div>
         </div>
@@ -344,21 +379,21 @@
             <?php if(!empty($data)):?>
             var lines = new Array();
             <?php foreach($data as $line=>$val):?>
-                var line<?php echo $line?> = new Array();
-                <?php if(!empty($val)):?>
-                <?php foreach($val as $index=>$row):?>
-                var item<?php echo $index?> = new Array();
-                item<?php echo $index?>.push('<?php echo $row['time']?>');
-                item<?php echo $index?>.push(<?php echo $row['price']?>);
-                line<?php echo $line?>.push(item<?php echo $index?>);
-                <?php endforeach;?>
-                <?php endif;?>
-                lines.push(line<?php echo $line?>);
+            var line<?php echo $line?> = new Array();
+            <?php if(!empty($val)):?>
+            <?php foreach($val as $index=>$row):?>
+            var item<?php echo $index?> = new Array();
+            item<?php echo $index?>.push('<?php echo $row['time']?>');
+            item<?php echo $index?>.push(<?php echo $row['price']?>);
+            line<?php echo $line?>.push(item<?php echo $index?>);
+            <?php endforeach;?>
+            <?php endif;?>
+            lines.push(line<?php echo $line?>);
             <?php endforeach;?>
             var seriesLabels = [
                 <?php if(!empty($data)):?>
-                <?php foreach($data as $line=>$val):?>
-                {'label': '<?php echo $this->product()->getRecyclerProductName($line)?>' },
+                <?php $i=0;foreach($data as $line=>$val):?>
+                {'label': '<?php echo $this->recycler()->getName($line)?>' },
                 <?php endforeach;?>
                 <?php endif;?>
             ];
@@ -375,6 +410,10 @@
                     }
                 },
                 series:seriesLabels,
+                legend: {
+                    show: true,
+                    location:'se'
+                },
                 highlighter: {
                     show: true,
                     sizeAdjust: 10,
