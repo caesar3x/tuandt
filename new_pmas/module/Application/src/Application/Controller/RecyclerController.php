@@ -794,7 +794,7 @@ class RecyclerController extends AbstractController
                 $rowParse[] = $priceHelper->format($row->price);
                 $rowParse[] = $row->currency;
                 $rowParse[] = $row->name;
-                $rowParse[] = (!empty($row->date)) ? date('d-m-Y',$row->date) : 'N/A';
+                $rowParse[] = (!empty($row->date)) ? date('d-m-Y H:i:s',$row->date) : 'N/A';
                 $rowParse[] = $viewhelperManager->get('Condition')->implement($row->condition_id,false);
                 $data[] = $rowParse;
             }

@@ -91,6 +91,7 @@ class CronController extends AbstractController
                         $row['condition_id'] = 6;
                         $row['lastest'] = 1;
                         $row['type_id'] = 3;
+                        $row['date'] = time();
                         $row['brand_id'] = $brandTable->getBrandIdByName($brand_name);
                         /*$this->log_debug(print_r($row,1));*/
                         /*$data[] = $row;*/

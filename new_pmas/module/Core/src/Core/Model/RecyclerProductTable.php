@@ -205,6 +205,7 @@ class RecyclerProductTable extends AbstractModel
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
         $where->equalTo('deleted',0);
+        $where->equalTo('lastest',1);
         $where->equalTo('recycler_id',$recycler_id);
         $select->where($where);
         return $select;
