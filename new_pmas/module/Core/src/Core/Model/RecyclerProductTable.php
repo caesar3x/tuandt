@@ -40,7 +40,29 @@ class RecyclerProductTable extends AbstractModel
         }
 
     }
-
+    public function saveData($data)
+    {
+        if(isset($data['model']) && isset($data['condition_id']) && isset($data['recycler_id'])){
+            $this->resetLatest($data['model'],$data['condition_id'],$data['recycler_id']);
+        }
+        if(isset($data['product_id'])){
+            return $this->tableGateway->update($data,array('product_id' => $data['product_id']));
+        }else{
+            return $this->tableGateway->insert($data);
+        }
+    }
+    /**
+     * @param $model
+     * @param $condition
+     * @return bool|int
+     */
+    public function resetLatest($model,$condition,$recycler_id)
+    {
+        if(!empty($model) && !empty($condition)){
+            return $this->tableGateway->update(array('lastest' => 0),array('model' => $model,'condition_id' => $condition,'recycler_id' => $recycler_id));
+        }
+        return false;
+    }
     /**
      * Delete by product id
      * @param $id

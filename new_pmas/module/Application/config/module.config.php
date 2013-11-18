@@ -55,6 +55,20 @@ return array(
                     ),
                 ),
             ),
+            'recycler-index' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/recycler/[page/:page[/]]',
+                    'constraints' => array(
+                        'page'      => '(.*)',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Application\Controller\Recycler',
+                        'action'     => 'index'
+                    ),
+                ),
+            ),
             'product-index' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -156,6 +170,7 @@ return array(
             'Application\Controller\Country' => 'Application\Controller\CountryController',
             'Application\Controller\Soap' => 'Application\Controller\SoapController',
             'Application\Controller\Language' => 'Application\Controller\LanguageController',
+            'Application\Controller\Cron' => 'Application\Controller\CronController',
         ),
     ),
     'view_manager' => array(
