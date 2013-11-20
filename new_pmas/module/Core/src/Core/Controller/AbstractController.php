@@ -147,6 +147,14 @@ class AbstractController extends AbstractActionController
         return $view;
     }
 
+    protected function initnotauthAction()
+    {
+        $view = new ViewModel();
+        $this->view = $view;
+        $this->messages = $this->getMessages();
+        $this->sm = $this->getServiceLocator();
+        return $view;
+    }
     /**
      * @param $formKey
      * @param $data
