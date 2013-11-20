@@ -29,7 +29,7 @@ class CronController extends AbstractController
     }
     public function indexAction()
     {
-        parent::initAction();
+        parent::initnotauthAction();
         die;
         $rec = $this->getAllRecyclers('http://www.sellmymobile.com/phone/t-mobile-mda-vario-ii/');
         if(isset($rec['Top Dollar Mobile'])){
@@ -63,7 +63,7 @@ class CronController extends AbstractController
     }
     public function sellmymobileAction()
     {
-        parent::initAction();
+        parent::initnotauthAction();
         $brands = $this->getAllBrands();
         $brandTable = $this->sm->get('BrandTable');
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
