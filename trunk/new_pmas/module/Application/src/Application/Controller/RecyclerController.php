@@ -497,15 +497,15 @@ class RecyclerController extends AbstractController
             if(!$recyclerProductTable->hasTempId($id)){
                 $tmpEntryParse = (array) $tmpProductEntry;
                 $tmpEntryParse['temp_id'] = $id;
-                $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$tmpProductEntry->date.' 00:00:00');
+                $pDate = \DateTime::createFromFormat('m/d/Y H:i:s',$tmpProductEntry->date.' 00:00:00');
                 if($pDate){
                     $tmpEntryParse['date'] = $pDate->getTimestamp();
                 }else{
                     $tmpEntryParse['date'] = 0;
                 }
-                $recyclerProduct = new RecyclerProduct();
-                $recyclerProduct->exchangeArray($tmpEntryParse);
-                if($recyclerProductTable->save($recyclerProduct)){
+                unset($tmpEntryParse['id']);
+                $tmpEntryParse['lastest'] = 1;
+                if($recyclerProductTable->saveData($tmpEntryParse)){
                     echo $this->__('Save record success.');
                 }else{
                     echo $this->__('Save record not success.');
@@ -534,12 +534,14 @@ class RecyclerController extends AbstractController
                 if(!$recyclerProductTable->hasTempId($row->id)){
                     $tmpEntryParse = (array) $row;
                     $tmpEntryParse['temp_id'] = $row->id;
-                    $pDate = \DateTime::createFromFormat('d-m-Y H:i:s',$row->date.' 00:00:00');
+                    $pDate = \DateTime::createFromFormat('m/d/Y H:i:s',$row->date.' 00:00:00');
                     if($pDate){
                         $tmpEntryParse['date'] = $pDate->getTimestamp();
                     }else{
                         $tmpEntryParse['date'] = 0;
                     }
+                    unset($tmpEntryParse['id']);
+                    $tmpEntryParse['lastest'] = 1;
                     $recyclerProductTable->saveData($tmpEntryParse);
                 }
             }
