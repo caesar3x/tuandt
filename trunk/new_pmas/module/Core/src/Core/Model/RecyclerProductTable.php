@@ -34,6 +34,10 @@ class RecyclerProductTable extends AbstractModel
             return $this->tableGateway->insert($data);
         }else{
             if($row = $this->getEntry($id)){
+                /**
+                 * Reset lastest
+                 */
+                $this->resetLatest($entry->model,$entry->condition_id,$entry->recycler_id);
                 return $this->tableGateway->update($data, array('product_id' => $id));
             }else{
                 throw new \Exception('Data does not exist.');
@@ -59,10 +63,7 @@ class RecyclerProductTable extends AbstractModel
      */
     public function resetLatest($model,$condition,$recycler_id)
     {
-        if(!empty($model) && !empty($condition)){
-            return $this->tableGateway->update(array('lastest' => 0),array('model' => $model,'condition_id' => $condition,'recycler_id' => $recycler_id));
-        }
-        return false;
+        return $this->tableGateway->update(array('lastest' => 0),array('model' => $model,'condition_id' => $condition,'recycler_id' => $recycler_id));
     }
     /**
      * Delete by product id
@@ -265,6 +266,7 @@ class RecyclerProductTable extends AbstractModel
             $select->order("m.product_id DESC");
         }
         $select->where($where);
+        $select->order(array('m.date DESC', 'm.product_id DESC', "m.name ASC"));
         return $select;
     }
     public function getRowsMatching($model,$condition,$limit = 3,$country = null)
@@ -524,7 +526,7 @@ class RecyclerProductTable extends AbstractModel
         if(!$row){
             return null;
         }
-        $exchange = $this->serviceLocator->get('viewhelpermanager')->get('exchange')->getCurrentExchangeOfCurrency($row->currency);
+        $exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($row->currency);
         $price = (float) $row->price;
         $ssa = $price/$exchange;
         return (float) $ssa;
