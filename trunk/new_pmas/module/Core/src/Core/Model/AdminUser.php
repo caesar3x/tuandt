@@ -20,7 +20,6 @@ class AdminUser
     public $updated_at;
     public $note;
     public $hidden;
-    public $deleted;
 
     public function exchangeArray($data)
     {
@@ -37,6 +36,5 @@ class AdminUser
         $this->updated_at  = (isset($data['updated_at'])) ? $data['updated_at'] : time();
         $this->note  = (isset($data['note'])) ? $data['note'] : null;
         $this->hidden  = (isset($data['hidden'])) ? $data['hidden'] : 0;
-        $this->deleted  = (isset($data['deleted'])) ? $data['deleted'] : 0;
     }
 }

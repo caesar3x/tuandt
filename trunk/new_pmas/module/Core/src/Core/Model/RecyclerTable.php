@@ -14,7 +14,7 @@ class RecyclerTable extends AbstractModel
 {
     public function getIdByName($name)
     {
-        $rowset = $this->tableGateway->select(array('name' => $name,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('name' => $name));
         $row = $rowset->current();
         if(!$row){
             return null;
@@ -30,14 +30,13 @@ class RecyclerTable extends AbstractModel
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $select->where($where);
         $select->order('recycler_id ACS');
         return $select;
     }
     public function getAvaiableRows()
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0));
+        $rowset = $this->tableGateway->select();
         if (!$rowset) {
             return null;
         }
@@ -69,7 +68,7 @@ class RecyclerTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $id));
+        return $this->tableGateway->delete(array('recycler_id' => $id));
     }
 
     /**
@@ -105,7 +104,7 @@ class RecyclerTable extends AbstractModel
      */
     public function checkAvailabelCountry($country_id)
     {
-        $rowset = $this->tableGateway->select(array('country_id' => $country_id,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('country_id' => $country_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -119,9 +118,9 @@ class RecyclerTable extends AbstractModel
     public function getAvailabeRecyclers($ids = null)
     {
         if($ids == null){
-            $rowset = $this->tableGateway->select(array('deleted' => 0));
+            $rowset = $this->tableGateway->select();
         }else{
-            $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $ids));
+            $rowset = $this->tableGateway->select(array('recycler_id' => $ids));
         }
         if (!$rowset) {
             return null;
@@ -135,7 +134,6 @@ class RecyclerTable extends AbstractModel
     public function getLastRecyclers()
     {
         $rowset = $this->tableGateway->select(function (Select $select){
-            $select->where('deleted = 0');
             $select->order('recycler_id DESC')->limit(10);
         });
         if($rowset->count() <= 0){
@@ -151,7 +149,7 @@ class RecyclerTable extends AbstractModel
     public function getRecyclersByCountry($country_id)
     {
         $country_id = (int) $country_id;
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'country_id' => $country_id));
+        $rowset = $this->tableGateway->select(array('country_id' => $country_id));
         if (!$rowset) {
             return null;
         }

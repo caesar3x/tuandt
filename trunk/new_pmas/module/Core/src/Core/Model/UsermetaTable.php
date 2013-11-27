@@ -39,7 +39,7 @@ class UsermetaTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('meta_id' => $id));
+        return $this->tableGateway->delete(array('meta_id' => $id));
     }
     /**
      * @param $post_id
@@ -47,7 +47,7 @@ class UsermetaTable extends AbstractModel
      */
     public function deleteByUser($post_id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('user_id' => $post_id));
+        return $this->tableGateway->delete(array('user_id' => $post_id));
     }
 
     public function checkExistUsermeta($user_id,$meta_key)
@@ -102,7 +102,7 @@ class UsermetaTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('user_id' => $user_id,'meta_key' => 'user_log','deleted' => 0));
+        $select->where(array('user_id' => $user_id,'meta_key' => 'user_log'));
         $select->group('meta_id');
         $select->order('time DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);

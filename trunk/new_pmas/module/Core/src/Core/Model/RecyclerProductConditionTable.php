@@ -38,17 +38,9 @@ class RecyclerProductConditionTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('condition_id' => $id));
+        return $this->tableGateway->delete(array('condition_id' => $id));
     }
-    /**
-     * Rollback delete
-     * @param $id
-     * @return int
-     */
-    public function rollbackDeleteEntry($id)
-    {
-        return $this->tableGateway->update(array('deleted' => 0),array('condition_id' => $id));
-    }
+
     /**
      * Clear data which has condition
      * @param $id
@@ -61,9 +53,6 @@ class RecyclerProductConditionTable extends AbstractModel
             $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
             if($recyclerProductTable->checkHasRowContainConditionId($id)){
                 $success = $success && $recyclerProductTable->deleteByCondition($id);
-            }
-            if($success == false){
-                $this->rollbackDeleteEntry($id);
             }
             return $success;
         }else{

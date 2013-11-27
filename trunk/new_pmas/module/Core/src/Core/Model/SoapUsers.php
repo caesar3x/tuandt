@@ -11,12 +11,11 @@ class SoapUsers
     public $id;
     public $username;
     public $password;
-    public $deleted;
+
     public function exchangeArray($data)
     {
         $this->id     = (isset($data['id'])) ? (int) $data['id'] : 0;
         $this->username = (isset($data['username'])) ? $data['username'] : null;
         $this->password  = (isset($data['password'])) ? $data['password'] : null;
-        $this->deleted  = (isset($data['deleted'])) ? (int)$data['deleted'] : 0;
     }
 }

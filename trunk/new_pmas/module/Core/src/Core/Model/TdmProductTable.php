@@ -41,7 +41,6 @@ class TdmProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('deleted' => 0));
         $select->order('product_id DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -65,7 +64,6 @@ class TdmProductTable extends AbstractModel
         $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
         $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
         $where = new Where();
-        $where->equalTo('m.deleted',0);
         if(isset($params['id']) && trim($params['id']) != ''){
             $where->equalTo('m.product_id',$params['id']);
         }
@@ -165,7 +163,7 @@ class TdmProductTable extends AbstractModel
      */
     public function checkAvailabelCountry($country_id)
     {
-        $rowset = $this->tableGateway->select(array('country_id' => $country_id,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('country_id' => $country_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -178,7 +176,7 @@ class TdmProductTable extends AbstractModel
      */
     public function checkHasRowContainConditionId($condition_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition_id));
+        $rowset = $this->tableGateway->select(array('condition_id' => $condition_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -191,7 +189,7 @@ class TdmProductTable extends AbstractModel
      */
     public function checkHasRowHasBrandId($brand_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'brand_id' => $brand_id));
+        $rowset = $this->tableGateway->select(array('brand_id' => $brand_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -205,9 +203,9 @@ class TdmProductTable extends AbstractModel
     public function getProductsFilter($ids)
     {
         if(empty($ids)){
-            $rowset = $this->tableGateway->select(array('deleted' => 0));
+            $rowset = $this->tableGateway->select();
         }else{
-            $rowset = $this->tableGateway->select(array('deleted' => 0,'product_id' => $ids));
+            $rowset = $this->tableGateway->select(array('product_id' => $ids));
         }
         if ($rowset->count() <= 0) {
             return null;
@@ -225,7 +223,6 @@ class TdmProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $where = new Where();
-        $where->equalTo('deleted',0);
         if(!empty($ids)){
             $where->equalTo('product_id',$ids);
         }
@@ -253,7 +250,7 @@ class TdmProductTable extends AbstractModel
         if(!$model || !$condition){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition,'model' => trim($model)));
+        $rowset = $this->tableGateway->select(array('condition_id' => $condition,'model' => trim($model)));
         $row = $rowset->current();
         if(!$row){
             return null;
@@ -263,7 +260,6 @@ class TdmProductTable extends AbstractModel
     public function getLastProducts()
     {
         $rowset = $this->tableGateway->select(function (Select $select){
-            $select->where('deleted = 0');
             $select->order('product_id DESC')->limit(10);
         });
         if($rowset->count() <= 0){
@@ -278,7 +274,7 @@ class TdmProductTable extends AbstractModel
      */
     public function checkHasRowHasTypeId($type_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'type_id' => $type_id));
+        $rowset = $this->tableGateway->select(array('type_id' => $type_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -296,7 +292,6 @@ class TdmProductTable extends AbstractModel
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
         $where->equalTo('country_id',$country_id);
-        $where->equalTo('deleted',0);
         /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         return $select;
@@ -313,7 +308,6 @@ class TdmProductTable extends AbstractModel
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
         $where->equalTo('country_id',$country_id);
-        $where->equalTo('deleted',0);
         /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
@@ -322,5 +316,48 @@ class TdmProductTable extends AbstractModel
             return null;
         }
         return $result;
+    }
+
+    /**
+     * Create tdm product index table
+     * @return bool
+     */
+    public function create_tdm_product_index_table()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `tdm_product_index` (
+                  `product_id` bigint(20) NOT NULL,
+                  `country_id` int(11) DEFAULT NULL,
+                  `country_name` varchar(255) DEFAULT NULL,
+                  `product_name` varchar(255) DEFAULT NULL,
+                  `product_model` varchar(255) DEFAULT NULL,
+                  `type_id` int(11) DEFAULT NULL,
+                  `type_name` varchar(255) DEFAULT NULL,
+                  `brand_id` int(11) DEFAULT NULL,
+                  `brand_name` varchar(255) DEFAULT NULL,
+                  `condition_id` int(11) DEFAULT NULL,
+                  `condition_name` varchar(255) DEFAULT NULL,
+                  `popular` tinyint(4) DEFAULT '0',
+                  `ssa_price` decimal(12,4) DEFAULT NULL,
+                  PRIMARY KEY (`product_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $adapter = $this->tableGateway->adapter;
+        $adapter->query($query, $adapter::QUERY_MODE_EXECUTE);
+        return true;
+    }
+    /**
+     * Index data
+     */
+    public function index_data()
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('b' => 'brand'),'m.brand_id = b.brand_id',array('brand_name' => 'name'));
+        $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_name' => 'name'));
+        $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
+        $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
+        $where = new Where();
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        Debug::dump($selectString);die;
     }
 }

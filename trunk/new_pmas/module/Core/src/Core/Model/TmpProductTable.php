@@ -35,7 +35,7 @@ class TmpProductTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('id' => $id));
+        return $this->tableGateway->delete(array('id' => $id));
     }
 
     /**
@@ -45,7 +45,7 @@ class TmpProductTable extends AbstractModel
      */
     public function getRowsByRecyclerId($recycler_id)
     {
-        $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
         if ($rowset->count() <= 0) {
             return null;
         }
@@ -56,7 +56,7 @@ class TmpProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('recycler_id' => $recycler_id,'deleted' => 0));
+        $select->where(array('recycler_id' => $recycler_id));
         $select->order('id DESC');
         return $select;
     }
@@ -66,7 +66,7 @@ class TmpProductTable extends AbstractModel
      */
     public function deleteByRecyclerId($recycler_id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('recycler_id' => $recycler_id));
+        return $this->tableGateway->delete(array('recycler_id' => $recycler_id));
     }
 
 }

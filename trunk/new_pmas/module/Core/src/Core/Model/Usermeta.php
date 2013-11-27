@@ -13,7 +13,7 @@ class Usermeta
     public $meta_value;
     public $note;
     public $time;
-    public $deleted;
+
     public function exchangeArray($data)
     {
         $this->meta_id     = (isset($data['meta_id'])) ? (int) $data['meta_id'] : 0;
@@ -22,6 +22,5 @@ class Usermeta
         $this->meta_value  = (isset($data['meta_value'])) ? $data['meta_value'] : null;
         $this->note  = (isset($data['note'])) ? $data['note'] : null;
         $this->time  = (isset($data['time'])) ? (int) $data['time'] : time();
-        $this->deleted  = (isset($data['deleted'])) ? (int) $data['deleted'] : 0;
     }
 }

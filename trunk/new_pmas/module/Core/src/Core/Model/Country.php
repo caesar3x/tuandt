@@ -12,7 +12,6 @@ class Country
     public $currency;
     public $symbol;
     public $position;
-    public $deleted;
 
     public function exchangeArray($data)
     {
@@ -21,6 +20,5 @@ class Country
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : null;
         $this->symbol     = (isset($data['symbol'])) ? $data['symbol'] : '$';
         $this->position     = (isset($data['position'])) ? $data['position'] : 'before';
-        $this->deleted     = (isset($data['deleted'])) ? $data['deleted'] : 0;
     }
 }

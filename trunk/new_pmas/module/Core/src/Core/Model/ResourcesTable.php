@@ -39,7 +39,7 @@ class ResourcesTable extends AbstractModel
      */
     public function getAvaiableResources()
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0));
+        $rowset = $this->tableGateway->select();
         if ($rowset->count() <= 0) {
             return null;
         }
@@ -52,7 +52,7 @@ class ResourcesTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('resource_id' => $id));
+        return $this->tableGateway->delete(array('resource_id' => $id));
     }
 
     /**
@@ -64,7 +64,7 @@ class ResourcesTable extends AbstractModel
         if(!$path || $path == null){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('path' => $path,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('path' => $path));
         $row = $rowset->current();
         if(!$row){
             return null;

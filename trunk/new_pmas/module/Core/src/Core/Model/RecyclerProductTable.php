@@ -71,7 +71,7 @@ class RecyclerProductTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('product_id' => $id));
+        return $this->tableGateway->delete(array('product_id' => $id));
     }
     /**
      * @param $brand_id
@@ -90,15 +90,7 @@ class RecyclerProductTable extends AbstractModel
     {
         return $this->tableGateway->update(array('recycler_id' => 0),array('recycler_id' => $recycler_id));
     }
-    /**
-     * Rollback
-     * @param $id
-     * @return int
-     */
-    public function rollbackDeleted($id)
-    {
-        return $this->tableGateway->update(array('deleted' => 0),array('product_id' => $id));
-    }
+
     /**
      * Delete by condition id
      * @param $condition_id
@@ -123,7 +115,7 @@ class RecyclerProductTable extends AbstractModel
      */
     public function checkHasRowContainConditionId($condition_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'condition_id' => $condition_id));
+        $rowset = $this->tableGateway->select(array('condition_id' => $condition_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -135,7 +127,7 @@ class RecyclerProductTable extends AbstractModel
      */
     public function checkHasRowHasBrandId($brand_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'brand_id' => $brand_id));
+        $rowset = $this->tableGateway->select(array('brand_id' => $brand_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -148,7 +140,7 @@ class RecyclerProductTable extends AbstractModel
      */
     public function checkHasRowHasRecyclerId($recycler_id)
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $recycler_id));
+        $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
         if ($rowset->count() <= 0) {
             return false;
         }
@@ -162,9 +154,9 @@ class RecyclerProductTable extends AbstractModel
     public function getAllTempIdsProduct($recycler_id = null)
     {
         if($recycler_id == null){
-            $rowset = $this->tableGateway->select(array('deleted' => 0));
+            $rowset = $this->tableGateway->select();
         }else{
-            $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $recycler_id));
+            $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
         }
         if($rowset->count() <= 0){
             return null;
@@ -187,7 +179,7 @@ class RecyclerProductTable extends AbstractModel
         if($recycler_id == null){
             return $recycler_id;
         }
-        $rowset = $this->tableGateway->select(array('deleted' => 0,'recycler_id' => $recycler_id));
+        $rowset = $this->tableGateway->select(array('recycler_id' => $recycler_id));
         if($rowset->count() <= 0){
             return null;
         }
@@ -208,7 +200,6 @@ class RecyclerProductTable extends AbstractModel
         $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
         $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
         $where = new Where();
-        $where->equalTo('m.deleted',0);
         $where->equalTo('m.lastest',1);
         $where->equalTo('m.recycler_id',$recycler_id);
         /**
@@ -290,7 +281,6 @@ class RecyclerProductTable extends AbstractModel
             $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
             $where->equalTo('r.country_id',$country);
         }
-        $where->equalTo('m.deleted',0);
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
         $where->greaterThan('m.recycler_id',1);
@@ -321,7 +311,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select  = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->equalTo('lastest',1);
@@ -360,7 +349,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select  = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->equalTo('recycler_id',$recycler_id);
@@ -396,7 +384,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select  = $sql->select()->from($this->tableGateway->table)->columns(array('recycler_id'));
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->greaterThan('recycler_id',1);
@@ -435,7 +422,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select  = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->greaterThan('recycler_id',1);
@@ -462,7 +448,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select  = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->greaterThan('recycler_id',1);
@@ -484,7 +469,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('condition_id',$condition);
         $where->equalTo('model',$model);
         $where->greaterThan('recycler_id',1);
@@ -511,7 +495,7 @@ class RecyclerProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('deleted' => 0,'condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
+        $select->where(array('condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         $row = $result->current();
@@ -533,7 +517,7 @@ class RecyclerProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('deleted' => 0,'condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
+        $select->where(array('condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         $row = $result->current();
@@ -560,7 +544,6 @@ class RecyclerProductTable extends AbstractModel
             $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
             $where->equalTo('r.country_id',$country);
         }
-        $where->equalTo('m.deleted',0);
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
         $where->greaterThan('m.recycler_id',1);
@@ -587,7 +570,6 @@ class RecyclerProductTable extends AbstractModel
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
         $where = new Where();
-        $where->equalTo('deleted',0);
         $where->equalTo('model',$model);
         $select->where($where);
         $select->order('price DESC')->limit(1);
@@ -611,11 +593,7 @@ class RecyclerProductTable extends AbstractModel
         $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
         $where = new Where();
         $where->equalTo('r.country_id',$country_id);
-        $where->equalTo('m.deleted',0);
-        $where->equalTo('c.deleted',0);
-        $where->equalTo('r.deleted',0);
         $where->greaterThan('r.recycler_id',1);
-        /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -633,11 +611,7 @@ class RecyclerProductTable extends AbstractModel
         $select->join(array('c' => 'country'),'r.country_id = c.country_id',array('country_id'));
         $where = new Where();
         $where->equalTo('r.country_id',$country_id);
-        $where->equalTo('m.deleted',0);
-        $where->equalTo('c.deleted',0);
-        $where->equalTo('r.deleted',0);
         $where->greaterThan('r.recycler_id',1);
-        /*$select->where(array('r.country_id' => $country_id,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         $select->group('m.product_id');
         return $select;
@@ -656,11 +630,7 @@ class RecyclerProductTable extends AbstractModel
         $where->equalTo('r.country_id',$country_id);
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
-        $where->equalTo('m.deleted',0);
-        $where->equalTo('c.deleted',0);
-        $where->equalTo('r.deleted',0);
         $where->greaterThan('r.recycler_id',1);
-        /*$select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         $select->order('product_id DESC');
         $selectString = $sql->getSqlStringForSqlObject($select);
@@ -685,11 +655,7 @@ class RecyclerProductTable extends AbstractModel
         $where->equalTo('r.country_id',$country_id);
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
-        $where->equalTo('m.deleted',0);
-        $where->equalTo('c.deleted',0);
-        $where->equalTo('r.deleted',0);
         $where->greaterThan('r.recycler_id',1);
-        /*$select->where(array('r.country_id' => $country_id,'m.condition_id' => $condition,'m.model' => $model,'m.deleted' => 0,'c.deleted' => 0,'r.deleted' => 0));*/
         $select->where($where);
         return $select;
     }
@@ -700,9 +666,9 @@ class RecyclerProductTable extends AbstractModel
     public function getAvailabeRecyclerProducts($ids)
     {
         if($ids == null){
-            $rowset = $this->tableGateway->select(array('deleted' => 0));
+            $rowset = $this->tableGateway->select();
         }else{
-            $rowset = $this->tableGateway->select(array('deleted' => 0,'product_id' => $ids));
+            $rowset = $this->tableGateway->select(array('product_id' => $ids));
         }
         if (!$rowset) {
             return null;

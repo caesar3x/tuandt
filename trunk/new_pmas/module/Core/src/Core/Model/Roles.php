@@ -11,7 +11,6 @@ class Roles
     public $created_at;
     public $updated_at;
     public $hidden;
-    public $deleted;
     public $sort_order;
     public $parent_id;
     public $role;
@@ -24,7 +23,6 @@ class Roles
         $this->created_at = (isset($data['created_at'])) ? $data['created_at'] : time();
         $this->updated_at = (isset($data['updated_at'])) ? $data['updated_at'] : time();
         $this->hidden = (isset($data['hidden'])) ? $data['hidden'] : 0;
-        $this->deleted = (isset($data['deleted'])) ? $data['deleted'] : 0;
         $this->sort_order = (isset($data['sort_order'])) ? $data['sort_order'] : 0;
         $this->parent_id = (isset($data['parent_id'])) ? $data['parent_id'] : 0;
         $this->role = (isset($data['role'])) ? $data['role'] : null;
