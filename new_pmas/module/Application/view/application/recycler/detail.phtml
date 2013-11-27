@@ -107,23 +107,71 @@ $from = $this->from;
                             <?php endif;?>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
-                        <table class="display table table-striped table-condensed table-bordered withphp" id="model-table" cellpadding="0" cellspacing="0">
+                        <div class="pull-right" style="margin-bottom: 15px;">
+                            <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
+                            <a class="btn btn-danger btn-sm btn-reset-filter" id="reset-filter"><?php echo $this->__('Reset filter')?></a>
+                        </div>
+                        <div class="row clearfix">&nbsp;</div>
+                        <?php
+                        if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == 'id' && $params['dir'] == 'desc'){
+                            $id_class = 'sorting_desc';
+                        }elseif(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == 'id' && $params['dir'] == 'asc'){
+                            $id_class = 'sorting_asc';
+                        }elseif(!isset($params['orderby'])){
+                            $id_class = 'sorting_desc';
+                        }else{
+                            $id_class = 'sorting';
+                        }
+                        $sort_fields = array(
+                            'brand' => 'sorting',
+                            'name' => 'sorting',
+                            'condition' => 'sorting',
+                            'date' => 'sorting',
+                            'country' => 'sorting'
+                        );
+                        foreach($sort_fields as $field=>$class){
+                            if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'desc'){
+                                $sort_fields[$field] = 'sorting_desc';
+                            }elseif(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'asc'){
+                                $sort_fields[$field] = 'sorting_asc';
+                            }
+                        }
+                        ?>
+                        <table class="display table table-striped table-condensed table-bordered" id="model-table" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                                <th><?php echo $this->__('ID')?></th>
-                                <th><?php echo $this->__('Product Name')?></th>
-                                <th><?php echo $this->__('Condition')?></th>
-                                <th><?php echo $this->__('Date time')?></th>
+                                <th class="<?php echo $id_class;?>"><?php echo $this->__('ID')?></th>
+                                <th class="<?php echo $sort_fields['name'];?>"><?php echo $this->__('Product Name')?></th>
+                                <th class="<?php echo $sort_fields['condition'];?>"><?php echo $this->__('Condition')?></th>
+                                <th class="<?php echo $sort_fields['date'];?>"><?php echo $this->__('Date time')?></th>
                                 <th><?php echo $this->__('Base Price')?></th>
                                 <th><?php echo $this->__('Currency')?></th>
                                 <th><?php echo $this->__('Price in HKD')?></th>
                                 <th><?php echo $this->__('TDM Product Name')?></th>
                                 <th><?php echo $this->__('SSA Price')?></th>
-                                <th><?php echo $this->__('Action')?></th>
+                                <th class="action"><?php echo $this->__('Action')?></th>
                             </tr>
                             </thead>
                             <tbody>
+                            <tr class="tr-search">
+                                <td>&nbsp;</td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
+                                <td>
+                                    <div class="input-group-sm">
+                                        <input type="text" placeholder="<?php echo $this->__('Date From')?>" class="form-control datepicker2 " value="<?php echo (isset($params['date_from'])) ? $params['date_from'] : ''?>" name="date_from">
+                                        <input type="text" placeholder="<?php echo $this->__('Date To')?>" class="form-control datepicker2" value="<?php echo (isset($params['date_to'])) ? $params['date_to'] : ''?>" name="date_to">
+                                    </div>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
                             <?php if(count($this->products)):?>
                             <?php foreach($this->products as $product):?>
                                 <tr>
@@ -192,6 +240,8 @@ $from = $this->from;
                                     </td>
                                 </tr>
                             <?php endforeach;?>
+                            <?php else:?>
+                                <tr><td colspan="11"><p style="text-align: center;"><strong><?php echo $this->__('No product was found.')?></strong></p></td></tr>
                             <?php endif;?>
                             </tbody>
                         </table>

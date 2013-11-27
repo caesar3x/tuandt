@@ -4,6 +4,32 @@
  * Date: 9/13/13
  */
 ?>
+<?php $params = $this->params;?>
+<?php
+if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == 'id' && $params['dir'] == 'desc'){
+    $id_class = 'sorting_desc';
+}elseif(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == 'id' && $params['dir'] == 'asc'){
+    $id_class = 'sorting_asc';
+}elseif(!isset($params['orderby'])){
+    $id_class = 'sorting_desc';
+}else{
+    $id_class = 'sorting';
+}
+$sort_fields = array(
+    'brand' => 'sorting',
+    'name' => 'sorting',
+    'condition' => 'sorting',
+    'type' => 'sorting',
+    'country' => 'sorting'
+);
+foreach($sort_fields as $field=>$class){
+    if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'desc'){
+        $sort_fields[$field] = 'sorting_desc';
+    }elseif(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'asc'){
+        $sort_fields[$field] = 'sorting_asc';
+    }
+}
+?>
 <div class="page-header">
     <div class="pull-left">
         <h3><?php echo $this->__('Models')?></h3>
@@ -20,7 +46,6 @@
     </div>
     <div class="clearfix"></div>
 </div>
-<form id="model" action="/product/delete" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="row">
             <div class="pull-left">
@@ -52,7 +77,12 @@
                     <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
                 </div>
             </div>
-            <div class="pull-right">
+
+
+        </div>
+        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
+        <div class="row">
+            <div class="pull-left">
                 <a class="btn">
                     <?php echo $this->__('Export to')?>
                 </a>
@@ -69,42 +99,68 @@
                     <?php echo $this->__('Export')?>
                 </a>
             </div>
+            <div class="pull-right">
+                <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
+                <a class="btn btn-danger btn-sm btn-reset-filter" id="reset-filter"><?php echo $this->__('Reset filter')?></a>
+            </div>
         </div>
         <div class="row clearfix" style="height: 10px;">&nbsp;</div>
-        <table class="display table table-striped table-condensed table-bordered withphp" cellpadding="0" cellspacing="0">
+        <form id="model" action="<?php echo $this->getUrl('product/delete')?>" method="post" enctype="multipart/form-data">
+            <table class="display table table-striped table-condensed table-bordered" cellpadding="0" cellspacing="0">
             <thead>
             <tr>
                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
-                <th><?php echo $this->__('ID')?></th>
-                <th><?php echo $this->__('Brand')?></th>
-                <th><?php echo $this->__('Name')?></th>
-                <th><?php echo $this->__('Condition')?></th>
-                <th><?php echo $this->__('Type')?></th>
-                <th><?php echo $this->__('Country')?></th>
-                <th><?php echo $this->__('SSA Price')?></th>
-                <th><?php echo $this->__('Recycler 1')?></th>
-                <th><?php echo $this->__('Price in HKD 1')?></th>
-                <th><?php echo $this->__('Percentage 1')?></th>
-                <th><?php echo $this->__('Recycler 2')?></th>
-                <th><?php echo $this->__('Price in HKD 2')?></th>
-                <th><?php echo $this->__('Percentage 2')?></th>
-                <th><?php echo $this->__('Recycler 3')?></th>
-                <th><?php echo $this->__('Price in HKD 3')?></th>
-                <th><?php echo $this->__('Percentage 3')?></th>
+                <th class="<?php echo $id_class;?>"><?php echo $this->__('ID')?></th>
+                <th class="<?php echo $sort_fields['brand'];?>"><?php echo $this->__('Brand')?></th>
+                <th class="<?php echo $sort_fields['name'];?>"><?php echo $this->__('Name')?></th>
+                <th class="<?php echo $sort_fields['condition'];?>"><?php echo $this->__('Condition')?></th>
+                <th class="<?php echo $sort_fields['type'];?>"><?php echo $this->__('Type')?></th>
+                <th class="<?php echo $sort_fields['country'];?>"><?php echo $this->__('Country')?></th>
+                <th class=""><?php echo $this->__('SSA Price')?></th>
+                <th class=""><?php echo $this->__('Recycler 1')?></th>
+                <th class=""><?php echo $this->__('Price in HKD 1')?></th>
+                <th class=""><?php echo $this->__('Percentage 1')?></th>
+                <th class=""><?php echo $this->__('Recycler 2')?></th>
+                <th class=""><?php echo $this->__('Price in HKD 2')?></th>
+                <th class=""><?php echo $this->__('Percentage 2')?></th>
+                <th class=""><?php echo $this->__('Recycler 3')?></th>
+                <th class=""><?php echo $this->__('Price in HKD 3')?></th>
+                <th class=""><?php echo $this->__('Percentage 3')?></th>
                 <th class="action3"><?php echo $this->__('Action')?></th>
             </tr>
+
             </thead>
             <tbody>
+            <tr class="tr-search">
+                <td>&nbsp;</td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['brand'])) ? $params['brand'] : ''?>" name="brand"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['type'])) ? $params['type'] : ''?>" name="type"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['country'])) ? $params['country'] : ''?>" name="country"></div></td>
+                <td>&nbsp;</td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="recycler1"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="price1"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="percentage1"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="recycler2"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="price2"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="percentage2"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="recycler3"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="price3"></div>--></td>
+                <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="percentage3"></div>--></td>
+                <td>&nbsp;</td>
+            </tr>
             <?php if(count($this->paginator)):?>
                 <?php foreach($this->paginator as $row):?>
                     <tr>
                         <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="<?php echo $row->product_id?>"></td>
                         <td><?php echo $row->product_id?></td>
-                        <td><?php echo $this->product_brand()->getName($row->brand_id)?></td>
+                        <td><?php echo $row->brand_name?></td>
                         <td><?php echo $row->name?></td>
-                        <td><?php echo $this->condition($row->condition_id)?></td>
-                        <td><?php echo $this->product_type()->getName($row->type_id)?></td>
-                        <td><?php echo $this->country($row->country_id)?></td>
+                        <td><?php echo $row->condition_name?></td>
+                        <td><?php echo $row->type_name?></td>
+                        <td><?php echo $row->country_name?></td>
                         <?php
                         $data = array();
                         $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
@@ -183,14 +239,16 @@
                         </td>
                     </tr>
                 <?php endforeach;?>
+            <?php else:?>
+                <tr><td colspan="18"><p style="text-align: center;"><strong><?php echo $this->__('No product was found.')?></strong></p></td></tr>
             <?php endif;?>
             </tbody>
         </table>
+        </form>
         <?php echo $this->paginationControl($this->paginator,
             'Sliding',
             'paginator_style_1', array('route' => 'product-index')); ?>
     </div>
-</form>
 <div style="display: none">
     <div id="upload-form">
         <form id="import-form" method="post" action="<?php echo $this->getUrl('product/import')?>" enctype="multipart/form-data">

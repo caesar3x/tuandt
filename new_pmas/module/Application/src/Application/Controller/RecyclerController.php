@@ -229,6 +229,7 @@ class RecyclerController extends AbstractController
             }
         }else{
             $ppp = $request->getQuery('ppp');
+            $params = $request->getQuery();
             if(!empty($ppp)){
                 $this->getViewHelperPlugin('core')->setItemPerPage($ppp);
             }
@@ -240,7 +241,7 @@ class RecyclerController extends AbstractController
             $form->setData($entryArray);
             $tmpProductTable = $this->getServiceLocator()->get('TmpProductTable');
             $reyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-            $productsInRecyclerQuery = $reyclerProductTable->getProductsByRecyclerQuery($id);
+            $productsInRecyclerQuery = $reyclerProductTable->getProductsByRecyclerQuery($id,$params);
             $upload = $this->params('upload');
             if(!$upload){
                 $tmpProductTable->deleteByRecyclerId($id);
@@ -260,6 +261,7 @@ class RecyclerController extends AbstractController
             $view->setVariable('from',$from);
             $view->setVariable('page',$page);
             $view->setVariable('ppp',$ppp);
+            $view->setVariable('params',$params);
         }
         $view->setVariable('form',$form);
         return $view;
