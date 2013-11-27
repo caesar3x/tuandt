@@ -8,6 +8,7 @@ namespace Core\Model;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Debug\Debug;
+use Zend\I18n\Validator\DateTime;
 
 class RecyclerProductTable extends AbstractModel
 {
@@ -194,19 +195,84 @@ class RecyclerProductTable extends AbstractModel
     }
 
     /**
-     * Get select products by recycler id query
      * @param $recycler_id
+     * @param array $params
      * @return \Zend\Db\Sql\Select
      */
-    public function getProductsByRecyclerQuery($recycler_id)
+    public function getProductsByRecyclerQuery($recycler_id,$params = array())
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('b' => 'brand'),'m.brand_id = b.brand_id',array('brand_name' => 'name'));
+        $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
+        $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
         $where = new Where();
-        $where->equalTo('deleted',0);
-        $where->equalTo('lastest',1);
-        $where->equalTo('recycler_id',$recycler_id);
+        $where->equalTo('m.deleted',0);
+        $where->equalTo('m.lastest',1);
+        $where->equalTo('m.recycler_id',$recycler_id);
+        /**
+         * process filter
+         */
+        if(isset($params['id']) && trim($params['id']) != ''){
+            $where->equalTo('m.product_id',$params['id']);
+        }
+        if(isset($params['brand']) && trim($params['brand']) != ''){
+            $brand = $params['brand'];
+            $where->like('b.name',"%$brand%");
+        }
+        if(isset($params['type']) && trim($params['type']) != ''){
+            $type = $params['type'];
+            $where->like('t.name',"%$type%");
+        }
+        if(isset($params['condition']) && trim($params['condition']) != ''){
+            $condition = $params['condition'];
+            $where->like('cd.name',"%$condition%");
+        }
+        if(isset($params['name']) && trim($params['name']) != ''){
+            $name = $params['name'];
+            $where->like('m.name',"%$name%");
+        }
+        if(isset($params['date_from']) && trim($params['date_from']) != ''){
+            $date_from_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_from'].' 00:00:00');
+            if($date_from_parse != null){
+                $date_from = $date_from_parse->getTimestamp();
+                $where->greaterThanOrEqualTo('date',$date_from);
+            }
+        }
+        if(isset($params['date_to']) && trim($params['date_to']) != ''){
+            $date_to_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_to'].' 23:59:59');
+            if($date_to_parse != null){
+                $date_to = $date_to_parse->getTimestamp();
+                $where->lessThanOrEqualTo('date',$date_to);
+            }
+        }
+        /**
+         * Process orderby
+         */
+        if(isset($params['orderby']) && trim($params['orderby']) != ''){
+            $dir = (isset($params['dir']) && trim($params['dir']) != '') ? $params['dir'] : 'desc';
+            if($params['orderby'] == 'brand'){
+                $orderby = "brand_name";
+            }elseif($params['orderby'] == 'country'){
+                $orderby = "country_name";
+            }elseif($params['orderby'] == 'type'){
+                $orderby = "type_name";
+            }elseif($params['orderby'] == 'condition'){
+                $orderby = "condition_name";
+            }elseif($params['orderby'] == 'name'){
+                $orderby = "m.name";
+            }elseif($params['orderby'] == 'id'){
+                $orderby = "m.product_id";
+            }elseif($params['orderby'] == 'date'){
+                $orderby = "m.date";
+            }else{
+                $orderby = "m.product_id";
+            }
+            $select->order("$orderby $dir");
+        }else{
+            $select->order("m.product_id DESC");
+        }
         $select->where($where);
         return $select;
     }

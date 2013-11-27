@@ -50,18 +50,76 @@ class TdmProductTable extends AbstractModel
         }
         return $result;
     }
+
     /**
+     * @param array $params
      * @return Select
      */
-    public function getTdmProductQuery()
+    public function getTdmProductQuery($params = array())
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('deleted' => 0));
-        $select->order('product_id DESC');
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('b' => 'brand'),'m.brand_id = b.brand_id',array('brand_name' => 'name'));
+        $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_name' => 'name'));
+        $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
+        $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
+        $where = new Where();
+        $where->equalTo('m.deleted',0);
+        if(isset($params['id']) && trim($params['id']) != ''){
+            $where->equalTo('m.product_id',$params['id']);
+        }
+        if(isset($params['brand']) && trim($params['brand']) != ''){
+            $brand = $params['brand'];
+            $where->like('b.name',"%$brand%");
+        }
+        if(isset($params['country']) && trim($params['country']) != ''){
+            $country = $params['country'];
+            $where->like('c.name',"%$country%");
+        }
+        if(isset($params['type']) && trim($params['type']) != ''){
+            $type = $params['type'];
+            $where->like('t.name',"%$type%");
+        }
+        if(isset($params['condition']) && trim($params['condition']) != ''){
+            $condition = $params['condition'];
+            $where->like('cd.name',"%$condition%");
+        }
+        if(isset($params['name']) && trim($params['name']) != ''){
+            $name = $params['name'];
+            $where->like('m.name',"%$name%");
+        }
+        /*$select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        Debug::dump($selectString);die;*/
+        /**
+         * Process orderby
+         */
+        if(isset($params['orderby']) && trim($params['orderby']) != ''){
+            $dir = (isset($params['dir']) && trim($params['dir']) != '') ? $params['dir'] : 'desc';
+            if($params['orderby'] == 'brand'){
+                $orderby = "brand_name";
+            }elseif($params['orderby'] == 'country'){
+                $orderby = "country_name";
+            }elseif($params['orderby'] == 'type'){
+                $orderby = "type_name";
+            }elseif($params['orderby'] == 'condition'){
+                $orderby = "condition_name";
+            }elseif($params['orderby'] == 'name'){
+                $orderby = "m.name";
+            }elseif($params['orderby'] == 'id'){
+                $orderby = "m.product_id";
+            }else{
+                $orderby = "m.product_id";
+            }
+            $select->order("$orderby $dir");
+        }else{
+            $select->order("m.product_id DESC");
+        }
+        $select->where($where);
         return $select;
     }
+
     /**
      * @param $id
      * @return int

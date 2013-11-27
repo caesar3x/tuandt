@@ -65,12 +65,7 @@ $(function() {
             thead.append(htmlAppend);
         }
     });
-    if($(".withphp").length > 0){
-        $(".tr-search input").keyup( function () {
-            /* Filter on the column (the index) of this element */
-            oTable2.fnFilter( this.value, $(".tr-search input").index(this) );
-        } );
-    }else{
+    if($(".example").length > 0){
         $(".tr-search input").keyup( function () {
             /* Filter on the column (the index) of this element */
             oTable.fnFilter( this.value, $(".tr-search input").index(this) );
@@ -104,17 +99,19 @@ $(function() {
     /**
      * check all item
      */
-    $(".check-all").on("click", function () {
+    $(".check-all").click(function () {
         var checked = $(this).is(":checked");
         $(".check-item").prop('checked',checked);
     });
-    $(".checkall").on("click", function () {
+    $(document).on("click", ".checkall",function (e) {
+        e.preventDefault();
         var checkedd = $(this).is(":checked");
         $(".checkitem").prop('checked',checkedd);
     });
     /**
      * Datepicker
      */
+    var dateoptions = new Object();
     $('.datepicker').datepicker({
         dateFormat : "dd-mm-yy"
     }).datepicker("setDate", new Date());
@@ -192,8 +189,23 @@ $(function() {
      */
     $(document).on('change','#item-per-page',function(e){
         e.preventDefault();
-        window.location.assign(currentpath+'?ppp='+$(this).val());
+        var params = existedparams();
+        params.ppp = $(this).val();
+        window.location.assign(currentroute+'?'+jQuery.param(params));
     });
+    var existedparams = function(){
+        var params = new Object();
+        var hashes = window.location.search.substr(1).split('&');
+        if(hashes.length > 0){
+            for(var i = 0; i < hashes.length; ++i)
+            {
+                hash = hashes[i].split('=');
+                if (hash.length != 2) continue;
+                params[hash[0]] = decodeURIComponent(hash[1].replace(/\+/g, " "));
+            }
+        }
+        return params;
+    };
     /**
      * Add event for btn_save
      */
@@ -202,6 +214,68 @@ $(function() {
         var formtarget = $(this).closest("form");
         formtarget.submit();
         e.preventDefault();
+    });
+    /**
+     * Search tdm
+     */
+    $(document).on("click",".btn-search",function(e){
+        e.preventDefault();
+        var inputs = $(".tr-search").find("input");
+        var search_params = new Object();
+        inputs.each(function(){
+            search_params[$(this).attr("name")] = $(this).val();
+        });
+        var str_params = jQuery.param(search_params);
+        window.location.assign(currentroute+'?'+str_params);
+    });
+    $(document).on("click",".btn-reset-filter",function(e){
+        e.preventDefault();
+        window.location.assign(currentroute);
+    });
+    /**
+     * Custom sorting
+     */
+    $(document).on("click","th",function(e){
+        e.preventDefault();
+        var _this = $(this);
+        var hash;
+        var direction = '';
+        var thisindex = _this.index();
+        var inputselected = $(".tr-search td:eq("+thisindex+")").find("input").attr("name");
+        var params = new Object();
+        var hashes = window.location.search.substr(1).split('&');
+        if(hashes.length > 0){
+            for(var i = 0; i < hashes.length; ++i)
+            {
+                hash = hashes[i].split('=');
+                if (hash.length != 2) continue;
+                params[hash[0]] = decodeURIComponent(hash[1].replace(/\+/g, " "));
+            }
+        }
+        if(_this.hasClass("sorting")){
+            _this.removeClass("sorting");
+            _this.addClass("sorting_asc");
+            direction = "asc";
+        }else{
+            if(_this.hasClass("sorting_asc")){
+                _this.removeClass("sorting_asc");
+                _this.addClass("sorting_desc");
+                direction = 'desc';
+            }else{
+                if(_this.hasClass("sorting_desc")){
+                    _this.removeClass("sorting_desc");
+                    _this.addClass("sorting_asc");
+                    direction = "asc";
+                }
+            }
+        }
+        if(!jQuery.isEmptyObject(direction)){
+            params.orderby = inputselected;
+            params.dir = direction;
+            /*console.log(params);*/
+            /*console.log(currentroute+'?'+jQuery.param(params));*/
+            window.location.assign(currentroute+'?'+jQuery.param(params));
+        }
     });
 } );
 function formSaveAndContinue(id)

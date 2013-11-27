@@ -61,7 +61,11 @@ class ProductController extends AbstractController
         $item_per_page = $this->getViewHelperPlugin('core')->getItemPerPage();
         $page = trim($this->params('page',1),'/');
         $tdmProductTable = $this->sm->get('TdmProductTable');
-        $select = $tdmProductTable->getTdmProductQuery();
+        /**
+         * Orderby params
+         */
+        $params = $request->getQuery();
+        $select = $tdmProductTable->getTdmProductQuery($params);
         $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $paginator = new Paginator(new DbSelect($select,$dbAdapter));
         $paginator->setItemCountPerPage($item_per_page);
@@ -69,6 +73,7 @@ class ProductController extends AbstractController
         $this->setViewVariable('paginator', $paginator);
         $country = $this->params('country',null);
         $this->setViewVariable('country',$country);
+        $this->setViewVariable('params',$params);
         $this->setViewVariable('current_page',$page);
         $this->setViewVariable('item_per_page',$item_per_page);
         return $this->view;
