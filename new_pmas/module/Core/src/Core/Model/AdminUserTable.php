@@ -27,11 +27,11 @@ class AdminUserTable extends AbstractModel
     }
     public function getAvaiableUsers()
     {
-        $resultSet = $this->tableGateway->select(array('hidden' => 0,'deleted' => 0));
+        $resultSet = $this->tableGateway->select(array('hidden' => 0));
         return $resultSet;
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('id' => $id));
+        return $this->tableGateway->delete(array('id' => $id));
     }
 }

@@ -31,7 +31,7 @@ class BrandTable extends AbstractModel
     }
     public function getBrandIdByName($name,$insert_new = true)
     {
-        $rowset = $this->tableGateway->select(array('name' => $name,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('name' => $name));
         $row = $rowset->current();
         if(!$row){
             /**
@@ -62,7 +62,7 @@ class BrandTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('brand_id' => $id));
+        return $this->tableGateway->delete(array('brand_id' => $id));
     }
 
     /**
@@ -82,7 +82,7 @@ class BrandTable extends AbstractModel
             $sql = new Sql($adapter);
             $select = $sql->select()->from(array('m' => $this->tableGateway->table));
             $select->join(array('td' => $tdmProductTable->tableGateway->table),'m.product_id = td.product_id');
-            $select->where(array('m.deleted' => 0,'m.product_id' => $product_id));
+            $select->where(array('m.product_id' => $product_id));
             $select->order('m.product_id DESC');
             $selectString = $sql->getSqlStringForSqlObject($select);
             $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -104,9 +104,8 @@ class BrandTable extends AbstractModel
         $select = $sql->select()->from(array('m' => $this->tableGateway->table));
         $select->join(array('td' => $tdmProductTable->tableGateway->table),'m.product_id = td.product_id');
         if($ids == null){
-            $select->where(array('m.deleted' => 0));
         }else{
-            $select->where(array('m.deleted' => 0,'m.product_id' => $ids));
+            $select->where(array('m.product_id' => $ids));
         }
         $select->order('m.product_id '.$order);
         $selectString = $sql->getSqlStringForSqlObject($select);

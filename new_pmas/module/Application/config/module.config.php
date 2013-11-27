@@ -171,6 +171,7 @@ return array(
             'Application\Controller\Soap' => 'Application\Controller\SoapController',
             'Application\Controller\Language' => 'Application\Controller\LanguageController',
             'Application\Controller\Cron' => 'Application\Controller\CronController',
+            'Application\Controller\Reindex' => 'Application\Controller\ReindexController',
         ),
     ),
     'view_manager' => array(

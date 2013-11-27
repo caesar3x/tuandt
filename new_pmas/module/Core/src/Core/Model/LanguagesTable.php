@@ -31,7 +31,7 @@ class LanguagesTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('id' => $id));
+        return $this->tableGateway->delete(array('id' => $id));
     }
 
     /**
@@ -69,7 +69,6 @@ class LanguagesTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('deleted' => 0));
         $select->order('sort_order ASC');
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
@@ -80,7 +79,7 @@ class LanguagesTable extends AbstractModel
     }
     public function getLang($id)
     {
-        $rowset = $this->tableGateway->select(array('id' => $id,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
         if(!$row){
             return null;

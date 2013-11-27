@@ -16,7 +16,7 @@ class ComplexRecyclerProductTypeC
     public $condition_id;
     public $popular;
     public $currency;
-    public $deleted;
+
     public function exchangeArray($data)
     {
         $this->product_id     = (isset($data['product_id'])) ? $data['product_id'] : 0;
@@ -28,7 +28,7 @@ class ComplexRecyclerProductTypeC
         $this->condition_id     = (isset($data['condition_id'])) ? $data['condition_id'] : 0;
         $this->popular     = (isset($data['popular'])) ? (int)$data['popular'] : 0;
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : 'HKD';
-        $this->deleted     = (isset($data['deleted'])) ? $data['deleted'] : 0;
+
     }
     public function exchangeUpdateData($data)
     {

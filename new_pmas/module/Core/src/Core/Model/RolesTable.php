@@ -64,7 +64,7 @@ class RolesTable extends AbstractModel
      */
     public function getAvaiableRoles()
     {
-        $rowset = $this->tableGateway->select(array('deleted' => 0));
+        $rowset = $this->tableGateway->select();
         if ($rowset->count() <= 0) {
             return null;
         }
@@ -76,6 +76,6 @@ class RolesTable extends AbstractModel
      */
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('role_id' => $id));
+        return $this->tableGateway->delete(array('role_id' => $id));
     }
 }

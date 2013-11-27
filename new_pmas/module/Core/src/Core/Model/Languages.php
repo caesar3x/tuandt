@@ -13,7 +13,7 @@ class Languages
     public $lang_country;
     public $sort_order;
     public $file_path;
-    public $deleted;
+
     public function exchangeArray($data)
     {
         $this->id     = (isset($data['id'])) ? (int)$data['id'] : 0;
@@ -21,6 +21,5 @@ class Languages
         $this->lang_country     = (isset($data['lang_country'])) ? $data['lang_country'] : null;
         $this->sort_order     = (isset($data['sort_order'])) ? (int)$data['sort_order'] : null;
         $this->file_path     = (isset($data['file_path'])) ? $data['file_path'] : null;
-        $this->deleted     = (isset($data['deleted'])) ? (int)$data['deleted'] : 0;
     }
 }

@@ -10,7 +10,6 @@ class Recycler
     public $recycler_id;
     public $name;
     public $country_id;
-    public $deleted;
     public $email;
     public $website;
     public $telephone;
@@ -25,6 +24,5 @@ class Recycler
         $this->website     = (isset($data['website'])) ? $data['website'] : null;
         $this->telephone     = (isset($data['telephone'])) ? $data['telephone'] : null;
         $this->address     = (isset($data['address'])) ? $data['address'] : null;
-        $this->deleted     = (isset($data['deleted'])) ? $data['deleted'] : 0;
     }
 }

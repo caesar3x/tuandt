@@ -18,7 +18,7 @@ class RecyclerProduct
     public $temp_id;
     public $currency;
     public $date;
-    public $deleted;
+
     public function exchangeArray($data)
     {
         $this->product_id     = (isset($data['product_id'])) ? $data['product_id'] : 0;
@@ -32,6 +32,6 @@ class RecyclerProduct
         $this->temp_id     = (isset($data['temp_id'])) ? $data['temp_id'] : 0;
         $this->date     = (isset($data['date'])) ? (int)$data['date'] : 0;
         $this->currency     = (isset($data['currency'])) ? $data['currency'] : null;
-        $this->deleted     = (isset($data['deleted'])) ? $data['deleted'] : 0;
+
     }
 }

@@ -37,7 +37,7 @@ class CountryTable extends AbstractModel
     }
     public function deleteEntry($id)
     {
-        return $this->tableGateway->update(array('deleted' => 1),array('country_id' => $id));
+        return $this->tableGateway->delete(array('country_id' => $id));
     }
 
     /**
@@ -57,24 +57,12 @@ class CountryTable extends AbstractModel
             if($recyclerTable->checkAvailabelCountry($id)){
                 $success = $success && $recyclerTable->clearCountry($id);
             }
-            if($success == false){
-                $this->rollBackDeleteEntry($id);
-            }
             return $success;
         }else{
             return false;
         }
     }
 
-    /**
-     * Rollback delete entry
-     * @param $id
-     * @return int
-     */
-    public function rollBackDeleteEntry($id)
-    {
-        return $this->tableGateway->update(array('deleted' => 0),array('country_id' => $id));
-    }
     /**
      * Get country name by country id
      * @param $id
@@ -126,7 +114,7 @@ class CountryTable extends AbstractModel
     public function checkCountryAvailable($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('country_id' => $id,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('country_id' => $id));
         $row = $rowset->current();
         if (!$row) {
             return false;
@@ -138,7 +126,7 @@ class CountryTable extends AbstractModel
         if(!$currency || $currency == null){
             return null;
         }
-        $rowset = $this->tableGateway->select(array('currency' => $currency,'deleted' => 0));
+        $rowset = $this->tableGateway->select(array('currency' => $currency));
         $row = $rowset->current();
         if(!$row){
             return null;

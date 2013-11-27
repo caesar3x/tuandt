@@ -45,7 +45,7 @@ class LoginController extends AbstractActionController
             ->setCredential($securePass)
         ;
         $select = $authAdapter->getDbSelect();
-        $select->where('status = 1 and hidden = 0 and deleted = 0');
+        $select->where('status = 1 and hidden = 0');
 
         $authService = $this->getServiceLocator()->get('auth_service');
         $authService->setAdapter($authAdapter);
