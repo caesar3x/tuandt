@@ -240,9 +240,11 @@ $from = $this->from;
                                     </td>
                                 </tr>
                             <?php endforeach;?>
-                            <?php else:?>
+                            <?php endif;?>
+                            <?php if(!count($this->tmpProducts) && !count($this->products)):?>
                                 <tr><td colspan="11"><p style="text-align: center;"><strong><?php echo $this->__('No product was found.')?></strong></p></td></tr>
                             <?php endif;?>
+
                             </tbody>
                         </table>
                         <?php if(count($this->tmpProducts)):?>
