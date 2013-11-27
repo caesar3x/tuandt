@@ -391,7 +391,7 @@ class RecyclerController extends AbstractController
     }
     public function importAction()
     {
-        $this->auth();
+        parent::initAction();
         $request = $this->getRequest();
         $messages = $this->getMessages();
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
@@ -449,11 +449,12 @@ class RecyclerController extends AbstractController
                 if(empty($header)){
                     exit();
                 }
+                $brandTable = $this->sm->get('BrandTable');
                 foreach($dataImport as $i=>$row){
                     if($i>0){
                         $rowParse = array();
                         $rowParse['recycler_id'] = $recycler_id;
-                        $rowParse['brand_id'] = ($viewhelperManager->get('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) != null) ? $viewhelperManager->get('product_brand')->getBrandIdByName(trim($row[array_search('brand',$header)])) : 0;
+                        $rowParse['brand_id'] = $brandTable->getBrandIdByName(trim($row[array_search('brand',$header)]));
                         $rowParse['model'] = $row[array_search('model',$header)];
                         $rowParse['type_id'] = ($viewhelperManager->get('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) != null) ? $viewhelperManager->get('product_type')->getTypeIdByName(trim($row[array_search('product-type',$header)])) : 0;
                         $rowParse['date'] = $row[array_search('date',$header)];
@@ -528,7 +529,6 @@ class RecyclerController extends AbstractController
         $tmpProductTable = $this->sm->get('TmpProductTable');
         $recyclerProductTable = $this->sm->get('RecyclerProductTable');
         $rowset = $tmpProductTable->getRowsByRecyclerId($recycler);
-        $recyclerProduct = new RecyclerProduct();
         if(!empty($rowset)){
             foreach($rowset as $row){
                 if(!$recyclerProductTable->hasTempId($row->id)){
@@ -540,13 +540,12 @@ class RecyclerController extends AbstractController
                     }else{
                         $tmpEntryParse['date'] = 0;
                     }
-                    $recyclerProduct->exchangeArray($tmpEntryParse);
-                    $recyclerProductTable->save($recyclerProduct);
+                    $recyclerProductTable->saveData($tmpEntryParse);
                 }
             }
         }
-        echo 'Save record success.';
-        die;
+        $this->addSuccessFlashMessenger($this->__('Save all success.'));
+        $this->redirectUrl('/recycler/detail/id/'.$recycler);
     }
     public function productAction()
     {

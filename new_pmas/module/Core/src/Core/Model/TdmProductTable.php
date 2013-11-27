@@ -36,19 +36,7 @@ class TdmProductTable extends AbstractModel
             }
         }
     }
-    public function getTdmProduct()
-    {
-        $adapter = $this->tableGateway->adapter;
-        $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
-        $select->order('product_id DESC');
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-        if ($result->count() <= 0) {
-            return null;
-        }
-        return $result;
-    }
+
 
     /**
      * @param array $params
@@ -328,8 +316,8 @@ class TdmProductTable extends AbstractModel
                   `product_id` bigint(20) NOT NULL,
                   `country_id` int(11) DEFAULT NULL,
                   `country_name` varchar(255) DEFAULT NULL,
-                  `product_name` varchar(255) DEFAULT NULL,
-                  `product_model` varchar(255) DEFAULT NULL,
+                  `name` varchar(255) DEFAULT NULL,
+                  `model` varchar(255) DEFAULT NULL,
                   `type_id` int(11) DEFAULT NULL,
                   `type_name` varchar(255) DEFAULT NULL,
                   `brand_id` int(11) DEFAULT NULL,
@@ -338,16 +326,20 @@ class TdmProductTable extends AbstractModel
                   `condition_name` varchar(255) DEFAULT NULL,
                   `popular` tinyint(4) DEFAULT '0',
                   `ssa_price` decimal(12,4) DEFAULT NULL,
+                  `ssa_currency` varchar(10) DEFAULT NULL,
                   PRIMARY KEY (`product_id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $adapter = $this->tableGateway->adapter;
         $adapter->query($query, $adapter::QUERY_MODE_EXECUTE);
+        $truncate = "TRUNCATE TABLE `tdm_product_index`";
+        $adapter->query($truncate, $adapter::QUERY_MODE_EXECUTE);
         return true;
     }
-    /**
-     * Index data
-     */
-    public function index_data()
+    public function create_tdm_product_match()
+    {
+        return true;
+    }
+    public function getProducts($limit = null)
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
@@ -356,8 +348,42 @@ class TdmProductTable extends AbstractModel
         $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_name' => 'name'));
         $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
         $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
-        $where = new Where();
+        if($limit != null){
+            $select->limit($limit);
+        }
         $selectString = $sql->getSqlStringForSqlObject($select);
-        Debug::dump($selectString);die;
+        $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($rowset->count() <= 0) {
+            return null;
+        }
+        return $rowset;
+    }
+    /**
+     * Index data
+     */
+    public function index_data()
+    {
+        $this->create_tdm_product_index_table();
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $products = $this->getProducts();
+        if(!empty($products)){
+            $insert = $sql->insert('tdm_product_index');
+            $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
+            foreach($products as $row){
+                $row_parse = (array) $row;
+                /**
+                 * get SSA price
+                 */
+                $ssa_price = $recyclerProductTable->getSSAPrice($row->model,$row->condition_id);
+                $ssa_currency = $recyclerProductTable->getSSACurrency($row->model,$row->condition_id);
+                $row_parse['ssa_price'] = $ssa_price;
+                $row_parse['ssa_currency'] = $ssa_currency;
+                $insert->values($row_parse);
+                $statement = $sql->prepareStatementForSqlObject($insert);
+                $statement->execute();
+            }
+        }
+        return true;
     }
 }
