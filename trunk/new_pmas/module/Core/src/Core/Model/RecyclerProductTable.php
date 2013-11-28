@@ -279,7 +279,6 @@ class RecyclerProductTable extends AbstractModel
         $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
         $where = new Where();
         if(!empty($country)){
-
             $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
             $where->equalTo('r.country_id',$country);
         }
@@ -289,7 +288,10 @@ class RecyclerProductTable extends AbstractModel
         $select->where($where);
         $select->order("m.product_id DESC");
         $selectString = $sql->getSqlStringForSqlObject($select);
-        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id LIMIT $limit";
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        if($limit !== false){
+            $selectStringFinal .= " LIMIT $limit";
+        }
         $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
             return null;

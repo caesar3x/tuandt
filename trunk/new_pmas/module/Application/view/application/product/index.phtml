@@ -20,7 +20,8 @@ $sort_fields = array(
     'name' => 'sorting',
     'condition' => 'sorting',
     'type' => 'sorting',
-    'country' => 'sorting'
+    'country' => 'sorting',
+    'ssa_price' => 'sorting'
 );
 foreach($sort_fields as $field=>$class){
     if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'desc'){
@@ -116,7 +117,7 @@ foreach($sort_fields as $field=>$class){
                 <th class="<?php echo $sort_fields['condition'];?>"><?php echo $this->__('Condition')?></th>
                 <th class="<?php echo $sort_fields['type'];?>"><?php echo $this->__('Type')?></th>
                 <th class="<?php echo $sort_fields['country'];?>"><?php echo $this->__('Country')?></th>
-                <th class=""><?php echo $this->__('SSA Price')?></th>
+                <th class="<?php echo $sort_fields['ssa_price'];?>"><?php echo $this->__('SSA Price')?></th>
                 <th class=""><?php echo $this->__('Recycler 1')?></th>
                 <th class=""><?php echo $this->__('Price in HKD 1')?></th>
                 <th class=""><?php echo $this->__('Percentage 1')?></th>
@@ -139,7 +140,10 @@ foreach($sort_fields as $field=>$class){
                 <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
                 <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['type'])) ? $params['type'] : ''?>" name="type"></div></td>
                 <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['country'])) ? $params['country'] : ''?>" name="country"></div></td>
-                <td>&nbsp;</td>
+                <td>
+                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('From')?>" type="text" class="form-control" value="<?php echo (isset($params['ssa_price_from'])) ? $params['ssa_price_from'] : ''?>" name="ssa_price_from"></div>
+                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('To')?>" type="text" class="form-control" value="<?php echo (isset($params['ssa_price_to'])) ? $params['ssa_price_to'] : ''?>" name="ssa_price_to"></div>
+                </td>
                 <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="recycler1"></div>--></td>
                 <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="price1"></div>--></td>
                 <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="percentage1"></div>--></td>
@@ -161,56 +165,27 @@ foreach($sort_fields as $field=>$class){
                         <td><?php echo $row->condition_name?></td>
                         <td><?php echo $row->type_name?></td>
                         <td><?php echo $row->country_name?></td>
-                        <?php
-                        $data = array();
-                        $ssa_price = $this->product()->getSSAPrice($row->model,$row->condition_id);
-                        if(!empty($ssa_price)){
-                        ?>
-                        <td><?php echo $this->price()->formatCurrency($ssa_price,'HKD')?></td>
-                        <?php
-                        }else{
-                        ?>
-                         <td><?php echo $this->__('N/A')?></td>
-                        <?php }?>
-                        <?php
-                        $recyclerProducts = $this->product()->getRowsMatching($row->model,$row->condition_id);
-                        if(!empty($recyclerProducts)){
-                            foreach($recyclerProducts as $rp){
-                                $currentExchange = $this->exchange()->getCurrentExchangeOfCurrency($rp->currency);
-                                $priceExchange = ((float) $rp->price )/ $currentExchange;
-                                if($ssa_price != 0){
-                                    $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
-                                }else{
-                                    $percentage = 'N/A';
-                                }
-                                $data[] = array(
-                                    'recycler' => $this->recycler()->getName($rp->recycler_id),
-                                    'price' => $priceExchange,
-                                    'percentag' => $percentage,
-                                );
-                            }
-                        }
-                        ?>
-                        <?php if(!empty($data)):?>
-                        <?php $i=0;foreach($data as $item):?>
-                            <td><?php echo $item['recycler']?></td>
-                            <td><?php echo $this->price()->formatCurrency($item['price'],'HKD')?></td>
-                            <td><?php echo (is_numeric($item['percentag'])) ? $this->price()->format($item['percentag']).' %' : $item['percentag'];?></td>
-                            <?php $i++;?>
+                        <td><?php echo ((float) $row->ssa_price != 0) ? $this->price()->formatCurrency($row->ssa_price) : 'N/A';?></td>
+                        <?php $matching = $this->product()->get_recycler_products_matched($row->product_id);?>
+                        <?php if(!empty($matching)):?>
+                        <?php $i=0;foreach($matching as $m):?>
+                            <td><?php echo $m->recycler_name?></td>
+                            <td><?php echo $this->price()->formatCurrency($m->price_in_hkd)?></td>
+                            <td><?php echo $m->percentage?></td>
+                            <?php $i++?>
                         <?php endforeach;?>
-                        <?php if($i==1):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php elseif($i==2):?>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <?php endif;?>
-                        <?php ?>
+                            <?php if($i==1):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php elseif($i==2):?>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            <?php endif;?>
                         <?php else:?>
                             <td></td>
                             <td></td>
@@ -247,7 +222,7 @@ foreach($sort_fields as $field=>$class){
         </form>
         <?php echo $this->paginationControl($this->paginator,
             'Sliding',
-            'paginator_style_1', array('route' => 'product-index')); ?>
+            'paginator_style_4', array('route' => 'product-index','params' => $params)); ?>
     </div>
 <div style="display: none">
     <div id="upload-form">

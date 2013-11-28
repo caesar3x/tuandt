@@ -124,55 +124,60 @@ $(function() {
     var tdmcountry = $("#tdm-country").val();
     var filterhigher = $("#filter-higher").val();
     var urlparams = '';
+    var paramsurl = function(){
+        var params = new Object();
+        var hashes = window.location.search.substr(1).split('&');
+        if(hashes.length > 0){
+            for(var i = 0; i < hashes.length; ++i)
+            {
+                hash = hashes[i].split('=');
+                if (hash.length != 2) continue;
+                params[hash[0]] = decodeURIComponent(hash[1].replace(/\+/g, " "));
+            }
+        }
+        return params;
+    };
     $(document).on("change","#price_percentage",function(e){
         e.preventDefault();
-        if(typeof tdmcountry !== 'undefined' && tdmcountry !== '' && tdmcountry !== 'reset'){
-            urlparams = urlparams + '/country/'+tdmcountry;
-        }
-        if(typeof recyclercountry !== 'undefined' && recyclercountry !== '' && recyclercountry !== 'reset'){
-            urlparams = urlparams + '/recycler-country/'+recyclercountry;
-        }
-        if($(this).val() !== 'reset' ){
-            urlparams = urlparams + '/higher/'+$(this).val();
-        }
-        if(typeof  product !== 'undefined'){
-            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
-        }else{
-            window.location.assign(siteurl +'product/filter'+urlparams);
+        var params = paramsurl();
+        if(jQuery.type(params) === 'object'){
+            if($(this).val() !== 'reset' ){
+                params.higher = $(this).val();
+            }else{
+                if(params.hasOwnProperty('higher')){
+                    delete params.higher;
+                }
+            }
+            window.location.assign(currentroute+'?'+jQuery.param(params));
         }
     });
     $(document).on("change","#country-chosen",function(e){
         e.preventDefault();
-        if(typeof filterhigher !== 'undefined' && filterhigher !== '' && filterhigher !== 'reset'){
-            urlparams = urlparams + '/higher/'+filterhigher;
-        }
-        if(typeof recyclercountry !== 'undefined' && recyclercountry !== '' && recyclercountry !== 'reset'){
-            urlparams = urlparams + '/recycler-country/'+recyclercountry;
-        }
-        if($(this).val() !== 'reset' ){
-            urlparams = urlparams + '/country/'+$(this).val();
-        }
-        if(typeof  product !== 'undefined'){
-            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
-        }else{
-            window.location.assign(siteurl +'product/filter'+urlparams);
+        var params = paramsurl();
+        console.log(jQuery.type(params));
+        if(jQuery.type(params) === 'object'){
+            if($(this).val() !== 'reset' ){
+                params.tdmcountry = $(this).val();
+            }else{
+                if(params.hasOwnProperty('tdmcountry')){
+                    delete params.tdmcountry;
+                }
+            }
+            window.location.assign(currentroute+'?'+jQuery.param(params));
         }
     });
     $(document).on("change","#recycler-country-chosen",function(e){
         e.preventDefault();
-        if(typeof filterhigher !== 'undefined' && filterhigher !== '' && filterhigher !== 'reset'){
-            urlparams = urlparams + '/higher/'+filterhigher;
-        }
-        if(typeof tdmcountry !== 'undefined' && tdmcountry !== '' && tdmcountry !== 'reset'){
-            urlparams = urlparams + '/country/'+tdmcountry;
-        }
-        if($(this).val() !== 'reset' ){
-            urlparams = urlparams + '/recycler-country/'+$(this).val();
-        }
-        if(typeof  product !== 'undefined'){
-            window.location.assign(siteurl+'product/detail/id/'+product+ urlparams);
-        }else{
-            window.location.assign(siteurl +'product/filter'+urlparams);
+        var params = paramsurl();
+        if(jQuery.type(params) === 'object'){
+            if($(this).val() !== 'reset' ){
+                params.rcountry = $(this).val();
+            }else{
+                if(params.hasOwnProperty('rcountry')){
+                    delete params.rcountry;
+                }
+            }
+            window.location.assign(currentroute+'?'+jQuery.param(params));
         }
     });
     /**

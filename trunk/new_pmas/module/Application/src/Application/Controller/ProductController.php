@@ -65,7 +65,11 @@ class ProductController extends AbstractController
          * Orderby params
          */
         $params = $request->getQuery();
-        $select = $tdmProductTable->getTdmProductQuery($params);
+        $select = $tdmProductTable->getTdmProductsIndex($params);
+        /**
+         * Filter by higher price and recycler country
+         */
+
         $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $paginator = new Paginator(new DbSelect($select,$dbAdapter));
         $paginator->setItemCountPerPage($item_per_page);

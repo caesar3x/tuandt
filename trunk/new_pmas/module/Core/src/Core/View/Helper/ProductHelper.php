@@ -190,7 +190,6 @@ class ProductHelper extends CoreHelper
             foreach($productsCurrency as $product_id=>$val){
                 if(in_array((int)$val['recycler_id'],$recycler_ids)){
                     $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
-                    $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
                     $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
                     $productsExchangeRate[$product_id] = $current_exchange;
                 }
@@ -231,7 +230,6 @@ class ProductHelper extends CoreHelper
             foreach($productsCurrency as $product_id=>$val){
                 if((int)$val['country_id'] == $country){
                     $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
-                    $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
                     $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
                     $productsExchangeRate[$product_id] = $current_exchange;
                 }
@@ -269,7 +267,6 @@ class ProductHelper extends CoreHelper
         if(!empty($productsCurrency)){
             foreach($productsCurrency as $product_id=>$val){
                 $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($val['currency'],$end);
-                $this->log_debug('$current_exchange '.$product_id.' : '.$current_exchange);
                 $productsExchangePrice[$product_id] = ((float)$val['price'])/$current_exchange;
                 $productsExchangeRate[$product_id] = $current_exchange;
             }
@@ -568,5 +565,12 @@ class ProductHelper extends CoreHelper
     {
         $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
         return $recyclerProductTable->getAllRecyclersOfModel($model,$condition,$start,$end);
+    }
+    /**
+     * Get recycler product match from index table
+     */
+    function get_recycler_products_matched($tdm_product_id){
+        $tdnProductTable = $this->serviceLocator->get('TdmProductTable');
+        return $tdnProductTable->get_recycler_products_matching($tdm_product_id);
     }
 }

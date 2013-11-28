@@ -5,6 +5,7 @@
  */
 namespace Core\Model;
 
+use Core\Cache\CacheSerializer;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
@@ -12,6 +13,8 @@ use Zend\Debug\Debug;
 
 class RecyclerTable extends AbstractModel
 {
+    protected $cache_key = 'recyclers';
+
     public function getIdByName($name)
     {
         $rowset = $this->tableGateway->select(array('name' => $name));
@@ -21,6 +24,42 @@ class RecyclerTable extends AbstractModel
         }
         return $row->recycler_id;
     }
+
+    public function fetchAll()
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_name' => 'name'));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($rowset->count() <= 0) {
+            return null;
+        }
+        return $rowset;
+    }
+    /**
+     * Get data
+     * @return mixed|null
+     */
+    public function get_all()
+    {
+        $cache = CacheSerializer::init();
+        /*$cache->removeItem($this->cache_key);*/
+        $data = $cache->getItem($this->cache_key);
+        if($data === null){
+            $all = $this->fetchAll();
+            if(!empty($all)){
+                foreach($all as $row){
+                    $row_array = (array) $row;
+                    unset($row_array['recycler_id']);
+                    $data[$row->recycler_id] = $row_array;
+                }
+            }
+            $cache->setItem($this->cache_key,$data);
+        }
+        return $data;
+    }
     /**
      * @return Select
      */
@@ -28,9 +67,8 @@ class RecyclerTable extends AbstractModel
     {
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
-        $where = new Where();
-        $select->where($where);
+        $select = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('c' => 'country'),'m.country_id = c.country_id',array('country_name' => 'name'));
         $select->order('recycler_id ACS');
         return $select;
     }

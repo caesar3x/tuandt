@@ -29,17 +29,27 @@ class RecyclerHelper extends AbstractHelper
      */
     public function getName($recycler_id)
     {
-        if($recycler_id == null || $recycler_id == 0){
-            return null;
-        }
         $recyclerTable = $this->serviceLocator->get('RecyclerTable');
-        $entry = $recyclerTable->getEntry($recycler_id);
-        if(!empty($entry)){
-            return $entry->name;
+        $data = $recyclerTable->get_all();
+        if(isset($data[$recycler_id])){
+            return $data[$recycler_id]['name'];
         }
-        return $entry;
     }
 
+    /**
+     * Get field of recycler id
+     * @param $recycler_id
+     * @param $field
+     * @return mixed
+     */
+    public function get_by($recycler_id,$field)
+    {
+        $recyclerTable = $this->serviceLocator->get('RecyclerTable');
+        $data = $recyclerTable->get_all();
+        if(isset($data[$recycler_id])){
+            return $data[$recycler_id][$field];
+        }
+    }
     /**
      * @param $recycler_id
      * @return null
