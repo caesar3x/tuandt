@@ -65,17 +65,20 @@ foreach($sort_fields as $field=>$class){
                     <i class="glyphicon glyphicon-upload"></i>
                     <?php echo $this->__('Import')?>
                 </a>
+                <?php $country = (isset($params['tdmcountry'])) ? $params['tdmcountry'] : '';?>
+                <?php $rcountry = (isset($params['rcountry'])) ? $params['rcountry'] : '';?>
+                <?php $higher = (isset($params['higher'])) ? $params['higher'] : '';?>
                 <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
                 <div class="btn-group">
-                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->higher))?>
+                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $higher))?>
                 </div>
                 <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
                 <div class="btn-group">
-                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $country))?>
                 </div>
                 <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
                 <div class="btn-group">
-                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->recycler_country,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $rcountry,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
                 </div>
             </div>
 
@@ -166,7 +169,7 @@ foreach($sort_fields as $field=>$class){
                         <td><?php echo $row->type_name?></td>
                         <td><?php echo $row->country_name?></td>
                         <td><?php echo ((float) $row->ssa_price != 0) ? $this->price()->formatCurrency($row->ssa_price) : 'N/A';?></td>
-                        <?php $matching = $this->product()->get_recycler_products_matched($row->product_id);?>
+                        <?php $matching = $this->product()->get_recycler_products_matched($row->product_id,$params);?>
                         <?php if(!empty($matching)):?>
                         <?php $i=0;foreach($matching as $m):?>
                             <td><?php echo $m->recycler_name?></td>

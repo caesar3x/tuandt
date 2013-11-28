@@ -69,7 +69,7 @@ class ProductController extends AbstractController
         /**
          * Filter by higher price and recycler country
          */
-
+        /*$recycler_products = $tdmProductTable->filter_by_recycler_products_matching($params);*/
         $dbAdapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $paginator = new Paginator(new DbSelect($select,$dbAdapter));
         $paginator->setItemCountPerPage($item_per_page);
