@@ -569,8 +569,8 @@ class ProductHelper extends CoreHelper
     /**
      * Get recycler product match from index table
      */
-    function get_recycler_products_matched($tdm_product_id){
+    function get_recycler_products_matched($tdm_product_id,$params = array()){
         $tdnProductTable = $this->serviceLocator->get('TdmProductTable');
-        return $tdnProductTable->get_recycler_products_matching($tdm_product_id);
+        return $tdnProductTable->get_recycler_products_matching($tdm_product_id,$params);
     }
 }

@@ -115,7 +115,6 @@ class TdmProductTable extends AbstractModel
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => 'tdm_product_index'));
-
         $where = new Where();
         if(isset($params['id']) && trim($params['id']) != ''){
             $where->equalTo('m.product_id',$params['id']);
@@ -180,8 +179,10 @@ class TdmProductTable extends AbstractModel
             $select->order("m.product_id DESC");
         }
         $select->where($where);
+        $select->group('m.product_id');
         return $select;
     }
+
     public function filter_by_recycler_products_matching($params = array())
     {
         $this->create_tdm_product_index_table(false);
@@ -567,13 +568,26 @@ class TdmProductTable extends AbstractModel
     /**
      * Get data from tdm product match table
      */
-    public function get_recycler_products_matching($tdm_product_id){
+    public function get_recycler_products_matching($tdm_product_id,$params = array()){
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $select = $sql->select()->from(array('m' => 'tdm_product_match'));
         $where = new Where();
         $where->equalTo('product_id',$tdm_product_id);
+        /**
+         * Filter percentage higher than
+         */
+        if(isset($params['higher']) && trim($params['higher']) != ''){
+            $where->greaterThanOrEqualTo('percentage',20);
+        }
+        /**
+         * Filter by country
+         */
+        if(isset($params['rcountry']) && trim($params['rcountry'])){
+            $where->equalTo('recycler_country_id',$params['rcountry']);
+        }
         $select->where($where);
+        $select->limit(3);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if ($rowset->count() <= 0) {
