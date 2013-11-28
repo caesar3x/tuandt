@@ -20,7 +20,7 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
     </div>
     <div class="clearfix">&nbsp;</div>
 </div>
-<div class="row">
+<div class="row" id="product-detail">
 <input type="hidden" name="product" id="productid" value="<?php echo $this->id?>">
 <input type="hidden" value="<?php echo $this->country?>" name="tdm_country" id="tdm-country">
 <input type="hidden" value="<?php echo $this->recycler_country?>" name="recycler_country" id="recycler-country">
@@ -53,11 +53,11 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                             <div class="pull-left">
                                 <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
                                 <div class="btn-group">
-                                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->filter))?>
+                                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $this->higher))?>
                                 </div>
-                                <a class="btn btn-outline"><?php echo $this->__('Filter by Country').':'?></a>
+                                <a class="btn btn-outline"><?php echo $this->__('Filter by recycler country').':'?></a>
                                 <div class="btn-group">
-                                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country))?>
+                                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $this->country,'select_name' => 'rcountry'))?>
                                 </div>
                             </div>
                             <div class="pull-right">
@@ -133,15 +133,13 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                                             <div class="pull-left">
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-addon"><?php echo $this->__('Start time')?></span>
-                                                    <input class="form-control datepicker" name="start-time" id="start-time">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    <input style="width: 100px" class="form-control datepicker" name="start-time" id="start-time">
                                                 </div>
                                             </div>
                                             <div class="pull-left">
-                                                <div class="input-group input-group-sm">
+                                                <div class="input-group input-group-sm" style="margin-top: 10px;">
                                                     <span class="input-group-addon"><?php echo $this->__('End time')?></span>
-                                                    <input class="form-control datepicker" name="end-time" id="end-time">
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                    <input style="width: 100px" class="form-control datepicker" name="end-time" id="end-time">
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +156,7 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                                         </div>
                                         <div class="row form-row">
                                             <input type="radio" name="search" value="country">
-                                            <span><?php echo $this->__('Country')?></span>
+                                            <span><?php echo $this->__('Recycler Country')?></span>
                                             <select id="country-select" name="country-select" >
                                                 <?php foreach($this->recycler()->getListSelectCountry() as $id=>$country):?>
                                                     <option value="<?php echo $id?>"><?php echo $country?></option>

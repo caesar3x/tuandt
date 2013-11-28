@@ -9,7 +9,7 @@
 <?php $country = (int) $this->country;?>
 <?php $countries = $this->product()->getAvailableCountries()?>
 <?php if(!empty($countries)):?>
-    <select name="<?php echo $select_name ?>" class="chosen-select form-control" id="<?php echo $select_id?>" data-placeholder="<?php echo $this->__('Choose a country')?>">
+    <select name="<?php echo $select_name ?>" class="chosen-select form-control is_searchable" id="<?php echo $select_id?>" data-placeholder="<?php echo $this->__('Choose a country')?>">
         <option></option>
         <option value="reset"><?php echo $this->__('Reset filter')?></option>
     <?php foreach($countries as $row):?>

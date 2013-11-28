@@ -80,10 +80,6 @@ $from = $this->from;
                             </a>
                         </div>
                         <div class="pull-right" style="margin-bottom: 15px;">
-                            <a class="btn btn-danger btn-sm delete-selected" onclick="delete_recycler_products();">
-                                <i class="glyphicon glyphicon-upload"></i>
-                                <?php echo $this->__('Delete Selected')?>
-                            </a>
                             <a class="btn">
                                 <?php echo $this->__('Import from')?>
                             </a>
@@ -107,6 +103,12 @@ $from = $this->from;
                             <?php endif;?>
                         </div>
                         <div class="row clearfix">&nbsp;</div>
+                        <div class="pull-left">
+                            <a class="btn btn-danger btn-sm delete-selected" onclick="delete_recycler_products();">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <?php echo $this->__('Delete Selected')?>
+                            </a>
+                        </div>
                         <div class="pull-right" style="margin-bottom: 15px;">
                             <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
                             <a class="btn btn-danger btn-sm btn-reset-filter" id="reset-filter"><?php echo $this->__('Reset filter')?></a>
@@ -137,7 +139,7 @@ $from = $this->from;
                             }
                         }
                         ?>
-                        <table class="display table table-striped table-condensed table-bordered" id="model-table" cellpadding="0" cellspacing="0">
+                        <table class="product-index display table table-striped table-condensed table-bordered" id="model-table" cellpadding="0" cellspacing="0">
                             <thead>
                             <tr>
                                 <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
@@ -156,13 +158,13 @@ $from = $this->from;
                             <tbody>
                             <tr class="tr-search">
                                 <td>&nbsp;</td>
-                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
-                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
-                                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
+                                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
                                 <td>
                                     <div class="input-group-sm">
-                                        <input type="text" placeholder="<?php echo $this->__('Date From')?>" class="form-control datepicker2 " value="<?php echo (isset($params['date_from'])) ? $params['date_from'] : ''?>" name="date_from">
-                                        <input type="text" placeholder="<?php echo $this->__('Date To')?>" class="form-control datepicker2" value="<?php echo (isset($params['date_to'])) ? $params['date_to'] : ''?>" name="date_to">
+                                        <input type="text" placeholder="<?php echo $this->__('Date From')?>" class="form-control datepicker2 is_searchable" value="<?php echo (isset($params['date_from'])) ? $params['date_from'] : ''?>" name="date_from">
+                                        <input type="text" placeholder="<?php echo $this->__('Date To')?>" class="form-control datepicker2 is_searchable" value="<?php echo (isset($params['date_to'])) ? $params['date_to'] : ''?>" name="date_to">
                                     </div>
                                 </td>
                                 <td>&nbsp;</td>
@@ -250,11 +252,11 @@ $from = $this->from;
                         <?php if(count($this->tmpProducts)):?>
                             <?php echo $this->paginationControl($this->tmpProducts,
                                 'Sliding',
-                                'paginator_style_2', array('route' => 'recycler-detail-upload','id' => $this->id)); ?>
+                                'paginator_style_2', array('route' => 'recycler-detail-upload','id' => $this->id,'params' => $this->params)); ?>
                         <?php elseif(count($this->products)):?>
                             <?php echo $this->paginationControl($this->products,
                                 'Sliding',
-                                'paginator_style_2', array('route' => 'recycler-detail','id' => $this->id)); ?>
+                                'paginator_style_2', array('route' => 'recycler-detail','id' => $this->id,'params' => $this->params)); ?>
                         <?php endif?>
                     </div>
                 </div>

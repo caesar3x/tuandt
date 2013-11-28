@@ -463,13 +463,13 @@ class ProductController extends AbstractController
     }
     public function detailAction()
     {
-        $this->auth();
+        parent::initAction();
+        $request = $this->getRequest();
+        $params = $request->getQuery();
         $id = $this->params('id',0);
         if($id == 0){
             $this->getResponse()->setStatusCode(404);
         }
-        $filter = $this->params('higher',null);
-        $country = $this->params('country',null);
 
         $tdmProductTable = $this->getServiceLocator()->get('TdmProductTable');
         $entry = $tdmProductTable->getEntry($id);
@@ -480,16 +480,19 @@ class ProductController extends AbstractController
         $view->setVariable('name',$entry->name);
         $view->setVariable('id',$id);
         $view->setVariable('entry',$entry);
-        $view->setVariable('country',$country);
+        $view->setVariable('params',$params);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsMatching($entry->model,$entry->condition_id);
+        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsMatching($entry->model,$entry->condition_id,false);
         $messages = $this->getMessages();
         $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);
-        if($country != null){
+        if(isset($params['rcountry'])){
+            $country = $params['rcountry'];
+            $view->setVariable('country',$country);
             $recyclerProductsWithSameModel = $this->getViewHelperPlugin('product')->getProductsByCountryAndModelAndCondition($country,$entry->model,$entry->condition_id);
         }
-        if(is_numeric($filter)){
+        if(isset($params['higher'])){
+            $filter = $params['higher'];
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
             $ssa_price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
             if(!empty($ssa_price)){

@@ -452,7 +452,8 @@ class TdmProductTable extends AbstractModel
                   `product_id` bigint(20) DEFAULT NULL,
                   `recycler_id` int(11) DEFAULT NULL,
                   `recycler_name` varchar(255) DEFAULT NULL,
-                  `price_in_hkd` decimal(12,4) DEFAULT NULL,
+                  `price` decimal(12,6) DEFAULT NULL,
+                  `price_in_hkd` decimal(12,6) DEFAULT NULL,
                   `percentage` decimal(4,2) DEFAULT NULL,
                   `recycler_country_id` int(11) DEFAULT NULL,
                   `recycler_country_name` varchar(255) DEFAULT NULL,
@@ -537,6 +538,7 @@ class TdmProductTable extends AbstractModel
                             'product_id' => $row->product_id,
                             'recycler_id' => $rp->recycler_id,
                             'recycler_name' => $recylers[$rp->recycler_id]['name'],
+                            'price' => $rp->price,
                             'price_in_hkd' => $priceExchange,
                             'percentage' => $percentage*100,
                             'recycler_country_id' => $recylers[$rp->recycler_id]['country_id'],
@@ -568,31 +570,54 @@ class TdmProductTable extends AbstractModel
     /**
      * Get data from tdm product match table
      */
-    public function get_recycler_products_matching($tdm_product_id,$params = array()){
-        $adapter = $this->tableGateway->adapter;
-        $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => 'tdm_product_match'));
-        $where = new Where();
-        $where->equalTo('product_id',$tdm_product_id);
-        /**
-         * Filter percentage higher than
-         */
-        if(isset($params['higher']) && trim($params['higher']) != ''){
-            $where->greaterThanOrEqualTo('percentage',20);
+    public function get_recycler_products_matching($object,$params = array())
+    {
+        if(isset($params['date_from']) || isset($params['date_to'])){
+            $date_from_time = null;
+            if(isset($params['date_from'])){
+                $date_from = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_from'].' 00:00:00');
+                if($date_from != null){
+                    $date_from_time = $date_from->getTimestamp();
+                }
+            }
+            $date_to_time = null;
+            if(isset($params['date_to'])){
+                $date_to = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_to'].' 23:59:59');
+                if($date_to != null){
+                    $date_to_time = $date_to->getTimestamp();
+                }
+            }
+            $country = (isset($params['rcountry'])) ? $params['rcountry'] : null;
+            $rowset = $this->serviceLocator->get('RecyclerProductTable')->getRowsMatchingByDate($object->model,$object->condition_id,3,$country,$date_from_time,$date_to_time);
+            return $rowset;
+        }else{
+            $tdm_product_id = $object->product_id;
+            $adapter = $this->tableGateway->adapter;
+            $sql = new Sql($adapter);
+            $select = $sql->select()->from(array('m' => 'tdm_product_match'));
+            $where = new Where();
+            $where->equalTo('product_id',$tdm_product_id);
+            /**
+             * Filter percentage higher than
+             */
+            if(isset($params['higher']) && trim($params['higher']) != ''){
+                $where->greaterThanOrEqualTo('percentage',20);
+            }
+            /**
+             * Filter by country
+             */
+            if(isset($params['rcountry']) && trim($params['rcountry'])){
+                $where->equalTo('recycler_country_id',$params['rcountry']);
+            }
+            $select->where($where);
+            $select->order("percentage DESC");
+            $select->limit(3);
+            $selectString = $sql->getSqlStringForSqlObject($select);
+            $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+            if ($rowset->count() <= 0) {
+                return null;
+            }
+            return $rowset;
         }
-        /**
-         * Filter by country
-         */
-        if(isset($params['rcountry']) && trim($params['rcountry'])){
-            $where->equalTo('recycler_country_id',$params['rcountry']);
-        }
-        $select->where($where);
-        $select->limit(3);
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-        if ($rowset->count() <= 0) {
-            return null;
-        }
-        return $rowset;
     }
 }
