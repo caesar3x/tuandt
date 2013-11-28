@@ -45,7 +45,7 @@ return array(
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Historical Exchange Date',
+                        'label' => 'Historical Exchange Rate',
                         'route' => 'admin',
                         'controller' => 'exchange',
                         'action' => 'index',
@@ -147,7 +147,7 @@ return array(
                 'action' => 'index',
                 'pages' => array(
                     array(
-                        'label' => 'Historical Exchange Date',
+                        'label' => 'Historical Exchange Rate',
                         'route' => 'admin',
                         'controller' => 'exchange',
                         'action' => 'index',

@@ -269,6 +269,15 @@ class RecyclerProductTable extends AbstractModel
         $select->order(array('m.date DESC', 'm.product_id DESC', "m.name ASC"));
         return $select;
     }
+
+    /**
+     * Filter by matching
+     * @param $model
+     * @param $condition
+     * @param int $limit
+     * @param null $country
+     * @return null
+     */
     public function getRowsMatching($model,$condition,$limit = 3,$country = null)
     {
         if($model == null){
@@ -284,6 +293,7 @@ class RecyclerProductTable extends AbstractModel
         }
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
+        $where->equalTo('m.lastest',1);
         $where->greaterThan('m.recycler_id',1);
         $select->where($where);
         $select->order("m.product_id DESC");
@@ -299,6 +309,45 @@ class RecyclerProductTable extends AbstractModel
         return $result;
     }
 
+    /**
+     * Filter by date range
+     */
+    public function getRowsMatchingByDate($model,$condition,$limit = 3,$country = null,$date_from = null,$date_to = null)
+    {
+        if($model == null){
+            return null;
+        }
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id','recycler_name' => 'name'));
+        $where = new Where();
+        if(!empty($country)){
+            $where->equalTo('r.country_id',$country);
+        }
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->greaterThan('m.recycler_id',1);
+        if(!empty($date_from)){
+            $where->greaterThanOrEqualTo('date',$date_from);
+        }
+        if(!empty($date_to)){
+            $where->lessThanOrEqualTo('date',$date_to);
+        }
+        $select->where($where);
+        $select->order("m.product_id DESC");
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        /*Debug::dump($selectString);die;*/
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        if($limit !== false){
+            $selectStringFinal .= " LIMIT $limit";
+        }
+        $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * @param $model
      * @param $condition
@@ -634,6 +683,7 @@ class RecyclerProductTable extends AbstractModel
         $where->equalTo('r.country_id',$country_id);
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
+        $where->equalTo('m.lastest',1);
         $where->greaterThan('r.recycler_id',1);
         $select->where($where);
         $select->order('product_id DESC');

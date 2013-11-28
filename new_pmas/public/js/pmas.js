@@ -111,7 +111,6 @@ $(function() {
     /**
      * Datepicker
      */
-    var dateoptions = new Object();
     $('.datepicker').datepicker({
         dateFormat : "dd-mm-yy"
     }).datepicker("setDate", new Date());
@@ -137,44 +136,16 @@ $(function() {
         }
         return params;
     };
-    $(document).on("change","#price_percentage",function(e){
+    $(document).on("change","#product-detail .is_searchable",function(e){
         e.preventDefault();
         var params = paramsurl();
+        var ownname = $(this).attr("name");
         if(jQuery.type(params) === 'object'){
             if($(this).val() !== 'reset' ){
-                params.higher = $(this).val();
+                params[ownname] = $(this).val();
             }else{
-                if(params.hasOwnProperty('higher')){
-                    delete params.higher;
-                }
-            }
-            window.location.assign(currentroute+'?'+jQuery.param(params));
-        }
-    });
-    $(document).on("change","#country-chosen",function(e){
-        e.preventDefault();
-        var params = paramsurl();
-        console.log(jQuery.type(params));
-        if(jQuery.type(params) === 'object'){
-            if($(this).val() !== 'reset' ){
-                params.tdmcountry = $(this).val();
-            }else{
-                if(params.hasOwnProperty('tdmcountry')){
-                    delete params.tdmcountry;
-                }
-            }
-            window.location.assign(currentroute+'?'+jQuery.param(params));
-        }
-    });
-    $(document).on("change","#recycler-country-chosen",function(e){
-        e.preventDefault();
-        var params = paramsurl();
-        if(jQuery.type(params) === 'object'){
-            if($(this).val() !== 'reset' ){
-                params.rcountry = $(this).val();
-            }else{
-                if(params.hasOwnProperty('rcountry')){
-                    delete params.rcountry;
+                if(params.hasOwnProperty(ownname)){
+                    delete params[ownname];
                 }
             }
             window.location.assign(currentroute+'?'+jQuery.param(params));
@@ -227,8 +198,10 @@ $(function() {
         e.preventDefault();
         var inputs = $(".tr-search").find("input");
         var search_params = new Object();
-        inputs.each(function(){
-            search_params[$(this).attr("name")] = $(this).val();
+        $(".is_searchable").each(function(){
+            if(!jQuery.isEmptyObject($(this).val())){
+                search_params[$(this).attr("name")] = $(this).val();
+            }
         });
         var str_params = jQuery.param(search_params);
         window.location.assign(currentroute+'?'+str_params);
@@ -240,7 +213,7 @@ $(function() {
     /**
      * Custom sorting
      */
-    $(document).on("click","th",function(e){
+    $(document).on("click",".product-index th",function(e){
         e.preventDefault();
         var _this = $(this);
         var hash;

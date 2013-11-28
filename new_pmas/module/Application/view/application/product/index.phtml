@@ -40,14 +40,14 @@ foreach($sort_fields as $field=>$class){
             <i class="glyphicon glyphicon-trash"></i>
             <?php echo $this->__('Delete selected') ?>
         </a>
-        <a class="btn btn-success btn-sm add-item" href="/product/add">
+        <a class="btn btn-success btn-sm add-item" href="<?php echo $this->__('product/add')?>">
             <i class="glyphicon glyphicon-plus"></i>
             <?php echo $this->__('Add new model')?>
         </a>
     </div>
     <div class="clearfix"></div>
 </div>
-    <div class="row">
+    <div class="row product-index" id="product-index">
         <div class="row">
             <div class="pull-left">
                 <a class="btn">
@@ -65,28 +65,8 @@ foreach($sort_fields as $field=>$class){
                     <i class="glyphicon glyphicon-upload"></i>
                     <?php echo $this->__('Import')?>
                 </a>
-                <?php $country = (isset($params['tdmcountry'])) ? $params['tdmcountry'] : '';?>
-                <?php $rcountry = (isset($params['rcountry'])) ? $params['rcountry'] : '';?>
-                <?php $higher = (isset($params['higher'])) ? $params['higher'] : '';?>
-                <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
-                <div class="btn-group">
-                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $higher))?>
-                </div>
-                <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
-                <div class="btn-group">
-                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $country))?>
-                </div>
-                <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
-                <div class="btn-group">
-                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $rcountry,'select_id' => 'recycler-country-chosen','select_name' => 'recycler_country_chosen'))?>
-                </div>
             </div>
-
-
-        </div>
-        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
-        <div class="row">
-            <div class="pull-left">
+            <div class="pull-right">
                 <a class="btn">
                     <?php echo $this->__('Export to')?>
                 </a>
@@ -102,6 +82,44 @@ foreach($sort_fields as $field=>$class){
                     <i class="glyphicon glyphicon-export"></i>
                     <?php echo $this->__('Export')?>
                 </a>
+            </div>
+
+        </div>
+        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
+        <div class="row">
+            <div class="pull-left">
+                <?php $country = (isset($params['tdmcountry'])) ? $params['tdmcountry'] : '';?>
+                <?php $rcountry = (isset($params['rcountry'])) ? $params['rcountry'] : '';?>
+                <?php $higher = (isset($params['higher'])) ? $params['higher'] : '';?>
+                <a class="btn btn-outline"><?php echo $this->__('Filter by Price')?></a>
+                <div class="btn-group">
+                    <?php echo $this->partial('partial/select-price.phtml',array('filter' => $higher))?>
+                </div>
+                <a class="btn btn-outline"><?php echo $this->__('Filter TDM Country').':'?></a>
+                <div class="btn-group">
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $country,'select_name' => 'tdmcountry'))?>
+                </div>
+                <a class="btn btn-outline"><?php echo $this->__('Filter Recycler Country').':'?></a>
+                <div class="btn-group">
+                    <?php echo $this->partial('partial/select-countries.phtml',array('country' => $rcountry,'select_id' => 'recycler-country-chosen','select_name' => 'rcountry'))?>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
+        <div class="row">
+            <div class="pull-left">
+                <div class="btn-group">
+                    <a class="btn btn-outline"><?php echo $this->__('Filter by Date')?>: <?php echo $this->__('From')?></a>
+                    <div class="input-group input-group-sm">
+                        <input style="width: 100px" size="50" type="text" class="form-control datepicker2 is_searchable" name="date_from" value="<?php echo (isset($params['date_from'])) ? $params['date_from'] : ''?>">
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-outline"><?php echo $this->__('To')?>:</a>
+                    <div class="input-group input-group-sm">
+                        <input style="width: 100px" size="30" type="text" class="form-control datepicker2 is_searchable" name="date_to" value="<?php echo (isset($params['date_to'])) ? $params['date_to'] : ''?>">
+                    </div>
+                </div>
             </div>
             <div class="pull-right">
                 <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
@@ -137,15 +155,15 @@ foreach($sort_fields as $field=>$class){
             <tbody>
             <tr class="tr-search">
                 <td>&nbsp;</td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['brand'])) ? $params['brand'] : ''?>" name="brand"></div></td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['type'])) ? $params['type'] : ''?>" name="type"></div></td>
-                <td><div class="input-group-sm"><input type="text" class="form-control" value="<?php echo (isset($params['country'])) ? $params['country'] : ''?>" name="country"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['id'])) ? $params['id'] : ''?>" name="id"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['brand'])) ? $params['brand'] : ''?>" name="brand"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['name'])) ? $params['name'] : ''?>" name="name"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['condition'])) ? $params['condition'] : ''?>" name="condition"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['type'])) ? $params['type'] : ''?>" name="type"></div></td>
+                <td><div class="input-group-sm"><input type="text" class="form-control is_searchable" value="<?php echo (isset($params['country'])) ? $params['country'] : ''?>" name="country"></div></td>
                 <td>
-                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('From')?>" type="text" class="form-control" value="<?php echo (isset($params['ssa_price_from'])) ? $params['ssa_price_from'] : ''?>" name="ssa_price_from"></div>
-                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('To')?>" type="text" class="form-control" value="<?php echo (isset($params['ssa_price_to'])) ? $params['ssa_price_to'] : ''?>" name="ssa_price_to"></div>
+                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('From')?>" type="text" class="form-control is_searchable" value="<?php echo (isset($params['ssa_price_from'])) ? $params['ssa_price_from'] : ''?>" name="ssa_price_from"></div>
+                    <div class="input-group-sm"><input placeholder="<?php echo $this->__('To')?>" type="text" class="form-control is_searchable" value="<?php echo (isset($params['ssa_price_to'])) ? $params['ssa_price_to'] : ''?>" name="ssa_price_to"></div>
                 </td>
                 <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="recycler1"></div>--></td>
                 <td><!--<div class="input-group-sm"><input type="text" class="form-control" name="price1"></div>--></td>
@@ -169,8 +187,41 @@ foreach($sort_fields as $field=>$class){
                         <td><?php echo $row->type_name?></td>
                         <td><?php echo $row->country_name?></td>
                         <td><?php echo ((float) $row->ssa_price != 0) ? $this->price()->formatCurrency($row->ssa_price) : 'N/A';?></td>
-                        <?php $matching = $this->product()->get_recycler_products_matched($row->product_id,$params);?>
+                        <?php $matching = $this->product()->get_recycler_products_matched($row,$params);?>
                         <?php if(!empty($matching)):?>
+                        <?php if(isset($params['date_from']) || isset($params['date_to'])):?>
+                                <?php $i=0;foreach($matching as $m):?>
+                                    <td>
+                                        <?php echo $m->recycler_name?><br/>
+                                        <?php echo date('d-m-Y H:i:s',$m->date)?>
+                                    </td>
+                                    <?php $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($m->currency);?>
+                                    <?php $priceExchange = ((float) $m->price )/ $current_exchange;?>
+                                    <?php
+                                    if($row->ssa_price != 0){
+                                        $sub = $priceExchange-$row->ssa_price;
+                                        $percentage = $sub/$row->ssa_price;
+                                    }else{
+                                        $percentage = null;
+                                    }
+                                    ?>
+                                    <td><?php echo $this->price()->formatCurrency($priceExchange)?></td>
+                                    <td><?php echo $percentage*100?></td>
+                                    <?php $i++?>
+                                <?php endforeach;?>
+                                <?php if($i==1):?>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                <?php elseif($i==2):?>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                <?php endif;?>
+                        <?php else:?>
                         <?php $i=0;foreach($matching as $m):?>
                             <td><?php echo $m->recycler_name?></td>
                             <td><?php echo $this->price()->formatCurrency($m->price_in_hkd)?></td>
@@ -188,6 +239,7 @@ foreach($sort_fields as $field=>$class){
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                            <?php endif;?>
                             <?php endif;?>
                         <?php else:?>
                             <td></td>

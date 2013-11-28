@@ -9,6 +9,14 @@
 <?php $totalItemCount = $this->totalItemCount;?>
 <?php $currentItemCount = $this->currentItemCount;?>
 <?php $id = $this->id;?>
+<?php $query = '';?>
+<?php if(!empty($this->params)):?>
+    <?php $query = '?';?>
+    <?php foreach((array)$this->params as $key=>$value):?>
+        <?php $query .= "$key=$value&";?>
+    <?php endforeach;?>
+<?php endif;?>
+<?php $query = rtrim($query,"&");?>
 <div class="pull-right">
     <div class="pull-left showing_label">
         <span class="control-label"><?php echo $this->__('Showing '.$currentItemCount.' of '.$totalItemCount.' records')?></span>
@@ -26,14 +34,14 @@
     </div>
     <ul class="pagination">
         <?php if (isset($this->previous)): ?>
-            <li class=""><span><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->previous)); ?>">&laquo;</a></span></li>
+            <li class=""><span><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->previous)).$query; ?>">&laquo;</a></span></li>
         <?php else: ?>
             <li class="disabled"><span>&laquo;</span></li>
         <?php endif; ?>
         <!-- Numbered page links -->
         <?php foreach ($this->pagesInRange as $page): ?>
             <?php if ($page != $this->current): ?>
-                <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $page)); ?>"><span><?php echo $page; ?></span></a></li>
+                <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $page)).$query; ?>"><span><?php echo $page; ?></span></a></li>
             <?php else: ?>
                 <li class="active"><a href="#"><?php echo $page; ?> <span class="sr-only">(current)</span></a></li>
             <?php endif; ?>
@@ -41,10 +49,10 @@
         <?php endforeach; ?>
         <?php if($this->pageCount > 9):?>
             <li class=""><span>-</span></li>
-            <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->last)); ?>"><span><?php echo $this->last?></span></a></li>
+            <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->last)).$query; ?>"><span><?php echo $this->last?></span></a></li>
         <?php endif;?>
         <?php if (isset($this->next)): ?>
-            <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->next)); ?>"><span>&raquo;</span></a></li>
+            <li class=""><a href="<?php echo $this->url($this->route, array('id' => $id,'page' => $this->next)).$query; ?>"><span>&raquo;</span></a></li>
         <?php else: ?>
             <li class="disabled"><span>&raquo;</span></li>
         <?php endif; ?>
