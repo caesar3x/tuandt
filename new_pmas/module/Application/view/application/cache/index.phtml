@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 11/28/13
+ */
+?>
+<div class="page-header">
+    <div class="pull-left">
+        <h2><?php echo $this->__('Cache Management')?></h2>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="panel-body">
+    <table class="display table table-striped table-condensed table-bordered withphp" id="example" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="col-checkbox"><input class="check-all" value="" type="checkbox"></th>
+            <th><?php echo $this->__('ID')?></th>
+            <th><?php echo $this->__('Title')?></th>
+            <th class="action"><?php echo $this->__('Action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($this->paginator)):?>
+            <?php foreach($this->paginator as $row):?>
+                <tr>
+                    <td class="col-checkbox"><input name="ids[]" type="checkbox" class="check-item" value="1"></td>
+                    <td><?php echo $row->recycler_id?></td>
+                    <td class="action">
+                        <a class="btn btn-xs btn-primary btn-edit" href="/recycler/detail/id/<?php echo $row->recycler_id?>">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            <?php echo $this->__('Detail')?>
+                        </a>
+                        <a onclick="confirmDelete('/recycler/delete/id/<?php echo $row->recycler_id?>')" class="btn btn-xs btn-danger btn-delete" >
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <?php echo $this->__('Delete')?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        <?php endif;?>
+        </tbody>
+    </table>
+</div>

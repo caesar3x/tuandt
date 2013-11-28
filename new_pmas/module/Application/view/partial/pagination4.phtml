@@ -1,0 +1,60 @@
+<?php
+/**
+ * Created by Nguyen Tien Dat.
+ * Email : datnguyen.cntt@gmail.com
+ * Date: 11/5/13
+ */
+?>
+<?php if ($this->pageCount): ?>
+<?php $totalItemCount = $this->totalItemCount;?>
+<?php $currentItemCount = $this->currentItemCount;?>
+<?php $query = '';?>
+<?php if(!empty($this->params)):?>
+    <?php $query = '?';?>
+<?php foreach((array)$this->params as $key=>$value):?>
+        <?php $query .= "$key=$value&";?>
+<?php endforeach;?>
+<?php endif;?>
+<?php $query = rtrim($query,"&");?>
+<div class="pull-right">
+    <div class="pull-left showing_label">
+        <span class="control-label"><?php echo $this->__('Showing '.$currentItemCount.' of '.$totalItemCount.' records')?></span>
+    </div>
+    <div class="item_per_page btn-group pull-left">
+        <select class="form-control" id="item-per-page">
+            <?php $options = $this->core()->getPaginationOptions()?>
+            <?php $ppp = $this->core()->getItemPerPage()?>
+            <?php if(!empty($options)):?>
+                <?php foreach($options as $option):?>
+                    <option <?php if($ppp == $option){echo 'selected';}?> value="<?php echo $option?>"><?php echo $option?></option>
+                <?php endforeach;?>
+            <?php endif;?>
+        </select>
+    </div>
+    <ul class="pagination">
+        <?php if (isset($this->previous)): ?>
+            <li class=""><span><a href="<?php echo $this->url($this->route, array('page' => $this->previous)).$query; ?>">&laquo;</a></span></li>
+        <?php else: ?>
+            <li class="disabled"><span>&laquo;</span></li>
+        <?php endif; ?>
+        <!-- Numbered page links -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <li class=""><a href="<?php echo $this->url($this->route, array('page' => $page)).$query; ?>"><span><?php echo $page; ?></span></a></li>
+            <?php else: ?>
+                <li class="active"><a href="#"><?php echo $page; ?> <span class="sr-only">(current)</span></a></li>
+            <?php endif; ?>
+            <?php if($page > 9){break;}?>
+        <?php endforeach; ?>
+        <?php if($this->pageCount > 9):?>
+            <li class=""><span>-</span></li>
+            <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->last)).$query; ?>"><span><?php echo $this->last?></span></a></li>
+        <?php endif;?>
+        <?php if (isset($this->next)): ?>
+            <li class=""><a href="<?php echo $this->url($this->route, array('page' => $this->next)).$query; ?>"><span>&raquo;</span></a></li>
+        <?php else: ?>
+            <li class="disabled"><span>&raquo;</span></li>
+        <?php endif; ?>
+    </ul>
+    <?php endif; ?>
+</div>

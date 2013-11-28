@@ -105,7 +105,115 @@ class TdmProductTable extends AbstractModel
         $select->where($where);
         return $select;
     }
+    public function getTdmProductsIndex($params = array())
+    {
+        /**
+         * Create index table if not exist
+         */
+        $this->create_tdm_product_index_table(false);
+        $this->create_tdm_product_match(false);
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => 'tdm_product_index'));
 
+        $where = new Where();
+        if(isset($params['id']) && trim($params['id']) != ''){
+            $where->equalTo('m.product_id',$params['id']);
+        }
+        if(isset($params['brand']) && trim($params['brand']) != ''){
+            $brand = $params['brand'];
+            $where->like('m.brand_name',"%$brand%");
+        }
+        if(isset($params['country']) && trim($params['country']) != ''){
+            $country = $params['country'];
+            $where->like('m.country_name',"%$country%");
+        }
+        if(isset($params['type']) && trim($params['type']) != ''){
+            $type = $params['type'];
+            $where->like('m.type_name',"%$type%");
+        }
+        if(isset($params['condition']) && trim($params['condition']) != ''){
+            $condition = $params['condition'];
+            $where->like('m.condition_name',"%$condition%");
+        }
+        if(isset($params['name']) && trim($params['name']) != ''){
+            $name = $params['name'];
+            $where->like('m.name',"%$name%");
+        }
+        if(isset($params['ssa_price']) && trim($params['ssa_price']) != ''){
+            $sss_price = $params['ssa_price'];
+            $where->equalTo('ssa_price',$sss_price);
+        }
+        if(isset($params['ssa_price_from']) && trim($params['ssa_price_from']) != ''){
+            $where->greaterThanOrEqualTo('ssa_price',$params['ssa_price_from']);
+        }
+        if(isset($params['ssa_price_to']) && trim($params['ssa_price_to']) != ''){
+            $where->lessThanOrEqualTo('ssa_price',$params['ssa_price_to']);
+        }
+        if(isset($params['tdmcountry']) && trim($params['tdmcountry']) != ''){
+            $where->equalTo('country_id',$params['tdmcountry']);
+        }
+        /**
+         * Process orderby
+         */
+        if(isset($params['orderby']) && trim($params['orderby']) != ''){
+            $dir = (isset($params['dir']) && trim($params['dir']) != '') ? $params['dir'] : 'desc';
+            if($params['orderby'] == 'brand'){
+                $orderby = "brand_name";
+            }elseif($params['orderby'] == 'country'){
+                $orderby = "country_name";
+            }elseif($params['orderby'] == 'type'){
+                $orderby = "type_name";
+            }elseif($params['orderby'] == 'condition'){
+                $orderby = "condition_name";
+            }elseif($params['orderby'] == 'name'){
+                $orderby = "m.name";
+            }elseif($params['orderby'] == 'id'){
+                $orderby = "m.product_id";
+            }elseif($params['orderby'] == 'ssa_price'){
+                $orderby = "m.ssa_price";
+            }else{
+                $orderby = "m.product_id";
+            }
+            $select->order("$orderby $dir");
+        }else{
+            $select->order("m.product_id DESC");
+        }
+        $select->where($where);
+        return $select;
+    }
+    public function filter_by_recycler_products_matching($params = array())
+    {
+        $this->create_tdm_product_index_table(false);
+        $this->create_tdm_product_match(false);
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => 'tdm_product_match'))->columns(array('product_id'));
+        $where = new Where();
+        if(isset($params['higher']) && trim($params['higher']) != ''){
+            $where->greaterThanOrEqualTo('percentage',$params['higher']);
+        }
+        if(isset($params['rcountry']) && trim($params['rcountry']) != ''){
+            $where->equalTo('recycler_country_id',$params['rcountry']);
+        }
+        if(isset($params['date_from']) && trim($params['date_from']) != ''){
+            $date_from_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_from'].' 00:00:00');
+            if($date_from_parse != null){
+                $date_from = $date_from_parse->getTimestamp();
+                $where->greaterThanOrEqualTo('date',$date_from);
+            }
+        }
+        if(isset($params['date_to']) && trim($params['date_to']) != ''){
+            $date_to_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_to'].' 23:59:59');
+            if($date_to_parse != null){
+                $date_to = $date_to_parse->getTimestamp();
+                $where->lessThanOrEqualTo('date',$date_to);
+            }
+        }
+        $select->group('product_id');
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        Debug::dump($selectString);die;
+    }
     /**
      * @param $id
      * @return int
@@ -308,9 +416,8 @@ class TdmProductTable extends AbstractModel
 
     /**
      * Create tdm product index table
-     * @return bool
      */
-    public function create_tdm_product_index_table()
+    public function create_tdm_product_index_table($do_truncate = true)
     {
         $query = "CREATE TABLE IF NOT EXISTS `tdm_product_index` (
                   `product_id` bigint(20) NOT NULL,
@@ -331,12 +438,32 @@ class TdmProductTable extends AbstractModel
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         $adapter = $this->tableGateway->adapter;
         $adapter->query($query, $adapter::QUERY_MODE_EXECUTE);
-        $truncate = "TRUNCATE TABLE `tdm_product_index`";
-        $adapter->query($truncate, $adapter::QUERY_MODE_EXECUTE);
+        if($do_truncate !== false){
+            $truncate = "TRUNCATE TABLE `tdm_product_index`";
+            $adapter->query($truncate, $adapter::QUERY_MODE_EXECUTE);
+        }
         return true;
     }
-    public function create_tdm_product_match()
+    public function create_tdm_product_match($do_truncate = true)
     {
+        $query = "CREATE TABLE IF NOT EXISTS `tdm_product_match` (
+                  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                  `product_id` bigint(20) DEFAULT NULL,
+                  `recycler_id` int(11) DEFAULT NULL,
+                  `recycler_name` varchar(255) DEFAULT NULL,
+                  `price_in_hkd` decimal(12,4) DEFAULT NULL,
+                  `percentage` decimal(4,2) DEFAULT NULL,
+                  `recycler_country_id` int(11) DEFAULT NULL,
+                  `recycler_country_name` varchar(255) DEFAULT NULL,
+                  `date` int(11) DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+        $adapter = $this->tableGateway->adapter;
+        $adapter->query($query, $adapter::QUERY_MODE_EXECUTE);
+        if($do_truncate !== false){
+            $truncate = "TRUNCATE TABLE `tdm_product_match`";
+            $adapter->query($truncate, $adapter::QUERY_MODE_EXECUTE);
+        }
         return true;
     }
     public function getProducts($limit = null)
@@ -364,11 +491,12 @@ class TdmProductTable extends AbstractModel
     public function index_data()
     {
         $this->create_tdm_product_index_table();
+        $this->create_tdm_product_match();
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
         $products = $this->getProducts();
+        $recylers = $this->serviceLocator->get('RecyclerTable')->get_all();
         if(!empty($products)){
-            $insert = $sql->insert('tdm_product_index');
             $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
             foreach($products as $row){
                 $row_parse = (array) $row;
@@ -379,11 +507,78 @@ class TdmProductTable extends AbstractModel
                 $ssa_currency = $recyclerProductTable->getSSACurrency($row->model,$row->condition_id);
                 $row_parse['ssa_price'] = $ssa_price;
                 $row_parse['ssa_currency'] = $ssa_currency;
-                $insert->values($row_parse);
-                $statement = $sql->prepareStatementForSqlObject($insert);
+                /**
+                 * Check product existed
+                 */
+                /*if($this->getIndexEntry($row->product_id)){
+                    $sql_query = $sql->update('tdm_product_index')->set($row_parse)->where(array('product_id' => $row->product_id));
+                }else{
+                    $sql_query = $sql->insert('tdm_product_index')->values($row_parse);
+                }*/
+                $sql_query = $sql->insert('tdm_product_index')->values($row_parse);
+                $statement = $sql->prepareStatementForSqlObject($sql_query);
                 $statement->execute();
+                /**
+                 * Tdm product match
+                 */
+                $recycler_products = $recyclerProductTable->getRowsMatching($row->model,$row->condition_id,false);
+                if(!empty($recycler_products)){
+                    foreach($recycler_products as $rp){
+                        $current_exchange = $this->getViewHelper('exchange')->getCurrentExchangeOfCurrency($rp->currency);
+                        $priceExchange = ((float) $rp->price )/ $current_exchange;
+                        if($ssa_price != 0){
+                            $sub = $priceExchange-$ssa_price;
+                            $percentage = $sub/$ssa_price;
+                        }else{
+                            $percentage = null;
+                        }
+                        $row_data = array(
+                            'product_id' => $row->product_id,
+                            'recycler_id' => $rp->recycler_id,
+                            'recycler_name' => $recylers[$rp->recycler_id]['name'],
+                            'price_in_hkd' => $priceExchange,
+                            'percentage' => $percentage*100,
+                            'recycler_country_id' => $recylers[$rp->recycler_id]['country_id'],
+                            'recycler_country_name' => $recylers[$rp->recycler_id]['country_name'],
+                            'date' => $rp->date
+                        );
+                        $insert_model_match = $sql->insert('tdm_product_match')->values($row_data);
+                        $statement2 = $sql->prepareStatementForSqlObject($insert_model_match);
+                        $statement2->execute();
+                    }
+                }
             }
         }
         return true;
+    }
+    public function getIndexEntry($product_id)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from('tdm_product_index');
+        $select->where(array('product_id' => $product_id));
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($rowset->count() <= 0) {
+            return null;
+        }
+        return $rowset->current();
+    }
+    /**
+     * Get data from tdm product match table
+     */
+    public function get_recycler_products_matching($tdm_product_id){
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select = $sql->select()->from(array('m' => 'tdm_product_match'));
+        $where = new Where();
+        $where->equalTo('product_id',$tdm_product_id);
+        $select->where($where);
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $rowset = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+        if ($rowset->count() <= 0) {
+            return null;
+        }
+        return $rowset;
     }
 }

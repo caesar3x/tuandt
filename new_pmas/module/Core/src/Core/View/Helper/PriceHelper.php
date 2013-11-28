@@ -28,7 +28,7 @@ class PriceHelper extends CoreHelper
      * @param $currency
      * @return int|string
      */
-    public function formatCurrency($price,$currency)
+    public function formatCurrency($price,$currency = 'HKD')
     {
         if(!is_numeric($price) || !$currency || $currency == null){
             return $price;
