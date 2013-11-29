@@ -129,7 +129,8 @@ $from = $this->from;
                             'name' => 'sorting',
                             'condition' => 'sorting',
                             'date' => 'sorting',
-                            'country' => 'sorting'
+                            'country' => 'sorting',
+                            'date_from' => 'sorting'
                         );
                         foreach($sort_fields as $field=>$class){
                             if(isset($params['orderby']) && isset($params['dir']) && $params['orderby'] == $field && $params['dir'] == 'desc'){
@@ -146,7 +147,7 @@ $from = $this->from;
                                 <th class="<?php echo $id_class;?>"><?php echo $this->__('ID')?></th>
                                 <th class="<?php echo $sort_fields['name'];?>"><?php echo $this->__('Product Name')?></th>
                                 <th class="<?php echo $sort_fields['condition'];?>"><?php echo $this->__('Condition')?></th>
-                                <th class="<?php echo $sort_fields['date'];?>"><?php echo $this->__('Date time')?></th>
+                                <th class="<?php echo $sort_fields['date_from'];?>"><?php echo $this->__('Date time')?></th>
                                 <th><?php echo $this->__('Base Price')?></th>
                                 <th><?php echo $this->__('Currency')?></th>
                                 <th><?php echo $this->__('Price in HKD')?></th>
