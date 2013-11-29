@@ -571,8 +571,13 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select = $sql->select()->from($this->tableGateway->table);
-        $select->where(array('condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));
+        $select = $sql->select()->from($this->tableGateway->table)->columns(array('currency','price'));
+        $where = new Where();
+        $where->equalTo('condition_id',(int) $condition);
+        $where->equalTo('model',trim($model));
+        $where->equalTo('recycler_id',1);
+        /*$select->where(array('condition_id' => (int) $condition,'model' => trim($model),'recycler_id' => 1));*/
+        $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         $row = $result->current();
