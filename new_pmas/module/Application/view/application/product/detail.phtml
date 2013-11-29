@@ -131,15 +131,17 @@ $product_price = $this->product()->getSSAPrice($product->model,$product->conditi
                                     <div class="col-md-10">
                                         <div class="row">
                                             <div class="pull-left">
-                                                <div class="input-group input-group-sm">
-                                                    <span class="input-group-addon"><?php echo $this->__('Start time')?></span>
-                                                    <input style="width: 100px" class="form-control datepicker" name="start-time" id="start-time">
+                                                <a class="btn btn-outline"> <?php echo $this->__('From')?></a>
+                                                <div class="btn-group">
+                                                    <div class="input-group input-group-sm">
+                                                        <input style="width: 100px" class="form-control datepicker" name="start-time" id="start-time">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="pull-left">
-                                                <div class="input-group input-group-sm" style="margin-top: 10px;">
-                                                    <span class="input-group-addon"><?php echo $this->__('End time')?></span>
-                                                    <input style="width: 100px" class="form-control datepicker" name="end-time" id="end-time">
+                                                <a class="btn btn-outline"><?php echo $this->__('To')?></a>
+                                                <div class="btn-group">
+                                                    <div class="input-group input-group-sm">
+                                                        <input style="width: 100px" class="form-control datepicker" name="end-time" id="end-time">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -254,6 +254,10 @@ class ProductHelper extends CoreHelper
         }
         return $highest;
     }
+    public function getHighestPrice_v3($products,$start_time,$end_time)
+    {
+
+    }
     /**
      * @param $productsCurrency
      * @param $end
@@ -561,11 +565,7 @@ class ProductHelper extends CoreHelper
         $tdmProductTable = $this->serviceLocator->get('TdmProductTable');
         return $tdmProductTable->getEntry($id);
     }
-    public function getAllRecyclersOfModel($model,$condition,$start,$end)
-    {
-        $recyclerProductTable = $this->serviceLocator->get('RecyclerProductTable');
-        return $recyclerProductTable->getAllRecyclersOfModel($model,$condition,$start,$end);
-    }
+
     /**
      * Get recycler product match from index table
      */

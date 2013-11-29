@@ -1212,14 +1212,10 @@ class ProductController extends AbstractController
         $view->setVariable('entry',$entry);
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $productWithSameModel = $recyclerProductTable->getRowsByModelInTimeRange($entry->model,$entry->condition_id,$startTime,$endTime);
-        $recyclers = $recyclerProductTable->getAllRecyclersOfModel($entry->model,$entry->condition_id,$startTime,$endTime);
-        /*Debug::dump($recyclers);*/
-        $view->setVariable('recyclers',$recyclers);
         $productsCurrency = array();
         if(!empty($productWithSameModel)){
             foreach($productWithSameModel as $product){
-                $countryId = $viewhelperManager->get('recycler')->getCountryId($product->recycler_id);
-                $productsCurrency[$product->product_id] = array('country_id' => $countryId,'recycler_id' => $product->recycler_id,'currency' => $product->currency,'price' => $product->price,'date' => $product->date);
+                $productsCurrency[$product->product_id] = array('country_id' => $product->country_id,'recycler_id' => $product->recycler_id,'currency' => $product->currency,'price' => $product->price,'date' => $product->date);
             }
         }
         /**
@@ -1383,7 +1379,6 @@ class ProductController extends AbstractController
         }
         $viewhelperManager = $this->getServiceLocator()->get('viewhelpermanager');
         $productWithSameModel = $recyclerProductTable->getRowsByModelInTimeRange($entry->model,$entry->condition_id,$startTime,$endTime);
-        $recyclers = $recyclerProductTable->getAllRecyclersOfModel($entry->model,$entry->condition_id,$startTime,$endTime);
         $productsCurrency = array();
         if(!empty($productWithSameModel)){
             foreach($productWithSameModel as $product){
