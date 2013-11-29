@@ -105,27 +105,18 @@ foreach($sort_fields as $field=>$class){
                 <div class="btn-group">
                     <?php echo $this->partial('partial/select-countries.phtml',array('country' => $rcountry,'select_id' => 'recycler-country-chosen','select_name' => 'rcountry'))?>
                 </div>
+                <a class="btn btn-outline"><?php echo $this->__('Filter by Date')?>: <?php echo $this->__('From')?></a>
                 <div class="btn-group">
-                    <a class="btn btn-outline"><?php echo $this->__('Filter by Date')?>: <?php echo $this->__('From')?></a>
                     <div class="input-group input-group-sm">
                         <input style="width: 100px" size="50" type="text" class="form-control datepicker2 is_searchable" name="date_from" value="<?php echo (isset($params['date_from'])) ? $params['date_from'] : ''?>">
                     </div>
                 </div>
+                <a class="btn btn-outline"><?php echo $this->__('To')?>:</a>
                 <div class="btn-group">
-                    <a class="btn btn-outline"><?php echo $this->__('To')?>:</a>
                     <div class="input-group input-group-sm">
                         <input style="width: 100px" size="30" type="text" class="form-control datepicker2 is_searchable" name="date_to" value="<?php echo (isset($params['date_to'])) ? $params['date_to'] : ''?>">
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
-        <div class="row">
-            <div class="pull-left">
-
-            </div>
-            <div class="pull-right">
-
             </div>
         </div>
         <div class="row clearfix" style="height: 10px;">&nbsp;</div>
