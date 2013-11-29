@@ -601,7 +601,7 @@ class TdmProductTable extends AbstractModel
              * Filter percentage higher than
              */
             if(isset($params['higher']) && trim($params['higher']) != ''){
-                $where->greaterThanOrEqualTo('percentage',20);
+                $where->greaterThanOrEqualTo('percentage',$params['higher']);
             }
             /**
              * Filter by country
