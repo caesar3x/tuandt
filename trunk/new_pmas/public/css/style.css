@@ -68,3 +68,6 @@ form .alert{max-width: 800px;margin: 0 auto;}
 }
 .item_per_page{margin: 20px 10px;}
 .showing_label{margin: 27px 10px;}
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+}

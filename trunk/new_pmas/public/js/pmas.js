@@ -4,6 +4,13 @@
  */
 var asInitVals = new Array();
 $(function() {
+    $(document).on("click",".dropdown-toggle",function(e){
+        e.preventDefault();
+        var targeturl = $(this).attr("href");
+        if(!jQuery.isEmptyObject(targeturl) && targeturl !== '#'){
+            window.location.assign(targeturl);
+        }
+    });
     var currenturl  = $(location).attr('href');
     var currencySelect = $("#select-currency");
     if(currencySelect.length > 0){
