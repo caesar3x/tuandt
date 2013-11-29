@@ -192,6 +192,9 @@ foreach($sort_fields as $field=>$class){
                         <?php $matching = $this->product()->get_recycler_products_matched($row,$params);?>
                         <?php if(!empty($matching)):?>
                         <?php if(isset($params['date_from']) || isset($params['date_to'])):?>
+                                <?php $recycler_products = array();?>
+                                <?php $products_price_exchange = array();?>
+                                <?php $products_percentage = array();?>
                                 <?php $i=0;foreach($matching as $m):?>
                                     <td>
                                         <?php echo $m->recycler_name?><br/>
@@ -206,10 +209,18 @@ foreach($sort_fields as $field=>$class){
                                     }else{
                                         $percentage = null;
                                     }
+                                    $products_percentage[$m->product_id] = $percentage;
+                                    $recycler_products[$m->product_id] = $m;
+                                    $products_price_exchange[$m->product_id] = $priceExchange*100;
                                     ?>
-                                    <td><?php echo $this->price()->formatCurrency($priceExchange)?></td>
-                                    <td><?php echo $percentage*100?></td>
                                     <?php $i++?>
+                                <?php endforeach;?>
+                                <?php asort($products_percentage);?>
+                                <?php $top3 = array_slice($products_percentage,0,3);?>
+                                <?php foreach($top3 as $id):?>
+                                    <?php $recycler_product = $recycler_products[$id];?>
+                                    <td><?php echo $this->price()->formatCurrency($products_price_exchange[$id])?></td>
+                                    <td><?php echo $products_price_exchange[$id]?></td>
                                 <?php endforeach;?>
                                 <?php if($i==1):?>
                                     <td></td>

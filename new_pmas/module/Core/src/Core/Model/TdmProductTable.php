@@ -588,7 +588,7 @@ class TdmProductTable extends AbstractModel
                 }
             }
             $country = (isset($params['rcountry'])) ? $params['rcountry'] : null;
-            $rowset = $this->serviceLocator->get('RecyclerProductTable')->getRowsMatchingByDate($object->model,$object->condition_id,3,$country,$date_from_time,$date_to_time);
+            $rowset = $this->serviceLocator->get('RecyclerProductTable')->getRowsMatchingByDate($object->model,$object->condition_id,false,$country,$date_from_time,$date_to_time);
             return $rowset;
         }else{
             $tdm_product_id = $object->product_id;
