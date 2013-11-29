@@ -4,15 +4,14 @@
  * Email : datnguyen.cntt@gmail.com
  * Date: 11/28/13
  */
-/*$host  = 'localhost';
+$host  = 'localhost';
 $user = 'root';
 $password = '';
-$dbname = 'pmas_dev';*/
-$http_header = stream_context_create($opts);
-$host  = 'tdmdev.cmljsugageo1.ap-southeast-1.rds.amazonaws.com';
+$dbname = 'pmas_dev';
+/*$host  = 'tdmdev.cmljsugageo1.ap-southeast-1.rds.amazonaws.com';
 $user = 'pmasdev';
 $password = 'furuFe8a';
-$dbname = 'pmas_dev';
+$dbname = 'pmas_dev';*/
 /**
  * Implement
  */
@@ -60,7 +59,6 @@ function index_data(){
                 TRUNCATE TABLE `tdm_product_index`; TRUNCATE TABLE `tdm_product_match`;";
     $con->query($query);
     $query2 = "SELECT `m`.*, `b`.`name` AS `brand_name`, `c`.`name` AS `country_name`, `t`.`name` AS `type_name`, `cd`.`name` AS `condition_name` FROM `tdm_product` AS `m` INNER JOIN `brand` AS `b` ON `m`.`brand_id` = `b`.`brand_id` INNER JOIN `country` AS `c` ON `m`.`country_id` = `c`.`country_id` INNER JOIN `product_type` AS `t` ON `m`.`type_id` = `t`.`type_id` INNER JOIN `tdm_product_condition` AS `cd` ON `m`.`condition_id` = `cd`.`condition_id`";
-    $query2 .= " LIMIT 10";
     $result2 = $con->query($query2);
     $products = $result2->fetch_all(MYSQLI_ASSOC);
     if(!empty($products)){
