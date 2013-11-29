@@ -4,16 +4,14 @@
  * Date: 9/17/13
  */
 namespace Core\View\Helper;
-use Zend\View\Helper\AbstractHelper;
+use Zend\Http\Request;
 use Zend\ServiceManager\ServiceManager;
 
-class CountryHelper extends AbstractHelper
+class CountryHelper extends CoreHelper
 {
-    protected $serviceLocator;
-
-    public function setServiceLocator(ServiceManager $serviceLocator)
+    public function __construct(ServiceManager $serviceLocator,Request $request)
     {
-        $this->serviceLocator = $serviceLocator;
+        parent::__construct($serviceLocator,$request);
     }
 
     public function __invoke($id = null)

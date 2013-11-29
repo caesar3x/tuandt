@@ -343,8 +343,7 @@ class Module
                 },
                 'country' => function ($helperPluginManager) {
                     $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $viewHelper = new View\Helper\CountryHelper();
-                    $viewHelper->setServiceLocator($serviceLocator);
+                    $viewHelper = new View\Helper\CountryHelper($serviceLocator,$serviceLocator->get('Request'));
                     return $viewHelper;
                 },
                 'product_type' => function ($helperPluginManager) {

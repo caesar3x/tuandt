@@ -1060,4 +1060,9 @@ class CoreHelper extends AbstractHelper
     {
         return array(30,50,100,200,1000);
     }
+    public function getAvailableCountries()
+    {
+        $countryTable = $this->serviceLocator->get('CountryTable');
+        return $countryTable->getAvaiableRows();
+    }
 }
