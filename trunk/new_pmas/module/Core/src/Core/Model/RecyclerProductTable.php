@@ -364,12 +364,13 @@ class RecyclerProductTable extends AbstractModel
         }
         $adapter = $this->tableGateway->adapter;
         $sql = new Sql($adapter);
-        $select  = $sql->select()->from($this->tableGateway->table);
+        $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $select->join(array('r' => 'recycler'),'r.recycler_id = m.recycler_id',array('recycler_name' => 'name'));
+        $select->join(array('c' => 'country'),'c.country_id = r.country_id',array('country_id','country_name' => 'name'));
         $where = new Where();
-        $where->equalTo('condition_id',$condition);
-        $where->equalTo('model',$model);
-        $where->equalTo('lastest',1);
-        $where->greaterThan('recycler_id',1);
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',$model);
+        $where->greaterThan('m.recycler_id',1);
         if(!empty($start)){
             $where->greaterThanOrEqualTo('date',$start);
         }
@@ -380,6 +381,7 @@ class RecyclerProductTable extends AbstractModel
         }
         $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
+        Debug::dump($selectString);die;
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
             return null;
@@ -422,46 +424,6 @@ class RecyclerProductTable extends AbstractModel
             return null;
         }
         return $result;
-    }
-    /**
-     * @param $model
-     * @param $condition
-     * @param $start
-     * @param $end
-     * @return array|null
-     */
-    public function getAllRecyclersOfModel($model,$condition,$start,$end)
-    {
-        if($model == null){
-            return null;
-        }
-        $adapter = $this->tableGateway->adapter;
-        $sql = new Sql($adapter);
-        $select  = $sql->select()->from($this->tableGateway->table)->columns(array('recycler_id'));
-        $where = new Where();
-        $where->equalTo('condition_id',$condition);
-        $where->equalTo('model',$model);
-        $where->greaterThan('recycler_id',1);
-        if(!empty($start)){
-            $where->greaterThanOrEqualTo('date',$start);
-        }
-        if(!empty($end)){
-            $where->lessThanOrEqualTo('date',$end);
-        }else{
-            $where->lessThanOrEqualTo('date',time());
-        }
-        $select->where($where);
-        $select->group('recycler_id');
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-        if($result->count() <= 0){
-            return null;
-        }
-        $data = array();
-        foreach($result as $row){
-            $data[] = $row->recycler_id;
-        }
-        return $data;
     }
     /**
      * @param $model
