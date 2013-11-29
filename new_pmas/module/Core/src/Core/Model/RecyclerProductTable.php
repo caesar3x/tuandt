@@ -258,6 +258,8 @@ class RecyclerProductTable extends AbstractModel
                 $orderby = "m.product_id";
             }elseif($params['orderby'] == 'date_from'){
                 $orderby = "m.date";
+            }elseif($params['orderby'] == 'date'){
+                $orderby = "m.date";
             }else{
                 $orderby = "m.product_id";
             }
