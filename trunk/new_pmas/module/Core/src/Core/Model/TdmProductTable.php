@@ -535,6 +535,7 @@ class TdmProductTable extends AbstractModel
                             $percentage = null;
                         }
                         $row_data = array(
+                            'recycler_product_id' => $rp->product_id,
                             'product_id' => $row->product_id,
                             'recycler_id' => $rp->recycler_id,
                             'recycler_name' => $recylers[$rp->recycler_id]['name'],

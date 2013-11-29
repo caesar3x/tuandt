@@ -495,26 +495,24 @@ class ProductController extends AbstractController
             $filter = $params['higher'];
             $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_FILTER_HIGHER_TDM_PRODUCT'].$id);
             $ssa_price = (float) $recyclerProductTable->getSSAPrice($entry->model,$entry->condition_id);
-            if(!empty($ssa_price)){
-                /**
-                 * Filter higher than 50%
-                 */
-                if(!empty($recyclerProductsWithSameModel)){
-                    $products = array();
-                    foreach($recyclerProductsWithSameModel as $product){
-                        $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
-                        $priceExchange = ((float) $product->price) / $currentExchange;
-                        if($ssa_price != 0){
-                            $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
-                            if($percentage > $filter){
-                                $products[] = $product;
-                            }
+            /**
+             * Filter higher than 50%
+             */
+            if(!empty($recyclerProductsWithSameModel)){
+                $products = array();
+                foreach($recyclerProductsWithSameModel as $product){
+                    $currentExchange = $exchangeHelper->getCurrentExchangeOfCurrency($product->currency);
+                    $priceExchange = ((float) $product->price) / $currentExchange;
+                    if($ssa_price != 0){
+                        $percentage = (($priceExchange-$ssa_price)/$ssa_price)*100;
+                        if($percentage > $filter){
+                            $products[] = $product;
                         }
                     }
-                    $view->setVariable('higher',$filter);
-                    $view->setVariable('products',$products);
-                    return $view;
                 }
+                $view->setVariable('higher',$filter);
+                $view->setVariable('products',$products);
+                return $view;
             }
 
         }
