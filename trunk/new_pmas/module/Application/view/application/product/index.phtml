@@ -65,8 +65,6 @@ foreach($sort_fields as $field=>$class){
                     <i class="glyphicon glyphicon-upload"></i>
                     <?php echo $this->__('Import')?>
                 </a>
-            </div>
-            <div class="pull-right">
                 <a class="btn">
                     <?php echo $this->__('Export to')?>
                 </a>
@@ -82,8 +80,12 @@ foreach($sort_fields as $field=>$class){
                     <i class="glyphicon glyphicon-export"></i>
                     <?php echo $this->__('Export')?>
                 </a>
-            </div>
 
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
+                <a class="btn btn-danger btn-sm btn-reset-filter" id="reset-filter"><?php echo $this->__('Reset filter')?></a>
+            </div>
         </div>
         <div class="row clearfix" style="height: 10px;">&nbsp;</div>
         <div class="row">
@@ -103,11 +105,6 @@ foreach($sort_fields as $field=>$class){
                 <div class="btn-group">
                     <?php echo $this->partial('partial/select-countries.phtml',array('country' => $rcountry,'select_id' => 'recycler-country-chosen','select_name' => 'rcountry'))?>
                 </div>
-            </div>
-        </div>
-        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
-        <div class="row">
-            <div class="pull-left">
                 <div class="btn-group">
                     <a class="btn btn-outline"><?php echo $this->__('Filter by Date')?>: <?php echo $this->__('From')?></a>
                     <div class="input-group input-group-sm">
@@ -121,9 +118,14 @@ foreach($sort_fields as $field=>$class){
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row clearfix" style="height: 10px;">&nbsp;</div>
+        <div class="row">
+            <div class="pull-left">
+
+            </div>
             <div class="pull-right">
-                <a class="btn btn-primary btn-sm btn-search" id="search-tdm"><?php echo $this->__('Search')?></a>
-                <a class="btn btn-danger btn-sm btn-reset-filter" id="reset-filter"><?php echo $this->__('Reset filter')?></a>
+
             </div>
         </div>
         <div class="row clearfix" style="height: 10px;">&nbsp;</div>
