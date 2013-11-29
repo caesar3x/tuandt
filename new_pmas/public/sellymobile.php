@@ -226,7 +226,6 @@ function index_data(){
                 TRUNCATE TABLE `tdm_product_index`; TRUNCATE TABLE `tdm_product_match`;";
     $con->query($query);
     $query2 = "SELECT `m`.*, `b`.`name` AS `brand_name`, `c`.`name` AS `country_name`, `t`.`name` AS `type_name`, `cd`.`name` AS `condition_name` FROM `tdm_product` AS `m` INNER JOIN `brand` AS `b` ON `m`.`brand_id` = `b`.`brand_id` INNER JOIN `country` AS `c` ON `m`.`country_id` = `c`.`country_id` INNER JOIN `product_type` AS `t` ON `m`.`type_id` = `t`.`type_id` INNER JOIN `tdm_product_condition` AS `cd` ON `m`.`condition_id` = `cd`.`condition_id`";
-    $query2 .= " LIMIT 10";
     $result2 = $con->query($query2);
     $products = $result2->fetch_all(MYSQLI_ASSOC);
     if(!empty($products)){
