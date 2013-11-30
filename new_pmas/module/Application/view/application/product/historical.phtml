@@ -43,12 +43,11 @@
                     <th><?php echo $this->__('Currency')?></th>
                     <th><?php echo $this->__('Exchange Rate')?></th>
                     <th><?php echo $this->__('Price in HKD')?></th>
-                    <th><?php echo $this->__('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php if(!empty($this->highest)):?>
-                    <?php $highest = $this->highest;?>
+                <?php if(!empty($this->products)):?>
+                    <?php foreach($this->products as $highest):?>
                     <tr>
                         <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highest['product_id']?>"></td>
                         <td><?php echo ($highest['time'] != null) ? date('d-m-Y H:i:s',(int)$highest['time']) : 'N/A'?></td>
@@ -59,8 +58,8 @@
                         <td><?php echo $highest['currency']?></td>
                         <td><?php echo $this->price()->format($highest['exchange_rate'],4)?></td>
                         <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
-                        <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
                     </tr>
+                    <?php endforeach;?>
                 <?php endif;?>
                 </tbody>
             </table>
@@ -68,84 +67,41 @@
         <div class="tab-pane" id="chart-view">
             <div class="row clearfix">&nbsp;</div>
             <div id="chart-highest" class="chart-demo" style="min-height: 600px; width:90%;">
-                <?php if(!empty($this->highest)):?>
-                <?php $highest = $this->highest;?>
-                    <?php
-                    $currency = $highest['currency'];
-                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
-                    $data = array();
-                    if(!empty($recyclers)){
-                        foreach($recyclers as $recycler_id){
-                            /**
-                             * Get products by recycler, model,recycler id
-                             */
-                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
-                            if(!empty($products)){
-                                foreach($products as $product){
-                                    $data[$recycler_id][] = array(
-                                        'price' => ((float)$product->price)/$current_exchange,
-                                        'time' => date('Y-m-d',$product->date)
-                                    );
-                                }
-                            }
-
-                        }
-                    }
-                    ?>
-                <?php endif;?>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        $(function(){
-            /**
-             * Exchange Rate chart
-             */
-            <?php if(!empty($data)):?>
-            var lines = new Array();
-            <?php foreach($data as $line=>$val):?>
-            var line<?php echo $line?> = new Array();
-            <?php if(!empty($val)):?>
-            <?php foreach($val as $index=>$row):?>
-            var item<?php echo $index?> = new Array();
-            item<?php echo $index?>.push('<?php echo $row['time']?>');
-            item<?php echo $index?>.push(<?php echo $row['price']?>);
-            line<?php echo $line?>.push(item<?php echo $index?>);
+        $(document).ready(function(){
+            /*var line1=[['23-May-08', 578.55], ['20-Jun-08', 566.5], ['25-Jul-08', 480.88], ['22-Aug-08', 509.84],
+                ['26-Sep-08', 454.13], ['24-Oct-08', 379.75], ['21-Nov-08', 303], ['26-Dec-08', 308.56],
+                ['23-Jan-09', 299.14], ['20-Feb-09', 346.51], ['20-Mar-09', 325.99], ['24-Apr-09', 386.15]];*/
+            var line1 = new Array();
+            <?php if(!empty($this->products)):?>
+            <?php foreach($this->products as $highest):?>
+            var point = new Array();
+            point.push('<?php echo date('d-M-y',$highest['time'])?>');
+            point.push(<?php echo $highest['exchange_price']?>);
+            line1.push(point);
             <?php endforeach;?>
-            <?php endif;?>
-            lines.push(line<?php echo $line?>);
-            <?php endforeach;?>
-            var seriesLabels = [
-                <?php if(!empty($data)):?>
-                <?php $i=0;foreach($data as $line=>$val):?>
-                {'label': '<?php echo $this->recycler()->getName($line)?>' },
-                <?php endforeach;?>
-                <?php endif;?>
-            ];
-            var plot100 = $.jqplot('chart-highest', lines, {
+            console.log(line1);
+            var plot100 = $.jqplot('chart-highest', [line1], {
                 title:'Historical Price Chart',
                 axes:{
                     xaxis:{
-                        renderer:$.jqplot.DateAxisRenderer
+                        renderer:$.jqplot.DateAxisRenderer,
+                        tickOptions:{
+                            formatString:'%b&nbsp;%#d'
+                        }
                     },
                     yaxis:{
                         tickOptions:{
-                            formatString:'%.2f'
+                            formatString:'$%.2f'
                         }
                     }
                 },
-                series:seriesLabels,
-                legend: {
-                    show: true,
-                    location:'se'
-                },
                 highlighter: {
                     show: true,
-                    sizeAdjust: 10,
-                    tooltipContentEditor: function(str, seriesIndex, pointIndex, plot){
-                        return seriesLabels[seriesIndex].label + ': ' + str;
-                    },
-                    tooltipAxes: 'y'
+                    sizeAdjust: 7.5
                 },
                 cursor: {
                     show: false
@@ -154,7 +110,7 @@
             <?php endif;?>
             $( 'a[href=#chart-view]' ).on( "click", function() {
                 $( 'a[href=#chart-view]').tab('show');
-                <?php if(!empty($data)):?>
+                <?php if(!empty($this->products)):?>
                 plot100.replot();
                 <?php endif;?>
             });
@@ -175,29 +131,32 @@
                     <th><?php echo $this->__('Currency')?></th>
                     <th><?php echo $this->__('Exchange Rate')?></th>
                     <th><?php echo $this->__('Price in HKD')?></th>
-                    <th><?php echo $this->__('Highest Recycler Price')?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php if(!empty($this->highestInCountry)):?>
-                    <?php $highestInCountry = $this->highestInCountry;?>
-                    <tr>
-                        <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $highestInCountry['product_id']?>"></td>
-                        <td><?php echo ($highestInCountry['time'] != null) ? date('d-m-Y H:i:s',(int)$highestInCountry['time']) : 'N/A'?></td>
-                        <td><?php echo $this->product()->getRecyclerProductName($highestInCountry['product_id'])?></td>
-                        <td><?php echo $this->product()->getRecyclerProductCondition($highestInCountry['product_id'])?></td>
-                        <td><?php echo $this->recycler()->getRecyclerDetail($highestInCountry['recycler_id'])?></td>
-                        <td><?php echo $this->price()->formatCurrency($highestInCountry['price'],$highestInCountry['currency'])?></td>
-                        <td><?php echo $highestInCountry['currency']?></td>
-                        <td><?php echo $this->price()->format($highestInCountry['exchange_rate'])?></td>
-                        <td><?php echo $this->price()->formatCurrency($highestInCountry['exchange_price'],'HKD')?></td>
-                        <?php if(!empty($this->highest)):?>
-                        <?php $highest = $this->highest;?>
-                            <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
-                        <?php else:?>
-                            <td></td>
-                        <?php endif;?>
-                    </tr>
+                <?php $data = array();?>
+                <?php if(!empty($this->products)):?>
+                    <?php foreach($this->products as $product):?>
+                        <?php $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency);?>
+                        <?php $price_in_hkd = ((float) $product->price)/$current_exchange;?>
+                        <?php
+                        $data[$product->recycler_id][] = array(
+                            'price' => $price_in_hkd,
+                            'time' => date('Y-m-d',$product->date)
+                        );
+                        ?>
+                        <tr>
+                            <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $product->product_id?>"></td>
+                            <td><?php echo (!empty($product->date)) ? date('d-m-Y H:i:s',(int)$product->date) : 'N/A'?></td>
+                            <td><?php echo $product->model?></td>
+                            <td><?php echo $product->condition_name?></td>
+                            <td><?php echo $this->recycler()->getRecyclerDetail($product->recycler_id)?></td>
+                            <td><?php echo $this->price()->formatCurrency($product->price,$product->currency)?></td>
+                            <td><?php echo $product->currency?></td>
+                            <td><?php echo $this->price()->format($current_exchange)?></td>
+                            <td><?php echo $this->price()->formatCurrency($price_in_hkd,'HKD')?></td>
+                        </tr>
+                    <?php endforeach;?>
                 <?php endif;?>
                 </tbody>
             </table>
@@ -205,31 +164,6 @@
         <div class="tab-pane" id="chart-view">
             <div class="row clearfix">&nbsp;</div>
             <div id="chart-highest" class="chart-demo" style="min-height: 600px; width:90%;">
-                <?php if(!empty($this->highestInCountry)):?>
-                    <?php $highest = $this->highestInCountry;?>
-                    <?php
-                    $currency = $highest['currency'];
-                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
-                    $data = array();
-                    if(!empty($recyclers)){
-                        foreach($recyclers as $recycler_id){
-                            /**
-                             * Get products by recycler, model,recycler id
-                             */
-                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
-                            if(!empty($products)){
-                                foreach($products as $product){
-                                    $data[$recycler_id][] = array(
-                                        'price' => ((float)$product->price)/$current_exchange,
-                                        'time' => date('Y-m-d',$product->date)
-                                    );
-                                }
-                            }
-
-                        }
-                    }
-                    ?>
-                <?php endif;?>
             </div>
         </div>
     </div>
@@ -238,7 +172,7 @@
             /**
              * Exchange Rate chart
              */
-                <?php if(!empty($data)):?>
+            <?php if(!empty($data)):?>
             var lines = new Array();
             <?php foreach($data as $line=>$val):?>
             var line<?php echo $line?> = new Array();
@@ -312,29 +246,33 @@
                     <th><?php echo $this->__('Currency')?></th>
                     <th><?php echo $this->__('Exchange Rate')?></th>
                     <th><?php echo $this->__('Price in HKD')?></th>
-                    <th><?php echo $this->__('Highest Recycler Price')?></th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <?php if(!empty($this->highestInRecycler)):?>
-                    <?php $h = $this->highestInRecycler;?>
-                    <tr>
-                        <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $h['product_id']?>"></td>
-                        <td><?php echo ($h['time'] != null) ? date('d-m-Y',(int)$h['time']) : 'N/A'?></td>
-                        <td><?php echo $this->product()->getRecyclerProductName($h['product_id'])?></td>
-                        <td><?php echo $this->product()->getRecyclerProductCondition($h['product_id'])?></td>
-                        <td><?php echo $this->recycler()->getRecyclerDetail($h['recycler_id'])?></td>
-                        <td><?php echo $this->price()->formatCurrency($h['price'],$h['currency'])?></td>
-                        <td><?php echo $h['currency']?></td>
-                        <td><?php echo $this->price()->format($h['exchange_rate'])?></td>
-                        <td><?php echo $this->price()->formatCurrency($h['exchange_price'],'HKD')?></td>
-                        <?php if(!empty($this->highest)):?>
-                            <?php $highest = $this->highest;?>
-                            <td><?php echo $this->price()->formatCurrency($highest['exchange_price'],'HKD')?></td>
-                        <?php else:?>
-                            <td></td>
-                        <?php endif;?>
-                    </tr>
+                <?php $data = array();?>
+                <?php if(!empty($this->products)):?>
+                    <?php foreach($this->products as $product):?>
+                        <?php $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($product->currency);?>
+                        <?php $price_in_hkd = ((float) $product->price)/$current_exchange;?>
+                        <?php
+                        $data[$product->recycler_id][] = array(
+                            'price' => $price_in_hkd,
+                            'time' => date('Y-m-d',$product->date)
+                        );
+                        ?>
+                        <tr>
+                            <td class="col-checkbox"><input class="checkitem" name="product" type="checkbox" value="<?php echo $product->product_id?>"></td>
+                            <td><?php echo (!empty($product->date)) ? date('d-m-Y H:i:s',(int)$product->date) : 'N/A'?></td>
+                            <td><?php echo $product->model?></td>
+                            <td><?php echo $product->condition_name?></td>
+                            <td><?php echo $this->recycler()->getRecyclerDetail($product->recycler_id)?></td>
+                            <td><?php echo $this->price()->formatCurrency($product->price,$product->currency)?></td>
+                            <td><?php echo $product->currency?></td>
+                            <td><?php echo $this->price()->format($current_exchange)?></td>
+                            <td><?php echo $this->price()->formatCurrency($price_in_hkd,'HKD')?></td>
+                        </tr>
+                    <?php endforeach;?>
                 <?php endif;?>
                 </tbody>
             </table>
@@ -342,32 +280,6 @@
         <div class="tab-pane" id="chart-view">
             <div class="row clearfix">&nbsp;</div>
             <div id="chart-highest" class="chart-demo" style="min-height: 600px; width:90%;">
-                <?php if(!empty($this->highestInRecycler)):?>
-                    <?php $highest = $this->highestInRecycler;?>
-                    <?php
-                    $currency = $highest['currency'];
-                    $current_exchange = $this->exchange()->getCurrentExchangeOfCurrency($currency,$endTime);
-                    $data = array();
-                    if(!empty($recyclers)){
-                        foreach($recyclers as $recycler_id){
-                            /**
-                             * Get products by recycler, model,recycler id
-                             */
-                            $products = $this->product()->getAllProductsHistoricalByRecycler($recycler_id,$entry->model,$entry->condition_id,$startTime,$endTime);
-                            if(!empty($products)){
-                                foreach($products as $product){
-                                    $data[$recycler_id][] = array(
-                                        'price' => ((float)$product->price)/$current_exchange,
-                                        'time' => date('Y-m-d',$product->date)
-                                    );
-                                }
-                            }
-
-                        }
-                    }
-                    ?>
-                <?php endif;
-                ?>
             </div>
         </div>
     </div>
@@ -451,6 +363,8 @@
             "oLanguage": {
                 "sSearch": "Search all columns:"
             },
+            "aLengthMenu": [[ 50, 100, 200, 1000 , -1], [ 50, 100, 200, 1000 , "All"]],
+            "iDisplayLength": 30,
             "sPaginationType": "full_numbers"
         } );
     });
