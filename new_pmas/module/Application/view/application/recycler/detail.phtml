@@ -153,6 +153,7 @@ $from = $this->from;
                                 <th><?php echo $this->__('Price in HKD')?></th>
                                 <th><?php echo $this->__('TDM Product Name')?></th>
                                 <th><?php echo $this->__('SSA Price')?></th>
+                                <th><?php echo $this->__('Lastest')?></th>
                                 <th class="action"><?php echo $this->__('Action')?></th>
                             </tr>
                             </thead>
@@ -205,7 +206,7 @@ $from = $this->from;
                                             <td>&nbsp;</td>
                                         <?php endif;?>
                                     <?php endif;?>
-
+                                    <td><?php echo $product->lastest?></td>
                                     <td>
                                         <a class="btn btn-xs btn-primary btn-edit" href="/recycler/product/id/<?php echo $product->product_id?>"><?php echo $this->__('Edit')?></a>
                                         <a class="btn btn-xs btn-danger btn-edit" onclick="confirmDelete('<?php echo $this->getUrl('/recycler/delete-product/recycler/'.$this->id.'/id/'.$product->product_id)?>');" ><?php echo $this->__('Delete')?></a>
