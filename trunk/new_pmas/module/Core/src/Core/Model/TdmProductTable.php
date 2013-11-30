@@ -434,6 +434,7 @@ class TdmProductTable extends AbstractModel
     {
         $query = "CREATE TABLE IF NOT EXISTS `tdm_product_match` (
                   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                  `recycler_product_id` bigint(20) DEFAULT NULL,
                   `product_id` bigint(20) DEFAULT NULL,
                   `recycler_id` int(11) DEFAULT NULL,
                   `recycler_name` varchar(255) DEFAULT NULL,
