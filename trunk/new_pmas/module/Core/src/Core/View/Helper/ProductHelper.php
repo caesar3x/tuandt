@@ -254,10 +254,7 @@ class ProductHelper extends CoreHelper
         }
         return $highest;
     }
-    public function getHighestPrice_v3($products,$start_time,$end_time)
-    {
 
-    }
     /**
      * @param $productsCurrency
      * @param $end

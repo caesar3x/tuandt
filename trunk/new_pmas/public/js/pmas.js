@@ -38,6 +38,8 @@ $(function() {
         "oLanguage": {
             "sSearch": "Search all columns:"
         },
+        "aLengthMenu": [[30, 50, 100, 200, 1000 , -1], [30, 50, 100, 200, 1000 , "All"]],
+        "iDisplayLength": 30,
         "sPaginationType": "full_numbers"
     } );
     var oTable2 = $('.withphp').dataTable( {

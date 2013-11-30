@@ -351,13 +351,9 @@ class RecyclerProductTable extends AbstractModel
         return $result;
     }
     /**
-     * @param $model
-     * @param $condition
-     * @param $start
-     * @param $end
-     * @return null
+     * Get rows in time rang and params filter
      */
-    public function getRowsByModelInTimeRange($model,$condition,$start,$end)
+    public function getRowsByModelInTimeRange($model,$condition,$start,$end,$params = array())
     {
         if($model == null){
             return null;
@@ -367,6 +363,7 @@ class RecyclerProductTable extends AbstractModel
         $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
         $select->join(array('r' => 'recycler'),'r.recycler_id = m.recycler_id',array('recycler_name' => 'name'));
         $select->join(array('c' => 'country'),'c.country_id = r.country_id',array('country_id','country_name' => 'name'));
+        $select->join(array('cd' => 'tdm_product_condition'),'cd.condition_id = m.condition_id',array('condition_name' => 'name'));
         $where = new Where();
         $where->equalTo('m.condition_id',$condition);
         $where->equalTo('m.model',$model);
@@ -376,12 +373,19 @@ class RecyclerProductTable extends AbstractModel
         }
         if(!empty($end)){
             $where->lessThanOrEqualTo('date',$end);
-        }else{
-            $where->lessThanOrEqualTo('date',time());
+        }
+        if(isset($params['country_id'])){
+            $where->equalTo('r.country_id',$params['country_id']);
+        }
+        if(isset($params['recycler_id'])){
+            $where->equalTo('m.recycler_id',$params['recycler_id']);
+        }
+        if(isset($params['recycler_ids'])){
+            $where->in('m.recycler_id',$params['recycler_ids']);
         }
         $select->where($where);
         $selectString = $sql->getSqlStringForSqlObject($select);
-        Debug::dump($selectString);die;
+        /*Debug::dump($selectString);die;*/
         $result = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         if($result->count() <= 0){
             return null;
