@@ -82,7 +82,7 @@ function save_recycler_product($data){
          */
         $model = $data['model'];
         $condition = $data['condition_id'];
-        $update = "UPDATE recycler_product SET lastest = 0 WHERE model = '$model' AND condition_id = $condition AND lastest = 1";
+        $update = "UPDATE recycler_product SET lastest = 0 WHERE model = '$model' AND condition_id = $condition AND recycler_id = '11' AND lastest = 1";
         $con->query($update);
         $fields = array_keys($data);
         $values = array_values($data);

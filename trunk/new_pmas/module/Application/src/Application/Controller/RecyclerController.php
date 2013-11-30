@@ -542,6 +542,7 @@ class RecyclerController extends AbstractController
                     }
                     unset($tmpEntryParse['id']);
                     $tmpEntryParse['lastest'] = 1;
+                    $this->log_debug(print_r($tmpEntryParse,1));
                     $recyclerProductTable->saveData($tmpEntryParse);
                 }
             }
