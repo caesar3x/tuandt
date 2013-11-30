@@ -56,10 +56,12 @@ class RecyclerProductTable extends AbstractModel
             return $this->tableGateway->insert($data);
         }
     }
+
     /**
      * @param $model
      * @param $condition
-     * @return bool|int
+     * @param $recycler_id
+     * @return int
      */
     public function resetLatest($model,$condition,$recycler_id)
     {
@@ -310,7 +312,31 @@ class RecyclerProductTable extends AbstractModel
         }
         return $result;
     }
-
+    public function getRowsMatching_v2($model,$condition)
+    {
+        $adapter = $this->tableGateway->adapter;
+        $sql = new Sql($adapter);
+        $select  = $sql->select()->from(array('m' => $this->tableGateway->table));
+        $where = new Where();
+        if(!empty($country)){
+            $select->join(array('r' => 'recycler'),'m.recycler_id = r.recycler_id',array('country_id'));
+            $where->equalTo('r.country_id',$country);
+        }
+        $where->equalTo('m.condition_id',$condition);
+        $where->equalTo('m.model',trim($model));
+        /*$where->equalTo('m.lastest',1);*/
+        $where->greaterThan('m.recycler_id',1);
+        $select->where($where);
+        $select->order("m.product_id DESC");
+        $selectString = $sql->getSqlStringForSqlObject($select);
+        $selectStringFinal = "SELECT * FROM ($selectString) AS tmp_table GROUP BY recycler_id";
+        Debug::dump($selectStringFinal);
+        $result = $adapter->query($selectStringFinal, $adapter::QUERY_MODE_EXECUTE);
+        if($result->count() <= 0){
+            return null;
+        }
+        return $result;
+    }
     /**
      * Filter by date range
      */

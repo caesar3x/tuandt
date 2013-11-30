@@ -483,7 +483,8 @@ class ProductController extends AbstractController
         $view->setVariable('entry',$entry);
         $view->setVariable('params',$params);
         $recyclerProductTable = $this->getServiceLocator()->get('RecyclerProductTable');
-        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsMatching($entry->model,$entry->condition_id,false);
+        /*$recyclerProductsWithSameModel = $recyclerProductTable->getRowsMatching($entry->model,$entry->condition_id,false);*/
+        $recyclerProductsWithSameModel = $recyclerProductTable->getRowsMatching_v2($entry->model,$entry->condition_id);
         $messages = $this->getMessages();
         $exchangeHelper = $this->getServiceLocator()->get('viewhelpermanager')->get('exchange');
         $this->getServiceLocator()->get('viewhelpermanager')->get('user')->log('application\\product\\detail',$messages['LOG_VIEW_TDM_PRODUCT'].$id);

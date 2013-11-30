@@ -5,6 +5,8 @@
  */
 namespace Core\Model;
 
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Predicate\In;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
@@ -153,6 +155,21 @@ class TdmProductTable extends AbstractModel
             $where->equalTo('country_id',$params['tdmcountry']);
         }
         /**
+         * Process filtered products without price
+         */
+        if(isset($params['higher']) && trim($params['higher']) != ''){
+            $select_price_index = $sql->select()->from('tdm_product_match')->columns(array('product_id'));
+            $where2 = new Where();
+            $where2->greaterThanOrEqualTo('percentage',$params['higher']);
+            $select_price_index->where($where2);
+            $select_price_index_string = $sql->getSqlStringForSqlObject($select_price_index);
+            /*Debug::dump($sql->getSqlStringForSqlObject($select_price_index));die;*/
+            /*$where->in('m.product_id',"(".$select_price_index_string.")");*/
+            $where->addPredicate(new Expression("m.product_id IN (".$select_price_index_string.")"));
+        }
+        /*$select->where($where);
+        Debug::dump($sql->getSqlStringForSqlObject($select));die;*/
+        /**
          * Process orderby
          */
         if(isset($params['orderby']) && trim($params['orderby']) != ''){
@@ -183,38 +200,6 @@ class TdmProductTable extends AbstractModel
         return $select;
     }
 
-    public function filter_by_recycler_products_matching($params = array())
-    {
-        $this->create_tdm_product_index_table(false);
-        $this->create_tdm_product_match(false);
-        $adapter = $this->tableGateway->adapter;
-        $sql = new Sql($adapter);
-        $select = $sql->select()->from(array('m' => 'tdm_product_match'))->columns(array('product_id'));
-        $where = new Where();
-        if(isset($params['higher']) && trim($params['higher']) != ''){
-            $where->greaterThanOrEqualTo('percentage',$params['higher']);
-        }
-        if(isset($params['rcountry']) && trim($params['rcountry']) != ''){
-            $where->equalTo('recycler_country_id',$params['rcountry']);
-        }
-        if(isset($params['date_from']) && trim($params['date_from']) != ''){
-            $date_from_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_from'].' 00:00:00');
-            if($date_from_parse != null){
-                $date_from = $date_from_parse->getTimestamp();
-                $where->greaterThanOrEqualTo('date',$date_from);
-            }
-        }
-        if(isset($params['date_to']) && trim($params['date_to']) != ''){
-            $date_to_parse = \DateTime::createFromFormat('d-m-Y H:i:s',$params['date_to'].' 23:59:59');
-            if($date_to_parse != null){
-                $date_to = $date_to_parse->getTimestamp();
-                $where->lessThanOrEqualTo('date',$date_to);
-            }
-        }
-        $select->group('product_id');
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        Debug::dump($selectString);die;
-    }
     /**
      * @param $id
      * @return int
