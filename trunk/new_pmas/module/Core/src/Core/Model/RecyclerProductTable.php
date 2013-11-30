@@ -201,7 +201,7 @@ class RecyclerProductTable extends AbstractModel
         $select->join(array('t' => 'product_type'),'m.type_id = t.type_id',array('type_name' => 'name'));
         $select->join(array('cd' => 'tdm_product_condition'),'m.condition_id = cd.condition_id',array('condition_name' => 'name'));
         $where = new Where();
-        $where->equalTo('m.lastest',1);
+        /*$where->equalTo('m.lastest',1);*/
         $where->equalTo('m.recycler_id',$recycler_id);
         /**
          * process filter
@@ -263,9 +263,9 @@ class RecyclerProductTable extends AbstractModel
             }else{
                 $orderby = "m.product_id";
             }
-            $select->order("$orderby $dir");
+            $select->order(array("m.lastest desc","$orderby $dir"));
         }else{
-            $select->order("m.product_id DESC");
+            $select->order(array("m.lastest desc","m.product_id DESC"));
         }
         $select->where($where);
         $select->order(array('m.date DESC', 'm.product_id DESC', "m.name ASC"));
