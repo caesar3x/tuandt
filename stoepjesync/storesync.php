@@ -20,23 +20,28 @@ if($navStoreList){
 			$storeImportidList[] = $row['importid'];
 		}
 	}
-	$navStoreImportidList = array();
 	
+	$navStoreImportidList = array();
+	$i = 0;
 	foreach ($navStoreList as $navStore){
-		$lastModified = strtotime($navStore['Last DateTime Modified']);
-		$navStoreImportidList[] = intval($navStore['ID']);
-		if(time() - $lastModified > $db_stoepje->storeCronjobTime){		
-			continue;
-		}
 		
+		$lastModified = strtotime($navStore['Last DateTime Modified']);
+		
+		$navStoreImportidList[] = intval($navStore['ID']);
+		
+		if((time() - $lastModified) > $db_stoepje->storeCronjobTime){
+			//continue;
+		}
+		$i++;
 		if(in_array($navStore['ID'], $storeImportidList)){
-			$geocodeURl = 'http://maps.googleapis.com/maps/api/geocode/json?address='. urlencode($navStore['Postal']. ' Nederland').'&sensor=false';
+			$geocodeURl = 'http://maps.googleapis.com/maps/api/geocode/json?address='. urlencode($navStore['Street'] . ', '. $navStore['Postal'].' '.$navStore['City']. ', The Netherlands').'&sensor=false';
 			$lat = 0;
 			$lon = 0;
 			$ch = curl_init ($geocodeURl);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+			sleep(1);
 			$geocodeData = curl_exec($ch);
 			$geocodeData = json_decode($geocodeData);
 			if($geocodeData->status == "OK"){
@@ -93,11 +98,11 @@ if($navStoreList){
 			}
 			$storeData = array(
 				'customerno' => $navStore['Customer No'],
-				'name' => $navStore['Name'],
-				'street' => $navStore['Street'],
+				'name' => mysql_real_escape_string($navStore['Name']),
+				'street' => mysql_real_escape_string($navStore['Street']),
 				'housenr' => '',
 				'postal' => $navStore['Postal'],
-				'city' => $navStore['City'],
+				'city' => mysql_real_escape_string($navStore['City']),
 				'country' => $navStore['Country'],
 				'phone' => $navStore['Phone'],
 				'email' => $navStore['E-mail'],
@@ -126,15 +131,16 @@ if($navStoreList){
 				'sendsaturday' => $sendsaturday
 			);
 			updateStore($navStore['ID'], $storeData);
-			echo "Updated store ID: ". $navStore['ID'] . "<br/>";
+			echo $i. " Updated store ID: ". $navStore['ID'] . " Lon: " . $lon . " ,Lat: ". $lat . "<br/>";
 		}else{
-			$geocodeURl = 'http://maps.googleapis.com/maps/api/geocode/json?address='. urlencode($navStore['Postal']. ' Nederland').'&sensor=false';
+			$geocodeURl = 'http://maps.googleapis.com/maps/api/geocode/json?address='. urlencode($navStore['Street'] . ', '. $navStore['Postal'].' '.$navStore['City']. ', The Netherlands').'&sensor=false';
 			$lat = 0;
 			$lon = 0;
 			$ch = curl_init ($geocodeURl);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+			sleep(1);
 			$geocodeData = curl_exec($ch);
 			$geocodeData = json_decode($geocodeData);
 			if($geocodeData->status == "OK"){
@@ -191,11 +197,11 @@ if($navStoreList){
 			}
 			$storeData = array(
 				'customerno' => $navStore['Customer No'],
-				'name' => $navStore['Name'],
-				'street' => $navStore['Street'],
+				'name' => mysql_real_escape_string($navStore['Name']),
+				'street' => mysql_real_escape_string($navStore['Street']),
 				'housenr' => '',
 				'postal' => $navStore['Postal'],
-				'city' => $navStore['City'],
+				'city' => mysql_real_escape_string($navStore['City']),
 				'country' => $navStore['Country'],
 				'phone' => $navStore['Phone'],
 				'email' => $navStore['E-mail'],
@@ -225,15 +231,17 @@ if($navStoreList){
 				'importid'	=> intval($navStore['ID'])
 			);
 			insertStore($navStore['ID'], $storeData);
-			echo "Inserted store ID: ". $navStore['ID'] . "<br/>";
+			echo $i . " Inserted store ID: ". $navStore['ID'] . " Lon: " . $lon . " ,Lat: ". $lat . "<br/>";
 		}
 	}
 
 	if(count($navStoreImportidList) > 0){
+		$j = 0;
 		foreach ($storeImportidList as $storeImportid){
 			if(!in_array($storeImportid,$navStoreImportidList)){
 				deleteStore(intval($storeImportid));
-				echo "Deleted store ID: ".$storeImportid . "<br/>";
+				$j++;
+				echo $j . " Deleted store ID: ".$storeImportid . "<br/>";
 			}
 		}
 	}
