@@ -15,5 +15,5 @@ class Db_stoepje{
 	var $magentoUsername = 'sync';
 	var $magentoAPIKey = '98d87378ea3106a8f8e08bff9a9eea32';
 	var $productCronjobTime = 36000;
-	var $storeCronjobTime = 36000;
+	var $storeCronjobTime = 86400;
 }

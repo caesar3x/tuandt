@@ -37,6 +37,13 @@ function updateStore($importId, $data){
 function insertStore($importId, $data){
 	global $config;
 	$result=mysql_query("INSERT INTO ".$config['db_table']."(customerno, name, street, housenr, postal, city, country, phone, email, textualpos, longitude, latitude, banknr, pickup, send, sendcosts, ghostfrom, opensunday, openmonday, opentuesday, openwednesday, openthursday, openfriday, opensaturday, sendradius, sendsunday, sendmonday, sendtuesday, sendwednesday, sendthursday, sendfriday, sendsaturday, importid) VALUE(". arrayToString(',', $data) .")");
+	/*
+	$result1="INSERT INTO ".$config['db_table']."(customerno, name, street, housenr, postal, city, country, phone, email, textualpos, longitude, latitude, banknr, pickup, send, sendcosts, ghostfrom, opensunday, openmonday, opentuesday, openwednesday, openthursday, openfriday, opensaturday, sendradius, sendsunday, sendmonday, sendtuesday, sendwednesday, sendthursday, sendfriday, sendsaturday, importid) VALUE(". arrayToString(',', $data) .")";
+	var_dump($result1);
+	
+	echo mysql_errno();
+	echo mysql_error();
+	*/
 	return $result;
 }
 function deleteStore($importId){
