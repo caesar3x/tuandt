@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <ParcelPro_Carrier>
+            <version>1.0.0</version>
+        </ParcelPro_Carrier>
+    </modules>
+    <admin>
+		<routers>
+			<carrier>
+				<use>admin</use>
+				<args>
+					<module>ParcelPro_Carrier</module>
+					<frontName>parcelpro_carrier</frontName>
+				</args>
+			</carrier>
+		</routers>
+	</admin>
+    <global>
+    	<blocks>
+			<carrier>
+				<class>ParcelPro_Carrier_Block</class>
+			</carrier>
+		</blocks>
+		<helpers>
+			<carrier>
+				<class>ParcelPro_Carrier_Helper</class>
+			</carrier>
+		</helpers>
+        <models>
+            <carrier>
+                <class>ParcelPro_Carrier_Model</class>
+                <resourceModel>carrier_mysql4</resourceModel>
+            </carrier>
+            <carrier_mysql4>
+                <class>ParcelPro_Carrier_Model_Mysql4</class>
+                <entities>
+                    <config>
+                        <table>parcelpro_carrier_config</table>
+                    </config>
+                </entities>
+            </carrier_mysql4>
+        </models>
+        <resources>
+            <carrier_setup>
+                <setup>
+                    <module>ParcelPro_Carrier</module>
+                    <class>ParcelPro_Carrier_Model_Resource_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </carrier_setup>
+            <carrier_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </carrier_write>
+            <carrier_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </carrier_read>
+        </resources>
+        <!-- 
+        <sales>
+		     <quote>
+		        <item>
+		            <product_attributes>
+		                <insured/>
+		            </product_attributes>
+		        </item>
+		    </quote>
+		  </sales>
+		   -->
+    </global>
+    <!-- Default configuration -->
+    <default>
+        <carriers>
+            <parcelpro>
+                <active>1</active>
+                <!--
+                     This configuration should not be made visible
+                     to the administrator, because it specifies
+                     the model to be used for this carrier.
+                -->
+                <model>carrier/carrier</model>
+                <!--
+                    The title as referenced in the carrier class
+                -->
+                <title>Parcel Pro Carrier</title>
+                <!--
+                    The sort order specifies the position that
+                    this carrier appears relative to the other
+                    carriers available in checkout.
+                -->
+                <sort_order>10</sort_order>
+                <!--
+                    Out of the box, Magento offers shipping
+                    carriers the ability to restrict themselves
+                    to specific countries. For this configuration
+                    option, 0 means allow all countries available,
+                    and 1 means allow all countries specified
+                    in the country list that we will add later
+                    in system.xml
+                -->
+                <sallowspecific>0</sallowspecific>
+            </parcelpro>
+        </carriers>
+    </default>
+</config>
