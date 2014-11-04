@@ -58,7 +58,7 @@ class ParcelPro_Carrier_Model_Carrier extends Mage_Shipping_Model_Carrier_Abstra
 			//Mage::log(json_encode($_rawRequest));
 			$estimatorData = $this->_sendRequest($this->_estimator_path, $_rawRequest, true);
 			
-			$rateList = $this->_parseShippingRates($estimatorData);
+			$rateList = $this->_parseShippingRates($estimatorData, $request);
 
 			if($rateList){
 				foreach ($rateList as $rate){
@@ -976,7 +976,7 @@ class ParcelPro_Carrier_Model_Carrier extends Mage_Shipping_Model_Carrier_Abstra
 		}
 		
 	}
-	private function _parseShippingRates($estimatorData){
+	private function _parseShippingRates($estimatorData, $request){
 		if(!isset( $estimatorData->Estimator)){
 			return null;
 		}
@@ -1004,7 +1004,13 @@ class ParcelPro_Carrier_Model_Carrier extends Mage_Shipping_Model_Carrier_Abstra
 						$rate->setMethod($estimator->ServiceCode);
 						$rate->setMethodTitle($estimator->ServiceCodeDescription);
 							
-						$rate->setPrice($estimator->TotalCharges);
+						//$rate->setPrice($estimator->TotalCharges);
+						
+						$rate->setPrice($estimator->ServiceCode == $this->getConfigData($this->_freeMethod)
+				            && $this->getConfigFlag('free_shipping_enable')
+				            && $this->getConfigData('free_shipping_subtotal') <= $request->getBaseSubtotalInclTax()
+				            ? '0.00': $estimator->TotalCharges);
+						
 						$rate->setCost($estimator->AccessorialsCost);
 							
 						$rateList[] = $rate;
